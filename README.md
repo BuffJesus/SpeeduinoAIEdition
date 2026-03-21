@@ -64,7 +64,7 @@ Upstream references:
 - **Decoder Trace Replay System**
   - Externalized trace headers stored in flash/program memory
   - Support for simple traces and compressed repeated-event traces
-  - Coverage for 14+ decoder families with real or semi-real waveform patterns
+  - Coverage for 17 decoder families with real or semi-real waveform patterns
   - Unit-test trigger-state overrides for decoders that sample live input levels during the ISR path
 - **Config Migration Tests**
   - Direct host-side coverage across the EEPROM update chain from `v2 -> v24`
@@ -78,7 +78,7 @@ Upstream references:
   - `mapSwitchPoint` boundary transitions and EMAP-disabled sentinel preservation
   - MAP / EMAP / baro calibration helper coverage for clamping and enabled/disabled source behavior
 
-**Current decoder replay/runtime coverage** (`191/191` decoder tests passing):
+**Current decoder replay/runtime coverage** (`194/194` decoder tests passing):
 
 - Basic Distributor
 - Dual-Wheel
@@ -96,6 +96,7 @@ Upstream references:
 - GM 7X
 - Honda D17
 - Harley
+- Subaru 6/7
 
 Highlighted behaviors now covered include:
 
@@ -125,9 +126,10 @@ Recent work as of `2026-03-21`:
 - Completed direct migration coverage across the EEPROM update chain from `v2 -> v24`
 - Split migration coverage into stable `test_updates` and `test_updates_tail` suites
 - Expanded replay-backed decoder coverage to 15+ decoder families
+- Added Subaru 6/7 replay coverage for three-cam sync, wrap, and single-cam misalignment behavior
 - Added ignition/protection state-machine coverage for rolling cut, VSS-gated launch, AFR target-table mode, and combined boost/AFR precedence
 - Added MAP sampling reset/fallback coverage for sensor state transitions, including `mapSwitchPoint` boundary resets, EMAP-disabled sentinel handling, and MAP/baro calibration helper behavior
-- Verified `test_decoders`: `191/191`
+- Verified `test_decoders`: `194/194`
 - Verified `test_updates`: `38/38`
 - Verified `test_updates_tail`: `5/5`
 - Verified `test_ign`: `146/146`
@@ -136,6 +138,7 @@ Recent work as of `2026-03-21`:
 Latest handoff references:
 
 - [SESSION_HANDOFF_2026-03-21_HARLEY_REPLAY.md](speeduino/SESSION_HANDOFF_2026-03-21_HARLEY_REPLAY.md)
+- [SESSION_HANDOFF_2026-03-21_SUBARU67_REPLAY.md](speeduino/SESSION_HANDOFF_2026-03-21_SUBARU67_REPLAY.md)
 - [SESSION_HANDOFF_2026-03-21_BASIC_DISTRIBUTOR.md](speeduino/SESSION_HANDOFF_2026-03-21_BASIC_DISTRIBUTOR.md)
 - [SESSION_HANDOFF_2026-03-21_HONDAD17.md](speeduino/SESSION_HANDOFF_2026-03-21_HONDAD17.md)
 - [SESSION_HANDOFF_2026-03-21_MAP_SWITCHPOINT_EMAP.md](speeduino/SESSION_HANDOFF_2026-03-21_MAP_SWITCHPOINT_EMAP.md)
@@ -204,7 +207,7 @@ pio test -e megaatmega2560_sim_unittest --filter test_sensors
 
 ### Current Test Status
 
-- `191/191` decoder tests passing
+- `194/194` decoder tests passing
 - `38/38` config migration tests passing
 - `5/5` migration tail tests passing
 - `146/146` ignition/protection tests passing
