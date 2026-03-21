@@ -15,6 +15,13 @@ static void seed_active_afr_inputs(void)
     currentStatus.afrTarget = 100U;
 }
 
+static void enable_active_boost_cut(void)
+{
+    configPage6.boostCutEnabled = 1U;
+    configPage6.boostLimit = 100U;
+    currentStatus.MAP = 220U;
+}
+
 static void setup_limiter_state_machine(void)
 {
     construct2dTables();
@@ -281,6 +288,48 @@ static void test_afr_protection_target_table_mode_stays_inactive_when_target_ris
     TEST_ASSERT_BIT_LOW(ENGINE_PROTECT_BIT_AFR, currentStatus.engineProtectStatus);
 }
 
+static void test_boost_cut_sets_protection_bits_without_lowering_max_rpm_below_engine_protect_threshold(void)
+{
+    setup_limiter_state_machine();
+    enable_active_boost_cut();
+    currentStatus.RPM = 4800U;
+    currentStatus.RPMdiv100 = currentStatus.RPM / 100U;
+
+    TEST_ASSERT_EQUAL_UINT8(1U, checkBoostLimit());
+    TEST_ASSERT_BIT_HIGH(ENGINE_PROTECT_BIT_MAP, currentStatus.engineProtectStatus);
+    TEST_ASSERT_BIT_HIGH(BIT_STATUS1_BOOSTCUT, currentStatus.status1);
+    TEST_ASSERT_BIT_HIGH(BIT_STATUS2_BOOSTCUT, currentStatus.status2);
+    TEST_ASSERT_EQUAL_UINT8(0U, checkEngineProtect());
+    TEST_ASSERT_EQUAL_UINT16(configPage4.HardRevLim * 100U, calculateMaxAllowedRPM());
+}
+
+static void test_combined_boost_and_afr_protection_clamp_to_engine_protect_limit_before_launch_override(void)
+{
+    setup_limiter_state_machine();
+    enable_active_boost_cut();
+    seed_active_afr_inputs();
+    currentStatus.RPM = 7200U;
+    currentStatus.RPMdiv100 = currentStatus.RPM / 100U;
+
+    TEST_ASSERT_EQUAL_UINT16(configPage4.engineProtectMaxRPM * 100U, calculateMaxAllowedRPM());
+    TEST_ASSERT_EQUAL_UINT8(0U, checkAFRLimit());
+
+    delay(120);
+    TEST_ASSERT_EQUAL_UINT8(1U, checkAFRLimit());
+    TEST_ASSERT_EQUAL_UINT8(1U, checkBoostLimit());
+    TEST_ASSERT_EQUAL_UINT8(1U, checkEngineProtect());
+    TEST_ASSERT_BIT_HIGH(ENGINE_PROTECT_BIT_AFR, currentStatus.engineProtectStatus);
+    TEST_ASSERT_BIT_HIGH(ENGINE_PROTECT_BIT_MAP, currentStatus.engineProtectStatus);
+    TEST_ASSERT_EQUAL_UINT16(configPage4.engineProtectMaxRPM * 100U, calculateMaxAllowedRPM());
+
+    currentStatus.launchingHard = true;
+    TEST_ASSERT_EQUAL_UINT16(configPage6.lnchHardLim * 100U, calculateMaxAllowedRPM());
+
+    currentStatus.flatShiftingHard = true;
+    currentStatus.clutchEngagedRPM = 3500U;
+    TEST_ASSERT_EQUAL_UINT16(3500U, calculateMaxAllowedRPM());
+}
+
 void test_limiter_state_machine(void)
 {
     SET_UNITY_FILENAME() {
@@ -293,5 +342,7 @@ void test_limiter_state_machine(void)
         RUN_TEST(test_afr_protection_state_machine_latches_until_reactivation_tps);
         RUN_TEST(test_afr_protection_target_table_mode_uses_target_plus_deviation_threshold);
         RUN_TEST(test_afr_protection_target_table_mode_stays_inactive_when_target_rises_above_current_o2);
+        RUN_TEST(test_boost_cut_sets_protection_bits_without_lowering_max_rpm_below_engine_protect_threshold);
+        RUN_TEST(test_combined_boost_and_afr_protection_clamp_to_engine_protect_limit_before_launch_override);
     }
 }
