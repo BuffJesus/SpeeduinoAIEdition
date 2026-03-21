@@ -469,6 +469,46 @@ def build_contract_default_conflict_report(
     return conflicts
 
 
+def build_contract_conflict_origin_report(
+    ini: IniAudit, stock_msq: MsqAudit, names: list[str] | None = None
+) -> list[str]:
+    if names is None:
+        candidate_names = sorted(
+            name
+            for name in CRITICAL_VALUE_EXPECTATIONS
+            if name in ini.explicit_default_variants
+        )
+    else:
+        candidate_names = names
+
+    origins = []
+    for name in candidate_names:
+        expected = CRITICAL_VALUE_EXPECTATIONS.get(name)
+        explicit_variants = ini.explicit_default_variants.get(name, ())
+        stock_value = stock_msq.constant_values.get(name)
+        if (
+            expected is None
+            or not explicit_variants
+            or any(_values_equivalent(expected, explicit_default) for explicit_default in explicit_variants)
+        ):
+            continue
+
+        if stock_value is None:
+            classification = "stock_missing"
+        elif _values_equivalent(stock_value, expected):
+            classification = "inherited_from_stock_tune"
+        elif any(_values_equivalent(stock_value, explicit_default) for explicit_default in explicit_variants):
+            classification = "fork_diverged_from_stock_and_ini_default"
+        else:
+            classification = "fork_and_stock_both_differ_from_ini_default"
+
+        origins.append(
+            f"{name}: {classification}; fork_contract={expected!r}; "
+            f"stock_tune={stock_value!r}; ini_defaultValue={_format_default_variants(explicit_variants)!r}"
+        )
+    return origins
+
+
 def _is_satisfied_by_parent_array_alias(name: str, msq_constants: set[str]) -> bool:
     parent_name = KNOWN_ARRAY_ALIAS_PARENTS.get(name)
     return parent_name is not None and parent_name in msq_constants
@@ -537,11 +577,31 @@ def main(argv: list[str] | None = None) -> int:
             "entries. If names are omitted, all such conflicts are reported."
         ),
     )
+    parser.add_argument(
+        "--report-contract-conflict-origins",
+        nargs="*",
+        metavar="NAME",
+        help=(
+            "Classify each fork-contract-vs-INI-default conflict by comparing it to the stock "
+            "base tune. If names are omitted, all conflicts are classified."
+        ),
+    )
+    parser.add_argument(
+        "--stock-msq",
+        type=Path,
+        default=DEFAULT_MSQ_PATH,
+        help="Path to the stock .msq file used for conflict-origin classification.",
+    )
     args = parser.parse_args(argv)
 
     try:
         msq = parse_msq(args.msq)
         ini = parse_ini(args.ini)
+        stock_msq = (
+            parse_msq(args.stock_msq)
+            if args.report_contract_conflict_origins is not None
+            else None
+        )
     except (OSError, ET.ParseError, ValueError) as exc:
         print(f"compatibility audit failed: {exc}", file=sys.stderr)
         return 2
@@ -565,6 +625,18 @@ def main(argv: list[str] | None = None) -> int:
             None if not args.report_contract_default_conflicts else args.report_contract_default_conflicts,
         )
         print("\nFork Contract vs INI defaultValue conflicts:")
+        if report:
+            for item in report:
+                print(f"- {item}")
+        else:
+            print("- None")
+    if args.report_contract_conflict_origins is not None:
+        report = build_contract_conflict_origin_report(
+            ini,
+            stock_msq,
+            None if not args.report_contract_conflict_origins else args.report_contract_conflict_origins,
+        )
+        print("\nFork Contract Conflict Origins:")
         if report:
             for item in report:
                 print(f"- {item}")

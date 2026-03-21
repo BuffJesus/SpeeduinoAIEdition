@@ -9,6 +9,7 @@ from tools.check_stock_base_tune_compat import (
     HIGH_RISK_CONSTANTS,
     KNOWN_EXTRA_MSQ_CONSTANTS,
     KNOWN_STOCK_BASE_TUNE_GAPS,
+    build_contract_conflict_origin_report,
     build_contract_default_conflict_report,
     build_explicit_default_mismatch_report,
     evaluate_compatibility,
@@ -200,6 +201,51 @@ defaultValue = dfcoMinCLT, 158
                     "idleAdvStartDelay: fork_contract='0.7', ini_defaultValue='0.2'",
                 ],
                 sorted(build_contract_default_conflict_report(parse_ini(ini_path))),
+            )
+
+    def test_contract_conflict_origin_report_distinguishes_stock_inheritance(self) -> None:
+        with tempfile.TemporaryDirectory() as temp_dir_name:
+            temp_dir = Path(temp_dir_name)
+            stock_msq_path = temp_dir / "stock.msq"
+            ini_path = temp_dir / "test.ini"
+
+            stock_msq_path.write_text(
+                """<?xml version="1.0" encoding="ISO-8859-1"?>
+<msq xmlns="http://www.msefi.com/:msq">
+  <versionInfo fileFormat="5.0" firmwareInfo="X" nPages="1" signature="speeduino 202501"/>
+  <page>
+    <constant name="idleAdvStartDelay">0.7</constant>
+    <constant name="knock_pin">3</constant>
+  </page>
+</msq>
+""",
+                encoding="utf-8",
+            )
+            ini_path.write_text(
+                """signature = "speeduino 202501"
+
+[Constants]
+idleAdvStartDelay = scalar, U08, 155, "S", 0.1, 0.0, 0.0, 25.5, 1
+knock_pin = bits, U08, 92, [2:7], "INVALID", "INVALID", "2", "3", "INVALID", "INVALID", "INVALID", "INVALID", "INVALID", "INVALID", "INVALID", "INVALID", "INVALID", "INVALID", "INVALID", "INVALID", "INVALID", "INVALID", "18", "19", "20", "21", "INVALID", "INVALID", "INVALID", "INVALID", "INVALID", "INVALID", "INVALID", "INVALID", "INVALID", "INVALID", "INVALID", "INVALID", "INVALID", "INVALID", "INVALID", "INVALID", "INVALID", "INVALID", "INVALID", "INVALID", "INVALID", "INVALID", "INVALID", "INVALID", "INVALID", "A0", "A1", "A2", "A3", "A4", "A5", "A6", "A7", "A8", "A9", "A10", "A11", "A12", "A13", "A14", "A15", "INVALID"
+
+defaultValue = idleAdvStartDelay, 0.2
+defaultValue = knock_pin, 57
+""",
+                encoding="utf-8",
+            )
+
+            self.assertEqual(
+                [
+                    "idleAdvStartDelay: inherited_from_stock_tune; fork_contract='0.7'; stock_tune='0.7'; ini_defaultValue='0.2'",
+                    "knock_pin: fork_and_stock_both_differ_from_ini_default; fork_contract='A8'; stock_tune='3'; ini_defaultValue='A10'",
+                ],
+                sorted(
+                    build_contract_conflict_origin_report(
+                        parse_ini(ini_path),
+                        parse_msq(stock_msq_path),
+                        ["idleAdvStartDelay", "knock_pin"],
+                    )
+                ),
             )
 
     def test_real_stock_tune_flags_known_missing_knock_limiter_disable(self) -> None:
