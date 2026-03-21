@@ -43,6 +43,9 @@
 #include "traces/gm24x_full_revolution_trace.h"
 #include "traces/gm24x_no_cam_trace.h"
 #include "traces/gm24x_resync_trace.h"
+#include "traces/4g63_cam_sync_trace.h"
+#include "traces/4g63_no_cam_trace.h"
+#include "traces/4g63_sync_loss_trace.h"
 #include "../test_utils.h"
 
 extern volatile unsigned long toothLastToothTime;
@@ -256,6 +259,27 @@ static void setup_trace_gm24x(void)
     triggerSetup_24X();
 }
 
+static void setup_trace_4g63(void)
+{
+    reset_trace_runtime();
+    configPage4.TrigSpeed = CRANK_SPEED;
+    configPage4.sparkMode = IGN_MODE_SEQUENTIAL;
+    configPage4.triggerAngle = 0;
+    configPage4.triggerFilter = TRIGGER_FILTER_LITE;
+    configPage4.useResync = 0U;
+    configPage2.nCylinders = 4U;
+    configPage2.strokes = FOUR_STROKE;
+    configPage2.injLayout = INJ_SEQUENTIAL;
+    configPage2.perToothIgn = false;
+    pinMode(pinTrigger, OUTPUT);
+    pinMode(pinTrigger2, OUTPUT);
+    digitalWrite(pinTrigger, LOW);
+    digitalWrite(pinTrigger2, LOW);
+    triggerSetup_4G63();
+    digitalWrite(pinTrigger, LOW);
+    digitalWrite(pinTrigger2, LOW);
+}
+
 static void setup_trace_missing_tooth_36_1_sequential(void)
 {
     reset_trace_runtime();
@@ -349,6 +373,36 @@ static TraceReplayCallbacks makeAudi135Callbacks(void)
 static TraceReplayCallbacks makeGm24XCallbacks(void)
 {
     const TraceReplayCallbacks callbacks = {triggerPri_24X, nullptr, triggerSec_24X, nullptr};
+    return callbacks;
+}
+
+static void triggerPri_4g63_rising_trace(void)
+{
+    digitalWrite(pinTrigger, HIGH);
+    triggerPri_4G63();
+}
+
+static void triggerPri_4g63_falling_trace(void)
+{
+    digitalWrite(pinTrigger, LOW);
+    triggerPri_4G63();
+}
+
+static void triggerSec_4g63_rising_trace(void)
+{
+    digitalWrite(pinTrigger2, HIGH);
+    triggerSec_4G63();
+}
+
+static void triggerSec_4g63_falling_trace(void)
+{
+    digitalWrite(pinTrigger2, LOW);
+    triggerSec_4G63();
+}
+
+static TraceReplayCallbacks make4G63Callbacks(void)
+{
+    const TraceReplayCallbacks callbacks = {triggerPri_4g63_rising_trace, triggerPri_4g63_falling_trace, triggerSec_4g63_rising_trace, triggerSec_4g63_falling_trace};
     return callbacks;
 }
 
@@ -737,6 +791,43 @@ static void test_trace_replay_gm24x_resync_resets_tooth_count(void)
     TEST_ASSERT_EQUAL_UINT16(2U, currentStatus.startRevolutions);
 }
 
+static void test_trace_replay_4g63_cam_phase_marks_candidate_tooth_without_false_sync(void)
+{
+    setup_trace_4g63();
+    digitalWrite(pinTrigger2, HIGH);
+
+    replayTriggerTrace(makeTriggerTrace(k4G63CamSyncEvents), make4G63Callbacks());
+
+    TEST_ASSERT_FALSE(currentStatus.hasSync);
+    TEST_ASSERT_EQUAL_UINT8(0U, currentStatus.syncLossCounter);
+    TEST_ASSERT_EQUAL_UINT16(4U, toothCurrentCount);
+    TEST_ASSERT_EQUAL_UINT16(1U, currentStatus.startRevolutions);
+}
+
+static void test_trace_replay_4g63_primary_only_stays_without_sync(void)
+{
+    setup_trace_4g63();
+
+    replayTriggerTrace(makeTriggerTrace(k4G63NoCamEvents), make4G63Callbacks());
+
+    TEST_ASSERT_FALSE(currentStatus.hasSync);
+    TEST_ASSERT_EQUAL_UINT8(0U, currentStatus.syncLossCounter);
+    TEST_ASSERT_EQUAL_UINT16(3U, toothCurrentCount);
+    TEST_ASSERT_EQUAL_UINT16(1U, currentStatus.startRevolutions);
+}
+
+static void test_trace_replay_4g63_extra_cam_edge_does_not_false_sync(void)
+{
+    setup_trace_4g63();
+    digitalWrite(pinTrigger2, HIGH);
+
+    replayTriggerTrace(makeTriggerTrace(k4G63SyncLossEvents), make4G63Callbacks());
+
+    TEST_ASSERT_FALSE(currentStatus.hasSync);
+    TEST_ASSERT_EQUAL_UINT8(0U, currentStatus.syncLossCounter);
+    TEST_ASSERT_EQUAL_UINT16(3U, toothCurrentCount);
+}
+
 static void test_trace_replay_missing_tooth_36_1_noise_still_syncs(void)
 {
     setup_trace_missing_tooth_36_1();
@@ -934,5 +1025,8 @@ void testTriggerTraceReplay(void)
         RUN_TEST_P(test_trace_replay_gm24x_full_revolution_wraps_on_next_cam);
         RUN_TEST_P(test_trace_replay_gm24x_no_cam_stays_without_sync);
         RUN_TEST_P(test_trace_replay_gm24x_resync_resets_tooth_count);
+        RUN_TEST_P(test_trace_replay_4g63_cam_phase_marks_candidate_tooth_without_false_sync);
+        RUN_TEST_P(test_trace_replay_4g63_primary_only_stays_without_sync);
+        RUN_TEST_P(test_trace_replay_4g63_extra_cam_edge_does_not_false_sync);
     }
 }
