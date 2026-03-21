@@ -45,6 +45,16 @@ static void seedLegacyCalibrationTables() {
     }
 }
 
+static uint8_t rawPattern(uint16_t address, uint8_t salt) {
+    return uint8_t((address + salt) & 0xFFU);
+}
+
+static void seedRawRange(uint16_t start, uint16_t endInclusive, uint8_t salt) {
+    for (uint16_t address = start; address <= endInclusive; ++address) {
+        EEPROMWriteRaw(address, rawPattern(address, salt));
+    }
+}
+
 template <typename table3d_t>
 static void seedTableAxesAndValues(table3d_t &table, uint16_t xStart, uint16_t yStart, uint8_t valueStart) {
     auto x = table.axisX.begin();
@@ -339,6 +349,53 @@ void test_doUpdates_v19_to_v20_sets_boost_lookup_defaults_and_afr_protection(voi
             ++row;
         }
         ++rows;
+    }
+}
+
+void test_doUpdates_v5_to_v6_relocates_eeprom_blocks_and_requests_reload(void) {
+    resetMigrationState();
+    updatesTestSetInitialVersion(5U);
+    updatesTestSetStopAfterStore(true);
+
+    seedRawRange(527U, 1966U, 19U);
+
+    doUpdates();
+
+    const updates_test_state state = updatesTestGetState();
+
+    TEST_ASSERT_EQUAL_UINT8(6U, state.eepromVersion);
+    TEST_ASSERT_EQUAL_UINT8(1U, state.storeVersionCalls);
+    TEST_ASSERT_EQUAL_UINT8(0U, state.writeAllConfigCalls);
+    TEST_ASSERT_EQUAL_UINT8(1U, state.loadConfigCalls);
+    TEST_ASSERT_EQUAL_UINT8(0U, state.writeCalibrationCalls);
+
+    for (uint16_t address = 943U; address <= EEPROM_CONFIG10_END; ++address) {
+        TEST_ASSERT_EQUAL_UINT8(rawPattern(address - 128U, 19U), EEPROMReadRaw(address));
+    }
+    for (uint16_t address = 591U; address <= 942U; ++address) {
+        TEST_ASSERT_EQUAL_UINT8(rawPattern(address - 64U, 19U), EEPROMReadRaw(address));
+    }
+}
+
+void test_doUpdates_v6_to_v7_relocates_staging_block_and_requests_reload(void) {
+    resetMigrationState();
+    updatesTestSetInitialVersion(6U);
+    updatesTestSetStopAfterStore(true);
+
+    seedRawRange(1484U, 2012U, 73U);
+
+    doUpdates();
+
+    const updates_test_state state = updatesTestGetState();
+
+    TEST_ASSERT_EQUAL_UINT8(7U, state.eepromVersion);
+    TEST_ASSERT_EQUAL_UINT8(1U, state.storeVersionCalls);
+    TEST_ASSERT_EQUAL_UINT8(0U, state.writeAllConfigCalls);
+    TEST_ASSERT_EQUAL_UINT8(1U, state.loadConfigCalls);
+    TEST_ASSERT_EQUAL_UINT8(0U, state.writeCalibrationCalls);
+
+    for (uint16_t address = 1566U; address <= EEPROM_CONFIG10_END; ++address) {
+        TEST_ASSERT_EQUAL_UINT8(rawPattern(address - 82U, 73U), EEPROMReadRaw(address));
     }
 }
 
@@ -1190,6 +1247,8 @@ void testConfigMigrations(void) {
     RUN_TEST(test_divideTableLoad_scales_only_load_axis);
     RUN_TEST(test_multiplyTableValue_scales_entire_page);
     RUN_TEST(test_divideTableValue_scales_entire_page);
+    RUN_TEST(test_doUpdates_v5_to_v6_relocates_eeprom_blocks_and_requests_reload);
+    RUN_TEST(test_doUpdates_v6_to_v7_relocates_staging_block_and_requests_reload);
     RUN_TEST(test_doUpdates_v2_to_v3_offsets_ignition_table_values);
     RUN_TEST(test_doUpdates_v3_to_v4_sets_can_defaults_and_repairs_invalid_spark_duration);
     RUN_TEST(test_doUpdates_v4_to_v5_converts_cranking_pct_to_curve);
