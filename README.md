@@ -67,8 +67,14 @@ Upstream references:
   - Coverage for 12+ decoder families with real or semi-real waveform patterns
 - **Config Migration Tests**
   - Direct host-side coverage across the EEPROM update chain from `v2 -> v24`
+  - Split `test_updates` / `test_updates_tail` harness to keep full migration coverage stable under `simavr`
 - **Runtime State-Machine Tests**
   - Direct validation of decoder sync, wrap, filtering, and resync behavior
+- **Ignition / Protection Interaction Tests**
+  - Launch, flat-shift, rolling cut, AFR protection, and combined protection precedence coverage
+- **Sensor State-Machine Tests**
+  - MAP sampling fallback/reset behavior for cycle-average, cycle-minimum, and event-average modes
+  - `mapSwitchPoint` boundary transitions and EMAP-disabled sentinel preservation
 
 **Current decoder replay/runtime coverage** (`182/182` decoder tests passing):
 
@@ -109,18 +115,25 @@ See [FIRMWARE_ROADMAP.md](speeduino/FIRMWARE_ROADMAP.md) for the full roadmap.
 
 **Phase 2: Regression Harness** is still the active phase.
 
-Recent work as of `2026-03-20`:
+Recent work as of `2026-03-21`:
 
 - Completed direct migration coverage across the EEPROM update chain from `v2 -> v24`
-- Added replay-backed Miata 99-05 cam-noise coverage
+- Split migration coverage into stable `test_updates` and `test_updates_tail` suites
 - Expanded replay-backed decoder coverage to 12+ decoder families
+- Added ignition/protection state-machine coverage for rolling cut, VSS-gated launch, AFR target-table mode, and combined boost/AFR precedence
+- Added MAP sampling reset/fallback coverage for sensor state transitions, including `mapSwitchPoint` boundary resets and EMAP-disabled sentinel handling
 - Verified `test_decoders`: `182/182`
 - Verified `test_updates`: `38/38`
+- Verified `test_updates_tail`: `5/5`
+- Verified `test_ign`: `146/146`
+- Verified `test_sensors`: `44/44`
 
 Latest handoff references:
 
-- [SESSION_HANDOFF_2026-03-20_MIATA_NOISE.md](speeduino/SESSION_HANDOFF_2026-03-20_MIATA_NOISE.md)
-- [SESSION_HANDOFF_2026-03-20_UPDATES_V5_V7.md](speeduino/SESSION_HANDOFF_2026-03-20_UPDATES_V5_V7.md)
+- [SESSION_HANDOFF_2026-03-21_MAP_SWITCHPOINT_EMAP.md](speeduino/SESSION_HANDOFF_2026-03-21_MAP_SWITCHPOINT_EMAP.md)
+- [SESSION_HANDOFF_2026-03-21_MAP_SAMPLING.md](speeduino/SESSION_HANDOFF_2026-03-21_MAP_SAMPLING.md)
+- [SESSION_HANDOFF_2026-03-21_LIMITER_AFR_VSS.md](speeduino/SESSION_HANDOFF_2026-03-21_LIMITER_AFR_VSS.md)
+- [SESSION_HANDOFF_2026-03-21_UPDATES_V15_V18.md](speeduino/SESSION_HANDOFF_2026-03-21_UPDATES_V15_V18.md)
 
 ## Quick Start
 
@@ -171,15 +184,22 @@ pio test -e megaatmega2560_sim_unittest --filter test_decoders
 
 # Config migration tests
 pio test -e megaatmega2560_sim_unittest --filter test_updates
+pio test -e megaatmega2560_sim_unittest --filter test_updates_tail
 
-# Math/correction tests
-pio test -e megaatmega2560_sim_unittest --filter test_maths
+# Ignition/protection tests
+pio test -e megaatmega2560_sim_unittest --filter test_ign
+
+# Sensor tests
+pio test -e megaatmega2560_sim_unittest --filter test_sensors
 ```
 
 ### Current Test Status
 
 - `182/182` decoder tests passing
 - `38/38` config migration tests passing
+- `5/5` migration tail tests passing
+- `146/146` ignition/protection tests passing
+- `44/44` sensor tests passing
 - Other unit-test suites remain in regular use for regression checking
 
 Note: local Windows `pio test` invocations in this workspace can still hit wrapper/file-lock issues intermittently even when the produced simulator binary itself runs cleanly.
@@ -198,7 +218,10 @@ SpeeduinoAIEdition/
 |   |-- test_decoders/         # Decoder validation tests
 |   |   `-- traces/            # Externalized trigger trace headers
 |   |-- test_updates/          # Config migration tests
-|   `-- test_maths/            # Math/correction tests
+|   |-- test_updates_tail/     # Late migration tail split for simulator stability
+|   |-- test_ign/             # Ignition / protection interaction tests
+|   |-- test_sensors/         # Sensor filtering and MAP sampling tests
+|   `-- test_maths/           # Math/correction tests
 |-- release/                   # Release artifacts (.hex, .ini)
 |-- reference/                 # Hardware designs and documentation
 |-- platformio.ini             # Build configuration
@@ -230,6 +253,10 @@ Development progress is tracked in session handoff documents that capture:
 
 Recent handoffs:
 
+- [SESSION_HANDOFF_2026-03-21_MAP_SWITCHPOINT_EMAP.md](speeduino/SESSION_HANDOFF_2026-03-21_MAP_SWITCHPOINT_EMAP.md) - MAP switch-point boundary and EMAP sentinel coverage
+- [SESSION_HANDOFF_2026-03-21_MAP_SAMPLING.md](speeduino/SESSION_HANDOFF_2026-03-21_MAP_SAMPLING.md) - MAP sampling reset/fallback edge cases
+- [SESSION_HANDOFF_2026-03-21_LIMITER_AFR_VSS.md](speeduino/SESSION_HANDOFF_2026-03-21_LIMITER_AFR_VSS.md) - AFR target-table and VSS-gated limiter coverage
+- [SESSION_HANDOFF_2026-03-21_UPDATES_V15_V18.md](speeduino/SESSION_HANDOFF_2026-03-21_UPDATES_V15_V18.md) - split migration harness and mid-chain migration coverage
 - [SESSION_HANDOFF_2026-03-20_MIATA_NOISE.md](speeduino/SESSION_HANDOFF_2026-03-20_MIATA_NOISE.md) - Miata 99-05 cam-noise replay coverage
 - [SESSION_HANDOFF_2026-03-20_UPDATES_V5_V7.md](speeduino/SESSION_HANDOFF_2026-03-20_UPDATES_V5_V7.md) - final EEPROM relocation migration coverage
 - [SESSION_HANDOFF_2026-03-20_UPDATES_V2_V10.md](speeduino/SESSION_HANDOFF_2026-03-20_UPDATES_V2_V10.md) - early migration coverage
