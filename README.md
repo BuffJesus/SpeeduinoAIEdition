@@ -129,6 +129,8 @@ Recent work as of `2026-03-21`:
 - Added Subaru 6/7 replay coverage for three-cam sync, wrap, and single-cam misalignment behavior
 - Added ignition/protection state-machine coverage for rolling cut, VSS-gated launch, AFR target-table mode, and combined boost/AFR precedence
 - Added MAP sampling reset/fallback coverage for sensor state transitions, including `mapSwitchPoint` boundary resets, EMAP-disabled sentinel handling, and MAP/baro calibration helper behavior
+- Added a host-side stock-base-tune compatibility audit for [Resources/Speeduino base tune.msq](Resources/Speeduino%20base%20tune.msq) against [speeduino.ini](speeduino.ini)
+- Added a fork-owned compatible base tune at [Resources/Speeduino AI base tune.msq](Resources/Speeduino%20AI%20base%20tune.msq) that closes the current stock-tune drift
 - Verified `test_decoders`: `194/194`
 - Verified `test_updates`: `38/38`
 - Verified `test_updates_tail`: `5/5`
@@ -138,6 +140,8 @@ Recent work as of `2026-03-21`:
 Latest handoff references:
 
 - [SESSION_HANDOFF_2026-03-21_HARLEY_REPLAY.md](speeduino/SESSION_HANDOFF_2026-03-21_HARLEY_REPLAY.md)
+- [SESSION_HANDOFF_2026-03-21_STOCK_TUNE_AUDIT.md](speeduino/SESSION_HANDOFF_2026-03-21_STOCK_TUNE_AUDIT.md)
+- [SESSION_HANDOFF_2026-03-21_FORK_BASE_TUNE.md](speeduino/SESSION_HANDOFF_2026-03-21_FORK_BASE_TUNE.md)
 - [SESSION_HANDOFF_2026-03-21_SUBARU67_REPLAY.md](speeduino/SESSION_HANDOFF_2026-03-21_SUBARU67_REPLAY.md)
 - [SESSION_HANDOFF_2026-03-21_BASIC_DISTRIBUTOR.md](speeduino/SESSION_HANDOFF_2026-03-21_BASIC_DISTRIBUTOR.md)
 - [SESSION_HANDOFF_2026-03-21_HONDAD17.md](speeduino/SESSION_HANDOFF_2026-03-21_HONDAD17.md)
@@ -172,6 +176,11 @@ pio run -e teensy41
 
 Output: `.pio/build/teensy41/firmware.hex`
 
+Release bundle for the current checked-in Teensy 4.1 packaging:
+- [speeduino-dropbear-v2.0.1-teensy41.hex](release/speeduino-dropbear-v2.0.1-teensy41.hex)
+- [speeduino-dropbear-v2.0.1.ini](release/speeduino-dropbear-v2.0.1.ini)
+- [speeduino-dropbear-v2.0.1-base-tune.msq](release/speeduino-dropbear-v2.0.1-base-tune.msq)
+
 ### Arduino Mega 2560
 
 ```bash
@@ -203,6 +212,15 @@ pio test -e megaatmega2560_sim_unittest --filter test_ign
 
 # Sensor tests
 pio test -e megaatmega2560_sim_unittest --filter test_sensors
+
+# Stock base tune compatibility audit
+python tools/check_stock_base_tune_compat.py
+
+# Fork-owned base tune compatibility audit
+python tools/check_stock_base_tune_compat.py --msq "Resources/Speeduino AI base tune.msq"
+
+# Release bundle base tune compatibility audit
+python tools/check_stock_base_tune_compat.py --msq "release/speeduino-dropbear-v2.0.1-base-tune.msq" --ini "release/speeduino-dropbear-v2.0.1.ini"
 ```
 
 ### Current Test Status
@@ -212,6 +230,9 @@ pio test -e megaatmega2560_sim_unittest --filter test_sensors
 - `5/5` migration tail tests passing
 - `146/146` ignition/protection tests passing
 - `50/50` sensor tests passing
+- Stock base tune audit currently flags one fork drift: missing `knock_limiterDisable` in [Resources/Speeduino base tune.msq](Resources/Speeduino%20base%20tune.msq)
+- Fork-owned base tune audit passes for [Resources/Speeduino AI base tune.msq](Resources/Speeduino%20AI%20base%20tune.msq)
+- Release bundle base tune audit passes for [speeduino-dropbear-v2.0.1-base-tune.msq](release/speeduino-dropbear-v2.0.1-base-tune.msq) against [speeduino-dropbear-v2.0.1.ini](release/speeduino-dropbear-v2.0.1.ini)
 - Other unit-test suites remain in regular use for regression checking
 
 Note: local Windows `pio test` invocations in this workspace can still hit wrapper/file-lock issues intermittently even when the produced simulator binary itself runs cleanly.
