@@ -12,14 +12,16 @@
   - rolling-cut defaults
   - DFCO defaults
   - launch defaults
+  - idle-up defaults
   - VSS defaults
   - WMI defaults
   - oil-pressure defaults
+  - fan defaults
   - air-con defaults
 - Added normalized `.msq` constant-value extraction so scalar and array values can be compared in a stable way
 - Updated [test_stock_base_tune_compat.py](C:/Users/Cornelio/Desktop/speeduino-202501.6/tools/tests/test_stock_base_tune_compat.py) so the fork-owned tune must satisfy every checked critical value
 - Added a release-path unit test so the shipped [speeduino-dropbear-v2.0.1-base-tune.msq](C:/Users/Cornelio/Desktop/speeduino-202501.6/release/speeduino-dropbear-v2.0.1-base-tune.msq) must satisfy the same value contract against [speeduino-dropbear-v2.0.1.ini](C:/Users/Cornelio/Desktop/speeduino-202501.6/release/speeduino-dropbear-v2.0.1.ini)
-- The fork-owned and release tunes already matched the new VSS / WMI / oil-pressure defaults, so no `.msq` value changes were needed for this slice
+- The fork-owned and release tunes already matched the new idle-up / VSS / WMI / oil-pressure / fan defaults, so no `.msq` value changes were needed for these audit-only slices
 
 ## Critical Default Contract Now Enforced
 
@@ -41,6 +43,14 @@
   - `launchEnable = No`
   - `launchHiLo = LOW`
   - `lnchCtrlVss = 255`
+- Idle-up:
+  - `idleUpPin = Board Default`
+  - `idleUpPolarity = Normal`
+  - `idleUpEnabled = Off`
+  - `idleUpAdder = 15.0`
+  - `idleUpOutputEnabled = Off`
+  - `idleUpOutputInv = No`
+  - `idleUpOutputPin = Board Default`
 - VSS:
   - `vssMode = Off`
   - `vssPin = Board Default`
@@ -66,6 +76,15 @@
   - `oilPressureMax = 168.0`
   - `oilPressureProtMins = 0.0 30.0 40.0 40.0`
   - `oilPressureProtRPM = 500.0 1500.0 3500.0 6000.0`
+- Fan:
+  - `fanWhenOff = Yes`
+  - `fanWhenCranking = No`
+  - `fanInv = No`
+  - `fanEnable = On/Off`
+  - `fanPin = Board Default`
+  - `fanSP = 90.0`
+  - `fanHyster = 5.0`
+  - `fanFreq = 0.0`
 - Air-con:
   - `airConEnable = Off`
   - `airConCompPol = Inverted`
@@ -106,7 +125,7 @@
 - Surface compatibility alone was not enough; the fork-owned and release-packaged tunes could still have silently retained stock defaults in fork-touched areas
 - The repo now enforces both:
   - field presence / round-trippable surface compatibility
-  - 67 selected semantic defaults for the fields this fork has materially changed
+  - 82 selected semantic defaults for the fields this fork has materially changed
 
 ## Current State
 
@@ -128,4 +147,4 @@
 
 ## Recommended Prompt For Next Session
 
-`Continue from SESSION_HANDOFF_2026-03-21_TUNE_DEFAULT_VALUES.md. The compatibility audit now enforces both the round-trippable tune surface and a 67-check fork-default contract across knock, rolling cut, DFCO, launch, VSS, WMI, oil pressure, and air-con. The fork-owned and release-packaged tunes pass; the unchanged stock tune remains the intentional failing control. Next slice: either keep growing the default contract into adjacent config clusters like fan/idle-up, or formalize fork divergence with a signature bump.` 
+`Continue from SESSION_HANDOFF_2026-03-21_TUNE_DEFAULT_VALUES.md. The compatibility audit now enforces both the round-trippable tune surface and an 82-check fork-default contract across knock, rolling cut, DFCO, launch, idle-up, VSS, WMI, oil pressure, fan, and air-con. The fork-owned and release-packaged tunes pass; the unchanged stock tune remains the intentional failing control. Next slice: either keep growing the default contract into adjacent config clusters like idle advance or boost/VVT/WMI tables, or formalize fork divergence with a signature bump.` 

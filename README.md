@@ -232,9 +232,9 @@ python tools/check_stock_base_tune_compat.py --msq "release/speeduino-dropbear-v
 - `146/146` ignition/protection tests passing
 - `50/50` sensor tests passing
 - Stock base tune audit currently flags one remaining fork-surface drift: missing `knock_limiterDisable` in [Resources/Speeduino base tune.msq](Resources/Speeduino%20base%20tune.msq)
-- Stock base tune also fails the 67-check fork-default value contract for knock / rolling-cut / DFCO / launch / VSS / WMI / oil-pressure / air-con defaults, as expected for the unchanged stock artifact
-- Fork-owned base tune audit passes for [Resources/Speeduino AI base tune.msq](Resources/Speeduino%20AI%20base%20tune.msq), including the 67 selected fork-critical default values
-- Release bundle base tune audit passes for [speeduino-dropbear-v2.0.1-base-tune.msq](release/speeduino-dropbear-v2.0.1-base-tune.msq) against [speeduino-dropbear-v2.0.1.ini](release/speeduino-dropbear-v2.0.1.ini), including the same 67 selected fork-critical default values
+- Stock base tune also fails the 82-check fork-default value contract for knock / rolling-cut / DFCO / launch / idle-up / VSS / WMI / oil-pressure / fan / air-con defaults, as expected for the unchanged stock artifact
+- Fork-owned base tune audit passes for [Resources/Speeduino AI base tune.msq](Resources/Speeduino%20AI%20base%20tune.msq), including the 82 selected fork-critical default values
+- Release bundle base tune audit passes for [speeduino-dropbear-v2.0.1-base-tune.msq](release/speeduino-dropbear-v2.0.1-base-tune.msq) against [speeduino-dropbear-v2.0.1.ini](release/speeduino-dropbear-v2.0.1.ini), including the same 82 selected fork-critical default values
 - Other unit-test suites remain in regular use for regression checking
 
 Note: local Windows `pio test` invocations in this workspace can still hit wrapper/file-lock issues intermittently even when the produced simulator binary itself runs cleanly.
