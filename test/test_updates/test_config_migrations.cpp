@@ -342,6 +342,170 @@ void test_doUpdates_v19_to_v20_sets_boost_lookup_defaults_and_afr_protection(voi
     }
 }
 
+void test_doUpdates_v2_to_v3_offsets_ignition_table_values(void) {
+    resetMigrationState();
+    updatesTestSetInitialVersion(2U);
+    updatesTestSetStopAfterStore(true);
+
+    seedTableAxesAndValues(ignitionTable, 1000U, 10U, 1U);
+
+    doUpdates();
+
+    const updates_test_state state = updatesTestGetState();
+
+    TEST_ASSERT_EQUAL_UINT8(3U, state.eepromVersion);
+    TEST_ASSERT_EQUAL_UINT8(1U, state.storeVersionCalls);
+    TEST_ASSERT_EQUAL_UINT8(1U, state.writeAllConfigCalls);
+
+    auto rows = ignitionTable.values.begin();
+    uint8_t expected = 41U;
+    while (!rows.at_end()) {
+        auto row = *rows;
+        while (!row.at_end()) {
+            TEST_ASSERT_EQUAL_UINT8(expected++, *row);
+            ++row;
+        }
+        ++rows;
+    }
+}
+
+void test_doUpdates_v3_to_v4_sets_can_defaults_and_repairs_invalid_spark_duration(void) {
+    resetMigrationState();
+    updatesTestSetInitialVersion(3U);
+    updatesTestSetStopAfterStore(true);
+
+    configPage9.speeduino_tsCanId = 9U;
+    configPage9.true_address = 1U;
+    configPage9.realtime_base_address = 2U;
+    configPage4.sparkDur = UINT8_MAX;
+
+    doUpdates();
+
+    const updates_test_state state = updatesTestGetState();
+
+    TEST_ASSERT_EQUAL_UINT8(4U, state.eepromVersion);
+    TEST_ASSERT_EQUAL_UINT8(1U, state.storeVersionCalls);
+    TEST_ASSERT_EQUAL_UINT8(1U, state.writeAllConfigCalls);
+
+    TEST_ASSERT_EQUAL_UINT8(0U, configPage9.speeduino_tsCanId);
+    TEST_ASSERT_EQUAL_UINT16(256U, configPage9.true_address);
+    TEST_ASSERT_EQUAL_UINT16(336U, configPage9.realtime_base_address);
+    TEST_ASSERT_EQUAL_UINT8(10U, configPage4.sparkDur);
+}
+
+void test_doUpdates_v4_to_v5_converts_cranking_pct_to_curve(void) {
+    resetMigrationState();
+    updatesTestSetInitialVersion(4U);
+    updatesTestSetStopAfterStore(true);
+
+    configPage2.crankingPct = 37U;
+
+    doUpdates();
+
+    const updates_test_state state = updatesTestGetState();
+
+    TEST_ASSERT_EQUAL_UINT8(5U, state.eepromVersion);
+    TEST_ASSERT_EQUAL_UINT8(1U, state.storeVersionCalls);
+    TEST_ASSERT_EQUAL_UINT8(1U, state.writeAllConfigCalls);
+
+    const uint8_t expectedBins[4] = {0U, 40U, 70U, 100U};
+    for (uint8_t i = 0; i < 4U; ++i) {
+        TEST_ASSERT_EQUAL_UINT8(expectedBins[i], configPage10.crankingEnrichBins[i]);
+        TEST_ASSERT_EQUAL_UINT8(137U, configPage10.crankingEnrichValues[i]);
+    }
+}
+
+void test_doUpdates_v7_to_v8_expands_legacy_flex_settings_into_tables(void) {
+    resetMigrationState();
+    updatesTestSetInitialVersion(7U);
+    updatesTestSetStopAfterStore(true);
+
+    configPage2.aeColdPct = 10U;
+    configPage2.aeColdTaperMin = 70U;
+    configPage2.idleUpPin = 5U;
+    configPage2.idleUpAdder = 35U;
+    configPage2.aeTaperMin = 20U;
+    configPage2.aeTaperMax = 80U;
+
+    doUpdates();
+
+    const updates_test_state state = updatesTestGetState();
+
+    TEST_ASSERT_EQUAL_UINT8(8U, state.eepromVersion);
+    TEST_ASSERT_EQUAL_UINT8(1U, state.storeVersionCalls);
+    TEST_ASSERT_EQUAL_UINT8(1U, state.writeAllConfigCalls);
+
+    const uint8_t expectedPct[6] = {0U, 20U, 40U, 60U, 80U, 100U};
+    const int8_t expectedBoostAdj[6] = {10, 22, 34, 46, 58, 70};
+    const uint8_t expectedFuelAdj[6] = {5U, 11U, 17U, 23U, 29U, 35U};
+    const uint8_t expectedAdvAdj[6] = {20U, 32U, 44U, 56U, 68U, 80U};
+    for (uint8_t i = 0; i < 6U; ++i) {
+        TEST_ASSERT_EQUAL_UINT8(expectedPct[i], configPage10.flexBoostBins[i]);
+        TEST_ASSERT_EQUAL_UINT8(expectedPct[i], configPage10.flexFuelBins[i]);
+        TEST_ASSERT_EQUAL_UINT8(expectedPct[i], configPage10.flexAdvBins[i]);
+        TEST_ASSERT_EQUAL_INT8(expectedBoostAdj[i], configPage10.flexBoostAdj[i]);
+        TEST_ASSERT_EQUAL_UINT8(expectedFuelAdj[i], configPage10.flexFuelAdj[i]);
+        TEST_ASSERT_EQUAL_UINT8(expectedAdvAdj[i], configPage10.flexAdvAdj[i]);
+    }
+}
+
+void test_doUpdates_v8_to_v9_copies_legacy_load_source_and_enables_closed_loop_boost(void) {
+    resetMigrationState();
+    updatesTestSetInitialVersion(8U);
+    updatesTestSetStopAfterStore(true);
+
+    configPage2.legacyMAP = LOAD_SOURCE_TPS;
+    configPage2.fuelAlgorithm = LOAD_SOURCE_MAP;
+    configPage2.ignAlgorithm = LOAD_SOURCE_MAP;
+    configPage4.boostType = 0U;
+
+    doUpdates();
+
+    const updates_test_state state = updatesTestGetState();
+
+    TEST_ASSERT_EQUAL_UINT8(9U, state.eepromVersion);
+    TEST_ASSERT_EQUAL_UINT8(1U, state.storeVersionCalls);
+    TEST_ASSERT_EQUAL_UINT8(1U, state.writeAllConfigCalls);
+
+    TEST_ASSERT_EQUAL_UINT8(LOAD_SOURCE_TPS, configPage2.fuelAlgorithm);
+    TEST_ASSERT_EQUAL_UINT8(LOAD_SOURCE_TPS, configPage2.ignAlgorithm);
+    TEST_ASSERT_EQUAL_UINT8(1U, configPage4.boostType);
+}
+
+void test_doUpdates_v9_to_v10_clears_aux_inputs_and_sets_adc_defaults(void) {
+    resetMigrationState();
+    updatesTestSetInitialVersion(9U);
+    updatesTestSetStopAfterStore(true);
+
+    memset(configPage9.caninput_sel, 0x5A, sizeof(configPage9.caninput_sel));
+    configPage4.ADCFILTER_TPS = 0U;
+    configPage4.ADCFILTER_CLT = 0U;
+    configPage4.ADCFILTER_IAT = 0U;
+    configPage4.ADCFILTER_O2 = 0U;
+    configPage4.ADCFILTER_BAT = 0U;
+    configPage4.ADCFILTER_MAP = 0U;
+    configPage4.ADCFILTER_BARO = 0U;
+
+    doUpdates();
+
+    const updates_test_state state = updatesTestGetState();
+
+    TEST_ASSERT_EQUAL_UINT8(10U, state.eepromVersion);
+    TEST_ASSERT_EQUAL_UINT8(1U, state.storeVersionCalls);
+    TEST_ASSERT_EQUAL_UINT8(1U, state.writeAllConfigCalls);
+
+    for (uint8_t i = 0; i < 16U; ++i) {
+        TEST_ASSERT_EQUAL_UINT8(0U, configPage9.caninput_sel[i]);
+    }
+    TEST_ASSERT_EQUAL_UINT8(ADCFILTER_TPS_DEFAULT, configPage4.ADCFILTER_TPS);
+    TEST_ASSERT_EQUAL_UINT8(ADCFILTER_CLT_DEFAULT, configPage4.ADCFILTER_CLT);
+    TEST_ASSERT_EQUAL_UINT8(ADCFILTER_IAT_DEFAULT, configPage4.ADCFILTER_IAT);
+    TEST_ASSERT_EQUAL_UINT8(ADCFILTER_O2_DEFAULT, configPage4.ADCFILTER_O2);
+    TEST_ASSERT_EQUAL_UINT8(ADCFILTER_BAT_DEFAULT, configPage4.ADCFILTER_BAT);
+    TEST_ASSERT_EQUAL_UINT8(ADCFILTER_MAP_DEFAULT, configPage4.ADCFILTER_MAP);
+    TEST_ASSERT_EQUAL_UINT8(ADCFILTER_BARO_DEFAULT, configPage4.ADCFILTER_BARO);
+}
+
 void test_doUpdates_v18_to_v19_scales_tps_inputs_and_tps_based_tables(void) {
     resetMigrationState();
     updatesTestSetInitialVersion(18U);
@@ -1026,6 +1190,12 @@ void testConfigMigrations(void) {
     RUN_TEST(test_divideTableLoad_scales_only_load_axis);
     RUN_TEST(test_multiplyTableValue_scales_entire_page);
     RUN_TEST(test_divideTableValue_scales_entire_page);
+    RUN_TEST(test_doUpdates_v2_to_v3_offsets_ignition_table_values);
+    RUN_TEST(test_doUpdates_v3_to_v4_sets_can_defaults_and_repairs_invalid_spark_duration);
+    RUN_TEST(test_doUpdates_v4_to_v5_converts_cranking_pct_to_curve);
+    RUN_TEST(test_doUpdates_v7_to_v8_expands_legacy_flex_settings_into_tables);
+    RUN_TEST(test_doUpdates_v8_to_v9_copies_legacy_load_source_and_enables_closed_loop_boost);
+    RUN_TEST(test_doUpdates_v9_to_v10_clears_aux_inputs_and_sets_adc_defaults);
     RUN_TEST(test_doUpdates_v10_to_v11_seeds_prime_ase_and_map_ae_defaults);
     RUN_TEST(test_doUpdates_v11_to_v12_sets_fuel2_switch_and_battery_defaults);
     RUN_TEST(test_doUpdates_v12_to_v13_sets_baro_and_idle_advance_defaults);
