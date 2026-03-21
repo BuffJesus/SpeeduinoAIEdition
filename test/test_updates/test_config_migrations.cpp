@@ -37,6 +37,14 @@ static void seedConfigPage10Bytes() {
     }
 }
 
+static void seedLegacyCalibrationTables() {
+    for (uint16_t index = 0; index < (CALIBRATION_TABLE_SIZE / 16U); ++index) {
+        EEPROMWriteRaw(EEPROM_CALIBRATION_CLT_OLD + (index * 16U), uint8_t(10U + index));
+        EEPROMWriteRaw(EEPROM_CALIBRATION_IAT_OLD + (index * 16U), uint8_t(70U + index));
+        EEPROMWriteRaw(EEPROM_CALIBRATION_O2_OLD + (index * 16U), uint8_t(130U + index));
+    }
+}
+
 template <typename table3d_t>
 static void seedTableAxesAndValues(table3d_t &table, uint16_t xStart, uint16_t yStart, uint8_t valueStart) {
     auto x = table.axisX.begin();
@@ -420,6 +428,157 @@ void test_doUpdates_v18_to_v19_scales_tps_inputs_and_tps_based_tables(void) {
     }
 }
 
+void test_doUpdates_v13_to_v14_migrates_pid_flex_and_injector_timing_defaults(void) {
+    resetMigrationState();
+    updatesTestSetInitialVersion(13U);
+    updatesTestSetStopAfterStore(true);
+
+    configPage10.crankingEnrichValues[0] = 100U;
+    configPage10.crankingEnrichValues[1] = 150U;
+    configPage10.crankingEnrichValues[2] = 200U;
+    configPage10.crankingEnrichValues[3] = 255U;
+
+    configPage2.injAng[0] = 44U;
+    configPage2.injAng[1] = 11U;
+    configPage2.injAng[2] = 22U;
+    configPage2.injAng[3] = 33U;
+
+    for (uint8_t i = 0; i < 6U; ++i) {
+        configPage10.flexAdvAdj[i] = uint8_t(i * 10U);
+    }
+
+    configPage6.idleKP = 7U;
+    configPage6.idleKI = 8U;
+    configPage6.idleKD = 3U;
+    configPage10.vvtCLKP = 2U;
+    configPage10.vvtCLKI = 8U;
+    configPage10.vvtCLKD = 6U;
+
+    configPage2.aeColdPct = 12U;
+    configPage2.aeColdTaperMin = 13U;
+    configPage2.aeColdTaperMax = 14U;
+    configPage2.aseTaperTime = 9U;
+    configPage2.SoftLimitMode = 1U;
+    configPage2.vssMode = 1U;
+
+    doUpdates();
+
+    const updates_test_state state = updatesTestGetState();
+
+    TEST_ASSERT_EQUAL_UINT8(14U, state.eepromVersion);
+    TEST_ASSERT_EQUAL_UINT8(14U, state.lastStoredVersion);
+    TEST_ASSERT_EQUAL_UINT8(1U, state.storeVersionCalls);
+    TEST_ASSERT_EQUAL_UINT8(1U, state.writeAllConfigCalls);
+    TEST_ASSERT_EQUAL_UINT8(0U, state.loadConfigCalls);
+    TEST_ASSERT_EQUAL_UINT8(0U, state.writeCalibrationCalls);
+
+    TEST_ASSERT_EQUAL_UINT8(20U, configPage10.crankingEnrichValues[0]);
+    TEST_ASSERT_EQUAL_UINT8(30U, configPage10.crankingEnrichValues[1]);
+    TEST_ASSERT_EQUAL_UINT8(40U, configPage10.crankingEnrichValues[2]);
+    TEST_ASSERT_EQUAL_UINT8(51U, configPage10.crankingEnrichValues[3]);
+
+    TEST_ASSERT_EQUAL_UINT8(44U, configPage2.injAng[0]);
+    TEST_ASSERT_EQUAL_UINT8(44U, configPage2.injAng[1]);
+    TEST_ASSERT_EQUAL_UINT8(44U, configPage2.injAng[2]);
+    TEST_ASSERT_EQUAL_UINT8(44U, configPage2.injAng[3]);
+    TEST_ASSERT_EQUAL_UINT8(5U, configPage2.injAngRPM[0]);
+    TEST_ASSERT_EQUAL_UINT8(25U, configPage2.injAngRPM[1]);
+    TEST_ASSERT_EQUAL_UINT8(45U, configPage2.injAngRPM[2]);
+    TEST_ASSERT_EQUAL_UINT8(65U, configPage2.injAngRPM[3]);
+
+    for (uint8_t i = 0; i < 6U; ++i) {
+        TEST_ASSERT_EQUAL_UINT8(uint8_t((i * 10U) + OFFSET_IGNITION), configPage10.flexAdvAdj[i]);
+    }
+
+    TEST_ASSERT_EQUAL_UINT8(224U, configPage6.idleKP);
+    TEST_ASSERT_EQUAL_UINT8(UINT8_MAX, configPage6.idleKI);
+    TEST_ASSERT_EQUAL_UINT8(96U, configPage6.idleKD);
+    TEST_ASSERT_EQUAL_UINT8(64U, configPage10.vvtCLKP);
+    TEST_ASSERT_EQUAL_UINT8(UINT8_MAX, configPage10.vvtCLKI);
+    TEST_ASSERT_EQUAL_UINT8(192U, configPage10.vvtCLKD);
+
+    TEST_ASSERT_EQUAL_UINT8(100U, configPage2.aeColdPct);
+    TEST_ASSERT_EQUAL_UINT8(40U, configPage2.aeColdTaperMin);
+    TEST_ASSERT_EQUAL_UINT8(100U, configPage2.aeColdTaperMax);
+    TEST_ASSERT_EQUAL_UINT8(0U, configPage2.dfcoDelay);
+    TEST_ASSERT_EQUAL_UINT8(80U, configPage2.dfcoMinCLT);
+    TEST_ASSERT_EQUAL_UINT8(1U, configPage10.crankingEnrichTaper);
+    TEST_ASSERT_EQUAL_UINT8(1U, configPage2.aseTaperTime);
+    TEST_ASSERT_EQUAL_UINT8(SOFT_LIMIT_FIXED, configPage2.SoftLimitMode);
+    TEST_ASSERT_EQUAL_UINT8(0U, configPage2.vssMode);
+}
+
+void test_doUpdates_v14_to_v15_migrates_legacy_calibration_tables_and_disables_new_outputs(void) {
+    resetMigrationState();
+    updatesTestSetInitialVersion(14U);
+    updatesTestSetStopAfterStore(true);
+
+    seedLegacyCalibrationTables();
+
+    configPage10.oilPressureProtEnbl = true;
+    configPage10.oilPressureEnable = true;
+    configPage10.fuelPressureEnable = true;
+    configPage10.wmiEnabled = 1U;
+    configPage10.wmiMode = 1U;
+    configPage10.wmiOffset = 15U;
+    configPage10.wmiIndicatorEnabled = 1U;
+    configPage10.wmiEmptyEnabled = 1U;
+    configPage10.wmiAdvEnabled = 1U;
+    for (uint8_t i = 0; i < 6U; ++i) {
+        configPage10.wmiAdvBins[i] = 99U;
+        configPage10.wmiAdvAdj[i] = 0U;
+    }
+    for (uint8_t i = 0; i < 8U; ++i) {
+        configPage13.outputPin[i] = uint8_t(i + 1U);
+    }
+    configPage2.multiplyMAP = 0U;
+    configPage2.crkngAddCLTAdv = 1U;
+    configPage2.aeApplyMode = 1U;
+    configPage2.primingDelay = 9U;
+    configPage2.aseTaperTime = 2U;
+
+    doUpdates();
+
+    const updates_test_state state = updatesTestGetState();
+
+    TEST_ASSERT_EQUAL_UINT8(15U, state.eepromVersion);
+    TEST_ASSERT_EQUAL_UINT8(15U, state.lastStoredVersion);
+    TEST_ASSERT_EQUAL_UINT8(1U, state.storeVersionCalls);
+    TEST_ASSERT_EQUAL_UINT8(1U, state.writeAllConfigCalls);
+    TEST_ASSERT_EQUAL_UINT8(0U, state.loadConfigCalls);
+    TEST_ASSERT_EQUAL_UINT8(1U, state.writeCalibrationCalls);
+
+    for (uint16_t index = 0; index < (CALIBRATION_TABLE_SIZE / 16U); ++index) {
+        TEST_ASSERT_EQUAL_UINT16(index * 32U, cltCalibration_bins[index]);
+        TEST_ASSERT_EQUAL_UINT16(index * 32U, iatCalibration_bins[index]);
+        TEST_ASSERT_EQUAL_UINT16(index * 32U, o2Calibration_bins[index]);
+        TEST_ASSERT_EQUAL_UINT8(uint8_t(10U + index), cltCalibration_values[index]);
+        TEST_ASSERT_EQUAL_UINT8(uint8_t(70U + index), iatCalibration_values[index]);
+        TEST_ASSERT_EQUAL_UINT8(uint8_t(130U + index), o2Calibration_values[index]);
+    }
+
+    TEST_ASSERT_FALSE(configPage10.oilPressureProtEnbl);
+    TEST_ASSERT_FALSE(configPage10.oilPressureEnable);
+    TEST_ASSERT_FALSE(configPage10.fuelPressureEnable);
+    TEST_ASSERT_EQUAL_UINT8(0U, configPage10.wmiEnabled);
+    TEST_ASSERT_EQUAL_UINT8(0U, configPage10.wmiMode);
+    TEST_ASSERT_EQUAL_UINT8(0U, configPage10.wmiOffset);
+    TEST_ASSERT_EQUAL_UINT8(0U, configPage10.wmiIndicatorEnabled);
+    TEST_ASSERT_EQUAL_UINT8(0U, configPage10.wmiEmptyEnabled);
+    TEST_ASSERT_EQUAL_UINT8(0U, configPage10.wmiAdvEnabled);
+    for (uint8_t i = 0; i < 6U; ++i) {
+        TEST_ASSERT_EQUAL_UINT8(uint8_t(i * 50U), configPage10.wmiAdvBins[i]);
+        TEST_ASSERT_EQUAL_UINT8(OFFSET_IGNITION, configPage10.wmiAdvAdj[i]);
+    }
+    for (uint8_t i = 0; i < 8U; ++i) {
+        TEST_ASSERT_EQUAL_UINT8(0U, configPage13.outputPin[i]);
+    }
+    TEST_ASSERT_EQUAL_UINT8(1U, configPage2.multiplyMAP);
+    TEST_ASSERT_EQUAL_UINT8(0U, configPage2.aeApplyMode);
+    TEST_ASSERT_EQUAL_UINT8(0U, configPage2.primingDelay);
+    TEST_ASSERT_EQUAL_UINT8(10U, configPage2.aseTaperTime);
+}
+
 void test_doUpdates_v18_to_v19_divides_non_tps_vvt_tables_and_resets_logging_defaults(void) {
     resetMigrationState();
     updatesTestSetInitialVersion(18U);
@@ -733,6 +892,8 @@ void testConfigMigrations(void) {
     RUN_TEST(test_divideTableLoad_scales_only_load_axis);
     RUN_TEST(test_multiplyTableValue_scales_entire_page);
     RUN_TEST(test_divideTableValue_scales_entire_page);
+    RUN_TEST(test_doUpdates_v13_to_v14_migrates_pid_flex_and_injector_timing_defaults);
+    RUN_TEST(test_doUpdates_v14_to_v15_migrates_legacy_calibration_tables_and_disables_new_outputs);
     RUN_TEST(test_doUpdates_v18_to_v19_scales_tps_inputs_and_tps_based_tables);
     RUN_TEST(test_doUpdates_v18_to_v19_divides_non_tps_vvt_tables_and_resets_logging_defaults);
     RUN_TEST(test_doUpdates_v19_to_v20_sets_boost_lookup_defaults_and_afr_protection);
