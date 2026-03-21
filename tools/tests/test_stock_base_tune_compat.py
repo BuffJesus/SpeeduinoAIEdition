@@ -247,6 +247,17 @@ defaultValue = knock_pin, 57
                     )
                 ),
             )
+            self.assertEqual(
+                [
+                    "knock_pin: fork_and_stock_both_differ_from_ini_default; fork_contract='A8'; stock_tune='3'; ini_defaultValue='A10'",
+                ],
+                build_contract_conflict_origin_report(
+                    parse_ini(ini_path),
+                    parse_msq(stock_msq_path),
+                    ["idleAdvStartDelay", "knock_pin"],
+                    "fork_and_stock_both_differ_from_ini_default",
+                ),
+            )
 
     def test_real_stock_tune_flags_known_missing_knock_limiter_disable(self) -> None:
         repo_root = Path(__file__).resolve().parents[2]

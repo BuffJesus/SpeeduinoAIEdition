@@ -469,9 +469,9 @@ def build_contract_default_conflict_report(
     return conflicts
 
 
-def build_contract_conflict_origin_report(
+def build_contract_conflict_origin_entries(
     ini: IniAudit, stock_msq: MsqAudit, names: list[str] | None = None
-) -> list[str]:
+) -> list[tuple[str, str, str, str | None, str]]:
     if names is None:
         candidate_names = sorted(
             name
@@ -481,7 +481,7 @@ def build_contract_conflict_origin_report(
     else:
         candidate_names = names
 
-    origins = []
+    entries = []
     for name in candidate_names:
         expected = CRITICAL_VALUE_EXPECTATIONS.get(name)
         explicit_variants = ini.explicit_default_variants.get(name, ())
@@ -502,11 +502,43 @@ def build_contract_conflict_origin_report(
         else:
             classification = "fork_and_stock_both_differ_from_ini_default"
 
-        origins.append(
-            f"{name}: {classification}; fork_contract={expected!r}; "
-            f"stock_tune={stock_value!r}; ini_defaultValue={_format_default_variants(explicit_variants)!r}"
+        entries.append(
+            (
+                name,
+                classification,
+                expected,
+                stock_value,
+                _format_default_variants(explicit_variants),
+            )
         )
-    return origins
+    return entries
+
+
+def build_contract_conflict_origin_report(
+    ini: IniAudit,
+    stock_msq: MsqAudit,
+    names: list[str] | None = None,
+    classification_filter: str | None = None,
+) -> list[str]:
+    entries = build_contract_conflict_origin_entries(ini, stock_msq, names)
+    if classification_filter is not None:
+        entries = [entry for entry in entries if entry[1] == classification_filter]
+    return [
+        f"{name}: {classification}; fork_contract={expected!r}; "
+        f"stock_tune={stock_value!r}; ini_defaultValue={ini_default!r}"
+        for name, classification, expected, stock_value, ini_default in entries
+    ]
+
+
+def summarize_contract_conflict_origins(
+    ini: IniAudit, stock_msq: MsqAudit, names: list[str] | None = None
+) -> dict[str, int]:
+    counts: dict[str, int] = {}
+    for _, classification, _, _, _ in build_contract_conflict_origin_entries(
+        ini, stock_msq, names
+    ):
+        counts[classification] = counts.get(classification, 0) + 1
+    return counts
 
 
 def _is_satisfied_by_parent_array_alias(name: str, msq_constants: set[str]) -> bool:
@@ -592,6 +624,16 @@ def main(argv: list[str] | None = None) -> int:
         default=DEFAULT_MSQ_PATH,
         help="Path to the stock .msq file used for conflict-origin classification.",
     )
+    parser.add_argument(
+        "--contract-origin-filter",
+        choices=(
+            "inherited_from_stock_tune",
+            "fork_diverged_from_stock_and_ini_default",
+            "fork_and_stock_both_differ_from_ini_default",
+            "stock_missing",
+        ),
+        help="When reporting contract-conflict origins, restrict output to one classification.",
+    )
     args = parser.parse_args(argv)
 
     try:
@@ -631,12 +673,23 @@ def main(argv: list[str] | None = None) -> int:
         else:
             print("- None")
     if args.report_contract_conflict_origins is not None:
-        report = build_contract_conflict_origin_report(
+        counts = summarize_contract_conflict_origins(
             ini,
             stock_msq,
             None if not args.report_contract_conflict_origins else args.report_contract_conflict_origins,
         )
+        report = build_contract_conflict_origin_report(
+            ini,
+            stock_msq,
+            None if not args.report_contract_conflict_origins else args.report_contract_conflict_origins,
+            args.contract_origin_filter,
+        )
         print("\nFork Contract Conflict Origins:")
+        if counts:
+            print(
+                "- Counts: "
+                + ", ".join(f"{name}={count}" for name, count in sorted(counts.items()))
+            )
         if report:
             for item in report:
                 print(f"- {item}")

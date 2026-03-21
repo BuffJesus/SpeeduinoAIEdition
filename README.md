@@ -231,6 +231,9 @@ python tools/check_stock_base_tune_compat.py --msq "Resources/Speeduino AI base 
 
 # Classify contract/default conflicts against the stock base tune
 python tools/check_stock_base_tune_compat.py --msq "Resources/Speeduino AI base tune.msq" --stock-msq "Resources/Speeduino base tune.msq" --report-contract-conflict-origins
+
+# Show only fork-specific contract/default conflicts
+python tools/check_stock_base_tune_compat.py --msq "Resources/Speeduino AI base tune.msq" --stock-msq "Resources/Speeduino base tune.msq" --report-contract-conflict-origins --contract-origin-filter fork_and_stock_both_differ_from_ini_default
 ```
 
 ### Current Test Status
@@ -248,6 +251,7 @@ python tools/check_stock_base_tune_compat.py --msq "Resources/Speeduino AI base 
 - Current explicit-default mismatches are narrowed to `idleAdvStartDelay`, `idleTaperTime`, `boostCutEnabled`, `boostMinDuty`, `boostMaxDuty`, `vvtCL0DutyAng`, `vvtMinClt`, and `vvtDelay`, with unit-aware defaults now shown where applicable such as `vvtMinClt = 70 / 160`
 - A separate contract-vs-INI-default report now shows the six remaining source-of-truth conflicts inside the enforced contract itself: `airConCompPol`, `airConReqPol`, `idleAdvStartDelay`, `idleTaperTime`, `knock_pin`, and `vssPulsesPerKm`
 - A stock-origin classification report now shows that five of those six conflicts are inherited from the unchanged stock base tune (`airConCompPol`, `airConReqPol`, `idleAdvStartDelay`, `idleTaperTime`, `vssPulsesPerKm`), while `knock_pin` is the only remaining fork-specific divergence from both the stock tune and the INI default
+- The origin report now prints counts as well, so the current policy surface is immediately visible as `inherited_from_stock_tune=5` and `fork_and_stock_both_differ_from_ini_default=1`
 - Other unit-test suites remain in regular use for regression checking
 
 Note: local Windows `pio test` invocations in this workspace can still hit wrapper/file-lock issues intermittently even when the produced simulator binary itself runs cleanly.
