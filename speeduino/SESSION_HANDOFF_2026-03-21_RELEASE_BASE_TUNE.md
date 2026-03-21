@@ -12,11 +12,17 @@
 - Updated [README.md](C:/Users/Cornelio/Desktop/speeduino-202501.6/README.md) so the release firmware, INI, and base tune are listed together
 - Added a release-bundle audit command example using:
   - [check_stock_base_tune_compat.py](C:/Users/Cornelio/Desktop/speeduino-202501.6/tools/check_stock_base_tune_compat.py)
+- Strengthened the audit so it now checks the full round-trippable INI constant surface, not just the original high-risk subset
+- Added explicit handling for known `.msq` export shape quirks:
+  - `firstDataIn0..7` / `secondDataIn0..7` are satisfied by the parent `firstDataIn` / `secondDataIn` array exports
+  - `UNALLOCATED_TOP_11` and `knock_unused1` remain accepted extra `.msq` constants
 
 ## Verification
 
 - `python tools/check_stock_base_tune_compat.py --msq "release/speeduino-dropbear-v2.0.1-base-tune.msq" --ini "release/speeduino-dropbear-v2.0.1.ini"`
   - passed
+- `python tools/check_stock_base_tune_compat.py --msq "Resources/Speeduino AI base tune.msq"`
+  - passed after the broadened round-trippable-surface audit
 
 ## Current Tune Policy State
 

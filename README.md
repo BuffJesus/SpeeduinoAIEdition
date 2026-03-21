@@ -129,7 +129,7 @@ Recent work as of `2026-03-21`:
 - Added Subaru 6/7 replay coverage for three-cam sync, wrap, and single-cam misalignment behavior
 - Added ignition/protection state-machine coverage for rolling cut, VSS-gated launch, AFR target-table mode, and combined boost/AFR precedence
 - Added MAP sampling reset/fallback coverage for sensor state transitions, including `mapSwitchPoint` boundary resets, EMAP-disabled sentinel handling, and MAP/baro calibration helper behavior
-- Added a host-side stock-base-tune compatibility audit for [Resources/Speeduino base tune.msq](Resources/Speeduino%20base%20tune.msq) against [speeduino.ini](speeduino.ini)
+- Added a host-side stock-base-tune compatibility audit for [Resources/Speeduino base tune.msq](Resources/Speeduino%20base%20tune.msq) against [speeduino.ini](speeduino.ini), now covering the full round-trippable constant surface instead of only the high-risk subset
 - Added a fork-owned compatible base tune at [Resources/Speeduino AI base tune.msq](Resources/Speeduino%20AI%20base%20tune.msq) that closes the current stock-tune drift
 - Verified `test_decoders`: `194/194`
 - Verified `test_updates`: `38/38`
@@ -230,7 +230,7 @@ python tools/check_stock_base_tune_compat.py --msq "release/speeduino-dropbear-v
 - `5/5` migration tail tests passing
 - `146/146` ignition/protection tests passing
 - `50/50` sensor tests passing
-- Stock base tune audit currently flags one fork drift: missing `knock_limiterDisable` in [Resources/Speeduino base tune.msq](Resources/Speeduino%20base%20tune.msq)
+- Stock base tune audit currently flags one remaining fork drift: missing `knock_limiterDisable` in [Resources/Speeduino base tune.msq](Resources/Speeduino%20base%20tune.msq)
 - Fork-owned base tune audit passes for [Resources/Speeduino AI base tune.msq](Resources/Speeduino%20AI%20base%20tune.msq)
 - Release bundle base tune audit passes for [speeduino-dropbear-v2.0.1-base-tune.msq](release/speeduino-dropbear-v2.0.1-base-tune.msq) against [speeduino-dropbear-v2.0.1.ini](release/speeduino-dropbear-v2.0.1.ini)
 - Other unit-test suites remain in regular use for regression checking

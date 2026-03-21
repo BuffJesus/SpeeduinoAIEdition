@@ -12,6 +12,7 @@ from pathlib import Path
 MSQ_NS = {"msq": "http://www.msefi.com/:msq"}
 DEFAULT_MSQ_PATH = Path("Resources") / "Speeduino base tune.msq"
 DEFAULT_INI_PATH = Path("speeduino.ini")
+INI_CONSTANT_TYPES = ("scalar", "array", "bits", "string")
 
 # These fields are where this fork has already touched defaults, migrations, or UI exposure.
 HIGH_RISK_CONSTANTS = (
@@ -57,6 +58,37 @@ HIGH_RISK_CONSTANTS = (
     "oilPressureProtEnbl",
     "airConEnable",
 )
+
+# These still exist in the current INI / firmware surface but are not exported by the stock base tune.
+# Keep this explicit so any new drift has to be acknowledged in code review instead of being silently ignored.
+KNOWN_STOCK_BASE_TUNE_GAPS = (
+    "knock_limiterDisable",
+)
+
+# Known oddities observed in current tune exports.
+KNOWN_EXTRA_MSQ_CONSTANTS = (
+    "UNALLOCATED_TOP_11",
+    "knock_unused1",
+)
+
+KNOWN_ARRAY_ALIAS_PARENTS = {
+    "firstDataIn0": "firstDataIn",
+    "firstDataIn1": "firstDataIn",
+    "firstDataIn2": "firstDataIn",
+    "firstDataIn3": "firstDataIn",
+    "firstDataIn4": "firstDataIn",
+    "firstDataIn5": "firstDataIn",
+    "firstDataIn6": "firstDataIn",
+    "firstDataIn7": "firstDataIn",
+    "secondDataIn0": "secondDataIn",
+    "secondDataIn1": "secondDataIn",
+    "secondDataIn2": "secondDataIn",
+    "secondDataIn3": "secondDataIn",
+    "secondDataIn4": "secondDataIn",
+    "secondDataIn5": "secondDataIn",
+    "secondDataIn6": "secondDataIn",
+    "secondDataIn7": "secondDataIn",
+}
 
 
 @dataclass(frozen=True)
@@ -112,10 +144,7 @@ def parse_ini(ini_path: Path) -> IniAudit:
         raise ValueError(f"{ini_path} is missing a MegaTune signature")
 
     constants_block = _extract_constants_block(text)
-    constant_names = {
-        match.group(1)
-        for match in re.finditer(r"^\s*([A-Za-z_][A-Za-z0-9_]*)\s*=", constants_block, re.MULTILINE)
-    }
+    constant_names = _extract_ini_constant_names(constants_block)
     return IniAudit(signature=signature_match.group(1).strip(), constants=constant_names)
 
 
@@ -128,6 +157,22 @@ def _extract_constants_block(text: str) -> str:
     if next_section < 0:
         return text[start:]
     return text[start:next_section]
+
+
+def _extract_ini_constant_names(constants_block: str) -> set[str]:
+    constant_names: set[str] = set()
+    for raw_line in constants_block.splitlines():
+        line = raw_line.split(";", 1)[0].strip()
+        if not line or line.startswith("#") or line.startswith("["):
+            continue
+
+        match = re.match(
+            r"^([A-Za-z_][A-Za-z0-9_]*)\s*=\s*(" + "|".join(INI_CONSTANT_TYPES) + r")\b",
+            line,
+        )
+        if match is not None:
+            constant_names.add(match.group(1))
+    return constant_names
 
 
 def evaluate_compatibility(msq: MsqAudit, ini: IniAudit) -> list[str]:
@@ -153,6 +198,27 @@ def evaluate_compatibility(msq: MsqAudit, ini: IniAudit) -> list[str]:
             "INI is missing high-risk constants: " + ", ".join(missing_in_ini)
         )
 
+    missing_roundtrip = sorted(
+        name
+        for name in (ini.constants - msq.constants)
+        if name not in KNOWN_STOCK_BASE_TUNE_GAPS
+        if not _is_satisfied_by_parent_array_alias(name, msq.constants)
+    )
+    if missing_roundtrip:
+        failures.append(
+            "MSQ is missing round-trippable INI constants: " + ", ".join(missing_roundtrip)
+        )
+
+    extra_in_msq = sorted(
+        name
+        for name in (msq.constants - ini.constants)
+        if name not in KNOWN_EXTRA_MSQ_CONSTANTS
+    )
+    if extra_in_msq:
+        failures.append(
+            "MSQ contains constants not present in the INI: " + ", ".join(extra_in_msq)
+        )
+
     return failures
 
 
@@ -163,9 +229,18 @@ def build_summary(msq: MsqAudit, ini: IniAudit) -> str:
         f"MSQ numbered tune pages: {msq.numbered_page_count}/{msq.n_pages}\n"
         f"MSQ total page nodes: {msq.total_page_nodes}\n"
         f"MSQ constants: {len(msq.constants)}\n"
+        f"INI constants: {len(ini.constants)}\n"
         f"MSQ pcVariables: {len(msq.pc_variables)}\n"
-        f"High-risk constants audited: {len(HIGH_RISK_CONSTANTS)}"
+        f"High-risk constants audited: {len(HIGH_RISK_CONSTANTS)}\n"
+        f"Known stock base tune gaps: {len(KNOWN_STOCK_BASE_TUNE_GAPS)}\n"
+        f"Known extra MSQ constants: {len(KNOWN_EXTRA_MSQ_CONSTANTS)}\n"
+        f"Known parent-array alias mappings: {len(KNOWN_ARRAY_ALIAS_PARENTS)}"
     )
+
+
+def _is_satisfied_by_parent_array_alias(name: str, msq_constants: set[str]) -> bool:
+    parent_name = KNOWN_ARRAY_ALIAS_PARENTS.get(name)
+    return parent_name is not None and parent_name in msq_constants
 
 
 def main(argv: list[str] | None = None) -> int:

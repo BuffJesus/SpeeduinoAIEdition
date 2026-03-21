@@ -6,6 +6,8 @@ from pathlib import Path
 
 from tools.check_stock_base_tune_compat import (
     HIGH_RISK_CONSTANTS,
+    KNOWN_EXTRA_MSQ_CONSTANTS,
+    KNOWN_STOCK_BASE_TUNE_GAPS,
     evaluate_compatibility,
     parse_ini,
     parse_msq,
@@ -13,6 +15,33 @@ from tools.check_stock_base_tune_compat import (
 
 
 class StockBaseTuneCompatTests(unittest.TestCase):
+    def test_ini_parser_only_collects_real_constant_definitions(self) -> None:
+        with tempfile.TemporaryDirectory() as temp_dir_name:
+            temp_dir = Path(temp_dir_name)
+            ini_path = temp_dir / "test.ini"
+            ini_path.write_text(
+                """signature = "speeduino 202501"
+
+[Constants]
+page = 1
+pageSize = 128
+blockingFactor = 121
+knock_mode = bits, U08, 92, [0:1], "Off", "Digital", "Analog", "INVALID"
+fuelLoadMax = scalar, U08, 0, "", 1, 0, 0, 511, 0
+veTable = array, U08, 0, [16x16], "%", 1.0, 0.0, 0.0, 255.0, 0
+testName = string, ASCII, 20
+defaultValue = knock_mode, 0
+requiresPowerCycle = knock_mode
+""",
+                encoding="utf-8",
+            )
+
+            ini = parse_ini(ini_path)
+            self.assertEqual(
+                {"knock_mode", "fuelLoadMax", "veTable", "testName"},
+                ini.constants,
+            )
+
     def test_real_stock_tune_flags_known_missing_knock_limiter_disable(self) -> None:
         repo_root = Path(__file__).resolve().parents[2]
         msq = parse_msq(repo_root / "Resources" / "Speeduino base tune.msq")
@@ -26,6 +55,8 @@ class StockBaseTuneCompatTests(unittest.TestCase):
         self.assertEqual("speeduino 202501", msq.signature)
         self.assertEqual(msq.n_pages, msq.numbered_page_count)
         self.assertEqual(16, msq.total_page_nodes)
+        self.assertIn("knock_limiterDisable", KNOWN_STOCK_BASE_TUNE_GAPS)
+        self.assertTrue(KNOWN_EXTRA_MSQ_CONSTANTS)
 
     def test_fork_base_tune_matches_current_ini(self) -> None:
         repo_root = Path(__file__).resolve().parents[2]
