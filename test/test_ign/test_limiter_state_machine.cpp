@@ -136,6 +136,55 @@ static void test_combined_rpm_limit_prioritizes_protection_then_launch_then_flat
     TEST_ASSERT_EQUAL_UINT16(3500U, calculateMaxAllowedRPM());
 }
 
+static void test_launch_state_machine_rolling_cut_uses_delta_threshold_but_keeps_base_limit_source(void)
+{
+    setup_limiter_state_machine();
+    configPage2.hardCutType = HARD_CUT_ROLLING;
+    configPage15.rollingProtRPMDelta[0] = -20;
+
+    currentStatus.clutchEngagedRPM = (configPage6.flatSArm * 100U) - 100U;
+    currentStatus.TPS = configPage10.lnchCtrlTPS + 1U;
+    currentStatus.RPM = (configPage6.lnchHardLim * 100U) - 150U;
+    currentStatus.RPMdiv100 = currentStatus.RPM / 100U;
+
+    checkLaunchAndFlatShift();
+
+    TEST_ASSERT_TRUE(currentStatus.launchingHard);
+    TEST_ASSERT_BIT_HIGH(BIT_STATUS2_HLAUNCH, currentStatus.status2);
+    TEST_ASSERT_EQUAL_UINT16(configPage6.lnchHardLim * 100U, calculateMaxAllowedRPM());
+
+    currentStatus.RPM = (configPage6.lnchHardLim * 100U) - 250U;
+    currentStatus.RPMdiv100 = currentStatus.RPM / 100U;
+    checkLaunchAndFlatShift();
+
+    TEST_ASSERT_FALSE(currentStatus.launchingHard);
+    TEST_ASSERT_BIT_LOW(BIT_STATUS2_HLAUNCH, currentStatus.status2);
+}
+
+static void test_flat_shift_state_machine_rolling_cut_uses_delta_threshold_but_keeps_latched_limit_source(void)
+{
+    setup_limiter_state_machine();
+    configPage2.hardCutType = HARD_CUT_ROLLING;
+    configPage15.rollingProtRPMDelta[0] = -20;
+
+    currentStatus.clutchEngagedRPM = (configPage6.flatSArm * 100U) + 300U;
+    currentStatus.RPM = currentStatus.clutchEngagedRPM - 150U;
+    currentStatus.RPMdiv100 = currentStatus.RPM / 100U;
+
+    checkLaunchAndFlatShift();
+
+    TEST_ASSERT_TRUE(currentStatus.flatShiftingHard);
+    TEST_ASSERT_BIT_HIGH(BIT_STATUS5_FLATSH, currentStatus.status5);
+    TEST_ASSERT_EQUAL_UINT16(currentStatus.clutchEngagedRPM, calculateMaxAllowedRPM());
+
+    currentStatus.RPM = currentStatus.clutchEngagedRPM - 250U;
+    currentStatus.RPMdiv100 = currentStatus.RPM / 100U;
+    checkLaunchAndFlatShift();
+
+    TEST_ASSERT_FALSE(currentStatus.flatShiftingHard);
+    TEST_ASSERT_BIT_LOW(BIT_STATUS5_FLATSH, currentStatus.status5);
+}
+
 static void test_afr_protection_state_machine_latches_until_reactivation_tps(void)
 {
     setup_limiter_state_machine();
@@ -167,6 +216,8 @@ void test_limiter_state_machine(void)
         RUN_TEST(test_launch_state_machine_transitions_back_to_base_limit);
         RUN_TEST(test_flat_shift_state_machine_uses_latched_clutch_rpm_until_exit);
         RUN_TEST(test_combined_rpm_limit_prioritizes_protection_then_launch_then_flat_shift);
+        RUN_TEST(test_launch_state_machine_rolling_cut_uses_delta_threshold_but_keeps_base_limit_source);
+        RUN_TEST(test_flat_shift_state_machine_rolling_cut_uses_delta_threshold_but_keeps_latched_limit_source);
         RUN_TEST(test_afr_protection_state_machine_latches_until_reactivation_tps);
     }
 }
