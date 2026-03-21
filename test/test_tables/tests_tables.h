@@ -1,0 +1,13 @@
+extern void testTables();
+void setup_FuelTable(void);
+void test_tableLookup_50pct(void);
+void test_tableLookup_exact1Axis(void);
+void test_tableLookup_exact2Axis(void);
+void test_tableLookup_overMaxX(void);
+void test_tableLookup_overMaxY(void);
+void test_tableLookup_underMinX(void);
+void test_tableLookup_underMinY(void);
+void test_tableLookup_roundUp(void);
+void test_tableLookup_weightedInterpolation_matches_fixed_point_weights(void);
+void test_tableLookup_cache_hit_returns_cached_value_until_invalidated(void);
+void test_all_incrementing(void);

@@ -1,0 +1,170 @@
+# ============================================================================
+# Speeduino AI Edition - .gitignore
+# ============================================================================
+# This file excludes build artifacts, IDE files, and temporary files
+# while preserving source code, tests, documentation, and configuration
+
+# ============================================================================
+# Build Artifacts - PlatformIO
+# ============================================================================
+.pio/
+.pioenvs/
+.piolibdeps/
+local.ini
+
+# ============================================================================
+# Build Artifacts - Arduino IDE
+# ============================================================================
+.arduino-build*/
+speeduino/.arduino-build*/
+*.ino.cpp
+*.ino.eep
+*.ino.elf
+*.ino.hex
+*.ino.bin
+*.ino.with_bootloader.*
+
+# ============================================================================
+# IDE and Editor Files
+# ============================================================================
+# VSCode
+.vscode/
+.vscode/c_cpp_properties.json
+.vscode/launch.json
+.vscode/.browse.c_cpp.db*
+
+# JetBrains IDEs (CLion, IntelliJ IDEA)
+.idea/
+*.iml
+*.iws
+*.ipr
+out/
+
+# Eclipse
+.project
+.cproject
+.settings/
+
+# Code completion and analysis
+.clang_complete
+.gcc-flags.json
+compile_commands.json
+
+# ============================================================================
+# Operating System Files
+# ============================================================================
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+
+# Windows
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+ehthumbs_vista.db
+*.stackdump
+[Dd]esktop.ini
+$RECYCLE.BIN/
+*.lnk
+nul
+
+# Linux
+*~
+.fuse_hidden*
+.directory
+.Trash-*
+
+# ============================================================================
+# Temporary and Lock Files
+# ============================================================================
+~$*
+*.tmp
+*.temp
+*.swp
+*.swo
+*~
+.*.swp
+
+# ============================================================================
+# Documentation Build Artifacts
+# ============================================================================
+reference/doxygen/
+*.pdf
+!reference/**/*.pdf
+
+# ============================================================================
+# Hardware Design Artifacts
+# ============================================================================
+*.kicad_pcb-bak
+*.bak
+*.bck
+*.kicad_sch-bak
+*-cache.lib
+*-rescue.lib
+fp-info-cache
+reference/hardware/v0.2/~$schematic v0.2_bom.xlsx
+reference/hardware/v0.4/gerbers/Archive.zip
+
+# ============================================================================
+# Test Artifacts
+# ============================================================================
+test/output_export.cpp
+*.gcov
+*.gcda
+*.gcno
+coverage/
+test_results/
+
+# ============================================================================
+# MISRA Compliance
+# ============================================================================
+misra/.results/
+*.misra
+
+# ============================================================================
+# Python Scripts (generated)
+# ============================================================================
+float.py
+table.py
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# ============================================================================
+# Archive and Package Files (temporary)
+# ============================================================================
+*.zip
+*.tar
+*.tar.gz
+*.tgz
+*.rar
+*.7z
+!release/*.zip
+!release/*.tar.gz
+
+# ============================================================================
+# Logs and Databases
+# ============================================================================
+*.log
+*.sql
+*.sqlite
+*.db
+
+# ============================================================================
+# Specific Board Files (commented out - uncomment if needed)
+# ============================================================================
+# speeduino/board_samd21*
+
+# ============================================================================
+# Keep Important Files
+# ============================================================================
+# Ensure these are always tracked
+!.gitignore
+!.gitattributes
+!README.md
+!LICENSE
+!platformio.ini
+!contributing.md
