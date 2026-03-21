@@ -32,6 +32,13 @@
 #include "traces/renix_valid_group_trace.h"
 #include "traces/miata9905_single_cam_trace.h"
 #include "traces/miata9905_double_cam_sync_trace.h"
+#include "traces/jeep2000_cam_sync_trace.h"
+#include "traces/jeep2000_full_revolution_trace.h"
+#include "traces/jeep2000_no_cam_trace.h"
+#include "traces/audi135_cam_sync_trace.h"
+#include "traces/audi135_full_revolution_trace.h"
+#include "traces/audi135_no_cam_trace.h"
+#include "traces/audi135_resync_trace.h"
 #include "../test_utils.h"
 
 extern volatile unsigned long toothLastToothTime;
@@ -168,6 +175,50 @@ static void setup_trace_miata9905(void)
     triggerSetup_Miata9905();
 }
 
+static void setup_trace_jeep2000(void)
+{
+    reset_trace_runtime();
+    configPage4.TrigSpeed = CRANK_SPEED;
+    configPage4.sparkMode = IGN_MODE_WASTED;
+    configPage4.triggerAngle = 0;
+    configPage4.triggerFilter = TRIGGER_FILTER_LITE;
+    configPage2.nCylinders = 6U;
+    configPage2.strokes = FOUR_STROKE;
+    configPage2.injLayout = INJ_SEMISEQUENTIAL;
+    configPage2.perToothIgn = false;
+    triggerSetup_Jeep2000();
+}
+
+static void setup_trace_audi135(void)
+{
+    reset_trace_runtime();
+    configPage4.TrigSpeed = CRANK_SPEED;
+    configPage4.sparkMode = IGN_MODE_SEQUENTIAL;
+    configPage4.triggerAngle = 0;
+    configPage4.triggerFilter = TRIGGER_FILTER_LITE;
+    configPage4.useResync = 0U;
+    configPage2.nCylinders = 5U;
+    configPage2.strokes = FOUR_STROKE;
+    configPage2.injLayout = INJ_SEQUENTIAL;
+    configPage2.perToothIgn = false;
+    triggerSetup_Audi135();
+}
+
+static void setup_trace_audi135_with_resync(void)
+{
+    reset_trace_runtime();
+    configPage4.TrigSpeed = CRANK_SPEED;
+    configPage4.sparkMode = IGN_MODE_SEQUENTIAL;
+    configPage4.triggerAngle = 0;
+    configPage4.triggerFilter = TRIGGER_FILTER_LITE;
+    configPage4.useResync = 1U;
+    configPage2.nCylinders = 5U;
+    configPage2.strokes = FOUR_STROKE;
+    configPage2.injLayout = INJ_SEQUENTIAL;
+    configPage2.perToothIgn = false;
+    triggerSetup_Audi135();
+}
+
 static void setup_trace_missing_tooth_36_1(void)
 {
     reset_trace_runtime();
@@ -260,6 +311,18 @@ static TraceReplayCallbacks makePrimaryOnlyCallbacks(void (*primary)())
 static TraceReplayCallbacks makeMiata9905Callbacks(void)
 {
     const TraceReplayCallbacks callbacks = {triggerPri_Miata9905, nullptr, triggerSec_Miata9905, triggerSec_Miata9905};
+    return callbacks;
+}
+
+static TraceReplayCallbacks makeJeep2000Callbacks(void)
+{
+    const TraceReplayCallbacks callbacks = {triggerPri_Jeep2000, nullptr, triggerSec_Jeep2000, nullptr};
+    return callbacks;
+}
+
+static TraceReplayCallbacks makeAudi135Callbacks(void)
+{
+    const TraceReplayCallbacks callbacks = {triggerPri_Audi135, nullptr, triggerSec_Audi135, nullptr};
     return callbacks;
 }
 
@@ -523,6 +586,83 @@ static void test_trace_replay_miata9905_sync_then_wrap_counts_revolution(void)
     TEST_ASSERT_EQUAL_UINT16(1U, currentStatus.startRevolutions);
 }
 
+static void test_trace_replay_jeep2000_cam_pulse_resets_tooth_count(void)
+{
+    setup_trace_jeep2000();
+
+    replayTriggerTrace(makeTriggerTrace(kJeep2000CamSyncEvents), makeJeep2000Callbacks());
+
+    TEST_ASSERT_TRUE(currentStatus.hasSync);
+    TEST_ASSERT_EQUAL_UINT8(0U, currentStatus.syncLossCounter);
+    TEST_ASSERT_EQUAL_UINT16(1U, toothCurrentCount);  // Cam reset to 0, first primary sets to 1, but filter prevents next teeth
+}
+
+static void test_trace_replay_jeep2000_full_revolution_wraps(void)
+{
+    setup_trace_jeep2000();
+
+    replayRepeatedTriggerTrace(makeRepeatedTriggerTrace(kJeep2000FullRevolutionEvents), makeJeep2000Callbacks());
+
+    TEST_ASSERT_TRUE(currentStatus.hasSync);
+    TEST_ASSERT_EQUAL_UINT8(0U, currentStatus.syncLossCounter);
+    TEST_ASSERT_EQUAL_UINT16(1U, toothCurrentCount);  // After cam reset and wrap
+    TEST_ASSERT_EQUAL_UINT16(1U, currentStatus.startRevolutions);
+}
+
+static void test_trace_replay_jeep2000_no_cam_stays_without_sync(void)
+{
+    setup_trace_jeep2000();
+
+    replayRepeatedTriggerTrace(makeRepeatedTriggerTrace(kJeep2000NoCamEvents), makeJeep2000Callbacks());
+
+    TEST_ASSERT_FALSE(currentStatus.hasSync);
+    TEST_ASSERT_EQUAL_UINT8(0U, currentStatus.syncLossCounter);
+}
+
+static void test_trace_replay_audi135_cam_establishes_sync_and_decimates_teeth(void)
+{
+    setup_trace_audi135();
+
+    replayTriggerTrace(makeTriggerTrace(kAudi135CamSyncEvents), makeAudi135Callbacks());
+
+    TEST_ASSERT_TRUE(currentStatus.hasSync);
+    TEST_ASSERT_EQUAL_UINT8(0U, currentStatus.syncLossCounter);
+    TEST_ASSERT_EQUAL_UINT16(1U, toothCurrentCount);  // Cam set to 0, next 3 physical teeth = 1 effective tooth
+}
+
+static void test_trace_replay_audi135_decimation_counts_every_third_tooth(void)
+{
+    setup_trace_audi135();
+
+    replayRepeatedTriggerTrace(makeRepeatedTriggerTrace(kAudi135FullRevolutionEvents), makeAudi135Callbacks());
+
+    TEST_ASSERT_TRUE(currentStatus.hasSync);
+    TEST_ASSERT_EQUAL_UINT8(0U, currentStatus.syncLossCounter);
+    TEST_ASSERT_EQUAL_UINT16(9U, toothCurrentCount);  // 27 physical teeth = 9 effective teeth
+}
+
+static void test_trace_replay_audi135_no_cam_stays_without_sync(void)
+{
+    setup_trace_audi135();
+
+    replayRepeatedTriggerTrace(makeRepeatedTriggerTrace(kAudi135NoCamEvents), makeAudi135Callbacks());
+
+    TEST_ASSERT_FALSE(currentStatus.hasSync);
+    TEST_ASSERT_EQUAL_UINT8(0U, currentStatus.syncLossCounter);
+    TEST_ASSERT_EQUAL_UINT16(255U, toothCurrentCount);  // Stays at UINT8_MAX without sync
+}
+
+static void test_trace_replay_audi135_resync_resets_tooth_count(void)
+{
+    setup_trace_audi135_with_resync();
+
+    replayTriggerTrace(makeTriggerTrace(kAudi135ResyncEvents), makeAudi135Callbacks());
+
+    TEST_ASSERT_TRUE(currentStatus.hasSync);
+    TEST_ASSERT_EQUAL_UINT8(0U, currentStatus.syncLossCounter);
+    TEST_ASSERT_EQUAL_UINT16(2U, toothCurrentCount);  // After resync cam, 6 physical teeth = 2 effective
+}
+
 static void test_trace_replay_missing_tooth_36_1_noise_still_syncs(void)
 {
     setup_trace_missing_tooth_36_1();
@@ -709,5 +849,12 @@ void testTriggerTraceReplay(void)
         RUN_TEST_P(test_trace_replay_renix_valid_group_advances_virtual_tooth_state);
         RUN_TEST_P(test_trace_replay_miata9905_single_cam_pulse_establishes_sync);
         RUN_TEST_P(test_trace_replay_miata9905_sync_then_wrap_counts_revolution);
+        RUN_TEST_P(test_trace_replay_jeep2000_cam_pulse_resets_tooth_count);
+        RUN_TEST_P(test_trace_replay_jeep2000_full_revolution_wraps);
+        RUN_TEST_P(test_trace_replay_jeep2000_no_cam_stays_without_sync);
+        RUN_TEST_P(test_trace_replay_audi135_cam_establishes_sync_and_decimates_teeth);
+        RUN_TEST_P(test_trace_replay_audi135_decimation_counts_every_third_tooth);
+        RUN_TEST_P(test_trace_replay_audi135_no_cam_stays_without_sync);
+        RUN_TEST_P(test_trace_replay_audi135_resync_resets_tooth_count);
     }
 }
