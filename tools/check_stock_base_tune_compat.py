@@ -191,7 +191,13 @@ EXPECTED_CONTRACT_CONFLICT_CLASSIFICATIONS = {
     "idleAdvStartDelay": "inherited_from_stock_tune",
     "idleTaperTime": "inherited_from_stock_tune",
     "knock_pin": "fork_and_stock_both_differ_from_ini_default",
-    "vssPulsesPerKm": "inherited_from_stock_tune",
+}
+
+CONTEXTUAL_CONTRACT_DEFAULT_EXEMPTIONS = {
+    "vssPulsesPerKm": (
+        "With VSS input mode Off, the manual says VSS is unused and runtime code treats "
+        "0 as no dividing/disabled for aux-channel speed input."
+    ),
 }
 
 
@@ -468,6 +474,7 @@ def build_contract_default_conflict_report(
         explicit_variants = ini.explicit_default_variants.get(name, ())
         if (
             expected is None
+            or _is_contextually_exempt_contract_conflict(name)
             or not explicit_variants
             or any(_values_equivalent(expected, explicit_default) for explicit_default in explicit_variants)
         ):
@@ -497,6 +504,7 @@ def build_contract_conflict_origin_entries(
         stock_value = stock_msq.constant_values.get(name)
         if (
             expected is None
+            or _is_contextually_exempt_contract_conflict(name)
             or not explicit_variants
             or any(_values_equivalent(expected, explicit_default) for explicit_default in explicit_variants)
         ):
@@ -548,6 +556,34 @@ def summarize_contract_conflict_origins(
     ):
         counts[classification] = counts.get(classification, 0) + 1
     return counts
+
+
+def build_contextual_contract_exemption_report(
+    ini: IniAudit, names: list[str] | None = None
+) -> list[str]:
+    if names is None:
+        candidate_names = sorted(
+            name
+            for name in CONTEXTUAL_CONTRACT_DEFAULT_EXEMPTIONS
+            if name in ini.explicit_default_variants
+        )
+    else:
+        candidate_names = names
+
+    exemptions = []
+    for name in candidate_names:
+        if not _is_contextually_exempt_contract_conflict(name):
+            continue
+        expected = CRITICAL_VALUE_EXPECTATIONS.get(name)
+        explicit_variants = ini.explicit_default_variants.get(name, ())
+        if expected is None or not explicit_variants:
+            continue
+        exemptions.append(
+            f"{name}: fork_contract={expected!r}; "
+            f"ini_defaultValue={_format_default_variants(explicit_variants)!r}; "
+            f"reason={CONTEXTUAL_CONTRACT_DEFAULT_EXEMPTIONS[name]!r}"
+        )
+    return exemptions
 
 
 def verify_expected_contract_conflict_classifications(
@@ -606,6 +642,15 @@ def verify_expected_contract_conflict_classifications(
 def _is_satisfied_by_parent_array_alias(name: str, msq_constants: set[str]) -> bool:
     parent_name = KNOWN_ARRAY_ALIAS_PARENTS.get(name)
     return parent_name is not None and parent_name in msq_constants
+
+
+def _is_contextually_exempt_contract_conflict(name: str) -> bool:
+    if name == "vssPulsesPerKm":
+        return (
+            CRITICAL_VALUE_EXPECTATIONS.get("vssMode") == "Off"
+            and _values_equivalent(CRITICAL_VALUE_EXPECTATIONS.get(name, ""), "0")
+        )
+    return False
 
 
 def _values_equivalent(left: str, right: str) -> bool:
@@ -704,6 +749,15 @@ def main(argv: list[str] | None = None) -> int:
             "repo's expected classified baseline."
         ),
     )
+    parser.add_argument(
+        "--report-contextual-contract-exemptions",
+        nargs="*",
+        metavar="NAME",
+        help=(
+            "Print documented contract-vs-default differences that are contextually exempt "
+            "from the active conflict set."
+        ),
+    )
     args = parser.parse_args(argv)
 
     try:
@@ -786,6 +840,17 @@ def main(argv: list[str] | None = None) -> int:
             )
         if failures:
             return 1
+    if args.report_contextual_contract_exemptions is not None:
+        report = build_contextual_contract_exemption_report(
+            ini,
+            None if not args.report_contextual_contract_exemptions else args.report_contextual_contract_exemptions,
+        )
+        print("\nContextual Contract Exemptions:")
+        if report:
+            for item in report:
+                print(f"- {item}")
+        else:
+            print("- None")
 
     failures = evaluate_compatibility(msq, ini)
     if failures:

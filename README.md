@@ -237,6 +237,9 @@ python tools/check_stock_base_tune_compat.py --msq "Resources/Speeduino AI base 
 
 # Verify the current classified conflict baseline
 python tools/check_stock_base_tune_compat.py --msq "Resources/Speeduino AI base tune.msq" --stock-msq "Resources/Speeduino base tune.msq" --verify-expected-contract-conflicts
+
+# Show context-dependent contract/default differences backed by docs/runtime behavior
+python tools/check_stock_base_tune_compat.py --msq "Resources/Speeduino AI base tune.msq" --report-contextual-contract-exemptions
 ```
 
 ### Current Test Status
@@ -252,9 +255,10 @@ python tools/check_stock_base_tune_compat.py --msq "Resources/Speeduino AI base 
 - Release bundle base tune audit passes for [speeduino-dropbear-v2.0.1-base-tune.msq](release/speeduino-dropbear-v2.0.1-base-tune.msq) against [speeduino-dropbear-v2.0.1.ini](release/speeduino-dropbear-v2.0.1.ini), including the same 92 selected fork-critical default values
 - The audit tool now also parses 230 explicit INI `defaultValue` entries, decodes bitfield defaults to their display values, and can report tune-vs-INI-default mismatches separately from the fork-owned contract
 - Current explicit-default mismatches are narrowed to `idleAdvStartDelay`, `idleTaperTime`, `boostCutEnabled`, `boostMinDuty`, `boostMaxDuty`, `vvtCL0DutyAng`, `vvtMinClt`, and `vvtDelay`, with unit-aware defaults now shown where applicable such as `vvtMinClt = 70 / 160`
-- A separate contract-vs-INI-default report now shows the six remaining source-of-truth conflicts inside the enforced contract itself: `airConCompPol`, `airConReqPol`, `idleAdvStartDelay`, `idleTaperTime`, `knock_pin`, and `vssPulsesPerKm`
-- A stock-origin classification report now shows that five of those six conflicts are inherited from the unchanged stock base tune (`airConCompPol`, `airConReqPol`, `idleAdvStartDelay`, `idleTaperTime`, `vssPulsesPerKm`), while `knock_pin` is the only remaining fork-specific divergence from both the stock tune and the INI default
-- The origin report now prints counts as well, so the current policy surface is immediately visible as `inherited_from_stock_tune=5` and `fork_and_stock_both_differ_from_ini_default=1`
+- A separate contract-vs-INI-default report now shows the five remaining active source-of-truth conflicts inside the enforced contract itself: `airConCompPol`, `airConReqPol`, `idleAdvStartDelay`, `idleTaperTime`, and `knock_pin`
+- `vssPulsesPerKm` is now treated as a contextual exemption rather than an active conflict, because the manual says VSS should be set `Off` when unused and runtime code treats `0` as disabled/no dividing in that mode
+- A stock-origin classification report now shows that four of the five active conflicts are inherited from the unchanged stock base tune (`airConCompPol`, `airConReqPol`, `idleAdvStartDelay`, `idleTaperTime`), while `knock_pin` is the only remaining fork-specific divergence from both the stock tune and the INI default
+- The origin report now prints counts as well, so the current policy surface is immediately visible as `inherited_from_stock_tune=4` and `fork_and_stock_both_differ_from_ini_default=1`
 - The repo now machine-checks that exact classification baseline, so future work must either preserve it or update the expected policy map deliberately
 - Other unit-test suites remain in regular use for regression checking
 

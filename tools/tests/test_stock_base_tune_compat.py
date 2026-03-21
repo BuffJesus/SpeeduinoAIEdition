@@ -5,11 +5,13 @@ import unittest
 from pathlib import Path
 
 from tools.check_stock_base_tune_compat import (
+    CONTEXTUAL_CONTRACT_DEFAULT_EXEMPTIONS,
     CRITICAL_VALUE_EXPECTATIONS,
     EXPECTED_CONTRACT_CONFLICT_CLASSIFICATIONS,
     HIGH_RISK_CONSTANTS,
     KNOWN_EXTRA_MSQ_CONSTANTS,
     KNOWN_STOCK_BASE_TUNE_GAPS,
+    build_contextual_contract_exemption_report,
     build_contract_conflict_origin_report,
     build_contract_default_conflict_report,
     build_explicit_default_mismatch_report,
@@ -205,6 +207,31 @@ defaultValue = dfcoMinCLT, 158
                 sorted(build_contract_default_conflict_report(parse_ini(ini_path))),
             )
 
+    def test_contextual_contract_exemption_report_captures_vss_disabled_case(self) -> None:
+        with tempfile.TemporaryDirectory() as temp_dir_name:
+            temp_dir = Path(temp_dir_name)
+            ini_path = temp_dir / "test.ini"
+            ini_path.write_text(
+                """signature = "speeduino 202501"
+
+[Constants]
+vssPulsesPerKm = scalar, U16, 103, "pulses", 1.0, 0.0, 0.0, 25500, 0
+
+defaultValue = vssPulsesPerKm, 3000
+""",
+                encoding="utf-8",
+            )
+
+            ini = parse_ini(ini_path)
+            self.assertEqual([], build_contract_default_conflict_report(ini, ["vssPulsesPerKm"]))
+            self.assertEqual(
+                [
+                    "vssPulsesPerKm: fork_contract='0.0'; ini_defaultValue='3000'; reason="
+                    "'With VSS input mode Off, the manual says VSS is unused and runtime code treats 0 as no dividing/disabled for aux-channel speed input.'"
+                ],
+                build_contextual_contract_exemption_report(ini, ["vssPulsesPerKm"]),
+            )
+
     def test_contract_conflict_origin_report_distinguishes_stock_inheritance(self) -> None:
         with tempfile.TemporaryDirectory() as temp_dir_name:
             temp_dir = Path(temp_dir_name)
@@ -277,9 +304,17 @@ defaultValue = knock_pin, 57
                 "idleAdvStartDelay": "inherited_from_stock_tune",
                 "idleTaperTime": "inherited_from_stock_tune",
                 "knock_pin": "fork_and_stock_both_differ_from_ini_default",
-                "vssPulsesPerKm": "inherited_from_stock_tune",
             },
             EXPECTED_CONTRACT_CONFLICT_CLASSIFICATIONS,
+        )
+        self.assertEqual(
+            {
+                "vssPulsesPerKm": (
+                    "With VSS input mode Off, the manual says VSS is unused and runtime code treats "
+                    "0 as no dividing/disabled for aux-channel speed input."
+                )
+            },
+            CONTEXTUAL_CONTRACT_DEFAULT_EXEMPTIONS,
         )
 
     def test_real_stock_tune_flags_known_missing_knock_limiter_disable(self) -> None:

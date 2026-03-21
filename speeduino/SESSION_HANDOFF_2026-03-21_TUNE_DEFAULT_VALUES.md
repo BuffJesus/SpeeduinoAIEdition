@@ -30,6 +30,7 @@
 - Added a stock-origin classification report that compares the enforced fork contract against both the stock base tune and the INI defaults
 - Added filtering and count summaries to the stock-origin report so fork-specific conflicts can be isolated directly
 - Added an expected-classification verifier so the current `5 inherited / 1 fork-specific` policy surface is machine-checked for both the fork-owned and release tunes
+- Added a manual-backed contextual exemption for `vssPulsesPerKm`, since the manual says VSS should be `Off` when unused and runtime code treats `0` as disabled/no dividing in that mode
 - Evaluated idle-advance / boost / VVT against explicit `defaultValue` entries in [speeduino.ini](C:/Users/Cornelio/Desktop/speeduino-202501.6/speeduino.ini) and confirmed a real ambiguity:
   - `idleAdvStartDelay`: tune `0.7` vs INI `0.2`
   - `idleTaperTime`: tune `5.0` vs INI `1.0`
@@ -40,24 +41,26 @@
   - `vvtMinClt`: tune `-40.0` vs INI `70 / 160`
   - `vvtDelay`: tune `0.0` vs INI `60`
 - Because of that ambiguity, boost/VVT defaults were still not added to the enforced fork contract in this slice
-- The contract-vs-default report narrows the enforced-contract conflicts to six fields:
+- The contract-vs-default report narrows the enforced-contract conflicts to five active fields:
   - `airConCompPol`: fork contract `Inverted` vs INI `Normal`
   - `airConReqPol`: fork contract `Inverted` vs INI `Normal`
   - `idleAdvStartDelay`: fork contract `0.7` vs INI `0.2`
   - `idleTaperTime`: fork contract `5.0` vs INI `1.0`
   - `knock_pin`: fork contract `A8` vs INI `A10`
-  - `vssPulsesPerKm`: fork contract `0.0` vs INI `3000`
-- Stock-origin classification of those six conflicts:
+- Contextual exemption:
+  - `vssPulsesPerKm`: contract `0.0` vs INI `3000`, but exempt because:
+    - the manual says set VSS mode to `Off` if VSS is not used
+    - runtime code uses `0` as no dividing / disabled in aux-input VSS mode
+- Stock-origin classification of the five active conflicts:
   - inherited from the unchanged stock base tune:
     - `airConCompPol`
     - `airConReqPol`
     - `idleAdvStartDelay`
     - `idleTaperTime`
-    - `vssPulsesPerKm`
   - fork-specific divergence from both stock and INI:
     - `knock_pin` (`stock = 3`, `fork contract = A8`, `INI default = A10`)
   - current origin counts:
-    - `inherited_from_stock_tune = 5`
+    - `inherited_from_stock_tune = 4`
     - `fork_and_stock_both_differ_from_ini_default = 1`
 
 ## Critical Default Contract Now Enforced
@@ -158,7 +161,7 @@
 ## Verification
 
 - `python -m unittest tools.tests.test_stock_base_tune_compat`
-  - passed, `12/12`
+  - passed, `13/13`
 - `python tools/check_stock_base_tune_compat.py --msq "Resources/Speeduino AI base tune.msq"`
   - passed
 - `python tools/check_stock_base_tune_compat.py --msq "release/speeduino-dropbear-v2.0.1-base-tune.msq" --ini "release/speeduino-dropbear-v2.0.1.ini"`
@@ -168,12 +171,14 @@
 - `python tools/check_stock_base_tune_compat.py --msq "Resources/Speeduino AI base tune.msq" --report-contract-default-conflicts`
   - reported the six contract-vs-INI-default conflicts listed above
 - `python tools/check_stock_base_tune_compat.py --msq "Resources/Speeduino AI base tune.msq" --stock-msq "Resources/Speeduino base tune.msq" --report-contract-conflict-origins`
-  - classified five conflicts as inherited from stock and one (`knock_pin`) as fork-specific divergence
+  - classified four active conflicts as inherited from stock and one (`knock_pin`) as fork-specific divergence
 - `python tools/check_stock_base_tune_compat.py --msq "Resources/Speeduino AI base tune.msq" --stock-msq "Resources/Speeduino base tune.msq" --report-contract-conflict-origins --contract-origin-filter fork_and_stock_both_differ_from_ini_default`
   - isolates the one remaining fork-specific policy conflict: `knock_pin`
 - `python tools/check_stock_base_tune_compat.py --msq "Resources/Speeduino AI base tune.msq" --stock-msq "Resources/Speeduino base tune.msq" --verify-expected-contract-conflicts`
   - passed
-  - current expected classified baseline: `inherited_from_stock_tune = 5`, `fork_and_stock_both_differ_from_ini_default = 1`
+  - current expected classified baseline: `inherited_from_stock_tune = 4`, `fork_and_stock_both_differ_from_ini_default = 1`
+- `python tools/check_stock_base_tune_compat.py --msq "Resources/Speeduino AI base tune.msq" --report-contextual-contract-exemptions`
+  - reported the one documented contextual exemption: `vssPulsesPerKm`
 - `python tools/check_stock_base_tune_compat.py`
   - still fails on the unchanged stock tune, now for both:
     - missing `knock_limiterDisable`
@@ -189,8 +194,9 @@
 - The repo can now separately report where the enforced fork contract itself diverges from explicit INI defaults, which is the real remaining policy surface
 - Unit-specific duplicate INI defaults are now preserved instead of overwritten, which removed `dfcoMinCLT` from the false-conflict set
 - The remaining policy surface is now much smaller in practice:
-  - 5 inherited stock-tune conflicts that argue for either accepting stock semantics or bumping the signature
+  - 4 inherited stock-tune conflicts that argue for either accepting stock semantics or bumping the signature
   - 1 fork-specific conflict (`knock_pin`) that can be evaluated independently
+- 1 context-dependent field (`vssPulsesPerKm`) is now explicitly exempted with manual + runtime evidence
 - That policy surface is now encoded in the repo and test-covered, not just documented in prose
 
 ## Current State
@@ -213,4 +219,4 @@
 
 ## Recommended Prompt For Next Session
 
-`Continue from SESSION_HANDOFF_2026-03-21_TUNE_DEFAULT_VALUES.md. The compatibility audit now enforces both the round-trippable tune surface and a 92-check fork-default contract across knock, rolling cut, DFCO, launch, idle advance, idle-up, VSS, WMI, oil pressure, fan, and air-con. The tool parses 230 explicit INI defaultValue entries, preserves unit-specific default variants, and now machine-checks the classified policy surface: eight tune-vs-default mismatches, six contract-vs-default conflicts, five inherited-stock conflicts, and one isolated fork-specific conflict (`knock_pin`). The fork-owned and release-packaged tunes pass the enforced contract; the unchanged stock tune remains the intentional failing control. Next slice: decide whether to keep the five inherited stock semantics under the stock signature, resolve them toward INI defaults, or bump the signature; `knock_pin` can be decided separately.` 
+`Continue from SESSION_HANDOFF_2026-03-21_TUNE_DEFAULT_VALUES.md. The compatibility audit now enforces both the round-trippable tune surface and a 92-check fork-default contract across knock, rolling cut, DFCO, launch, idle advance, idle-up, VSS, WMI, oil pressure, fan, and air-con. The tool parses 230 explicit INI defaultValue entries, preserves unit-specific default variants, machine-checks the classified policy surface, and now treats `vssPulsesPerKm` as a documented contextual exemption backed by the Speeduino manual and runtime code. Current decision surface: eight tune-vs-default mismatches, five active contract-vs-default conflicts, four inherited-stock conflicts, one fork-specific conflict (`knock_pin`), and one contextual exemption (`vssPulsesPerKm`). The fork-owned and release-packaged tunes pass the enforced contract; the unchanged stock tune remains the intentional failing control. Next slice: decide whether to keep the four inherited stock semantics under the stock signature, resolve them toward INI defaults, or bump the signature; `knock_pin` can be decided separately.` 

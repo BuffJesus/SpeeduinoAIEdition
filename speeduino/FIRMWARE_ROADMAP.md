@@ -54,6 +54,7 @@ Current phase 1 work started in:
 - Add explicit tune-compatibility policy and regression checks for stock Speeduino `.msq` files:
   - keep the stock `speeduino 202501` signature only while the stock base tune imports cleanly into the current INI surface
   - add a host-side compatibility audit against [Resources/Speeduino base tune.msq](C:/Users/Cornelio/Desktop/speeduino-202501.6/Resources/Speeduino%20base%20tune.msq) covering signature, page count, required constants, and fork-added fields that rely on defaults or migrations
+  - use primary project documentation in [Resources/Speeduino_manual.pdf](C:/Users/Cornelio/Desktop/speeduino-202501.6/Resources/Speeduino_manual.pdf) to distinguish real default conflicts from context-dependent fields, rather than treating every raw INI `defaultValue` mismatch as equal evidence
   - if the fork intentionally diverges from stock tune semantics, bump the signature and ship a fork-owned base tune plus documented migration notes
 - Build a generated or declarative live-data map for high-value subsystems so logging and UI exposure stay aligned with runtime structs.
 - Add regression tests that lock firmware logger bytes to TunerStudio bit mappings for high-risk status channels such as engine protection and knock.
