@@ -1,34 +1,24 @@
-<div align="center">
-
 # Speeduino AI Edition
 
 [![License](https://img.shields.io/badge/license-GPLv3-blue.svg)](LICENSE)
 [![Based on Speeduino](https://img.shields.io/badge/based%20on-Speeduino%20202501.6-green.svg)](https://github.com/noisymime/speeduino)
 [![Platform](https://img.shields.io/badge/platform-PlatformIO-orange.svg)](https://platformio.org/)
 
-**An AI-Enhanced Fork of Speeduino with Advanced Testing, Safety Improvements, and Teensy 4.1 Optimizations**
+An AI-enhanced fork of Speeduino focused on safety, correctness, regression coverage, and long-term maintainability.
 
-</div>
+## Project Overview
 
----
+**Speeduino AI Edition** is a research and development fork of the [Speeduino Engine Management System](https://speeduino.com). This fork prioritizes defensive fixes, systematic testing, and structured roadmap-driven development over feature churn.
 
-## 🎯 Project Overview
+### Key Differences from Upstream
 
-**Speeduino AI Edition** is a research and development fork of the [Speeduino Engine Management System](https://speeduino.com), focused on improving firmware safety, correctness, and test coverage through systematic refactoring and AI-assisted development. This fork implements a structured roadmap emphasizing defensive programming, comprehensive testing, and modern embedded development practices.
+- Enhanced safety and correctness work in ignition, fueling, knock, and protection logic
+- Broad unit-test coverage for decoder behavior, helpers, corrections, and config migrations
+- A trigger trace replay harness for host-side decoder regression testing
+- Ongoing Teensy 4.1 platform enablement work
+- A phased development roadmap in [FIRMWARE_ROADMAP.md](speeduino/FIRMWARE_ROADMAP.md)
 
-### Key Differences from Upstream Speeduino
-
-This fork diverges from mainline Speeduino to pursue experimental improvements that may not align with upstream stability requirements:
-
-- **Enhanced Safety & Correctness**: Systematic fixes to ignition, fueling, and protection logic
-- **Comprehensive Test Coverage**: Extensive unit tests for decoders, corrections, engine protection, and config migrations
-- **Decoder Trace Replay System**: Novel trace-based regression testing for trigger decoder validation
-- **Teensy 4.1 Platform Enablement**: First-class support with optimized peripherals, storage, and capabilities
-- **Structured Development Roadmap**: Phased approach prioritizing safety before features (see [FIRMWARE_ROADMAP.md](speeduino/FIRMWARE_ROADMAP.md))
-
----
-
-## 📋 Table of Contents
+## Table of Contents
 
 - [What is Speeduino?](#what-is-speeduino)
 - [AI Edition Features](#ai-edition-features)
@@ -44,82 +34,101 @@ This fork diverges from mainline Speeduino to pursue experimental improvements t
 - [License](#license)
 - [Acknowledgments](#acknowledgments)
 
----
+## What is Speeduino?
 
-## 🚗 What is Speeduino?
+Speeduino is an open-source, Arduino-based engine management system that provides:
 
-Speeduino is an open-source, Arduino-based Engine Management System (EMS/ECU) that provides:
-
-- Full engine control (fuel injection and ignition timing)
+- Fuel and ignition control
 - Support for 1-12 cylinder engines
-- Multiple trigger decoder patterns (60+ supported patterns)
-- Tuning via TunerStudio
-- Low-cost DIY-friendly hardware designs
-- Active community support
+- 60+ trigger decoder patterns
+- TunerStudio tuning support
+- Low-cost DIY-friendly hardware
 
-For more information about the upstream Speeduino project:
-- **Official Website**: https://speeduino.com
-- **Documentation**: https://wiki.speeduino.com
-- **Original Repository**: https://github.com/noisymime/speeduino
+Upstream references:
 
----
+- Official website: https://speeduino.com
+- Documentation: https://wiki.speeduino.com
+- Original repository: https://github.com/noisymime/speeduino
 
-## ✨ AI Edition Features
+## AI Edition Features
 
-### Phase 1: Safety and Correctness ✅
+### Phase 1: Safety and Correctness
+
 - Fixed high-risk ignition, fueling, and protection defects
-- Corrected knock handling and limiter/protection interactions
-- Replaced placeholder telemetry with accurate runtime data
+- Corrected knock and limiter/protection interaction issues
+- Replaced misleading placeholder telemetry in key paths
 - Added focused regression coverage for corrected logic
 
-### Phase 2: Regression Harness (In Progress) 🔄
-- **Decoder Trace Replay System**: Novel test fixture for trigger pattern validation
-  - Externalized trace headers stored in flash memory
-  - Support for both simple and compressed repeated-event traces
-  - Coverage for 8+ decoder families with real/semi-real waveform patterns
-- **Config Migration Tests**: End-to-end validation of EEPROM version migrations
-- **Runtime State-Machine Tests**: Direct validation of decoder sync/wrap/filtering behavior
+### Phase 2: Regression Harness
 
-**Current Decoder Coverage** (164/164 tests passing):
-- Dual-Wheel (clean sync, noise filtering, wrap, resync)
-- Ford ST170 (half-sync, cam-before-gap, noise, regroup)
-- Suzuki K6A (descending-gap sync, wrap, filtering)
-- Missing-Tooth 36-1 (gap sync, noise, half-sync, cam promotion, early-gap loss)
-- NGC4 (half-sync, cam phase variants)
-- Nissan360 (4/6/8-cylinder windows, invalid rejection, resync, wrap)
-- Renix (valid-group advancement, short-gap filtering)
-- **Miata 99-05** (edge-counted cam sync, revolution wrap) ⭐ NEW
+- **Decoder Trace Replay System**
+  - Externalized trace headers stored in flash/program memory
+  - Support for simple traces and compressed repeated-event traces
+  - Coverage for 12+ decoder families with real or semi-real waveform patterns
+- **Config Migration Tests**
+  - Direct host-side coverage across the EEPROM update chain from `v2 -> v24`
+- **Runtime State-Machine Tests**
+  - Direct validation of decoder sync, wrap, filtering, and resync behavior
+
+**Current decoder replay/runtime coverage** (`182/182` decoder tests passing):
+
+- Dual-Wheel
+- Ford ST170
+- Suzuki K6A
+- Missing-Tooth 36-1
+- NGC4
+- Nissan360
+- Renix
+- Miata 99-05
+- Jeep 2000
+- Audi 135
+- GM 24X
+- 4G63
+- GM 7X
+
+Highlighted behaviors now covered include:
+
+- clean sync establishment
+- noisy edge rejection and short-gap filtering
+- wrap and revolution counting
+- resync boundaries
+- no-cam / no-sync rejection
+- mixed secondary-edge behavior
+- Miata cam-edge noise deferral without false sync
 
 ### Phase 3-6: Planned
+
 - Runtime structure improvements
-- Board and comms consistency
-- Configuration and observability enhancements
-- Teensy 4.1 platform enablement with native peripherals
+- Board and comms consistency work
+- Configuration and observability improvements
+- Teensy 4.1 platform enablement and board-capability cleanup
 
-See [FIRMWARE_ROADMAP.md](speeduino/FIRMWARE_ROADMAP.md) for complete details.
+See [FIRMWARE_ROADMAP.md](speeduino/FIRMWARE_ROADMAP.md) for the full roadmap.
 
----
+## Current Development Phase
 
-## 🔧 Current Development Phase
+**Phase 2: Regression Harness** is still the active phase.
 
-**Phase 2: Regression Harness** - Building comprehensive test coverage for critical subsystems
+Recent work as of `2026-03-20`:
 
-Latest work (2026-03-21):
-- Added Miata 99-05 decoder trace replay coverage
-- Documented edge-counted cam synchronization behavior
-- All 164 decoder tests passing
+- Completed direct migration coverage across the EEPROM update chain from `v2 -> v24`
+- Added replay-backed Miata 99-05 cam-noise coverage
+- Expanded replay-backed decoder coverage to 12+ decoder families
+- Verified `test_decoders`: `182/182`
+- Verified `test_updates`: `38/38`
 
-See [SESSION_HANDOFF_2026-03-21.md](speeduino/SESSION_HANDOFF_2026-03-21.md) for the latest development notes.
+Latest handoff references:
 
----
+- [SESSION_HANDOFF_2026-03-20_MIATA_NOISE.md](speeduino/SESSION_HANDOFF_2026-03-20_MIATA_NOISE.md)
+- [SESSION_HANDOFF_2026-03-20_UPDATES_V5_V7.md](speeduino/SESSION_HANDOFF_2026-03-20_UPDATES_V5_V7.md)
 
-## 🚀 Quick Start
+## Quick Start
 
 ### Prerequisites
 
-- [PlatformIO Core](https://platformio.org/) or [PlatformIO IDE](https://platformio.org/platformio-ide)
+- [PlatformIO Core](https://platformio.org/) or PlatformIO IDE
 - Git
-- (Optional) [TunerStudio](https://www.tunerstudio.com/) for tuning
+- Optional: [TunerStudio](https://www.tunerstudio.com/)
 
 ### Clone the Repository
 
@@ -128,11 +137,9 @@ git clone https://github.com/BuffJesus/SpeeduinoAIEdition.git
 cd SpeeduinoAIEdition
 ```
 
----
+## Building the Firmware
 
-## 🔨 Building the Firmware
-
-### For Teensy 4.1 (Recommended)
+### Teensy 4.1
 
 ```bash
 pio run -e teensy41
@@ -140,19 +147,15 @@ pio run -e teensy41
 
 Output: `.pio/build/teensy41/firmware.hex`
 
-### For Arduino Mega 2560
+### Arduino Mega 2560
 
 ```bash
 pio run -e megaatmega2560
 ```
 
-### All Supported Platforms
+See `platformio.ini` for the full environment list.
 
-See `platformio.ini` for the complete list of build environments.
-
----
-
-## 🧪 Running Tests
+## Running Tests
 
 ### Run All Unit Tests
 
@@ -163,7 +166,7 @@ pio test -e megaatmega2560_sim_unittest
 ### Run Specific Test Suites
 
 ```bash
-# Decoder tests only
+# Decoder tests
 pio test -e megaatmega2560_sim_unittest --filter test_decoders
 
 # Config migration tests
@@ -174,193 +177,120 @@ pio test -e megaatmega2560_sim_unittest --filter test_maths
 ```
 
 ### Current Test Status
-- **164/164 decoder tests** ✅
-- **25/25 config migration tests** ✅
-- All test suites passing
 
----
+- `182/182` decoder tests passing
+- `38/38` config migration tests passing
+- Other unit-test suites remain in regular use for regression checking
 
-## 📁 Project Structure
+Note: local Windows `pio test` invocations in this workspace can still hit wrapper/file-lock issues intermittently even when the produced simulator binary itself runs cleanly.
 
-```
+## Project Structure
+
+```text
 SpeeduinoAIEdition/
-├── speeduino/                  # Main firmware source
-│   ├── decoders.cpp           # Trigger decoder implementations
-│   ├── corrections.cpp        # Fueling/ignition corrections
-│   ├── updates.cpp            # Config migration logic
-│   ├── FIRMWARE_ROADMAP.md    # Development roadmap
-│   └── SESSION_HANDOFF_*.md   # Development session notes
-├── test/                      # Unit test suite
-│   ├── test_decoders/         # Decoder validation tests
-│   │   └── traces/            # Externalized trigger trace headers
-│   ├── test_updates/          # Config migration tests
-│   └── test_maths/            # Math/correction tests
-├── release/                   # Release artifacts (.hex, .ini)
-├── reference/                 # Hardware designs and documentation
-├── platformio.ini             # Build configuration
-├── README.md                  # This file
-└── LICENSE                    # GPLv3 license
+|-- speeduino/                  # Main firmware source
+|   |-- decoders.cpp           # Trigger decoder implementations
+|   |-- corrections.cpp        # Fueling/ignition corrections
+|   |-- updates.cpp            # Config migration logic
+|   |-- FIRMWARE_ROADMAP.md    # Development roadmap
+|   `-- SESSION_HANDOFF_*.md   # Development session notes
+|-- test/                      # Unit test suite
+|   |-- test_decoders/         # Decoder validation tests
+|   |   `-- traces/            # Externalized trigger trace headers
+|   |-- test_updates/          # Config migration tests
+|   `-- test_maths/            # Math/correction tests
+|-- release/                   # Release artifacts (.hex, .ini)
+|-- reference/                 # Hardware designs and documentation
+|-- platformio.ini             # Build configuration
+|-- README.md
+`-- LICENSE
 ```
 
----
+## Development Roadmap
 
-## 🗺️ Development Roadmap
+This fork follows a structured phase-based roadmap:
 
-This fork follows a **structured, phase-based roadmap** prioritizing safety and correctness:
+1. **Phase 1: Safety and Correctness** - complete
+2. **Phase 2: Regression Harness** - in progress
+3. **Phase 3: Runtime Structure** - planned
+4. **Phase 4: Board and Comms Consistency** - planned
+5. **Phase 5: Configuration and Observability** - planned
+6. **Phase 6: Teensy 4.1 Platform Enablement** - planned
 
-1. **Phase 1: Safety And Correctness** ✅ Complete
-2. **Phase 2: Regression Harness** 🔄 In Progress
-3. **Phase 3: Runtime Structure** 📋 Planned
-4. **Phase 4: Board And Comms Consistency** 📋 Planned
-5. **Phase 5: Configuration And Observability** 📋 Planned
-6. **Phase 6: Teensy 4.1 Platform Enablement** 📋 Planned
+See [FIRMWARE_ROADMAP.md](speeduino/FIRMWARE_ROADMAP.md) for details.
 
-See [FIRMWARE_ROADMAP.md](speeduino/FIRMWARE_ROADMAP.md) for complete phase descriptions and goals.
+## Session Handoffs
 
----
+Development progress is tracked in session handoff documents that capture:
 
-## 📝 Session Handoffs
+- changes made
+- verification performed
+- discovered constraints or bugs
+- recommended next steps
 
-Development is tracked through session handoff documents that capture:
-- Changes made in each session
-- Test verification results
-- Notes and insights
-- Recommended next steps
+Recent handoffs:
 
-Latest handoffs:
-- [SESSION_HANDOFF_2026-03-21.md](speeduino/SESSION_HANDOFF_2026-03-21.md) - Miata 99-05 decoder coverage
-- [SESSION_HANDOFF_2026-03-20.md](speeduino/SESSION_HANDOFF_2026-03-20.md) - Trace replay harness expansion
-- [SESSION_HANDOFF_2026-03-19.md](speeduino/SESSION_HANDOFF_2026-03-19.md) - Config migration tests
-- [SESSION_HANDOFF_2026-03-16.md](speeduino/SESSION_HANDOFF_2026-03-16.md) - Decoder state-machine tests
+- [SESSION_HANDOFF_2026-03-20_MIATA_NOISE.md](speeduino/SESSION_HANDOFF_2026-03-20_MIATA_NOISE.md) - Miata 99-05 cam-noise replay coverage
+- [SESSION_HANDOFF_2026-03-20_UPDATES_V5_V7.md](speeduino/SESSION_HANDOFF_2026-03-20_UPDATES_V5_V7.md) - final EEPROM relocation migration coverage
+- [SESSION_HANDOFF_2026-03-20_UPDATES_V2_V10.md](speeduino/SESSION_HANDOFF_2026-03-20_UPDATES_V2_V10.md) - early migration coverage
+- [SESSION_HANDOFF_2026-03-20_UPDATES_V10_V13.md](speeduino/SESSION_HANDOFF_2026-03-20_UPDATES_V10_V13.md) - mid-chain migration coverage
+- [SESSION_HANDOFF_2026-03-20_UPDATES_V13_V15.md](speeduino/SESSION_HANDOFF_2026-03-20_UPDATES_V13_V15.md) - PID and calibration migration coverage
+- [SESSION_HANDOFF_2026-03-20_UPDATES_V18_V19.md](speeduino/SESSION_HANDOFF_2026-03-20_UPDATES_V18_V19.md) - TPS migration coverage and Spark 2 migration bug fix
+- [SESSION_HANDOFF_2026-03-20_GM7X.md](speeduino/SESSION_HANDOFF_2026-03-20_GM7X.md) - GM 7X replay coverage
+- [SESSION_HANDOFF_2026-03-20_4G63.md](speeduino/SESSION_HANDOFF_2026-03-20_4G63.md) - 4G63 replay coverage
+- [SESSION_HANDOFF_2026-03-20_24X.md](speeduino/SESSION_HANDOFF_2026-03-20_24X.md) - GM 24X replay coverage
+- [SESSION_HANDOFF_2026-03-21.md](speeduino/SESSION_HANDOFF_2026-03-21.md) - Miata 99-05 baseline replay coverage
+- [SESSION_HANDOFF_2026-03-20.md](speeduino/SESSION_HANDOFF_2026-03-20.md) - trace replay harness expansion
+- [SESSION_HANDOFF_2026-03-19.md](speeduino/SESSION_HANDOFF_2026-03-19.md) - config migration coverage groundwork
+- [SESSION_HANDOFF_2026-03-16.md](speeduino/SESSION_HANDOFF_2026-03-16.md) - decoder state-machine tests
 
----
+## Contributing
 
-## 🤝 Contributing
+This is an experimental research fork. Contributions are welcome, but changes should follow these rules:
 
-This is an **experimental research fork** focused on systematic improvement and testing. Contributions are welcome, but please note:
+1. Safety and correctness come first.
+2. New behavior should come with regression coverage.
+3. Work should align with the active roadmap phase where practical.
+4. Documentation should be updated when the repo state materially changes.
 
-### Contribution Guidelines
-
-1. **Safety First**: All changes must maintain or improve safety/correctness
-2. **Test Coverage Required**: New features must include unit tests
-3. **Follow the Roadmap**: Align with current phase objectives
-4. **Documentation**: Update session handoffs and roadmap as appropriate
-
-### Development Workflow
+Typical workflow:
 
 ```bash
-# 1. Create a feature branch
-git checkout -b feature/your-feature-name
-
-# 2. Make changes and add tests
-# ... edit files ...
-
-# 3. Run tests to verify
+git checkout -b feature/your-change
 pio test -e megaatmega2560_sim_unittest
-
-# 4. Build firmware to verify compilation
 pio run -e teensy41
-
-# 5. Commit with descriptive messages
-git commit -m "Add feature: description"
-
-# 6. Push and create pull request
-git push origin feature/your-feature-name
+git commit -m "Describe the change"
+git push origin feature/your-change
 ```
 
-See [contributing.md](contributing.md) for more details (inherited from upstream).
+See [contributing.md](contributing.md) for upstream-inherited contribution details.
 
----
+## Important Warnings
 
-## ⚠️ Important Warnings
+### Experimental Software
 
-### This is Experimental Software
-
-- **DO NOT USE ON A REAL ENGINE** without extensive bench testing
-- This fork contains experimental changes that may not be as well-tested as upstream Speeduino
-- Always have a backup ECU and safety plan when testing
-- Read and understand the code before deploying
+- Do not use this fork on a real engine without substantial bench validation.
+- This repository intentionally carries experimental changes that may diverge from upstream assumptions.
+- Always keep a backup ECU and safety plan.
 
 ### Compatibility Notes
 
-- This fork is **not guaranteed to be compatible** with upstream Speeduino releases
-- INI file format may differ from mainline Speeduino
-- Config migrations are tested but may not handle all edge cases
-- Teensy 4.1 builds are the primary development target
+- This fork is not guaranteed to stay tune-compatible with upstream Speeduino.
+- INI and migration behavior may diverge when safety/testability requires it.
+- Teensy 4.1 remains the primary platform direction, but the simulator-based AVR harness is still heavily used for testing.
 
 ### Liability
 
-This software is provided "AS IS" without warranty of any kind. The authors and contributors are not responsible for any damage to engines, vehicles, or property resulting from use of this firmware.
+This software is provided "as is" without warranty. The authors and contributors are not responsible for damage resulting from its use.
 
----
+## License
 
-## 📜 License
+This project inherits the GPLv3 license from upstream Speeduino.
 
-This project inherits the **GPLv3** license from upstream Speeduino.
+See [LICENSE](LICENSE) for the full text.
 
-```
-Speeduino AI Edition
-Copyright (C) 2024-2026 BuffJesus and contributors
+## Acknowledgments
 
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with this program.  If not, see <https://www.gnu.org/licenses/>.
-```
-
-See [LICENSE](LICENSE) for the full license text.
-
----
-
-## 🙏 Acknowledgments
-
-### Upstream Speeduino Project
-This fork is based on the excellent work of the Speeduino community:
-- **Josh Stewart** (noisymime) - Original Speeduino creator and maintainer
-- The entire Speeduino community - For years of development and support
-- **Official Speeduino**: https://github.com/noisymime/speeduino
-
-### Inspiration and Borrowed Patterns
-- **rusEFI Project**: For verification discipline patterns, trigger testing approaches, and config migration architecture
-  - Repository: https://github.com/rusefi/rusefi
-  - License: GPLv3
-
-### AI-Assisted Development
-This fork utilizes AI assistance (Claude Code) for:
-- Systematic code review and refactoring
-- Test development and coverage expansion
-- Documentation generation
-- Adherence to safety and correctness principles
-
-### Community Support
-- Speeduino Discord, Forum, and Facebook communities
-- Open-source embedded systems community
-
----
-
-## 📞 Contact & Support
-
-- **Repository**: https://github.com/BuffJesus/SpeeduinoAIEdition
-- **Issues**: https://github.com/BuffJesus/SpeeduinoAIEdition/issues
-- **Upstream Speeduino Support**:
-  - Discord: https://discord.gg/YWCEexaNDe
-  - Forum: https://speeduino.com/forum
-  - Facebook: https://www.facebook.com/groups/191918764521976/
-
----
-
-<div align="center">
-
-**Built with ❤️ and 🤖 for the Open-Source EMS Community**
-
-*Based on Speeduino 202501.6*
-
-</div>
+- The upstream Speeduino project and contributors
+- PlatformIO and Unity test infrastructure
+- The rusEFI project for verification-discipline inspiration in trigger and migration testing

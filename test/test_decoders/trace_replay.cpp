@@ -32,6 +32,7 @@
 #include "traces/renix_valid_group_trace.h"
 #include "traces/miata9905_single_cam_trace.h"
 #include "traces/miata9905_double_cam_sync_trace.h"
+#include "traces/miata9905_cam_noise_trace.h"
 #include "traces/jeep2000_cam_sync_trace.h"
 #include "traces/jeep2000_full_revolution_trace.h"
 #include "traces/jeep2000_no_cam_trace.h"
@@ -682,6 +683,19 @@ static void test_trace_replay_miata9905_sync_then_wrap_counts_revolution(void)
     TEST_ASSERT_EQUAL_UINT16(1U, currentStatus.startRevolutions);
 }
 
+static void test_trace_replay_miata9905_extra_cam_pulse_defers_sync_until_clean_pulse(void)
+{
+    setup_trace_miata9905();
+
+    replayTriggerTrace(makeTriggerTrace(kMiata9905CamNoiseEvents), makeMiata9905Callbacks());
+
+    TEST_ASSERT_TRUE(currentStatus.hasSync);
+    TEST_ASSERT_EQUAL_UINT8(0U, currentStatus.syncLossCounter);
+    TEST_ASSERT_EQUAL_UINT8(0U, testGetSecondaryToothCount());
+    TEST_ASSERT_EQUAL_UINT16(7U, toothCurrentCount);
+    TEST_ASSERT_EQUAL_UINT16(0U, currentStatus.startRevolutions);
+}
+
 static void test_trace_replay_jeep2000_cam_pulse_resets_tooth_count(void)
 {
     setup_trace_jeep2000();
@@ -1066,6 +1080,7 @@ void testTriggerTraceReplay(void)
         RUN_TEST_P(test_trace_replay_renix_valid_group_advances_virtual_tooth_state);
         RUN_TEST_P(test_trace_replay_miata9905_single_cam_pulse_establishes_sync);
         RUN_TEST_P(test_trace_replay_miata9905_sync_then_wrap_counts_revolution);
+        RUN_TEST_P(test_trace_replay_miata9905_extra_cam_pulse_defers_sync_until_clean_pulse);
         RUN_TEST_P(test_trace_replay_jeep2000_cam_pulse_resets_tooth_count);
         RUN_TEST_P(test_trace_replay_jeep2000_full_revolution_wraps);
         RUN_TEST_P(test_trace_replay_jeep2000_no_cam_stays_without_sync);
