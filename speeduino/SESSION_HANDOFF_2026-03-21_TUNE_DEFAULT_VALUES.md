@@ -32,6 +32,7 @@
 - Added an expected-classification verifier so the remaining active policy surface is machine-checked for both the fork-owned and release tunes
 - Expanded contextual exemptions to include `airConCompPol`, `airConReqPol`, `idleAdvStartDelay`, and `idleTaperTime`, because the manual, INI help text, and runtime code all show they are hardware-dependent or tune-dependent rather than universal defaults
 - Added a policy-evidence report that prints the remaining active conflict and all contextual exemptions together with the specific manual / INI-help / runtime-code rationale backing them
+- Added a packaged-profile override report and verifier so the repo can separately document intentional DropBear hardware-profile choices that differ from the generic INI defaults
 - Evaluated idle-advance / boost / VVT against explicit `defaultValue` entries in [speeduino.ini](C:/Users/Cornelio/Desktop/speeduino-202501.6/speeduino.ini) and confirmed a real ambiguity:
   - `idleAdvStartDelay`: tune `0.7` vs INI `0.2`
   - `idleTaperTime`: tune `5.0` vs INI `1.0`
@@ -57,6 +58,10 @@
     - `knock_pin` (`stock = 3`, `fork contract = A8`, `INI default = A10`)
   - current origin counts:
     - `fork_and_stock_both_differ_from_ini_default = 1`
+- Packaged hardware-profile override classification:
+  - `knock_pin` is also the one documented packaged DropBear override:
+    - the generic INI default `A10` is explicitly chosen to avoid DropBear Teensy 4.1 crank/cam or MAP/baro pins
+    - the packaged fork and release tunes intentionally ship `knock_pin = A8` for the current DropBear hardware profile
 
 ## Critical Default Contract Now Enforced
 
@@ -156,7 +161,7 @@
 ## Verification
 
 - `python -m unittest tools.tests.test_stock_base_tune_compat`
-  - passed, `14/14`
+  - passed, `16/16`
 - `python tools/check_stock_base_tune_compat.py --msq "Resources/Speeduino AI base tune.msq"`
   - passed
 - `python tools/check_stock_base_tune_compat.py --msq "release/speeduino-dropbear-v2.0.1-base-tune.msq" --ini "release/speeduino-dropbear-v2.0.1.ini"`
@@ -176,6 +181,12 @@
   - reported five documented contextual exemptions: `airConCompPol`, `airConReqPol`, `idleAdvStartDelay`, `idleTaperTime`, and `vssPulsesPerKm`
 - `python tools/check_stock_base_tune_compat.py --msq "Resources/Speeduino AI base tune.msq" --stock-msq "Resources/Speeduino base tune.msq" --report-policy-evidence`
   - reported the one active policy conflict plus all five contextual exemptions with embedded evidence notes
+- `python tools/check_stock_base_tune_compat.py --msq "Resources/Speeduino AI base tune.msq" --report-packaged-profile-overrides`
+  - reported the one documented packaged hardware-profile override: `knock_pin`
+- `python tools/check_stock_base_tune_compat.py --msq "Resources/Speeduino AI base tune.msq" --verify-expected-packaged-profile-overrides`
+  - passed
+- `python tools/check_stock_base_tune_compat.py --msq "release/speeduino-dropbear-v2.0.1-base-tune.msq" --ini "release/speeduino-dropbear-v2.0.1.ini" --verify-expected-packaged-profile-overrides`
+  - passed
 - `python tools/check_stock_base_tune_compat.py`
   - still fails on the unchanged stock tune, now for both:
     - missing `knock_limiterDisable`
@@ -200,6 +211,7 @@
   - `vssPulsesPerKm`
 - That policy surface is now encoded in the repo and test-covered, not just documented in prose
 - The evidence for each policy item is now queryable directly from the audit tool, so future decisions do not depend on reconstructing rationale from handoff notes
+- The repo now also machine-checks the one intentional packaged DropBear hardware-profile override separately from the generic default conflict baseline, so the release-tune choice is explicit instead of being buried inside the remaining `knock_pin` mismatch
 
 ## Current State
 
@@ -221,4 +233,4 @@
 
 ## Recommended Prompt For Next Session
 
-`Continue from SESSION_HANDOFF_2026-03-21_TUNE_DEFAULT_VALUES.md. The compatibility audit now enforces both the round-trippable tune surface and a 92-check fork-default contract across knock, rolling cut, DFCO, launch, idle advance, idle-up, VSS, WMI, oil pressure, fan, and air-con. The tool parses 230 explicit INI defaultValue entries, preserves unit-specific default variants, machine-checks the classified policy surface, treats `airConCompPol`, `airConReqPol`, `idleAdvStartDelay`, `idleTaperTime`, and `vssPulsesPerKm` as documented contextual exemptions, and exposes a policy-evidence report for each active item. Current decision surface: eight tune-vs-default mismatches, one active contract-vs-default conflict (`knock_pin`), and five contextual exemptions. The fork-owned and release-packaged tunes pass the enforced contract; the unchanged stock tune remains the intentional failing control. Next slice: decide whether `knock_pin` should remain a fork-specific divergence, move toward the INI default, or trigger a signature/defaults policy change.` 
+`Continue from SESSION_HANDOFF_2026-03-21_TUNE_DEFAULT_VALUES.md. The compatibility audit now enforces both the round-trippable tune surface and a 92-check fork-default contract across knock, rolling cut, DFCO, launch, idle advance, idle-up, VSS, WMI, oil pressure, fan, and air-con. The tool parses 230 explicit INI defaultValue entries, preserves unit-specific default variants, machine-checks the classified policy surface, treats `airConCompPol`, `airConReqPol`, `idleAdvStartDelay`, `idleTaperTime`, and `vssPulsesPerKm` as documented contextual exemptions, and exposes both a policy-evidence report and a packaged-profile override report. Current decision surface: eight tune-vs-default mismatches, one active contract-vs-default conflict (`knock_pin`), five contextual exemptions, and one documented packaged DropBear hardware-profile override (`knock_pin = A8` while the generic INI default remains `A10`). The fork-owned and release-packaged tunes pass the enforced contract; the unchanged stock tune remains the intentional failing control. Next slice: decide whether `knock_pin` should remain a fork-specific divergence, move toward the INI default, or trigger a signature/defaults policy change.` 

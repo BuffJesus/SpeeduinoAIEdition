@@ -242,6 +242,18 @@ POLICY_EVIDENCE_NOTES = {
     ),
 }
 
+PACKAGED_PROFILE_OVERRIDES = {
+    "knock_pin": "A8",
+}
+
+PACKAGED_PROFILE_OVERRIDE_NOTES = {
+    "knock_pin": (
+        "The generic INI default is intentionally A10 to avoid defaulting onto DropBear Teensy 4.1 "
+        "crank/cam or MAP/baro pins, but the packaged fork tunes target DropBear hardware and pin "
+        "knock input to A8 as their shipped board profile."
+    ),
+}
+
 
 @dataclass(frozen=True)
 class MsqAudit:
@@ -660,6 +672,61 @@ def build_policy_evidence_report(
     return report
 
 
+def build_packaged_profile_override_report(
+    msq: MsqAudit, ini: IniAudit, names: list[str] | None = None
+) -> list[str]:
+    if names is None:
+        candidate_names = sorted(PACKAGED_PROFILE_OVERRIDES)
+    else:
+        candidate_names = names
+
+    report = []
+    for name in candidate_names:
+        packaged_value = PACKAGED_PROFILE_OVERRIDES.get(name)
+        tune_value = msq.constant_values.get(name)
+        explicit_variants = ini.explicit_default_variants.get(name, ())
+        note = PACKAGED_PROFILE_OVERRIDE_NOTES.get(name)
+        if (
+            packaged_value is None
+            or tune_value is None
+            or note is None
+            or not explicit_variants
+            or not _values_equivalent(tune_value, packaged_value)
+            or any(_values_equivalent(packaged_value, explicit_default) for explicit_default in explicit_variants)
+        ):
+            continue
+        report.append(
+            f"{name}: packaged_profile_value={packaged_value!r}; tune={tune_value!r}; "
+            f"ini_defaultValue={_format_default_variants(explicit_variants)!r}; "
+            f"reason={note!r}"
+        )
+    return report
+
+
+def verify_expected_packaged_profile_overrides(
+    msq: MsqAudit, ini: IniAudit
+) -> list[str]:
+    actual_entries = {
+        line.split(":", 1)[0] for line in build_packaged_profile_override_report(msq, ini)
+    }
+    expected_entries = set(PACKAGED_PROFILE_OVERRIDES)
+    failures: list[str] = []
+
+    missing = sorted(name for name in expected_entries if name not in actual_entries)
+    if missing:
+        failures.append(
+            "Expected packaged profile overrides are missing: " + ", ".join(missing)
+        )
+
+    unexpected = sorted(name for name in actual_entries if name not in expected_entries)
+    if unexpected:
+        failures.append(
+            "Unexpected packaged profile overrides are present: " + ", ".join(unexpected)
+        )
+
+    return failures
+
+
 def verify_expected_contract_conflict_classifications(
     ini: IniAudit, stock_msq: MsqAudit
 ) -> list[str]:
@@ -836,6 +903,23 @@ def main(argv: list[str] | None = None) -> int:
             "embedded evidence notes used to justify them."
         ),
     )
+    parser.add_argument(
+        "--report-packaged-profile-overrides",
+        nargs="*",
+        metavar="NAME",
+        help=(
+            "Print documented packaged-tune hardware-profile overrides that intentionally differ "
+            "from the generic INI defaults."
+        ),
+    )
+    parser.add_argument(
+        "--verify-expected-packaged-profile-overrides",
+        action="store_true",
+        help=(
+            "Verify that the current tune matches the repo's expected packaged hardware-profile "
+            "override set."
+        ),
+    )
     args = parser.parse_args(argv)
 
     try:
@@ -943,6 +1027,32 @@ def main(argv: list[str] | None = None) -> int:
                 print(f"- {item}")
         else:
             print("- None")
+    if args.report_packaged_profile_overrides is not None:
+        report = build_packaged_profile_override_report(
+            msq,
+            ini,
+            None
+            if not args.report_packaged_profile_overrides
+            else args.report_packaged_profile_overrides,
+        )
+        print("\nPackaged Profile Overrides:")
+        if report:
+            for item in report:
+                print(f"- {item}")
+        else:
+            print("- None")
+    if args.verify_expected_packaged_profile_overrides:
+        failures = verify_expected_packaged_profile_overrides(msq, ini)
+        print("\nExpected Packaged Profile Override Check:")
+        if failures:
+            for failure in failures:
+                print(f"- {failure}")
+            return 1
+        print("- Current packaged profile override set matches the expected baseline.")
+        print(
+            "- Expected packaged overrides: "
+            + ", ".join(sorted(PACKAGED_PROFILE_OVERRIDES))
+        )
 
     failures = evaluate_compatibility(msq, ini)
     if failures:

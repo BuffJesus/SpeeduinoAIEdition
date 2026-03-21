@@ -243,6 +243,12 @@ python tools/check_stock_base_tune_compat.py --msq "Resources/Speeduino AI base 
 
 # Show classified policy items with embedded evidence notes
 python tools/check_stock_base_tune_compat.py --msq "Resources/Speeduino AI base tune.msq" --stock-msq "Resources/Speeduino base tune.msq" --report-policy-evidence
+
+# Show packaged hardware-profile overrides that intentionally differ from generic INI defaults
+python tools/check_stock_base_tune_compat.py --msq "Resources/Speeduino AI base tune.msq" --report-packaged-profile-overrides
+
+# Verify the packaged hardware-profile override baseline
+python tools/check_stock_base_tune_compat.py --msq "Resources/Speeduino AI base tune.msq" --verify-expected-packaged-profile-overrides
 ```
 
 ### Current Test Status
@@ -264,6 +270,7 @@ python tools/check_stock_base_tune_compat.py --msq "Resources/Speeduino AI base 
 - The origin report now prints counts as well, so the current active policy surface is immediately visible as `fork_and_stock_both_differ_from_ini_default=1`
 - The repo now machine-checks that exact classification baseline, so future work must either preserve it or update the expected policy map deliberately
 - A policy-evidence report now ties the one active conflict plus all contextual exemptions to the concrete project source that justifies them: manual pages, INI help text, and runtime code paths
+- The audit now also distinguishes packaged hardware-profile overrides from generic defaults; today that set is just `knock_pin`, where the generic INI default intentionally avoids DropBear-sensitive pins while the packaged DropBear tunes intentionally ship `A8`
 - Other unit-test suites remain in regular use for regression checking
 
 Note: local Windows `pio test` invocations in this workspace can still hit wrapper/file-lock issues intermittently even when the produced simulator binary itself runs cleanly.

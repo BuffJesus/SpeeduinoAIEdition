@@ -11,16 +11,20 @@ from tools.check_stock_base_tune_compat import (
     HIGH_RISK_CONSTANTS,
     KNOWN_EXTRA_MSQ_CONSTANTS,
     KNOWN_STOCK_BASE_TUNE_GAPS,
+    PACKAGED_PROFILE_OVERRIDES,
+    PACKAGED_PROFILE_OVERRIDE_NOTES,
     POLICY_EVIDENCE_NOTES,
     build_contextual_contract_exemption_report,
     build_contract_conflict_origin_report,
     build_contract_default_conflict_report,
     build_explicit_default_mismatch_report,
+    build_packaged_profile_override_report,
     build_policy_evidence_report,
     evaluate_compatibility,
     parse_ini,
     parse_msq,
     verify_expected_contract_conflict_classifications,
+    verify_expected_packaged_profile_overrides,
 )
 
 
@@ -373,6 +377,53 @@ defaultValue = knock_pin, 57
             set(POLICY_EVIDENCE_NOTES),
         )
 
+    def test_packaged_profile_override_report_marks_dropbear_knock_pin(self) -> None:
+        with tempfile.TemporaryDirectory() as temp_dir_name:
+            temp_dir = Path(temp_dir_name)
+            msq_path = temp_dir / "test.msq"
+            ini_path = temp_dir / "test.ini"
+
+            msq_path.write_text(
+                """<?xml version="1.0" encoding="ISO-8859-1"?>
+<msq xmlns="http://www.msefi.com/:msq">
+  <versionInfo fileFormat="5.0" firmwareInfo="X" nPages="1" signature="speeduino 202501"/>
+  <page>
+    <constant name="knock_pin">A8</constant>
+  </page>
+</msq>
+""",
+                encoding="utf-8",
+            )
+            ini_path.write_text(
+                """signature = "speeduino 202501"
+
+[Constants]
+knock_pin = bits, U08, 92, [2:7], "INVALID", "INVALID", "2", "3", "INVALID", "INVALID", "INVALID", "INVALID", "INVALID", "INVALID", "INVALID", "INVALID", "INVALID", "INVALID", "INVALID", "INVALID", "INVALID", "INVALID", "18", "19", "20", "21", "INVALID", "INVALID", "INVALID", "INVALID", "INVALID", "INVALID", "INVALID", "INVALID", "INVALID", "INVALID", "INVALID", "INVALID", "INVALID", "INVALID", "INVALID", "INVALID", "INVALID", "INVALID", "INVALID", "INVALID", "INVALID", "INVALID", "INVALID", "INVALID", "INVALID", "A0", "A1", "A2", "A3", "A4", "A5", "A6", "A7", "A8", "A9", "A10", "A11", "A12", "A13", "A14", "A15", "INVALID"
+
+defaultValue = knock_pin, 57
+""",
+                encoding="utf-8",
+            )
+
+            self.assertEqual(
+                [
+                    "knock_pin: packaged_profile_value='A8'; tune='A8'; ini_defaultValue='A10'; reason="
+                    "'The generic INI default is intentionally A10 to avoid defaulting onto DropBear Teensy 4.1 crank/cam or MAP/baro pins, but the packaged fork tunes target DropBear hardware and pin knock input to A8 as their shipped board profile.'"
+                ],
+                build_packaged_profile_override_report(
+                    parse_msq(msq_path), parse_ini(ini_path)
+                ),
+            )
+
+    def test_verify_expected_packaged_profile_overrides_matches_real_repo_state(self) -> None:
+        repo_root = Path(__file__).resolve().parents[2]
+        msq = parse_msq(repo_root / "Resources" / "Speeduino AI base tune.msq")
+        ini = parse_ini(repo_root / "speeduino.ini")
+
+        self.assertEqual([], verify_expected_packaged_profile_overrides(msq, ini))
+        self.assertEqual({"knock_pin": "A8"}, PACKAGED_PROFILE_OVERRIDES)
+        self.assertIn("knock_pin", PACKAGED_PROFILE_OVERRIDE_NOTES)
+
     def test_real_stock_tune_flags_known_missing_knock_limiter_disable(self) -> None:
         repo_root = Path(__file__).resolve().parents[2]
         msq = parse_msq(repo_root / "Resources" / "Speeduino base tune.msq")
@@ -417,6 +468,7 @@ defaultValue = knock_pin, 57
         ini = parse_ini(repo_root / "release" / "speeduino-dropbear-v2.0.1.ini")
 
         self.assertEqual([], evaluate_compatibility(msq, ini))
+        self.assertEqual([], verify_expected_packaged_profile_overrides(msq, ini))
         self.assertEqual("speeduino 202501", msq.signature)
         self.assertEqual(msq.n_pages, msq.numbered_page_count)
         self.assertEqual(16, msq.total_page_nodes)
