@@ -242,8 +242,8 @@ python tools/check_stock_base_tune_compat.py --msq "Resources/Speeduino AI base 
 - Fork-owned base tune audit passes for [Resources/Speeduino AI base tune.msq](Resources/Speeduino%20AI%20base%20tune.msq), including the 92 selected fork-critical default values
 - Release bundle base tune audit passes for [speeduino-dropbear-v2.0.1-base-tune.msq](release/speeduino-dropbear-v2.0.1-base-tune.msq) against [speeduino-dropbear-v2.0.1.ini](release/speeduino-dropbear-v2.0.1.ini), including the same 92 selected fork-critical default values
 - The audit tool now also parses 230 explicit INI `defaultValue` entries, decodes bitfield defaults to their display values, and can report tune-vs-INI-default mismatches separately from the fork-owned contract
-- Current explicit-default mismatches are narrowed to `idleAdvStartDelay`, `idleTaperTime`, `boostCutEnabled`, `boostMinDuty`, `boostMaxDuty`, `vvtCL0DutyAng`, `vvtMinClt`, and `vvtDelay`, which is why boost/VVT defaults are not yet enforced in the fork contract
-- A separate contract-vs-INI-default report now shows the seven remaining source-of-truth conflicts inside the enforced contract itself: `airConCompPol`, `airConReqPol`, `dfcoMinCLT`, `idleAdvStartDelay`, `idleTaperTime`, `knock_pin`, and `vssPulsesPerKm`
+- Current explicit-default mismatches are narrowed to `idleAdvStartDelay`, `idleTaperTime`, `boostCutEnabled`, `boostMinDuty`, `boostMaxDuty`, `vvtCL0DutyAng`, `vvtMinClt`, and `vvtDelay`, with unit-aware defaults now shown where applicable such as `vvtMinClt = 70 / 160`
+- A separate contract-vs-INI-default report now shows the six remaining source-of-truth conflicts inside the enforced contract itself: `airConCompPol`, `airConReqPol`, `idleAdvStartDelay`, `idleTaperTime`, `knock_pin`, and `vssPulsesPerKm`
 - Other unit-test suites remain in regular use for regression checking
 
 Note: local Windows `pio test` invocations in this workspace can still hit wrapper/file-lock issues intermittently even when the produced simulator binary itself runs cleanly.

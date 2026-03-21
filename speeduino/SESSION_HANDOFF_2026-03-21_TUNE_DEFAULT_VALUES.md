@@ -26,6 +26,7 @@
 - Added explicit `defaultValue` parsing to [check_stock_base_tune_compat.py](C:/Users/Cornelio/Desktop/speeduino-202501.6/tools/check_stock_base_tune_compat.py) so tune-vs-INI-default mismatches can be reported separately from the fork-owned contract
 - Improved that report by decoding bitfield `defaultValue` entries to their display values, which removes false mismatches like `boostPin=0` vs `Board Default`
 - Added a second report that compares the enforced fork contract itself against explicit INI `defaultValue` entries, after numeric and bitfield normalization
+- Improved explicit-default parsing again to preserve multiple unit-specific `defaultValue` variants per field, so comparisons now accept any normalized variant instead of only the last one seen
 - Evaluated idle-advance / boost / VVT against explicit `defaultValue` entries in [speeduino.ini](C:/Users/Cornelio/Desktop/speeduino-202501.6/speeduino.ini) and confirmed a real ambiguity:
   - `idleAdvStartDelay`: tune `0.7` vs INI `0.2`
   - `idleTaperTime`: tune `5.0` vs INI `1.0`
@@ -33,13 +34,12 @@
   - `boostMinDuty`: tune `12.0` vs INI `0`
   - `boostMaxDuty`: tune `80.0` vs INI `100`
   - `vvtCL0DutyAng`: tune `240.0` vs INI `0`
-  - `vvtMinClt`: tune `-40.0` vs INI `160`
+  - `vvtMinClt`: tune `-40.0` vs INI `70 / 160`
   - `vvtDelay`: tune `0.0` vs INI `60`
 - Because of that ambiguity, boost/VVT defaults were still not added to the enforced fork contract in this slice
-- The contract-vs-default report narrows the enforced-contract conflicts to seven fields:
+- The contract-vs-default report narrows the enforced-contract conflicts to six fields:
   - `airConCompPol`: fork contract `Inverted` vs INI `Normal`
   - `airConReqPol`: fork contract `Inverted` vs INI `Normal`
-  - `dfcoMinCLT`: fork contract `70.0` vs INI `158`
   - `idleAdvStartDelay`: fork contract `0.7` vs INI `0.2`
   - `idleTaperTime`: fork contract `5.0` vs INI `1.0`
   - `knock_pin`: fork contract `A8` vs INI `A10`
@@ -143,7 +143,7 @@
 ## Verification
 
 - `python -m unittest tools.tests.test_stock_base_tune_compat`
-  - passed, `9/9`
+  - passed, `10/10`
 - `python tools/check_stock_base_tune_compat.py --msq "Resources/Speeduino AI base tune.msq"`
   - passed
 - `python tools/check_stock_base_tune_compat.py --msq "release/speeduino-dropbear-v2.0.1-base-tune.msq" --ini "release/speeduino-dropbear-v2.0.1.ini"`
@@ -151,7 +151,7 @@
 - `python tools/check_stock_base_tune_compat.py --msq "Resources/Speeduino AI base tune.msq" --report-explicit-default-mismatches idleAdvStartDelay idleTaperTime boostCutEnabled boostMinDuty boostMaxDuty vvtCL0DutyAng vvtMinClt vvtDelay`
   - reported the same eight explicit-default mismatches listed above
 - `python tools/check_stock_base_tune_compat.py --msq "Resources/Speeduino AI base tune.msq" --report-contract-default-conflicts`
-  - reported the seven contract-vs-INI-default conflicts listed above
+  - reported the six contract-vs-INI-default conflicts listed above
 - `python tools/check_stock_base_tune_compat.py`
   - still fails on the unchanged stock tune, now for both:
     - missing `knock_limiterDisable`
@@ -165,6 +165,7 @@
   - 92 selected semantic defaults for the fields this fork has materially changed
 - The repo can now also report raw INI `defaultValue` mismatches separately, which makes it possible to investigate default-source ambiguity without pretending those fields are already settled
 - The repo can now separately report where the enforced fork contract itself diverges from explicit INI defaults, which is the real remaining policy surface
+- Unit-specific duplicate INI defaults are now preserved instead of overwritten, which removed `dfcoMinCLT` from the false-conflict set
 
 ## Current State
 
@@ -186,4 +187,4 @@
 
 ## Recommended Prompt For Next Session
 
-`Continue from SESSION_HANDOFF_2026-03-21_TUNE_DEFAULT_VALUES.md. The compatibility audit now enforces both the round-trippable tune surface and a 92-check fork-default contract across knock, rolling cut, DFCO, launch, idle advance, idle-up, VSS, WMI, oil pressure, fan, and air-con. The tool parses 230 explicit INI defaultValue entries and now has two ambiguity reports: eight tune-vs-default mismatches and seven contract-vs-default conflicts. The fork-owned and release-packaged tunes pass the enforced contract; the unchanged stock tune remains the intentional failing control. Next slice: decide whether those seven contract/default conflicts should be resolved in favor of the fork tune baseline, the INI defaults, or a signature bump.` 
+`Continue from SESSION_HANDOFF_2026-03-21_TUNE_DEFAULT_VALUES.md. The compatibility audit now enforces both the round-trippable tune surface and a 92-check fork-default contract across knock, rolling cut, DFCO, launch, idle advance, idle-up, VSS, WMI, oil pressure, fan, and air-con. The tool parses 230 explicit INI defaultValue entries, preserves unit-specific default variants, and now has two ambiguity reports: eight tune-vs-default mismatches and six contract-vs-default conflicts. The fork-owned and release-packaged tunes pass the enforced contract; the unchanged stock tune remains the intentional failing control. Next slice: decide whether those six contract/default conflicts should be resolved in favor of the fork tune baseline, the INI defaults, or a signature bump.` 

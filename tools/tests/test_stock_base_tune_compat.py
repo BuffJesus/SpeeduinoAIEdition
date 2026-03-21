@@ -49,6 +49,10 @@ requiresPowerCycle = knock_mode
                 ini.explicit_defaults,
             )
             self.assertEqual(
+                {"knock_mode": ("Off",)},
+                ini.explicit_default_variants,
+            )
+            self.assertEqual(
                 {"knock_mode": ("Off", "Digital", "Analog", "INVALID")},
                 ini.bit_options,
             )
@@ -135,6 +139,41 @@ defaultValue = rollingProtRPMDelta, -300 -200 -100 -50
             self.assertEqual([], build_explicit_default_mismatch_report(msq, ini))
             self.assertEqual([], build_contract_default_conflict_report(ini, ["dfcoRPM", "rollingProtRPMDelta"]))
 
+    def test_reports_accept_any_explicit_default_variant(self) -> None:
+        with tempfile.TemporaryDirectory() as temp_dir_name:
+            temp_dir = Path(temp_dir_name)
+            msq_path = temp_dir / "test.msq"
+            ini_path = temp_dir / "test.ini"
+
+            msq_path.write_text(
+                """<?xml version="1.0" encoding="ISO-8859-1"?>
+<msq xmlns="http://www.msefi.com/:msq">
+  <versionInfo fileFormat="5.0" firmwareInfo="X" nPages="1" signature="speeduino 202501"/>
+  <page>
+    <constant name="dfcoMinCLT">70.0</constant>
+  </page>
+</msq>
+""",
+                encoding="utf-8",
+            )
+            ini_path.write_text(
+                """signature = "speeduino 202501"
+
+[Constants]
+dfcoMinCLT = scalar, U08, 101, "C", 1.0, -40, -40, 215, 0
+
+defaultValue = dfcoMinCLT, 70
+defaultValue = dfcoMinCLT, 158
+""",
+                encoding="utf-8",
+            )
+
+            msq = parse_msq(msq_path)
+            ini = parse_ini(ini_path)
+            self.assertEqual(("70", "158"), ini.explicit_default_variants["dfcoMinCLT"])
+            self.assertEqual([], build_explicit_default_mismatch_report(msq, ini, ["dfcoMinCLT"]))
+            self.assertEqual([], build_contract_default_conflict_report(ini, ["dfcoMinCLT"]))
+
     def test_contract_default_conflict_report_finds_real_semantic_drift(self) -> None:
         with tempfile.TemporaryDirectory() as temp_dir_name:
             temp_dir = Path(temp_dir_name)
@@ -149,6 +188,7 @@ dfcoMinCLT = scalar, U08, 101, "C", 1.0, -40, -40, 215, 0
 
 defaultValue = idleAdvStartDelay, 0.2
 defaultValue = airConCompPol, 0
+defaultValue = dfcoMinCLT, 70
 defaultValue = dfcoMinCLT, 158
 """,
                 encoding="utf-8",
@@ -157,7 +197,6 @@ defaultValue = dfcoMinCLT, 158
             self.assertEqual(
                 [
                     "airConCompPol: fork_contract='Inverted', ini_defaultValue='Normal'",
-                    "dfcoMinCLT: fork_contract='70.0', ini_defaultValue='158'",
                     "idleAdvStartDelay: fork_contract='0.7', ini_defaultValue='0.2'",
                 ],
                 sorted(build_contract_default_conflict_report(parse_ini(ini_path))),

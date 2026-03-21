@@ -202,6 +202,7 @@ class IniAudit:
     signature: str
     constants: set[str]
     explicit_defaults: dict[str, str]
+    explicit_default_variants: dict[str, tuple[str, ...]]
     bit_options: dict[str, tuple[str, ...]]
 
 
@@ -250,11 +251,15 @@ def parse_ini(ini_path: Path) -> IniAudit:
     constants_block = _extract_constants_block(text)
     constant_names = _extract_ini_constant_names(constants_block)
     bit_options = _extract_ini_bit_options(constants_block)
-    explicit_defaults = _extract_ini_default_values(text, bit_options)
+    explicit_default_variants = _extract_ini_default_values(text, bit_options)
+    explicit_defaults = {
+        name: values[0] for name, values in explicit_default_variants.items() if values
+    }
     return IniAudit(
         signature=signature_match.group(1).strip(),
         constants=constant_names,
         explicit_defaults=explicit_defaults,
+        explicit_default_variants=explicit_default_variants,
         bit_options=bit_options,
     )
 
@@ -305,8 +310,8 @@ def _extract_ini_bit_options(constants_block: str) -> dict[str, tuple[str, ...]]
 
 def _extract_ini_default_values(
     text: str, bit_options: dict[str, tuple[str, ...]]
-) -> dict[str, str]:
-    defaults: dict[str, str] = {}
+) -> dict[str, tuple[str, ...]]:
+    defaults: dict[str, list[str]] = {}
     for raw_line in text.splitlines():
         line = raw_line.split(";", 1)[0].strip()
         if not line or line.startswith("#") or not line.startswith("defaultValue"):
@@ -316,8 +321,10 @@ def _extract_ini_default_values(
         if match is None:
             continue
         name = match.group(1)
-        defaults[name] = _normalize_ini_default_value(match.group(2), bit_options.get(name))
-    return defaults
+        defaults.setdefault(name, []).append(
+            _normalize_ini_default_value(match.group(2), bit_options.get(name))
+        )
+    return {name: tuple(values) for name, values in defaults.items()}
 
 
 def _normalize_ini_default_value(raw: str, bit_labels: tuple[str, ...] | None = None) -> str:
@@ -420,16 +427,16 @@ def build_explicit_default_mismatch_report(
 
     mismatches = []
     for name in candidate_names:
-        explicit_default = ini.explicit_defaults.get(name)
+        explicit_variants = ini.explicit_default_variants.get(name, ())
         actual = msq.constant_values.get(name)
         if (
-            explicit_default is None
+            not explicit_variants
             or actual is None
-            or _values_equivalent(explicit_default, actual)
+            or any(_values_equivalent(explicit_default, actual) for explicit_default in explicit_variants)
         ):
             continue
         mismatches.append(
-            f"{name}: tune={actual!r}, ini_defaultValue={explicit_default!r}"
+            f"{name}: tune={actual!r}, ini_defaultValue={_format_default_variants(explicit_variants)!r}"
         )
     return mismatches
 
@@ -449,15 +456,15 @@ def build_contract_default_conflict_report(
     conflicts = []
     for name in candidate_names:
         expected = CRITICAL_VALUE_EXPECTATIONS.get(name)
-        explicit_default = ini.explicit_defaults.get(name)
+        explicit_variants = ini.explicit_default_variants.get(name, ())
         if (
             expected is None
-            or explicit_default is None
-            or _values_equivalent(expected, explicit_default)
+            or not explicit_variants
+            or any(_values_equivalent(expected, explicit_default) for explicit_default in explicit_variants)
         ):
             continue
         conflicts.append(
-            f"{name}: fork_contract={expected!r}, ini_defaultValue={explicit_default!r}"
+            f"{name}: fork_contract={expected!r}, ini_defaultValue={_format_default_variants(explicit_variants)!r}"
         )
     return conflicts
 
@@ -490,6 +497,12 @@ def _try_parse_number(token: str) -> float | None:
         return float(token)
     except ValueError:
         return None
+
+
+def _format_default_variants(values: tuple[str, ...]) -> str:
+    if len(values) == 1:
+        return values[0]
+    return " / ".join(values)
 
 
 def _normalize_msq_constant_value(element: ET.Element) -> str:
