@@ -13,6 +13,12 @@ on:
   workflow_dispatch:
   repository_dispatch:
 
+permissions:
+  actions: read
+  contents: read
+  issues: write
+  pull-requests: write
+
 jobs:
   report:
     runs-on: ubuntu-latest
@@ -22,3 +28,4 @@ jobs:
         with:
           # The name of the workflow artifact created by the sketch compilation workflow
           sketches-reports-source: ^sketches-report-.+
+          github-token: ${{ secrets.GITHUB_TOKEN }}
