@@ -1,4 +1,107 @@
 {
-  "roadmap_records": [],
+  "roadmap_records": [
+    {
+      "roadmap_area": "Knock and pin/default policy",
+      "decoder_pattern": null,
+      "thread_title": "Speeduino Dropbear V2 Knock sensor pin not available in Tunerstudio",
+      "url": "https://speeduino.com/forum/viewtopic.php?p=73386#p73386",
+      "date": "Sat Oct 18, 2025 12:17 am",
+      "posted_by": "dazq",
+      "evidence_type": "maintainer explanation",
+      "summary": "[PVK](./memberlist.php?mode=viewprofile&u=10031) wrote: [↑](./viewtopic.php?p=73385#p73385) Fri Oct 17, 2025 9:40 pm I see now that Knock control is a feature of 202501: [https://github.com/speeduino/speeduino ... tag/202501](https://github.com/speeduino/speeduino/releases/tag/202501) Ik don't understand that I can't select the right Tunerstudio pin... As it says in that version , initial implementation, it is still under development by josh , that's what I meant by it not being a feature , as it's still WIP Suggest you post an issue on GitHub for the pin thing to be looked into (assuming it is not already logged)",
+      "why_it_matters": "Includes maintainer guidance, which is more reliable for roadmap decisions. Relevant to pin-selection policy and board-specific packaged settings.",
+      "specific_test_details": "",
+      "confidence": "low",
+      "score": 3.8,
+      "source_queries": [
+        "knock_pin"
+      ]
+    },
+    {
+      "roadmap_area": "Knock and pin/default policy",
+      "decoder_pattern": null,
+      "thread_title": "Speeduino Dropbear V2 Knock sensor pin not available in Tunerstudio",
+      "url": "https://speeduino.com/forum/viewtopic.php?p=73387#p73386",
+      "date": "Sat Oct 18, 2025 12:17 am",
+      "posted_by": "dazq",
+      "evidence_type": "maintainer explanation",
+      "summary": "[PVK](./memberlist.php?mode=viewprofile&u=10031) wrote: [↑](./viewtopic.php?p=73385#p73385) Fri Oct 17, 2025 9:40 pm I see now that Knock control is a feature of 202501: [https://github.com/speeduino/speeduino ... tag/202501](https://github.com/speeduino/speeduino/releases/tag/202501) Ik don't understand that I can't select the right Tunerstudio pin... As it says in that version , initial implementation, it is still under development by josh , that's what I meant by it not being a feature , as it's still WIP Suggest you post an issue on GitHub for the pin thing to be looked into (assuming it is not already logged)",
+      "why_it_matters": "Includes maintainer guidance, which is more reliable for roadmap decisions. Relevant to pin-selection policy and board-specific packaged settings.",
+      "specific_test_details": "",
+      "confidence": "low",
+      "score": 3.8,
+      "source_queries": [
+        "knock_pin"
+      ]
+    },
+    {
+      "roadmap_area": "Knock and pin/default policy",
+      "decoder_pattern": null,
+      "thread_title": "Speeduino Dropbear V2 Knock sensor pin not available in Tunerstudio",
+      "url": "https://speeduino.com/forum/viewtopic.php?p=73386#p73377",
+      "date": "Fri Oct 17, 2025 11:47 am",
+      "posted_by": "PVK",
+      "evidence_type": "technical discussion",
+      "summary": "I have a Speeduino Dropbear V2 and I want to add a Knock sensor with an external controller that puts out a digital High/Low signal. As seen here: [https://wiki.speeduino.com/en/boards/dropbear](https://wiki.speeduino.com/en/boards/dropbear) there is no dedicated pin available so I have to use one of the spare pins: Spare Digital 1: tunerstudio pin 35 Spare Digital 2: tunerstudio pin 34 Spare Analog 1 : Tunerstudio pin A16 Spare Analog 2 : Tunerstudio pin A17 The problem is that in Tunerstudio the pin that can be selected are: digital pins 2,3,18,19 and 20 or analog pins A0 - A15. I don’t understand that the firmware has the option for Knock sense but the right pin can’t be selected.",
+      "why_it_matters": "Relevant to pin-selection policy and board-specific packaged settings.",
+      "specific_test_details": "",
+      "confidence": "low",
+      "score": 3.45,
+      "source_queries": [
+        "knock_pin"
+      ]
+    },
+    {
+      "roadmap_area": "Knock and pin/default policy",
+      "decoder_pattern": null,
+      "thread_title": "Speeduino Dropbear V2 Knock sensor pin not available in Tunerstudio",
+      "url": "https://speeduino.com/forum/viewtopic.php?p=73387#p73377",
+      "date": "Fri Oct 17, 2025 11:47 am",
+      "posted_by": "PVK",
+      "evidence_type": "technical discussion",
+      "summary": "I have a Speeduino Dropbear V2 and I want to add a Knock sensor with an external controller that puts out a digital High/Low signal. As seen here: [https://wiki.speeduino.com/en/boards/dropbear](https://wiki.speeduino.com/en/boards/dropbear) there is no dedicated pin available so I have to use one of the spare pins: Spare Digital 1: tunerstudio pin 35 Spare Digital 2: tunerstudio pin 34 Spare Analog 1 : Tunerstudio pin A16 Spare Analog 2 : Tunerstudio pin A17 The problem is that in Tunerstudio the pin that can be selected are: digital pins 2,3,18,19 and 20 or analog pins A0 - A15. I don’t understand that the firmware has the option for Knock sense but the right pin can’t be selected.",
+      "why_it_matters": "Relevant to pin-selection policy and board-specific packaged settings.",
+      "specific_test_details": "",
+      "confidence": "low",
+      "score": 3.45,
+      "source_queries": [
+        "knock_pin"
+      ]
+    },
+    {
+      "roadmap_area": "Knock and pin/default policy",
+      "decoder_pattern": null,
+      "thread_title": "Speeduino Dropbear V2 Knock sensor pin not available in Tunerstudio",
+      "url": "https://speeduino.com/forum/viewtopic.php?p=73386#p73378",
+      "date": "Fri Oct 17, 2025 12:11 pm",
+      "posted_by": "dazq",
+      "evidence_type": "maintainer explanation",
+      "summary": "Knock sense is not yet an actual feature as it is still under development at this time.",
+      "why_it_matters": "Includes maintainer guidance, which is more reliable for roadmap decisions. Relevant to pin-selection policy and board-specific packaged settings.",
+      "specific_test_details": "",
+      "confidence": "low",
+      "score": 3.0,
+      "source_queries": [
+        "knock_pin"
+      ]
+    },
+    {
+      "roadmap_area": "Knock and pin/default policy",
+      "decoder_pattern": null,
+      "thread_title": "Speeduino Dropbear V2 Knock sensor pin not available in Tunerstudio",
+      "url": "https://speeduino.com/forum/viewtopic.php?p=73387#p73378",
+      "date": "Fri Oct 17, 2025 12:11 pm",
+      "posted_by": "dazq",
+      "evidence_type": "maintainer explanation",
+      "summary": "Knock sense is not yet an actual feature as it is still under development at this time.",
+      "why_it_matters": "Includes maintainer guidance, which is more reliable for roadmap decisions. Relevant to pin-selection policy and board-specific packaged settings.",
+      "specific_test_details": "",
+      "confidence": "low",
+      "score": 3.0,
+      "source_queries": [
+        "knock_pin"
+      ]
+    }
+  ],
   "decoder_records": []
 }

@@ -23,6 +23,13 @@ SPEC.loader.exec_module(collector)
 
 
 class SpeeduinoEvidenceCollectorTests(unittest.TestCase):
+    class FakeResponse:
+        def __init__(self, text: str) -> None:
+            self.text = text
+
+        def raise_for_status(self) -> None:
+            return None
+
     def test_resolve_output_path_uses_script_directory_for_relative_paths(self) -> None:
         resolved = collector.resolve_output_path("report.md")
         self.assertEqual(MODULE_PATH.parent / "report.md", resolved)
@@ -109,6 +116,10 @@ class SpeeduinoEvidenceCollectorTests(unittest.TestCase):
             side_effect=RuntimeError("ddg blocked"),
         ) as ddg, patch.object(
             collector,
+            "search_forum_site",
+            return_value=[fallback_hit],
+        ) as forum, patch.object(
+            collector,
             "search_bing_site",
             return_value=[fallback_hit],
         ) as bing:
@@ -121,7 +132,8 @@ class SpeeduinoEvidenceCollectorTests(unittest.TestCase):
             )
 
         ddg.assert_called_once()
-        bing.assert_called_once()
+        forum.assert_called_once()
+        bing.assert_not_called()
         self.assertEqual([fallback_hit], hits)
 
     def test_run_searches_disables_failed_primary_engine_after_threshold(self) -> None:
@@ -143,6 +155,10 @@ class SpeeduinoEvidenceCollectorTests(unittest.TestCase):
             side_effect=RuntimeError("ddg blocked"),
         ) as ddg, patch.object(
             collector,
+            "search_forum_site",
+            return_value=[fallback_hit],
+        ) as forum, patch.object(
+            collector,
             "search_bing_site",
             return_value=[fallback_hit],
         ) as bing:
@@ -156,8 +172,72 @@ class SpeeduinoEvidenceCollectorTests(unittest.TestCase):
             )
 
         self.assertEqual(2, ddg.call_count)
-        self.assertEqual(3, bing.call_count)
+        self.assertEqual(3, forum.call_count)
+        bing.assert_not_called()
         self.assertEqual(1, len(hits))
+
+    def test_search_bing_site_parses_rss_results(self) -> None:
+        rss = """<?xml version="1.0" encoding="utf-8" ?>
+<rss version="2.0">
+  <channel>
+    <item>
+      <title>Knock pin thread</title>
+      <link>https://speeduino.com/forum/viewtopic.php?t=123&amp;start=0</link>
+      <description>Discussion of knock_pin and A8.</description>
+    </item>
+    <item>
+      <title>Off-site result</title>
+      <link>https://example.com/post</link>
+      <description>Ignore this.</description>
+    </item>
+  </channel>
+</rss>
+"""
+        session = type("FakeSession", (), {})()
+        session.get = lambda *args, **kwargs: self.FakeResponse(rss)
+
+        hits = collector.search_bing_site(
+            session=session,
+            query="knock_pin",
+            delay=0.0,
+            label="Knock and pin/default policy",
+        )
+
+        self.assertEqual(1, len(hits))
+        self.assertEqual(
+            "https://speeduino.com/forum/viewtopic.php?t=123",
+            hits[0].url,
+        )
+        self.assertEqual("Knock pin thread", hits[0].title)
+
+    def test_search_forum_site_parses_phpbb_search_results(self) -> None:
+        html = """
+<html><body>
+  <div class="postrow_container">
+    <div class="well well-sm">
+      <h4><a href="./viewtopic.php?t=7211&amp;hilit=knock_pin&amp;sid=abc">Speeduino Dropbear V2 Knock sensor pin not available in Tunerstudio</a></h4>
+      <div class="content"><p>I now understand, thanks!</p></div>
+    </div>
+  </div>
+</body></html>
+"""
+        session = type("FakeSession", (), {})()
+        session.get = lambda *args, **kwargs: self.FakeResponse(html)
+
+        hits = collector.search_forum_site(
+            session=session,
+            query="knock_pin",
+            delay=0.0,
+            label="Knock and pin/default policy",
+        )
+
+        self.assertEqual(1, len(hits))
+        self.assertEqual(
+            "https://speeduino.com/forum/viewtopic.php?t=7211",
+            hits[0].url,
+        )
+        self.assertIn("Knock sensor pin", hits[0].title)
+        self.assertIn("I now understand", hits[0].snippet)
 
 
 if __name__ == "__main__":

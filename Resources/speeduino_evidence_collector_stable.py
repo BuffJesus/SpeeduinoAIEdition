@@ -6,6 +6,7 @@ import json
 import re
 import sys
 import time
+import xml.etree.ElementTree as ET
 from collections import defaultdict, deque
 from dataclasses import asdict, dataclass, field
 from html import unescape
@@ -20,9 +21,9 @@ from bs4 import BeautifulSoup
 USER_AGENT = "Mozilla/5.0 (compatible; SpeeduinoEvidenceCollector/3.0)"
 TIMEOUT = 30
 DEFAULT_DELAY = 1.0
-DEFAULT_SEARCH_ENGINE = "duckduckgo"
+DEFAULT_SEARCH_ENGINE = "forum"
 SCRIPT_DIR = Path(__file__).resolve().parent
-SEARCH_ENGINES = ("duckduckgo", "bing")
+SEARCH_ENGINES = ("forum", "bing", "duckduckgo")
 DEFAULT_ENGINE_FAILURE_THRESHOLD = 3
 
 MAINTAINER_NAMES = {
@@ -299,6 +300,7 @@ class EvidenceRecord:
     specific_test_details: str = ""
     confidence: str = "medium"
     score: float = 0.0
+    source_queries: list[str] = field(default_factory=list)
 
 
 def log(message: str) -> None:
@@ -398,24 +400,68 @@ def search_duckduckgo_site(session: requests.Session, query: str, delay: float, 
 def search_bing_site(session: requests.Session, query: str, delay: float, label: str) -> list[SearchHit]:
     params = {"q": f"site:speeduino.com/forum {query}"}
     log(f"[search:bing] {params['q']}")
-    response = session.get("https://www.bing.com/search", params=params, timeout=TIMEOUT)
+    response = session.get(
+        "https://www.bing.com/search",
+        params={**params, "format": "rss"},
+        timeout=TIMEOUT,
+    )
     response.raise_for_status()
-    soup = BeautifulSoup(response.text, "html.parser")
     hits: list[SearchHit] = []
+    root = ET.fromstring(response.text)
 
-    for result in soup.select("li.b_algo"):
-        anchor = result.select_one("h2 a") or result.find("a", href=True)
-        if not anchor:
+    for result in root.findall(".//item"):
+        link_text = (result.findtext("link") or "").strip()
+        if not link_text:
             continue
-        href = canonicalize_url(anchor.get("href", "").strip())
+        href = canonicalize_url(link_text)
         if "speeduino.com/forum/viewtopic.php" not in href:
             continue
         hits.append(
             SearchHit(
                 query=query,
-                title=text_or_empty(anchor),
+                title=normalize_ws(result.findtext("title") or href),
                 url=href,
-                snippet=text_or_empty(result.select_one(".b_caption")) or text_or_empty(result),
+                snippet=normalize_ws(result.findtext("description") or ""),
+                label=label,
+            )
+        )
+
+    time.sleep(delay)
+    return dedupe_hits(hits)
+
+
+def search_forum_site(session: requests.Session, query: str, delay: float, label: str) -> list[SearchHit]:
+    params = {
+        "keywords": query,
+        "terms": "all",
+        "sf": "all",
+        "sr": "posts",
+    }
+    log(f"[search:forum] {query}")
+    response = session.get(
+        "https://speeduino.com/forum/search.php",
+        params=params,
+        timeout=TIMEOUT,
+    )
+    response.raise_for_status()
+    soup = BeautifulSoup(response.text, "html.parser")
+    hits: list[SearchHit] = []
+
+    for result in soup.select("div.postrow_container div.well.well-sm"):
+        heading = result.select_one("h4 a[href*='viewtopic.php']")
+        snippet_node = result.select_one("div.content")
+        if not heading:
+            continue
+        href = urljoin("https://speeduino.com/forum/", heading.get("href", "").strip())
+        href = canonicalize_url(href)
+        if "speeduino.com/forum/viewtopic.php" not in href:
+            continue
+        hits.append(
+            SearchHit(
+                query=query,
+                title=text_or_empty(heading),
+                url=href,
+                snippet=text_or_empty(snippet_node) or text_or_empty(result),
                 label=label,
             )
         )
@@ -444,7 +490,9 @@ def run_searches(
             if engine_name in failed_engines:
                 continue
             try:
-                if engine_name == "bing":
+                if engine_name == "forum":
+                    hits = search_forum_site(session, query, delay, label)
+                elif engine_name == "bing":
                     hits = search_bing_site(session, query, delay, label)
                 else:
                     hits = search_duckduckgo_site(session, query, delay, label)
@@ -478,11 +526,12 @@ def run_searches(
 
 
 def build_search_engine_fallback_order(primary_engine: str) -> list[str]:
-    ordered = [primary_engine]
-    for candidate in SEARCH_ENGINES:
-        if candidate != primary_engine:
-            ordered.append(candidate)
-    return ordered
+    fallback_preference = {
+        "forum": ["forum", "bing", "duckduckgo"],
+        "bing": ["bing", "forum", "duckduckgo"],
+        "duckduckgo": ["duckduckgo", "forum", "bing"],
+    }
+    return fallback_preference.get(primary_engine, [primary_engine, *SEARCH_ENGINES])
 
 
 def html_fragment_to_markdown(node) -> str:
@@ -939,6 +988,7 @@ def build_roadmap_records(threads: list[tuple[str, ThreadData]]) -> list[Evidenc
                     specific_test_details=details,
                     confidence=confidence_from_post(post),
                     score=post.score,
+                    source_queries=list(thread.source_queries),
                 )
             )
     return sorted(out, key=lambda item: (item.roadmap_area or "", -item.score, item.thread_title))
@@ -971,6 +1021,7 @@ def build_decoder_records(threads: list[tuple[str, ThreadData]]) -> list[Evidenc
                     specific_test_details=details,
                     confidence=confidence_from_post(post),
                     score=post.score,
+                    source_queries=list(thread.source_queries),
                 )
             )
     return sorted(out, key=lambda item: (item.decoder_pattern or "", -item.score, item.thread_title))
@@ -1085,8 +1136,8 @@ def render_markdown(
                     f"- Specific details: {record.specific_test_details or 'None extracted'}",
                     (
                         "- Matched search terms: "
-                        + ", ".join(thread.source_queries)
-                        if thread.source_queries
+                        + ", ".join(record.source_queries)
+                        if record.source_queries
                         else "- Matched search terms: None retained"
                     ),
                     "",
@@ -1137,8 +1188,8 @@ def render_markdown(
                     f"- Replay-test details: {record.specific_test_details or 'None extracted'}",
                     (
                         "- Matched search terms: "
-                        + ", ".join(thread.source_queries)
-                        if thread.source_queries
+                        + ", ".join(record.source_queries)
+                        if record.source_queries
                         else "- Matched search terms: None retained"
                     ),
                     "",
@@ -1292,7 +1343,7 @@ def main() -> int:
     parser.add_argument("--output-markdown", default="speeduino_forum_evidence.md")
     parser.add_argument("--output-json", default="speeduino_forum_evidence.json")
     parser.add_argument("--delay", type=float, default=DEFAULT_DELAY)
-    parser.add_argument("--search-engine", choices=["duckduckgo", "bing"], default=DEFAULT_SEARCH_ENGINE)
+    parser.add_argument("--search-engine", choices=list(SEARCH_ENGINES), default=DEFAULT_SEARCH_ENGINE)
     parser.add_argument("--per-query-limit", type=int, default=5)
     parser.add_argument("--limit-results", type=int, default=0)
     parser.add_argument(
