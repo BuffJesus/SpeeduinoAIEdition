@@ -12,6 +12,7 @@
   - rolling-cut defaults
   - DFCO defaults
   - launch defaults
+  - idle-advance defaults
   - idle-up defaults
   - VSS defaults
   - WMI defaults
@@ -21,7 +22,8 @@
 - Added normalized `.msq` constant-value extraction so scalar and array values can be compared in a stable way
 - Updated [test_stock_base_tune_compat.py](C:/Users/Cornelio/Desktop/speeduino-202501.6/tools/tests/test_stock_base_tune_compat.py) so the fork-owned tune must satisfy every checked critical value
 - Added a release-path unit test so the shipped [speeduino-dropbear-v2.0.1-base-tune.msq](C:/Users/Cornelio/Desktop/speeduino-202501.6/release/speeduino-dropbear-v2.0.1-base-tune.msq) must satisfy the same value contract against [speeduino-dropbear-v2.0.1.ini](C:/Users/Cornelio/Desktop/speeduino-202501.6/release/speeduino-dropbear-v2.0.1.ini)
-- The fork-owned and release tunes already matched the new idle-up / VSS / WMI / oil-pressure / fan defaults, so no `.msq` value changes were needed for these audit-only slices
+- The fork-owned and release tunes already matched the new idle-advance / idle-up / VSS / WMI / oil-pressure / fan defaults, so no `.msq` value changes were needed for these audit-only slices
+- Evaluated boost/VVT for the next extension, but did not lock it into the contract because several current tune values do not line up with explicit `defaultValue` entries in [speeduino.ini](C:/Users/Cornelio/Desktop/speeduino-202501.6/speeduino.ini); that needs a policy or code-level clarification before it is safe to audit as “expected defaults”
 
 ## Critical Default Contract Now Enforced
 
@@ -43,6 +45,17 @@
   - `launchEnable = No`
   - `launchHiLo = LOW`
   - `lnchCtrlVss = 255`
+- Idle advance:
+  - `idleAdvEnabled = Off`
+  - `idleAdvAlgorithm = TPS`
+  - `idleAdvDelay = 2.0`
+  - `idleAdvRPM = 2000.0`
+  - `idleAdvTPS = 4.0`
+  - `idleTaperTime = 5.0`
+  - `idleAdvStartDelay = 0.7`
+  - `idleAdvVss = 255.0`
+  - `idleAdvBins = -200 -100 -50 50 100 200`
+  - `idleAdvValues = 0 0 0 0 0 0`
 - Idle-up:
   - `idleUpPin = Board Default`
   - `idleUpPolarity = Normal`
@@ -125,7 +138,7 @@
 - Surface compatibility alone was not enough; the fork-owned and release-packaged tunes could still have silently retained stock defaults in fork-touched areas
 - The repo now enforces both:
   - field presence / round-trippable surface compatibility
-  - 82 selected semantic defaults for the fields this fork has materially changed
+  - 92 selected semantic defaults for the fields this fork has materially changed
 
 ## Current State
 
@@ -147,4 +160,4 @@
 
 ## Recommended Prompt For Next Session
 
-`Continue from SESSION_HANDOFF_2026-03-21_TUNE_DEFAULT_VALUES.md. The compatibility audit now enforces both the round-trippable tune surface and an 82-check fork-default contract across knock, rolling cut, DFCO, launch, idle-up, VSS, WMI, oil pressure, fan, and air-con. The fork-owned and release-packaged tunes pass; the unchanged stock tune remains the intentional failing control. Next slice: either keep growing the default contract into adjacent config clusters like idle advance or boost/VVT/WMI tables, or formalize fork divergence with a signature bump.` 
+`Continue from SESSION_HANDOFF_2026-03-21_TUNE_DEFAULT_VALUES.md. The compatibility audit now enforces both the round-trippable tune surface and a 92-check fork-default contract across knock, rolling cut, DFCO, launch, idle advance, idle-up, VSS, WMI, oil pressure, fan, and air-con. The fork-owned and release-packaged tunes pass; the unchanged stock tune remains the intentional failing control. Boost/VVT was evaluated but deferred because current tune values conflict with explicit INI defaultValue entries. Next slice: resolve that boost/VVT default-source ambiguity, or formalize fork divergence with a signature bump.` 
