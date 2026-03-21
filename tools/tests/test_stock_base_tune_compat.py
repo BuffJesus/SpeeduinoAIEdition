@@ -201,12 +201,42 @@ defaultValue = dfcoMinCLT, 158
                 encoding="utf-8",
             )
 
+            self.assertEqual([], build_contract_default_conflict_report(parse_ini(ini_path)))
+
+    def test_contextual_contract_exemption_report_captures_wiring_and_tuning_cases(self) -> None:
+        with tempfile.TemporaryDirectory() as temp_dir_name:
+            temp_dir = Path(temp_dir_name)
+            ini_path = temp_dir / "test.ini"
+            ini_path.write_text(
+                """signature = "speeduino 202501"
+
+[Constants]
+airConCompPol = bits, U08, 83, [1:1], "Normal", "Inverted"
+idleAdvStartDelay = scalar, U08, 155, "S", 0.1, 0.0, 0.0, 25.5, 1
+
+defaultValue = airConCompPol, 0
+defaultValue = idleAdvStartDelay, 0.2
+""",
+                encoding="utf-8",
+            )
+
+            ini = parse_ini(ini_path)
+            self.assertEqual(
+                [],
+                build_contract_default_conflict_report(
+                    ini, ["airConCompPol", "idleAdvStartDelay"]
+                ),
+            )
             self.assertEqual(
                 [
-                    "airConCompPol: fork_contract='Inverted', ini_defaultValue='Normal'",
-                    "idleAdvStartDelay: fork_contract='0.7', ini_defaultValue='0.2'",
+                    "airConCompPol: fork_contract='Inverted'; ini_defaultValue='Normal'; reason="
+                    "'A/C compressor output polarity is wiring-dependent; the INI says Normal is most common, but stock and fork tunes both ship Inverted and runtime macros flip output state directly from this field.'",
+                    "idleAdvStartDelay: fork_contract='0.7'; ini_defaultValue='0.2'; reason="
+                    "'The manual describes this as a settle delay before idle advance control begins, so it is a tuning choice rather than a universal default; stock and fork tunes both use 0.7.'",
                 ],
-                sorted(build_contract_default_conflict_report(parse_ini(ini_path))),
+                build_contextual_contract_exemption_report(
+                    ini, ["airConCompPol", "idleAdvStartDelay"]
+                ),
             )
 
     def test_contextual_contract_exemption_report_captures_vss_disabled_case(self) -> None:
@@ -267,7 +297,6 @@ defaultValue = knock_pin, 57
 
             self.assertEqual(
                 [
-                    "idleAdvStartDelay: inherited_from_stock_tune; fork_contract='0.7'; stock_tune='0.7'; ini_defaultValue='0.2'",
                     "knock_pin: fork_and_stock_both_differ_from_ini_default; fork_contract='A8'; stock_tune='3'; ini_defaultValue='A10'",
                 ],
                 sorted(
@@ -301,16 +330,30 @@ defaultValue = knock_pin, 57
         )
         self.assertEqual(
             {
-                "airConCompPol": "inherited_from_stock_tune",
-                "airConReqPol": "inherited_from_stock_tune",
-                "idleAdvStartDelay": "inherited_from_stock_tune",
-                "idleTaperTime": "inherited_from_stock_tune",
                 "knock_pin": "fork_and_stock_both_differ_from_ini_default",
             },
             EXPECTED_CONTRACT_CONFLICT_CLASSIFICATIONS,
         )
         self.assertEqual(
             {
+                "airConCompPol": (
+                    "A/C compressor output polarity is wiring-dependent; the INI says Normal is most common, "
+                    "but stock and fork tunes both ship Inverted and runtime macros flip output state directly "
+                    "from this field."
+                ),
+                "airConReqPol": (
+                    "A/C request input polarity is wiring-dependent; the INI says Normal is most common, "
+                    "but stock and fork tunes both ship Inverted and runtime request sampling branches "
+                    "directly on this field."
+                ),
+                "idleAdvStartDelay": (
+                    "The manual describes this as a settle delay before idle advance control begins, so it is "
+                    "a tuning choice rather than a universal default; stock and fork tunes both use 0.7."
+                ),
+                "idleTaperTime": (
+                    "The manual and runtime code treat this as the crank-to-run idle taper duration, so it is "
+                    "a tuning choice rather than a universal default; stock and fork tunes both use 5.0."
+                ),
                 "vssPulsesPerKm": (
                     "With VSS input mode Off, the manual says VSS is unused and runtime code treats "
                     "0 as no dividing/disabled for aux-channel speed input."

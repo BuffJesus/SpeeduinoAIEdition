@@ -186,14 +186,28 @@ CRITICAL_VALUE_EXPECTATIONS = {
 }
 
 EXPECTED_CONTRACT_CONFLICT_CLASSIFICATIONS = {
-    "airConCompPol": "inherited_from_stock_tune",
-    "airConReqPol": "inherited_from_stock_tune",
-    "idleAdvStartDelay": "inherited_from_stock_tune",
-    "idleTaperTime": "inherited_from_stock_tune",
     "knock_pin": "fork_and_stock_both_differ_from_ini_default",
 }
 
 CONTEXTUAL_CONTRACT_DEFAULT_EXEMPTIONS = {
+    "airConCompPol": (
+        "A/C compressor output polarity is wiring-dependent; the INI says Normal is most common, "
+        "but stock and fork tunes both ship Inverted and runtime macros flip output state directly "
+        "from this field."
+    ),
+    "airConReqPol": (
+        "A/C request input polarity is wiring-dependent; the INI says Normal is most common, "
+        "but stock and fork tunes both ship Inverted and runtime request sampling branches "
+        "directly on this field."
+    ),
+    "idleAdvStartDelay": (
+        "The manual describes this as a settle delay before idle advance control begins, so it is "
+        "a tuning choice rather than a universal default; stock and fork tunes both use 0.7."
+    ),
+    "idleTaperTime": (
+        "The manual and runtime code treat this as the crank-to-run idle taper duration, so it is "
+        "a tuning choice rather than a universal default; stock and fork tunes both use 5.0."
+    ),
     "vssPulsesPerKm": (
         "With VSS input mode Off, the manual says VSS is unused and runtime code treats "
         "0 as no dividing/disabled for aux-channel speed input."
@@ -705,12 +719,7 @@ def _is_satisfied_by_parent_array_alias(name: str, msq_constants: set[str]) -> b
 
 
 def _is_contextually_exempt_contract_conflict(name: str) -> bool:
-    if name == "vssPulsesPerKm":
-        return (
-            CRITICAL_VALUE_EXPECTATIONS.get("vssMode") == "Off"
-            and _values_equivalent(CRITICAL_VALUE_EXPECTATIONS.get(name, ""), "0")
-        )
-    return False
+    return name in CONTEXTUAL_CONTRACT_DEFAULT_EXEMPTIONS
 
 
 def _values_equivalent(left: str, right: str) -> bool:

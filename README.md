@@ -258,12 +258,12 @@ python tools/check_stock_base_tune_compat.py --msq "Resources/Speeduino AI base 
 - Release bundle base tune audit passes for [speeduino-dropbear-v2.0.1-base-tune.msq](release/speeduino-dropbear-v2.0.1-base-tune.msq) against [speeduino-dropbear-v2.0.1.ini](release/speeduino-dropbear-v2.0.1.ini), including the same 92 selected fork-critical default values
 - The audit tool now also parses 230 explicit INI `defaultValue` entries, decodes bitfield defaults to their display values, and can report tune-vs-INI-default mismatches separately from the fork-owned contract
 - Current explicit-default mismatches are narrowed to `idleAdvStartDelay`, `idleTaperTime`, `boostCutEnabled`, `boostMinDuty`, `boostMaxDuty`, `vvtCL0DutyAng`, `vvtMinClt`, and `vvtDelay`, with unit-aware defaults now shown where applicable such as `vvtMinClt = 70 / 160`
-- A separate contract-vs-INI-default report now shows the five remaining active source-of-truth conflicts inside the enforced contract itself: `airConCompPol`, `airConReqPol`, `idleAdvStartDelay`, `idleTaperTime`, and `knock_pin`
-- `vssPulsesPerKm` is now treated as a contextual exemption rather than an active conflict, because the manual says VSS should be set `Off` when unused and runtime code treats `0` as disabled/no dividing in that mode
-- A stock-origin classification report now shows that four of the five active conflicts are inherited from the unchanged stock base tune (`airConCompPol`, `airConReqPol`, `idleAdvStartDelay`, `idleTaperTime`), while `knock_pin` is the only remaining fork-specific divergence from both the stock tune and the INI default
-- The origin report now prints counts as well, so the current policy surface is immediately visible as `inherited_from_stock_tune=4` and `fork_and_stock_both_differ_from_ini_default=1`
+- The only remaining active contract-vs-INI-default conflict inside the enforced contract is now `knock_pin`
+- `airConCompPol`, `airConReqPol`, `idleAdvStartDelay`, `idleTaperTime`, and `vssPulsesPerKm` are all treated as contextual exemptions rather than active conflicts, because they are wiring-dependent or tune-dependent settings with direct support from the manual, INI help text, and runtime behavior
+- A stock-origin classification report now shows only one active conflict, and it is fork-specific: `knock_pin`
+- The origin report now prints counts as well, so the current active policy surface is immediately visible as `fork_and_stock_both_differ_from_ini_default=1`
 - The repo now machine-checks that exact classification baseline, so future work must either preserve it or update the expected policy map deliberately
-- A policy-evidence report now ties each active conflict and exemption to the concrete project source that justifies it: manual pages, INI help text, and runtime code paths
+- A policy-evidence report now ties the one active conflict plus all contextual exemptions to the concrete project source that justifies them: manual pages, INI help text, and runtime code paths
 - Other unit-test suites remain in regular use for regression checking
 
 Note: local Windows `pio test` invocations in this workspace can still hit wrapper/file-lock issues intermittently even when the produced simulator binary itself runs cleanly.
