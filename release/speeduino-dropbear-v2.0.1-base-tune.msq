@@ -2393,19 +2393,19 @@
         <constant name="airConUnused2">"3"</constant>
         <constant name="airConReqPin">"Unused"</constant>
         <constant name="airConUnused3">"3"</constant>
-        <constant digits="1" name="airConTPSCut" units="%">50.0</constant>
+        <constant digits="1" name="airConTPSCut" units="%">65.0</constant>
         <constant digits="0" name="airConMinRPM" units="RPM">500.0</constant>
-        <constant digits="0" name="airConMaxRPM" units="RPM">4000.0</constant>
-        <constant digits="0" name="airConClTempCut" units="C">95.0</constant>
-        <constant digits="0" name="airConIdleSteps" units="%/Steps">10.0</constant>
-        <constant digits="1" name="airConTPSCutTime" units="s">10.0</constant>
-        <constant digits="1" name="airConCompOnDelay" units="s">1.0</constant>
+        <constant digits="0" name="airConMaxRPM" units="RPM">4700.0</constant>
+        <constant digits="0" name="airConClTempCut" units="C">120.0</constant>
+        <constant digits="0" name="airConIdleSteps" units="%/Steps">0.0</constant>
+        <constant digits="1" name="airConTPSCutTime" units="s">5.0</constant>
+        <constant digits="1" name="airConCompOnDelay" units="s">0.4</constant>
         <constant digits="1" name="airConAfterStartDelay" units="s">5.0</constant>
-        <constant digits="1" name="airConRPMCutTime" units="s">10.0</constant>
+        <constant digits="1" name="airConRPMCutTime" units="s">5.0</constant>
         <constant name="airConFanPin">"Unused"</constant>
         <constant name="airConUnused4">"3"</constant>
-        <constant digits="0" name="airConIdleUpRPMAdder" units="Added Target RPM">200.0</constant>
-        <constant digits="1" name="airConPwmFanMinDuty" units="%">30.0</constant>
+        <constant digits="0" name="airConIdleUpRPMAdder" units="Added Target RPM">100.0</constant>
+        <constant digits="1" name="airConPwmFanMinDuty" units="%">80.0</constant>
         <constant cols="1" digits="0" name="rollingProtRPMDelta" rows="4" units="RPM">
          -300.0 
          -200.0 

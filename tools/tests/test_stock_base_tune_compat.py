@@ -79,6 +79,20 @@ requiresPowerCycle = knock_mode
         for name, expected in CRITICAL_VALUE_EXPECTATIONS.items():
             self.assertEqual(expected, msq.constant_values.get(name), name)
 
+    def test_release_base_tune_matches_current_release_ini(self) -> None:
+        repo_root = Path(__file__).resolve().parents[2]
+        msq = parse_msq(
+            repo_root / "release" / "speeduino-dropbear-v2.0.1-base-tune.msq"
+        )
+        ini = parse_ini(repo_root / "release" / "speeduino-dropbear-v2.0.1.ini")
+
+        self.assertEqual([], evaluate_compatibility(msq, ini))
+        self.assertEqual("speeduino 202501", msq.signature)
+        self.assertEqual(msq.n_pages, msq.numbered_page_count)
+        self.assertEqual(16, msq.total_page_nodes)
+        for name, expected in CRITICAL_VALUE_EXPECTATIONS.items():
+            self.assertEqual(expected, msq.constant_values.get(name), name)
+
     def test_signature_mismatch_is_reported(self) -> None:
         with tempfile.TemporaryDirectory() as temp_dir_name:
             temp_dir = Path(temp_dir_name)
