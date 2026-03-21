@@ -6,6 +6,7 @@ from pathlib import Path
 
 from tools.check_stock_base_tune_compat import (
     CRITICAL_VALUE_EXPECTATIONS,
+    EXPECTED_CONTRACT_CONFLICT_CLASSIFICATIONS,
     HIGH_RISK_CONSTANTS,
     KNOWN_EXTRA_MSQ_CONSTANTS,
     KNOWN_STOCK_BASE_TUNE_GAPS,
@@ -15,6 +16,7 @@ from tools.check_stock_base_tune_compat import (
     evaluate_compatibility,
     parse_ini,
     parse_msq,
+    verify_expected_contract_conflict_classifications,
 )
 
 
@@ -258,6 +260,27 @@ defaultValue = knock_pin, 57
                     "fork_and_stock_both_differ_from_ini_default",
                 ),
             )
+
+    def test_verify_expected_contract_conflicts_matches_real_repo_state(self) -> None:
+        repo_root = Path(__file__).resolve().parents[2]
+        ini = parse_ini(repo_root / "speeduino.ini")
+        stock_msq = parse_msq(repo_root / "Resources" / "Speeduino base tune.msq")
+
+        self.assertEqual(
+            [],
+            verify_expected_contract_conflict_classifications(ini, stock_msq),
+        )
+        self.assertEqual(
+            {
+                "airConCompPol": "inherited_from_stock_tune",
+                "airConReqPol": "inherited_from_stock_tune",
+                "idleAdvStartDelay": "inherited_from_stock_tune",
+                "idleTaperTime": "inherited_from_stock_tune",
+                "knock_pin": "fork_and_stock_both_differ_from_ini_default",
+                "vssPulsesPerKm": "inherited_from_stock_tune",
+            },
+            EXPECTED_CONTRACT_CONFLICT_CLASSIFICATIONS,
+        )
 
     def test_real_stock_tune_flags_known_missing_knock_limiter_disable(self) -> None:
         repo_root = Path(__file__).resolve().parents[2]

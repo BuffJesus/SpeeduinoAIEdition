@@ -185,6 +185,15 @@ CRITICAL_VALUE_EXPECTATIONS = {
     "airConPwmFanMinDuty": "80.0",
 }
 
+EXPECTED_CONTRACT_CONFLICT_CLASSIFICATIONS = {
+    "airConCompPol": "inherited_from_stock_tune",
+    "airConReqPol": "inherited_from_stock_tune",
+    "idleAdvStartDelay": "inherited_from_stock_tune",
+    "idleTaperTime": "inherited_from_stock_tune",
+    "knock_pin": "fork_and_stock_both_differ_from_ini_default",
+    "vssPulsesPerKm": "inherited_from_stock_tune",
+}
+
 
 @dataclass(frozen=True)
 class MsqAudit:
@@ -541,6 +550,59 @@ def summarize_contract_conflict_origins(
     return counts
 
 
+def verify_expected_contract_conflict_classifications(
+    ini: IniAudit, stock_msq: MsqAudit
+) -> list[str]:
+    actual_entries = {
+        name: classification
+        for name, classification, _, _, _ in build_contract_conflict_origin_entries(
+            ini, stock_msq
+        )
+    }
+    failures: list[str] = []
+
+    missing = sorted(
+        name
+        for name in EXPECTED_CONTRACT_CONFLICT_CLASSIFICATIONS
+        if name not in actual_entries
+    )
+    if missing:
+        failures.append(
+            "Expected classified contract conflicts are missing: " + ", ".join(missing)
+        )
+
+    unexpected = sorted(
+        name
+        for name in actual_entries
+        if name not in EXPECTED_CONTRACT_CONFLICT_CLASSIFICATIONS
+    )
+    if unexpected:
+        failures.append(
+            "Unclassified contract conflicts are present: " + ", ".join(unexpected)
+        )
+
+    mismatched = sorted(
+        (
+            name,
+            EXPECTED_CONTRACT_CONFLICT_CLASSIFICATIONS[name],
+            actual_entries[name],
+        )
+        for name in EXPECTED_CONTRACT_CONFLICT_CLASSIFICATIONS
+        if name in actual_entries
+        if EXPECTED_CONTRACT_CONFLICT_CLASSIFICATIONS[name] != actual_entries[name]
+    )
+    if mismatched:
+        failures.append(
+            "Contract conflict classifications differ: "
+            + ", ".join(
+                f"{name}={actual!r} (expected {expected!r})"
+                for name, expected, actual in mismatched
+            )
+        )
+
+    return failures
+
+
 def _is_satisfied_by_parent_array_alias(name: str, msq_constants: set[str]) -> bool:
     parent_name = KNOWN_ARRAY_ALIAS_PARENTS.get(name)
     return parent_name is not None and parent_name in msq_constants
@@ -634,6 +696,14 @@ def main(argv: list[str] | None = None) -> int:
         ),
         help="When reporting contract-conflict origins, restrict output to one classification.",
     )
+    parser.add_argument(
+        "--verify-expected-contract-conflicts",
+        action="store_true",
+        help=(
+            "Verify that the current contract-vs-default conflict set matches the "
+            "repo's expected classified baseline."
+        ),
+    )
     args = parser.parse_args(argv)
 
     try:
@@ -695,6 +765,27 @@ def main(argv: list[str] | None = None) -> int:
                 print(f"- {item}")
         else:
             print("- None")
+    if args.verify_expected_contract_conflicts:
+        if stock_msq is None:
+            stock_msq = parse_msq(args.stock_msq)
+        failures = verify_expected_contract_conflict_classifications(ini, stock_msq)
+        print("\nExpected Contract Conflict Classification Check:")
+        if failures:
+            for failure in failures:
+                print(f"- {failure}")
+        else:
+            print("- Current contract conflict classification matches the expected baseline.")
+            print(
+                "- Expected counts: "
+                + ", ".join(
+                    f"{name}={count}"
+                    for name, count in sorted(
+                        summarize_contract_conflict_origins(ini, stock_msq).items()
+                    )
+                )
+            )
+        if failures:
+            return 1
 
     failures = evaluate_compatibility(msq, ini)
     if failures:

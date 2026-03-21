@@ -234,6 +234,9 @@ python tools/check_stock_base_tune_compat.py --msq "Resources/Speeduino AI base 
 
 # Show only fork-specific contract/default conflicts
 python tools/check_stock_base_tune_compat.py --msq "Resources/Speeduino AI base tune.msq" --stock-msq "Resources/Speeduino base tune.msq" --report-contract-conflict-origins --contract-origin-filter fork_and_stock_both_differ_from_ini_default
+
+# Verify the current classified conflict baseline
+python tools/check_stock_base_tune_compat.py --msq "Resources/Speeduino AI base tune.msq" --stock-msq "Resources/Speeduino base tune.msq" --verify-expected-contract-conflicts
 ```
 
 ### Current Test Status
@@ -252,6 +255,7 @@ python tools/check_stock_base_tune_compat.py --msq "Resources/Speeduino AI base 
 - A separate contract-vs-INI-default report now shows the six remaining source-of-truth conflicts inside the enforced contract itself: `airConCompPol`, `airConReqPol`, `idleAdvStartDelay`, `idleTaperTime`, `knock_pin`, and `vssPulsesPerKm`
 - A stock-origin classification report now shows that five of those six conflicts are inherited from the unchanged stock base tune (`airConCompPol`, `airConReqPol`, `idleAdvStartDelay`, `idleTaperTime`, `vssPulsesPerKm`), while `knock_pin` is the only remaining fork-specific divergence from both the stock tune and the INI default
 - The origin report now prints counts as well, so the current policy surface is immediately visible as `inherited_from_stock_tune=5` and `fork_and_stock_both_differ_from_ini_default=1`
+- The repo now machine-checks that exact classification baseline, so future work must either preserve it or update the expected policy map deliberately
 - Other unit-test suites remain in regular use for regression checking
 
 Note: local Windows `pio test` invocations in this workspace can still hit wrapper/file-lock issues intermittently even when the produced simulator binary itself runs cleanly.
