@@ -11,10 +11,12 @@ from tools.check_stock_base_tune_compat import (
     HIGH_RISK_CONSTANTS,
     KNOWN_EXTRA_MSQ_CONSTANTS,
     KNOWN_STOCK_BASE_TUNE_GAPS,
+    POLICY_EVIDENCE_NOTES,
     build_contextual_contract_exemption_report,
     build_contract_conflict_origin_report,
     build_contract_default_conflict_report,
     build_explicit_default_mismatch_report,
+    build_policy_evidence_report,
     evaluate_compatibility,
     parse_ini,
     parse_msq,
@@ -315,6 +317,17 @@ defaultValue = knock_pin, 57
                 )
             },
             CONTEXTUAL_CONTRACT_DEFAULT_EXEMPTIONS,
+        )
+        evidence_report = build_policy_evidence_report(ini, stock_msq)
+        self.assertEqual(
+            set(EXPECTED_CONTRACT_CONFLICT_CLASSIFICATIONS)
+            | set(CONTEXTUAL_CONTRACT_DEFAULT_EXEMPTIONS),
+            {line.split(":", 1)[0] for line in evidence_report},
+        )
+        self.assertEqual(
+            set(EXPECTED_CONTRACT_CONFLICT_CLASSIFICATIONS)
+            | set(CONTEXTUAL_CONTRACT_DEFAULT_EXEMPTIONS),
+            set(POLICY_EVIDENCE_NOTES),
         )
 
     def test_real_stock_tune_flags_known_missing_knock_limiter_disable(self) -> None:

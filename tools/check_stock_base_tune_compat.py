@@ -200,6 +200,34 @@ CONTEXTUAL_CONTRACT_DEFAULT_EXEMPTIONS = {
     ),
 }
 
+POLICY_EVIDENCE_NOTES = {
+    "airConCompPol": (
+        "INI help text says Normal should be used in most cases, but stock and fork tunes both "
+        "ship Inverted; compressor output macros in auxiliaries.h flip active state on airConCompPol."
+    ),
+    "airConReqPol": (
+        "INI help text says Normal should be used in most cases, but stock and fork tunes both "
+        "ship Inverted; READ_AIRCON_REQUEST() in auxiliaries.cpp branches directly on airConReqPol."
+    ),
+    "idleAdvStartDelay": (
+        "Manual page 86 describes Delay before idle control as the settle time before ignition advance "
+        "changes; stock and fork tunes both use 0.7 while INI defaultValue remains 0.2."
+    ),
+    "idleTaperTime": (
+        "idle.cpp uses idleTaperTime as the crank-to-run taper duration for idle load transition; "
+        "stock and fork tunes both use 5.0 while INI defaultValue remains 1.0."
+    ),
+    "knock_pin": (
+        "Stock tune uses pin 3, INI defaultValue points to A10, and the fork contract intentionally "
+        "pins knock input to A8 for the current knock baseline; init.cpp and sensors.cpp consume "
+        "knock_pin directly for digital interrupt and analog translation setup."
+    ),
+    "vssPulsesPerKm": (
+        "Manual pages 97-98 say VSS should be set Off when unused and pulses-per-km is only for active "
+        "VSS calibration; sensors.cpp treats 0 as no dividing/disabled for aux-channel VSS mode."
+    ),
+}
+
 
 @dataclass(frozen=True)
 class MsqAudit:
@@ -586,6 +614,38 @@ def build_contextual_contract_exemption_report(
     return exemptions
 
 
+def build_policy_evidence_report(
+    ini: IniAudit, stock_msq: MsqAudit, names: list[str] | None = None
+) -> list[str]:
+    if names is None:
+        candidate_names = sorted(
+            set(EXPECTED_CONTRACT_CONFLICT_CLASSIFICATIONS)
+            | set(CONTEXTUAL_CONTRACT_DEFAULT_EXEMPTIONS)
+        )
+    else:
+        candidate_names = names
+
+    origin_map = {
+        entry.split(":", 1)[0]: entry
+        for entry in build_contract_conflict_origin_report(ini, stock_msq)
+    }
+    exemption_map = {
+        entry.split(":", 1)[0]: entry
+        for entry in build_contextual_contract_exemption_report(ini)
+    }
+
+    report = []
+    for name in candidate_names:
+        note = POLICY_EVIDENCE_NOTES.get(name)
+        if note is None:
+            continue
+        if name in origin_map:
+            report.append(f"{origin_map[name]}; evidence={note!r}")
+        elif name in exemption_map:
+            report.append(f"{exemption_map[name]}; evidence={note!r}")
+    return report
+
+
 def verify_expected_contract_conflict_classifications(
     ini: IniAudit, stock_msq: MsqAudit
 ) -> list[str]:
@@ -758,6 +818,15 @@ def main(argv: list[str] | None = None) -> int:
             "from the active conflict set."
         ),
     )
+    parser.add_argument(
+        "--report-policy-evidence",
+        nargs="*",
+        metavar="NAME",
+        help=(
+            "Print the current classified conflict/exemption policy items together with the "
+            "embedded evidence notes used to justify them."
+        ),
+    )
     args = parser.parse_args(argv)
 
     try:
@@ -846,6 +915,20 @@ def main(argv: list[str] | None = None) -> int:
             None if not args.report_contextual_contract_exemptions else args.report_contextual_contract_exemptions,
         )
         print("\nContextual Contract Exemptions:")
+        if report:
+            for item in report:
+                print(f"- {item}")
+        else:
+            print("- None")
+    if args.report_policy_evidence is not None:
+        if stock_msq is None:
+            stock_msq = parse_msq(args.stock_msq)
+        report = build_policy_evidence_report(
+            ini,
+            stock_msq,
+            None if not args.report_policy_evidence else args.report_policy_evidence,
+        )
+        print("\nPolicy Evidence:")
         if report:
             for item in report:
                 print(f"- {item}")
