@@ -5,6 +5,7 @@ import unittest
 from pathlib import Path
 
 from tools.check_stock_base_tune_compat import (
+    CRITICAL_VALUE_EXPECTATIONS,
     HIGH_RISK_CONSTANTS,
     KNOWN_EXTRA_MSQ_CONSTANTS,
     KNOWN_STOCK_BASE_TUNE_GAPS,
@@ -48,9 +49,17 @@ requiresPowerCycle = knock_mode
         ini = parse_ini(repo_root / "speeduino.ini")
 
         failures = evaluate_compatibility(msq, ini)
-        self.assertEqual(
-            ["MSQ is missing high-risk constants: knock_limiterDisable"],
-            failures,
+        self.assertTrue(
+            any(
+                failure == "MSQ is missing high-risk constants: knock_limiterDisable"
+                for failure in failures
+            )
+        )
+        self.assertTrue(
+            any(
+                failure.startswith("MSQ critical values differ from the fork default contract:")
+                for failure in failures
+            )
         )
         self.assertEqual("speeduino 202501", msq.signature)
         self.assertEqual(msq.n_pages, msq.numbered_page_count)
@@ -67,6 +76,8 @@ requiresPowerCycle = knock_mode
         self.assertEqual("speeduino 202501", msq.signature)
         self.assertEqual(msq.n_pages, msq.numbered_page_count)
         self.assertEqual(16, msq.total_page_nodes)
+        for name, expected in CRITICAL_VALUE_EXPECTATIONS.items():
+            self.assertEqual(expected, msq.constant_values.get(name), name)
 
     def test_signature_mismatch_is_reported(self) -> None:
         with tempfile.TemporaryDirectory() as temp_dir_name:

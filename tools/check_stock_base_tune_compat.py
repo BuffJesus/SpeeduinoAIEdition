@@ -90,6 +90,31 @@ KNOWN_ARRAY_ALIAS_PARENTS = {
     "secondDataIn7": "secondDataIn",
 }
 
+CRITICAL_VALUE_EXPECTATIONS = {
+    "knock_pin": "A8",
+    "knock_trigger": "HIGH",
+    "knock_pullup": "Internal pullup",
+    "knock_limiterDisable": "No",
+    "knock_count": "3",
+    "knock_threshold": "4.0",
+    "knock_maxMAP": "150.0",
+    "knock_maxRPM": "5000.0",
+    "knock_maxRetard": "20.0",
+    "knock_firstStep": "10.0",
+    "knock_stepSize": "1.0",
+    "knock_stepTime": "5.0",
+    "knock_duration": "2.5",
+    "knock_recoveryStepTime": "1.0",
+    "knock_recoveryStep": "1.0",
+    "rollingProtRPMDelta": "-300.0 -200.0 -100.0 -50.0",
+    "rollingProtCutPercent": "50.0 65.0 80.0 95.0",
+    "dfcoDelay": "0.1",
+    "dfcoRPM": "1500.0",
+    "dfcoHyster": "200.0",
+    "dfcoMinCLT": "70.0",
+    "lnchCtrlVss": "255.0",
+}
+
 
 @dataclass(frozen=True)
 class MsqAudit:
@@ -99,6 +124,7 @@ class MsqAudit:
     total_page_nodes: int
     constants: set[str]
     pc_variables: set[str]
+    constant_values: dict[str, str]
 
 
 @dataclass(frozen=True)
@@ -122,6 +148,11 @@ def parse_msq(msq_path: Path) -> MsqAudit:
         for element in root.findall(".//msq:constant", MSQ_NS)
         if "name" in element.attrib
     }
+    constant_values = {
+        element.attrib["name"]: _normalize_msq_constant_value(element)
+        for element in root.findall(".//msq:constant", MSQ_NS)
+        if "name" in element.attrib
+    }
     pc_variables = {
         element.attrib["name"]
         for element in root.findall(".//msq:pcVariable", MSQ_NS)
@@ -134,6 +165,7 @@ def parse_msq(msq_path: Path) -> MsqAudit:
         total_page_nodes=len(page_nodes),
         constants=constants,
         pc_variables=pc_variables,
+        constant_values=constant_values,
     )
 
 
@@ -219,6 +251,17 @@ def evaluate_compatibility(msq: MsqAudit, ini: IniAudit) -> list[str]:
             "MSQ contains constants not present in the INI: " + ", ".join(extra_in_msq)
         )
 
+    value_failures = []
+    for name, expected in CRITICAL_VALUE_EXPECTATIONS.items():
+        actual = msq.constant_values.get(name)
+        if actual != expected:
+            value_failures.append(f"{name}={actual!r} (expected {expected!r})")
+    if value_failures:
+        failures.append(
+            "MSQ critical values differ from the fork default contract: "
+            + ", ".join(value_failures)
+        )
+
     return failures
 
 
@@ -234,13 +277,22 @@ def build_summary(msq: MsqAudit, ini: IniAudit) -> str:
         f"High-risk constants audited: {len(HIGH_RISK_CONSTANTS)}\n"
         f"Known stock base tune gaps: {len(KNOWN_STOCK_BASE_TUNE_GAPS)}\n"
         f"Known extra MSQ constants: {len(KNOWN_EXTRA_MSQ_CONSTANTS)}\n"
-        f"Known parent-array alias mappings: {len(KNOWN_ARRAY_ALIAS_PARENTS)}"
+        f"Known parent-array alias mappings: {len(KNOWN_ARRAY_ALIAS_PARENTS)}\n"
+        f"Critical value checks: {len(CRITICAL_VALUE_EXPECTATIONS)}"
     )
 
 
 def _is_satisfied_by_parent_array_alias(name: str, msq_constants: set[str]) -> bool:
     parent_name = KNOWN_ARRAY_ALIAS_PARENTS.get(name)
     return parent_name is not None and parent_name in msq_constants
+
+
+def _normalize_msq_constant_value(element: ET.Element) -> str:
+    if list(element):
+        raw = " ".join((child.text or "").strip() for child in element)
+    else:
+        raw = (element.text or "").strip()
+    return " ".join(raw.strip().strip('"').split())
 
 
 def main(argv: list[str] | None = None) -> int:
