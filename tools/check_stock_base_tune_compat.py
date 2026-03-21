@@ -201,6 +201,7 @@ class MsqAudit:
 class IniAudit:
     signature: str
     constants: set[str]
+    explicit_defaults: dict[str, str]
 
 
 def parse_msq(msq_path: Path) -> MsqAudit:
@@ -247,7 +248,12 @@ def parse_ini(ini_path: Path) -> IniAudit:
 
     constants_block = _extract_constants_block(text)
     constant_names = _extract_ini_constant_names(constants_block)
-    return IniAudit(signature=signature_match.group(1).strip(), constants=constant_names)
+    explicit_defaults = _extract_ini_default_values(text)
+    return IniAudit(
+        signature=signature_match.group(1).strip(),
+        constants=constant_names,
+        explicit_defaults=explicit_defaults,
+    )
 
 
 def _extract_constants_block(text: str) -> str:
@@ -275,6 +281,24 @@ def _extract_ini_constant_names(constants_block: str) -> set[str]:
         if match is not None:
             constant_names.add(match.group(1))
     return constant_names
+
+
+def _extract_ini_default_values(text: str) -> dict[str, str]:
+    defaults: dict[str, str] = {}
+    for raw_line in text.splitlines():
+        line = raw_line.split(";", 1)[0].strip()
+        if not line or line.startswith("#") or not line.startswith("defaultValue"):
+            continue
+
+        match = re.match(r"^defaultValue\s*=\s*([A-Za-z_][A-Za-z0-9_]*)\s*,\s*(.+)$", line)
+        if match is None:
+            continue
+        defaults[match.group(1)] = _normalize_ini_default_value(match.group(2))
+    return defaults
+
+
+def _normalize_ini_default_value(raw: str) -> str:
+    return " ".join(raw.strip().strip('"').split())
 
 
 def evaluate_compatibility(msq: MsqAudit, ini: IniAudit) -> list[str]:
@@ -348,8 +372,31 @@ def build_summary(msq: MsqAudit, ini: IniAudit) -> str:
         f"Known stock base tune gaps: {len(KNOWN_STOCK_BASE_TUNE_GAPS)}\n"
         f"Known extra MSQ constants: {len(KNOWN_EXTRA_MSQ_CONSTANTS)}\n"
         f"Known parent-array alias mappings: {len(KNOWN_ARRAY_ALIAS_PARENTS)}\n"
+        f"Explicit INI defaultValue entries: {len(ini.explicit_defaults)}\n"
         f"Critical value checks: {len(CRITICAL_VALUE_EXPECTATIONS)}"
     )
+
+
+def build_explicit_default_mismatch_report(
+    msq: MsqAudit, ini: IniAudit, names: list[str] | None = None
+) -> list[str]:
+    if names is None:
+        candidate_names = sorted(
+            name for name in ini.explicit_defaults if name in msq.constant_values
+        )
+    else:
+        candidate_names = names
+
+    mismatches = []
+    for name in candidate_names:
+        explicit_default = ini.explicit_defaults.get(name)
+        actual = msq.constant_values.get(name)
+        if explicit_default is None or actual is None or explicit_default == actual:
+            continue
+        mismatches.append(
+            f"{name}: tune={actual!r}, ini_defaultValue={explicit_default!r}"
+        )
+    return mismatches
 
 
 def _is_satisfied_by_parent_array_alias(name: str, msq_constants: set[str]) -> bool:
@@ -371,6 +418,15 @@ def main(argv: list[str] | None = None) -> int:
     )
     parser.add_argument("--msq", type=Path, default=DEFAULT_MSQ_PATH, help="Path to the stock .msq file")
     parser.add_argument("--ini", type=Path, default=DEFAULT_INI_PATH, help="Path to speeduino.ini")
+    parser.add_argument(
+        "--report-explicit-default-mismatches",
+        nargs="*",
+        metavar="NAME",
+        help=(
+            "Print tune values that differ from explicit INI defaultValue entries. "
+            "If names are omitted, all explicit-default mismatches are reported."
+        ),
+    )
     args = parser.parse_args(argv)
 
     try:
@@ -381,6 +437,19 @@ def main(argv: list[str] | None = None) -> int:
         return 2
 
     print(build_summary(msq, ini))
+    if args.report_explicit_default_mismatches is not None:
+        report = build_explicit_default_mismatch_report(
+            msq,
+            ini,
+            None if not args.report_explicit_default_mismatches else args.report_explicit_default_mismatches,
+        )
+        print("\nExplicit defaultValue mismatches:")
+        if report:
+            for item in report:
+                print(f"- {item}")
+        else:
+            print("- None")
+
     failures = evaluate_compatibility(msq, ini)
     if failures:
         print("\nCompatibility failures:", file=sys.stderr)

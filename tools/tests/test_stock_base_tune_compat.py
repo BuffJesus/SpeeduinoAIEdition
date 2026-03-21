@@ -9,6 +9,7 @@ from tools.check_stock_base_tune_compat import (
     HIGH_RISK_CONSTANTS,
     KNOWN_EXTRA_MSQ_CONSTANTS,
     KNOWN_STOCK_BASE_TUNE_GAPS,
+    build_explicit_default_mismatch_report,
     evaluate_compatibility,
     parse_ini,
     parse_msq,
@@ -41,6 +42,57 @@ requiresPowerCycle = knock_mode
             self.assertEqual(
                 {"knock_mode", "fuelLoadMax", "veTable", "testName"},
                 ini.constants,
+            )
+            self.assertEqual(
+                {"knock_mode": "0"},
+                ini.explicit_defaults,
+            )
+
+    def test_explicit_default_mismatch_report_uses_ini_defaults(self) -> None:
+        with tempfile.TemporaryDirectory() as temp_dir_name:
+            temp_dir = Path(temp_dir_name)
+            msq_path = temp_dir / "test.msq"
+            ini_path = temp_dir / "test.ini"
+
+            msq_path.write_text(
+                """<?xml version="1.0" encoding="ISO-8859-1"?>
+<msq xmlns="http://www.msefi.com/:msq">
+  <versionInfo fileFormat="5.0" firmwareInfo="X" nPages="1" signature="speeduino 202501"/>
+  <page>
+    <constant name="idleTaperTime">5.0</constant>
+    <constant name="idleAdvStartDelay">0.7</constant>
+    <constant name="launchEnable">"No"</constant>
+  </page>
+</msq>
+""",
+                encoding="utf-8",
+            )
+            ini_path.write_text(
+                """signature = "speeduino 202501"
+
+[Constants]
+idleTaperTime = scalar, U08, 99, "S", 0.1, 0.0, 0.0, 25.5, 1
+idleAdvStartDelay = scalar, U08, 155, "S", 0.1, 0.0, 0.0, 25.5, 1
+launchEnable = bits, U08, 48, [6:6], "No", "Yes"
+
+defaultValue = idleTaperTime, 1.0
+defaultValue = idleAdvStartDelay, 0.2
+defaultValue = launchEnable, 0
+""",
+                encoding="utf-8",
+            )
+
+            report = build_explicit_default_mismatch_report(
+                parse_msq(msq_path),
+                parse_ini(ini_path),
+            )
+            self.assertEqual(
+                [
+                    "idleAdvStartDelay: tune='0.7', ini_defaultValue='0.2'",
+                    "idleTaperTime: tune='5.0', ini_defaultValue='1.0'",
+                    "launchEnable: tune='No', ini_defaultValue='0'",
+                ],
+                sorted(report),
             )
 
     def test_real_stock_tune_flags_known_missing_knock_limiter_disable(self) -> None:

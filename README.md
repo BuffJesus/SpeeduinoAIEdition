@@ -222,6 +222,9 @@ python tools/check_stock_base_tune_compat.py --msq "Resources/Speeduino AI base 
 
 # Release bundle base tune compatibility audit
 python tools/check_stock_base_tune_compat.py --msq "release/speeduino-dropbear-v2.0.1-base-tune.msq" --ini "release/speeduino-dropbear-v2.0.1.ini"
+
+# Explicit INI defaultValue mismatch report for ambiguous fields
+python tools/check_stock_base_tune_compat.py --msq "Resources/Speeduino AI base tune.msq" --report-explicit-default-mismatches idleAdvStartDelay idleTaperTime boostCutEnabled boostMinDuty boostMaxDuty vvtCL0DutyAng vvtMinClt vvtDelay vvt1Pin boostPin
 ```
 
 ### Current Test Status
@@ -235,6 +238,8 @@ python tools/check_stock_base_tune_compat.py --msq "release/speeduino-dropbear-v
 - Stock base tune also fails the 92-check fork-default value contract for knock / rolling-cut / DFCO / launch / idle-advance / idle-up / VSS / WMI / oil-pressure / fan / air-con defaults, as expected for the unchanged stock artifact
 - Fork-owned base tune audit passes for [Resources/Speeduino AI base tune.msq](Resources/Speeduino%20AI%20base%20tune.msq), including the 92 selected fork-critical default values
 - Release bundle base tune audit passes for [speeduino-dropbear-v2.0.1-base-tune.msq](release/speeduino-dropbear-v2.0.1-base-tune.msq) against [speeduino-dropbear-v2.0.1.ini](release/speeduino-dropbear-v2.0.1.ini), including the same 92 selected fork-critical default values
+- The audit tool now also parses 230 explicit INI `defaultValue` entries and can report tune-vs-INI-default mismatches separately from the fork-owned contract
+- Current explicit-default mismatches include `idleAdvStartDelay`, `idleTaperTime`, `boostCutEnabled`, `boostMinDuty`, `boostMaxDuty`, `vvtCL0DutyAng`, `vvtMinClt`, `vvtDelay`, `vvt1Pin`, and `boostPin`, which is why boost/VVT defaults are not yet enforced in the fork contract
 - Other unit-test suites remain in regular use for regression checking
 
 Note: local Windows `pio test` invocations in this workspace can still hit wrapper/file-lock issues intermittently even when the produced simulator binary itself runs cleanly.
