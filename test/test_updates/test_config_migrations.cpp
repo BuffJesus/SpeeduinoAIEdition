@@ -428,6 +428,140 @@ void test_doUpdates_v18_to_v19_scales_tps_inputs_and_tps_based_tables(void) {
     }
 }
 
+void test_doUpdates_v10_to_v11_seeds_prime_ase_and_map_ae_defaults(void) {
+    resetMigrationState();
+    updatesTestSetInitialVersion(10U);
+    updatesTestSetStopAfterStore(true);
+
+    configPage2.aeColdTaperMax = 55U;
+    configPage2.aeColdTaperMin = 33U;
+    configPage2.tachoDuration = 9U;
+    configPage2.taeThresh = 17U;
+    configPage2.aeMode = 1U;
+    configPage2.maeThresh = 0U;
+    configPage10.fuel2Mode = 3U;
+
+    doUpdates();
+
+    const updates_test_state state = updatesTestGetState();
+
+    TEST_ASSERT_EQUAL_UINT8(11U, state.eepromVersion);
+    TEST_ASSERT_EQUAL_UINT8(11U, state.lastStoredVersion);
+    TEST_ASSERT_EQUAL_UINT8(1U, state.storeVersionCalls);
+    TEST_ASSERT_EQUAL_UINT8(1U, state.writeAllConfigCalls);
+    TEST_ASSERT_EQUAL_UINT8(0U, state.loadConfigCalls);
+    TEST_ASSERT_EQUAL_UINT8(0U, state.writeCalibrationCalls);
+
+    for (uint8_t i = 0; i < 4U; ++i) {
+        TEST_ASSERT_EQUAL_UINT8(11U, configPage2.primePulse[i]);
+        TEST_ASSERT_EQUAL_UINT8(33U, configPage2.asePct[i]);
+        TEST_ASSERT_EQUAL_UINT8(10U, configPage2.aseCount[i]);
+    }
+    TEST_ASSERT_EQUAL_UINT8(0U, configPage2.primeBins[0]);
+    TEST_ASSERT_EQUAL_UINT8(40U, configPage2.primeBins[1]);
+    TEST_ASSERT_EQUAL_UINT8(70U, configPage2.primeBins[2]);
+    TEST_ASSERT_EQUAL_UINT8(100U, configPage2.primeBins[3]);
+    TEST_ASSERT_EQUAL_UINT8(0U, configPage2.aseBins[0]);
+    TEST_ASSERT_EQUAL_UINT8(20U, configPage2.aseBins[1]);
+    TEST_ASSERT_EQUAL_UINT8(60U, configPage2.aseBins[2]);
+    TEST_ASSERT_EQUAL_UINT8(80U, configPage2.aseBins[3]);
+
+    TEST_ASSERT_EQUAL_UINT8(0U, configPage4.cltAdvBins[0]);
+    TEST_ASSERT_EQUAL_UINT8(30U, configPage4.cltAdvBins[1]);
+    TEST_ASSERT_EQUAL_UINT8(60U, configPage4.cltAdvBins[2]);
+    TEST_ASSERT_EQUAL_UINT8(70U, configPage4.cltAdvBins[3]);
+    TEST_ASSERT_EQUAL_UINT8(85U, configPage4.cltAdvBins[4]);
+    TEST_ASSERT_EQUAL_UINT8(100U, configPage4.cltAdvBins[5]);
+    for (uint8_t i = 0; i < 6U; ++i) {
+        TEST_ASSERT_EQUAL_UINT8(0U, configPage4.cltAdvValues[i]);
+    }
+
+    TEST_ASSERT_EQUAL_UINT8(3U, configPage2.tachoDuration);
+    TEST_ASSERT_EQUAL_UINT8(AE_MODE_TPS, configPage2.aeMode);
+    TEST_ASSERT_EQUAL_UINT8(17U, configPage2.maeThresh);
+    TEST_ASSERT_EQUAL_UINT8(75U, configPage4.maeRates[0]);
+    TEST_ASSERT_EQUAL_UINT8(75U, configPage4.maeRates[1]);
+    TEST_ASSERT_EQUAL_UINT8(75U, configPage4.maeRates[2]);
+    TEST_ASSERT_EQUAL_UINT8(75U, configPage4.maeRates[3]);
+    TEST_ASSERT_EQUAL_UINT8(7U, configPage4.maeBins[0]);
+    TEST_ASSERT_EQUAL_UINT8(12U, configPage4.maeBins[1]);
+    TEST_ASSERT_EQUAL_UINT8(20U, configPage4.maeBins[2]);
+    TEST_ASSERT_EQUAL_UINT8(40U, configPage4.maeBins[3]);
+    TEST_ASSERT_EQUAL_UINT8(0U, configPage10.fuel2Mode);
+}
+
+void test_doUpdates_v11_to_v12_sets_fuel2_switch_and_battery_defaults(void) {
+    resetMigrationState();
+    updatesTestSetInitialVersion(11U);
+    updatesTestSetStopAfterStore(true);
+
+    configPage4.batVoltCorrect = -12;
+    configPage2.legacyMAP = 1U;
+    configPage10.fuel2Mode = 5U;
+    configPage10.fuel2SwitchVariable = FUEL2_CONDITION_TPS;
+    configPage10.fuel2SwitchValue = 123U;
+
+    doUpdates();
+
+    const updates_test_state state = updatesTestGetState();
+
+    TEST_ASSERT_EQUAL_UINT8(12U, state.eepromVersion);
+    TEST_ASSERT_EQUAL_UINT8(12U, state.lastStoredVersion);
+    TEST_ASSERT_EQUAL_UINT8(1U, state.storeVersionCalls);
+    TEST_ASSERT_EQUAL_UINT8(1U, state.writeAllConfigCalls);
+
+    TEST_ASSERT_EQUAL_INT8(0, configPage4.batVoltCorrect);
+    TEST_ASSERT_EQUAL_UINT8(0U, configPage2.legacyMAP);
+    TEST_ASSERT_EQUAL_UINT8(0U, configPage10.fuel2Mode);
+    TEST_ASSERT_EQUAL_UINT8(0U, configPage10.fuel2SwitchVariable);
+    TEST_ASSERT_EQUAL_UINT16(7000U, configPage10.fuel2SwitchValue);
+}
+
+void test_doUpdates_v12_to_v13_sets_baro_and_idle_advance_defaults(void) {
+    resetMigrationState();
+    updatesTestSetInitialVersion(12U);
+    updatesTestSetStopAfterStore(true);
+
+    configPage2.battVCorMode = 1U;
+    configPage2.idleAdvEnabled = 1U;
+    configPage2.idleAdvTPS = 99U;
+    configPage2.idleAdvRPM = 99U;
+    for (uint8_t i = 0; i < 8U; ++i) {
+        configPage4.baroFuelBins[i] = 1U;
+        configPage4.baroFuelValues[i] = 2U;
+    }
+    for (uint8_t i = 0; i < 6U; ++i) {
+        configPage4.idleAdvBins[i] = 3U;
+        configPage4.idleAdvValues[i] = 4U;
+    }
+
+    doUpdates();
+
+    const updates_test_state state = updatesTestGetState();
+
+    TEST_ASSERT_EQUAL_UINT8(13U, state.eepromVersion);
+    TEST_ASSERT_EQUAL_UINT8(13U, state.lastStoredVersion);
+    TEST_ASSERT_EQUAL_UINT8(1U, state.storeVersionCalls);
+    TEST_ASSERT_EQUAL_UINT8(1U, state.writeAllConfigCalls);
+
+    TEST_ASSERT_EQUAL_UINT8(BATTV_COR_MODE_WHOLE, configPage2.battVCorMode);
+    TEST_ASSERT_EQUAL_UINT8(0U, configPage2.idleAdvEnabled);
+    TEST_ASSERT_EQUAL_UINT8(5U, configPage2.idleAdvTPS);
+    TEST_ASSERT_EQUAL_UINT8(20U, configPage2.idleAdvRPM);
+
+    const uint8_t expectedBaroBins[8] = {80U, 85U, 90U, 95U, 100U, 105U, 110U, 115U};
+    for (uint8_t i = 0; i < 8U; ++i) {
+        TEST_ASSERT_EQUAL_UINT8(expectedBaroBins[i], configPage4.baroFuelBins[i]);
+        TEST_ASSERT_EQUAL_UINT8(100U, configPage4.baroFuelValues[i]);
+    }
+
+    const uint8_t expectedIdleBins[6] = {30U, 40U, 50U, 60U, 70U, 80U};
+    for (uint8_t i = 0; i < 6U; ++i) {
+        TEST_ASSERT_EQUAL_UINT8(expectedIdleBins[i], configPage4.idleAdvBins[i]);
+        TEST_ASSERT_EQUAL_UINT8(15U, configPage4.idleAdvValues[i]);
+    }
+}
+
 void test_doUpdates_v13_to_v14_migrates_pid_flex_and_injector_timing_defaults(void) {
     resetMigrationState();
     updatesTestSetInitialVersion(13U);
@@ -892,6 +1026,9 @@ void testConfigMigrations(void) {
     RUN_TEST(test_divideTableLoad_scales_only_load_axis);
     RUN_TEST(test_multiplyTableValue_scales_entire_page);
     RUN_TEST(test_divideTableValue_scales_entire_page);
+    RUN_TEST(test_doUpdates_v10_to_v11_seeds_prime_ase_and_map_ae_defaults);
+    RUN_TEST(test_doUpdates_v11_to_v12_sets_fuel2_switch_and_battery_defaults);
+    RUN_TEST(test_doUpdates_v12_to_v13_sets_baro_and_idle_advance_defaults);
     RUN_TEST(test_doUpdates_v13_to_v14_migrates_pid_flex_and_injector_timing_defaults);
     RUN_TEST(test_doUpdates_v14_to_v15_migrates_legacy_calibration_tables_and_disables_new_outputs);
     RUN_TEST(test_doUpdates_v18_to_v19_scales_tps_inputs_and_tps_based_tables);
