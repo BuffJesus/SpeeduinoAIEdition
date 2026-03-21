@@ -118,6 +118,14 @@ static void assertValuesUnchanged(table3d_t &table, uint8_t expectedStart) {
     }
 }
 
+void testConfigMigrations_group1(void);
+void testConfigMigrations_group2(void);
+void testConfigMigrations_group3(void);
+void testConfigMigrations_group3a(void);
+void testConfigMigrations_group3b(void);
+void testConfigMigrations_group3b1(void);
+void testConfigMigrations_group3b2(void);
+
 void test_migratePIDGain_v13_to_v14_normal_range(void) {
     TEST_ASSERT_EQUAL_UINT8(0, migratePIDGain_v13_to_v14(0));
     TEST_ASSERT_EQUAL_UINT8(32, migratePIDGain_v13_to_v14(1));
@@ -934,6 +942,128 @@ void test_doUpdates_v14_to_v15_migrates_legacy_calibration_tables_and_disables_n
     TEST_ASSERT_EQUAL_UINT8(10U, configPage2.aseTaperTime);
 }
 
+void test_doUpdates_v15_to_v16_disables_secondary_spark_table(void) {
+    resetMigrationState();
+    updatesTestSetInitialVersion(15U);
+    updatesTestSetStopAfterStore(true);
+
+    configPage10.spark2Mode = 5U;
+
+    doUpdates();
+
+    const updates_test_state state = updatesTestGetState();
+
+    TEST_ASSERT_EQUAL_UINT8(16U, state.eepromVersion);
+    TEST_ASSERT_EQUAL_UINT8(16U, state.lastStoredVersion);
+    TEST_ASSERT_EQUAL_UINT8(1U, state.storeVersionCalls);
+    TEST_ASSERT_EQUAL_UINT8(1U, state.writeAllConfigCalls);
+    TEST_ASSERT_EQUAL_UINT8(0U, state.loadConfigCalls);
+    TEST_ASSERT_EQUAL_UINT8(0U, state.writeCalibrationCalls);
+    TEST_ASSERT_EQUAL_UINT8(0U, configPage10.spark2Mode);
+}
+
+void test_doUpdates_v16_to_v17_realigns_page13_and_sets_dwell_defaults(void) {
+    resetMigrationState();
+    updatesTestSetInitialVersion(16U);
+    updatesTestSetStopAfterStore(true);
+
+    seedRawRange(uint16_t(EEPROM_CONFIG13_START - 112U), uint16_t(EEPROM_CONFIG14_END - 112U), 37U);
+    configPage6.iacPWMrun = true;
+    configPage2.useDwellMap = 1U;
+
+    doUpdates();
+
+    const updates_test_state state = updatesTestGetState();
+
+    TEST_ASSERT_EQUAL_UINT8(17U, state.eepromVersion);
+    TEST_ASSERT_EQUAL_UINT8(17U, state.lastStoredVersion);
+    TEST_ASSERT_EQUAL_UINT8(1U, state.storeVersionCalls);
+    TEST_ASSERT_EQUAL_UINT8(1U, state.writeAllConfigCalls);
+    TEST_ASSERT_EQUAL_UINT8(0U, state.loadConfigCalls);
+    TEST_ASSERT_EQUAL_UINT8(0U, state.writeCalibrationCalls);
+
+    for (uint16_t address = EEPROM_CONFIG13_START; address <= EEPROM_CONFIG14_END; ++address) {
+        TEST_ASSERT_EQUAL_UINT8(rawPattern(uint16_t(address - 112U), 37U), EEPROMReadRaw(address));
+    }
+
+    TEST_ASSERT_FALSE(configPage6.iacPWMrun);
+    TEST_ASSERT_EQUAL_UINT8(0U, configPage2.useDwellMap);
+}
+
+void test_doUpdates_v17_to_v18_scales_vvt_state_and_seeds_new_defaults(void) {
+    resetMigrationState();
+    updatesTestSetInitialVersion(17U);
+    updatesTestSetStopAfterStore(true);
+
+    seedTableAxesAndValues(vvtTable, 1500U, 40U, 3U);
+    configPage10.vvtCLholdDuty = 10U;
+    configPage10.vvtCLminDuty = 11U;
+    configPage10.vvtCLmaxDuty = 12U;
+    configPage10.vvt2Enabled = 1U;
+    configPage4.vvt2PWMdir = 1U;
+    configPage10.TrigEdgeThrd = 1U;
+    configPage6.tachoMode = 1U;
+    configPage6.vvtMode = 3U;
+    configPage10.vvtCLMinAng = 99U;
+    configPage10.vvtCLMaxAng = 55U;
+    configPage4.ANGLEFILTER_VVT = 8U;
+    configPage2.idleAdvDelay = 3U;
+    configPage2.mapSwitchPoint = 9U;
+    configPage9.boostByGearEnabled = 1U;
+    for (uint8_t i = 0; i < 8U; ++i) {
+        configPage13.outputTimeLimit[i] = uint8_t(i + 1U);
+    }
+
+    doUpdates();
+
+    const updates_test_state state = updatesTestGetState();
+
+    TEST_ASSERT_EQUAL_UINT8(18U, state.eepromVersion);
+    TEST_ASSERT_EQUAL_UINT8(18U, state.lastStoredVersion);
+    TEST_ASSERT_EQUAL_UINT8(1U, state.storeVersionCalls);
+    TEST_ASSERT_EQUAL_UINT8(1U, state.writeAllConfigCalls);
+    TEST_ASSERT_EQUAL_UINT8(0U, state.loadConfigCalls);
+    TEST_ASSERT_EQUAL_UINT8(0U, state.writeCalibrationCalls);
+
+    assertAxisUnchanged(vvtTable, 1500U);
+
+    auto axis = vvtTable.axisY.begin();
+    uint16_t expectedAxis = 40U;
+    while (!axis.at_end()) {
+        TEST_ASSERT_EQUAL_UINT16(expectedAxis++, *axis);
+        ++axis;
+    }
+
+    auto rows = vvtTable.values.begin();
+    uint8_t expectedValue = 6U;
+    while (!rows.at_end()) {
+        auto row = *rows;
+        while (!row.at_end()) {
+            TEST_ASSERT_EQUAL_UINT8(expectedValue, *row);
+            expectedValue = uint8_t(expectedValue + 2U);
+            ++row;
+        }
+        ++rows;
+    }
+
+    TEST_ASSERT_EQUAL_UINT8(20U, configPage10.vvtCLholdDuty);
+    TEST_ASSERT_EQUAL_UINT8(22U, configPage10.vvtCLminDuty);
+    TEST_ASSERT_EQUAL_UINT8(24U, configPage10.vvtCLmaxDuty);
+    TEST_ASSERT_EQUAL_UINT8(0U, configPage10.vvt2Enabled);
+    TEST_ASSERT_EQUAL_UINT8(0U, configPage4.vvt2PWMdir);
+    TEST_ASSERT_EQUAL_UINT8(0U, configPage10.TrigEdgeThrd);
+    TEST_ASSERT_EQUAL_UINT8(VVT_MODE_ONOFF, configPage6.vvtMode);
+    TEST_ASSERT_EQUAL_UINT8(0U, configPage10.vvtCLMinAng);
+    TEST_ASSERT_EQUAL_UINT8(200U, configPage10.vvtCLMaxAng);
+    TEST_ASSERT_EQUAL_UINT8(0U, configPage4.ANGLEFILTER_VVT);
+    TEST_ASSERT_EQUAL_UINT8(6U, configPage2.idleAdvDelay);
+    TEST_ASSERT_EQUAL_UINT8(0U, configPage2.mapSwitchPoint);
+    TEST_ASSERT_EQUAL_UINT8(0U, configPage9.boostByGearEnabled);
+    for (uint8_t i = 0; i < 8U; ++i) {
+        TEST_ASSERT_EQUAL_UINT8(0U, configPage13.outputTimeLimit[i]);
+    }
+}
+
 void test_doUpdates_v18_to_v19_divides_non_tps_vvt_tables_and_resets_logging_defaults(void) {
     resetMigrationState();
     updatesTestSetInitialVersion(18U);
@@ -1229,6 +1359,12 @@ void test_doUpdates_future_version_clamps_to_current(void) {
 }
 
 void testConfigMigrations(void) {
+    testConfigMigrations_group1();
+    testConfigMigrations_group2();
+    testConfigMigrations_group3();
+}
+
+void testConfigMigrations_group1(void) {
     RUN_TEST(test_migratePIDGain_v13_to_v14_normal_range);
     RUN_TEST(test_migratePIDGain_v13_to_v14_overflow_protection);
     RUN_TEST(test_migratePIDGain_v13_to_v14_boundary_values);
@@ -1247,6 +1383,9 @@ void testConfigMigrations(void) {
     RUN_TEST(test_divideTableLoad_scales_only_load_axis);
     RUN_TEST(test_multiplyTableValue_scales_entire_page);
     RUN_TEST(test_divideTableValue_scales_entire_page);
+}
+
+void testConfigMigrations_group2(void) {
     RUN_TEST(test_doUpdates_v5_to_v6_relocates_eeprom_blocks_and_requests_reload);
     RUN_TEST(test_doUpdates_v6_to_v7_relocates_staging_block_and_requests_reload);
     RUN_TEST(test_doUpdates_v2_to_v3_offsets_ignition_table_values);
@@ -1260,12 +1399,34 @@ void testConfigMigrations(void) {
     RUN_TEST(test_doUpdates_v12_to_v13_sets_baro_and_idle_advance_defaults);
     RUN_TEST(test_doUpdates_v13_to_v14_migrates_pid_flex_and_injector_timing_defaults);
     RUN_TEST(test_doUpdates_v14_to_v15_migrates_legacy_calibration_tables_and_disables_new_outputs);
+    RUN_TEST(test_doUpdates_v15_to_v16_disables_secondary_spark_table);
+    RUN_TEST(test_doUpdates_v16_to_v17_realigns_page13_and_sets_dwell_defaults);
+    RUN_TEST(test_doUpdates_v17_to_v18_scales_vvt_state_and_seeds_new_defaults);
+}
+
+void testConfigMigrations_group3(void) {
+    testConfigMigrations_group3a();
+    testConfigMigrations_group3b();
+}
+
+void testConfigMigrations_group3a(void) {
     RUN_TEST(test_doUpdates_v18_to_v19_scales_tps_inputs_and_tps_based_tables);
     RUN_TEST(test_doUpdates_v18_to_v19_divides_non_tps_vvt_tables_and_resets_logging_defaults);
     RUN_TEST(test_doUpdates_v19_to_v20_sets_boost_lookup_defaults_and_afr_protection);
     RUN_TEST(test_doUpdates_v20_to_v21_updates_programmable_outputs_and_defaults);
+}
+
+void testConfigMigrations_group3b(void) {
+    testConfigMigrations_group3b1();
+    testConfigMigrations_group3b2();
+}
+
+void testConfigMigrations_group3b1(void) {
     RUN_TEST(test_doUpdates_v21_to_v22_sets_rolling_cut_defaults_and_halves_dfco_hysteresis);
     RUN_TEST(test_doUpdates_v22_to_v23_scales_wmi_map_and_sets_new_defaults);
+}
+
+void testConfigMigrations_group3b2(void) {
     RUN_TEST(test_doUpdates_v23_to_v24_migrates_can_knock_and_page10_alignment);
     RUN_TEST(test_doUpdates_new_eeprom_initializes_defaults_and_current_version);
     RUN_TEST(test_doUpdates_future_version_clamps_to_current);
