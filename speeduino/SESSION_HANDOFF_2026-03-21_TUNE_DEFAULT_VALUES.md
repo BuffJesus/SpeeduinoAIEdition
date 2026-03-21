@@ -33,6 +33,7 @@
 - Expanded contextual exemptions to include `airConCompPol`, `airConReqPol`, `idleAdvStartDelay`, and `idleTaperTime`, because the manual, INI help text, and runtime code all show they are hardware-dependent or tune-dependent rather than universal defaults
 - Added a policy-evidence report that prints the remaining active conflict and all contextual exemptions together with the specific manual / INI-help / runtime-code rationale backing them
 - Added a packaged-profile override report and verifier so the repo can separately document intentional DropBear hardware-profile choices that differ from the generic INI defaults
+- Added a TunerStudio-semantics report for raw `defaultValue` mismatches so those are explicitly labeled as initialization evidence instead of being mistaken for the shipped tune baseline
 - Evaluated idle-advance / boost / VVT against explicit `defaultValue` entries in [speeduino.ini](C:/Users/Cornelio/Desktop/speeduino-202501.6/speeduino.ini) and confirmed a real ambiguity:
   - `idleAdvStartDelay`: tune `0.7` vs INI `0.2`
   - `idleTaperTime`: tune `5.0` vs INI `1.0`
@@ -43,6 +44,7 @@
   - `vvtMinClt`: tune `-40.0` vs INI `70 / 160`
   - `vvtDelay`: tune `0.0` vs INI `60`
 - Because of that ambiguity, boost/VVT defaults were still not added to the enforced fork contract in this slice
+- TunerStudio documentation review clarified that `defaultValue` is an initialization value for uninitialized Constants / PcVariables, not a guarantee about the shipped tune baseline after values have been saved; only `noMsqSave`-style cases should be treated as always-default
 - The contract-vs-default report now narrows the enforced-contract conflicts to one active field:
   - `knock_pin`: fork contract `A8` vs INI `A10`
 - Contextual exemptions:
@@ -168,6 +170,8 @@
   - passed
 - `python tools/check_stock_base_tune_compat.py --msq "Resources/Speeduino AI base tune.msq" --report-explicit-default-mismatches idleAdvStartDelay idleTaperTime boostCutEnabled boostMinDuty boostMaxDuty vvtCL0DutyAng vvtMinClt vvtDelay`
   - reported the same eight explicit-default mismatches listed above
+- `python tools/check_stock_base_tune_compat.py --msq "Resources/Speeduino AI base tune.msq" --report-initialization-default-evidence idleAdvStartDelay idleTaperTime boostCutEnabled boostMinDuty boostMaxDuty vvtCL0DutyAng vvtMinClt vvtDelay`
+  - reported the same eight mismatches, but now labeled with TunerStudio's initialization-only `defaultValue` semantics
 - `python tools/check_stock_base_tune_compat.py --msq "Resources/Speeduino AI base tune.msq" --report-contract-default-conflicts`
   - reported the six contract-vs-INI-default conflicts listed above
 - `python tools/check_stock_base_tune_compat.py --msq "Resources/Speeduino AI base tune.msq" --stock-msq "Resources/Speeduino base tune.msq" --report-contract-conflict-origins`
@@ -200,6 +204,7 @@
   - 92 selected semantic defaults for the fields this fork has materially changed
 - The repo can now also report raw INI `defaultValue` mismatches separately, which makes it possible to investigate default-source ambiguity without pretending those fields are already settled
 - The repo can now separately report where the enforced fork contract itself diverges from explicit INI defaults, which is the real remaining policy surface
+- The repo now also separates raw TunerStudio initialization-default evidence from actual shipped-tune policy, which reduces the chance of over-interpreting every `defaultValue` mismatch as a firmware or packaging bug
 - Unit-specific duplicate INI defaults are now preserved instead of overwritten, which removed `dfcoMinCLT` from the false-conflict set
 - The remaining policy surface is now much smaller in practice:
   - 1 fork-specific conflict (`knock_pin`) that can be evaluated independently
@@ -233,4 +238,4 @@
 
 ## Recommended Prompt For Next Session
 
-`Continue from SESSION_HANDOFF_2026-03-21_TUNE_DEFAULT_VALUES.md. The compatibility audit now enforces both the round-trippable tune surface and a 92-check fork-default contract across knock, rolling cut, DFCO, launch, idle advance, idle-up, VSS, WMI, oil pressure, fan, and air-con. The tool parses 230 explicit INI defaultValue entries, preserves unit-specific default variants, machine-checks the classified policy surface, treats `airConCompPol`, `airConReqPol`, `idleAdvStartDelay`, `idleTaperTime`, and `vssPulsesPerKm` as documented contextual exemptions, and exposes both a policy-evidence report and a packaged-profile override report. Current decision surface: eight tune-vs-default mismatches, one active contract-vs-default conflict (`knock_pin`), five contextual exemptions, and one documented packaged DropBear hardware-profile override (`knock_pin = A8` while the generic INI default remains `A10`). The fork-owned and release-packaged tunes pass the enforced contract; the unchanged stock tune remains the intentional failing control. Next slice: decide whether `knock_pin` should remain a fork-specific divergence, move toward the INI default, or trigger a signature/defaults policy change.` 
+`Continue from SESSION_HANDOFF_2026-03-21_TUNE_DEFAULT_VALUES.md. The compatibility audit now enforces both the round-trippable tune surface and a 92-check fork-default contract across knock, rolling cut, DFCO, launch, idle advance, idle-up, VSS, WMI, oil pressure, fan, and air-con. The tool parses 230 explicit INI defaultValue entries, preserves unit-specific default variants, machine-checks the classified policy surface, treats `airConCompPol`, `airConReqPol`, `idleAdvStartDelay`, `idleTaperTime`, and `vssPulsesPerKm` as documented contextual exemptions, and exposes a policy-evidence report, a packaged-profile override report, and a TunerStudio initialization-default evidence report. Current decision surface: eight tune-vs-default mismatches that are now explicitly treated as initialization evidence, one active contract-vs-default conflict (`knock_pin`), five contextual exemptions, and one documented packaged DropBear hardware-profile override (`knock_pin = A8` while the generic INI default remains `A10`). The fork-owned and release-packaged tunes pass the enforced contract; the unchanged stock tune remains the intentional failing control. Next slice: decide whether `knock_pin` should remain a fork-specific divergence, move toward the INI default, or trigger a signature/defaults policy change.` 

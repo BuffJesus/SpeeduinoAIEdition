@@ -7,6 +7,7 @@ from pathlib import Path
 from tools.check_stock_base_tune_compat import (
     CONTEXTUAL_CONTRACT_DEFAULT_EXEMPTIONS,
     CRITICAL_VALUE_EXPECTATIONS,
+    DEFAULTVALUE_SEMANTICS_NOTES,
     EXPECTED_CONTRACT_CONFLICT_CLASSIFICATIONS,
     HIGH_RISK_CONSTANTS,
     KNOWN_EXTRA_MSQ_CONSTANTS,
@@ -18,6 +19,7 @@ from tools.check_stock_base_tune_compat import (
     build_contract_conflict_origin_report,
     build_contract_default_conflict_report,
     build_explicit_default_mismatch_report,
+    build_initialization_default_evidence_report,
     build_packaged_profile_override_report,
     build_policy_evidence_report,
     evaluate_compatibility,
@@ -112,6 +114,15 @@ defaultValue = launchEnable, 0
                     "idleTaperTime: tune='5.0', ini_defaultValue='1.0'",
                 ],
                 sorted(report),
+            )
+            self.assertEqual(
+                [
+                    "idleAdvStartDelay: tune='0.7', ini_defaultValue='0.2'; note="
+                    "'TunerStudio documents defaultValue as an initialization value for a Constant or PcVariable that has not yet been initialized; it is not the same thing as the shipped tune baseline after a value has been saved.'",
+                    "idleTaperTime: tune='5.0', ini_defaultValue='1.0'; note="
+                    "'TunerStudio documents defaultValue as an initialization value for a Constant or PcVariable that has not yet been initialized; it is not the same thing as the shipped tune baseline after a value has been saved.'",
+                ],
+                sorted(build_initialization_default_evidence_report(parse_msq(msq_path), parse_ini(ini_path))),
             )
 
     def test_reports_normalize_equivalent_numeric_values(self) -> None:
@@ -423,6 +434,8 @@ defaultValue = knock_pin, 57
         self.assertEqual([], verify_expected_packaged_profile_overrides(msq, ini))
         self.assertEqual({"knock_pin": "A8"}, PACKAGED_PROFILE_OVERRIDES)
         self.assertIn("knock_pin", PACKAGED_PROFILE_OVERRIDE_NOTES)
+        self.assertIn("defaultValue_in_tunerstudio", DEFAULTVALUE_SEMANTICS_NOTES)
+        self.assertIn("noMsqSave_exception", DEFAULTVALUE_SEMANTICS_NOTES)
 
     def test_real_stock_tune_flags_known_missing_knock_limiter_disable(self) -> None:
         repo_root = Path(__file__).resolve().parents[2]

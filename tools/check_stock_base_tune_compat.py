@@ -242,6 +242,18 @@ POLICY_EVIDENCE_NOTES = {
     ),
 }
 
+DEFAULTVALUE_SEMANTICS_NOTES = {
+    "defaultValue_in_tunerstudio": (
+        "TunerStudio documents defaultValue as an initialization value for a Constant or "
+        "PcVariable that has not yet been initialized; it is not the same thing as the shipped "
+        "tune baseline after a value has been saved."
+    ),
+    "noMsqSave_exception": (
+        "TunerStudio documents noMsqSave as the exception where the default value is always used "
+        "instead of persisting a saved tune value."
+    ),
+}
+
 PACKAGED_PROFILE_OVERRIDES = {
     "knock_pin": "A8",
 }
@@ -508,6 +520,16 @@ def build_explicit_default_mismatch_report(
             f"{name}: tune={actual!r}, ini_defaultValue={_format_default_variants(explicit_variants)!r}"
         )
     return mismatches
+
+
+def build_initialization_default_evidence_report(
+    msq: MsqAudit, ini: IniAudit, names: list[str] | None = None
+) -> list[str]:
+    mismatches = build_explicit_default_mismatch_report(msq, ini, names)
+    return [
+        f"{item}; note={DEFAULTVALUE_SEMANTICS_NOTES['defaultValue_in_tunerstudio']!r}"
+        for item in mismatches
+    ]
 
 
 def build_contract_default_conflict_report(
@@ -844,6 +866,15 @@ def main(argv: list[str] | None = None) -> int:
         ),
     )
     parser.add_argument(
+        "--report-initialization-default-evidence",
+        nargs="*",
+        metavar="NAME",
+        help=(
+            "Print tune-vs-INI defaultValue mismatches together with TunerStudio's documented "
+            "initialization-only semantics for defaultValue."
+        ),
+    )
+    parser.add_argument(
         "--report-contract-default-conflicts",
         nargs="*",
         metavar="NAME",
@@ -945,6 +976,21 @@ def main(argv: list[str] | None = None) -> int:
         if report:
             for item in report:
                 print(f"- {item}")
+        else:
+            print("- None")
+    if args.report_initialization_default_evidence is not None:
+        report = build_initialization_default_evidence_report(
+            msq,
+            ini,
+            None
+            if not args.report_initialization_default_evidence
+            else args.report_initialization_default_evidence,
+        )
+        print("\nInitialization defaultValue evidence:")
+        if report:
+            for item in report:
+                print(f"- {item}")
+            print(f"- note={DEFAULTVALUE_SEMANTICS_NOTES['noMsqSave_exception']!r}")
         else:
             print("- None")
     if args.report_contract_default_conflicts is not None:

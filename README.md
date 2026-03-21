@@ -226,6 +226,9 @@ python tools/check_stock_base_tune_compat.py --msq "release/speeduino-dropbear-v
 # Explicit INI defaultValue mismatch report for ambiguous fields
 python tools/check_stock_base_tune_compat.py --msq "Resources/Speeduino AI base tune.msq" --report-explicit-default-mismatches idleAdvStartDelay idleTaperTime boostCutEnabled boostMinDuty boostMaxDuty vvtCL0DutyAng vvtMinClt vvtDelay
 
+# The same mismatches, but labeled as TunerStudio initialization-only evidence
+python tools/check_stock_base_tune_compat.py --msq "Resources/Speeduino AI base tune.msq" --report-initialization-default-evidence idleAdvStartDelay idleTaperTime boostCutEnabled boostMinDuty boostMaxDuty vvtCL0DutyAng vvtMinClt vvtDelay
+
 # Fork contract vs INI defaultValue conflicts
 python tools/check_stock_base_tune_compat.py --msq "Resources/Speeduino AI base tune.msq" --report-contract-default-conflicts
 
@@ -263,6 +266,7 @@ python tools/check_stock_base_tune_compat.py --msq "Resources/Speeduino AI base 
 - Fork-owned base tune audit passes for [Resources/Speeduino AI base tune.msq](Resources/Speeduino%20AI%20base%20tune.msq), including the 92 selected fork-critical default values
 - Release bundle base tune audit passes for [speeduino-dropbear-v2.0.1-base-tune.msq](release/speeduino-dropbear-v2.0.1-base-tune.msq) against [speeduino-dropbear-v2.0.1.ini](release/speeduino-dropbear-v2.0.1.ini), including the same 92 selected fork-critical default values
 - The audit tool now also parses 230 explicit INI `defaultValue` entries, decodes bitfield defaults to their display values, and can report tune-vs-INI-default mismatches separately from the fork-owned contract
+- Those raw `defaultValue` mismatches are now explicitly treated as TunerStudio initialization evidence rather than automatic proof that the shipped tune baseline is wrong; the tool can print that semantic note directly
 - Current explicit-default mismatches are narrowed to `idleAdvStartDelay`, `idleTaperTime`, `boostCutEnabled`, `boostMinDuty`, `boostMaxDuty`, `vvtCL0DutyAng`, `vvtMinClt`, and `vvtDelay`, with unit-aware defaults now shown where applicable such as `vvtMinClt = 70 / 160`
 - The only remaining active contract-vs-INI-default conflict inside the enforced contract is now `knock_pin`
 - `airConCompPol`, `airConReqPol`, `idleAdvStartDelay`, `idleTaperTime`, and `vssPulsesPerKm` are all treated as contextual exemptions rather than active conflicts, because they are wiring-dependent or tune-dependent settings with direct support from the manual, INI help text, and runtime behavior

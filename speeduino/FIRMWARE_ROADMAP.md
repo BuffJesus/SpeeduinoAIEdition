@@ -55,6 +55,7 @@ Current phase 1 work started in:
   - keep the stock `speeduino 202501` signature only while the stock base tune imports cleanly into the current INI surface
   - add a host-side compatibility audit against [Resources/Speeduino base tune.msq](C:/Users/Cornelio/Desktop/speeduino-202501.6/Resources/Speeduino%20base%20tune.msq) covering signature, page count, required constants, and fork-added fields that rely on defaults or migrations
   - use primary project documentation in [Resources/Speeduino_manual.pdf](C:/Users/Cornelio/Desktop/speeduino-202501.6/Resources/Speeduino_manual.pdf) to distinguish real default conflicts from context-dependent fields, rather than treating every raw INI `defaultValue` mismatch as equal evidence
+  - align the audit with TunerStudio semantics: treat `defaultValue` as initialization evidence, not as automatic proof that the shipped tune baseline is wrong, except in `noMsqSave`-style cases
   - treat hardware-dependent polarity fields and tune-dependent idle timing fields as contextual exemptions only when the manual, INI help text, and runtime code all support that classification
   - distinguish generic INI defaults from packaged board-profile overrides when the release bundle intentionally targets specific hardware such as DropBear on Teensy 4.1
   - if the fork intentionally diverges from stock tune semantics, bump the signature and ship a fork-owned base tune plus documented migration notes
