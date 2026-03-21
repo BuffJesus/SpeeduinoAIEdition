@@ -334,6 +334,170 @@ void test_doUpdates_v19_to_v20_sets_boost_lookup_defaults_and_afr_protection(voi
     }
 }
 
+void test_doUpdates_v18_to_v19_scales_tps_inputs_and_tps_based_tables(void) {
+    resetMigrationState();
+    updatesTestSetInitialVersion(18U);
+    updatesTestSetStopAfterStore(true);
+
+    configPage6.fanUnused = 1U;
+    configPage2.idleAdvTPS = 12U;
+    configPage2.iacTPSlimit = 17U;
+    configPage4.floodClear = 20U;
+    configPage4.dfcoTPSThresh = 21U;
+    configPage6.egoTPSMax = 22U;
+    configPage10.lnchCtrlTPS = 23U;
+    configPage10.wmiTPS = 24U;
+    configPage10.n2o_minTPS = 25U;
+    configPage10.fuel2SwitchVariable = FUEL2_CONDITION_TPS;
+    configPage10.fuel2SwitchValue = 30U;
+    configPage10.spark2SwitchVariable = SPARK2_CONDITION_TPS;
+    configPage10.spark2SwitchValue = 31U;
+
+    configPage2.fuelAlgorithm = LOAD_SOURCE_TPS;
+    configPage2.ignAlgorithm = LOAD_SOURCE_TPS;
+    configPage10.fuel2Algorithm = LOAD_SOURCE_TPS;
+    configPage10.spark2Algorithm = LOAD_SOURCE_TPS;
+    configPage6.vvtLoadSource = VVT_LOAD_TPS;
+    configPage4.sparkMode = IGN_MODE_ROTARY;
+    for (uint8_t i = 0; i < 8U; ++i) {
+        configPage10.rotarySplitBins[i] = uint8_t(10U + i);
+    }
+
+    seedTableAxesAndValues(fuelTable, 1000U, 10U, 1U);
+    seedTableAxesAndValues(afrTable, 1100U, 20U, 11U);
+    seedTableAxesAndValues(trim1Table, 1200U, 30U, 21U);
+    seedTableAxesAndValues(trim2Table, 1300U, 40U, 31U);
+    seedTableAxesAndValues(trim3Table, 1400U, 50U, 41U);
+    seedTableAxesAndValues(trim4Table, 1500U, 60U, 51U);
+    seedTableAxesAndValues(trim5Table, 1600U, 70U, 61U);
+    seedTableAxesAndValues(trim6Table, 1700U, 80U, 71U);
+    seedTableAxesAndValues(trim7Table, 1800U, 90U, 81U);
+    seedTableAxesAndValues(trim8Table, 1900U, 100U, 91U);
+    seedTableAxesAndValues(ignitionTable, 2000U, 110U, 101U);
+    seedTableAxesAndValues(fuelTable2, 2100U, 120U, 111U);
+    seedTableAxesAndValues(ignitionTable2, 2200U, 130U, 121U);
+    seedTableAxesAndValues(boostTable, 2300U, 140U, 131U);
+    seedTableAxesAndValues(vvtTable, 2400U, 150U, 141U);
+    seedTableAxesAndValues(vvt2Table, 2500U, 160U, 151U);
+
+    doUpdates();
+
+    const updates_test_state state = updatesTestGetState();
+
+    TEST_ASSERT_EQUAL_UINT8(19U, state.eepromVersion);
+    TEST_ASSERT_EQUAL_UINT8(19U, state.lastStoredVersion);
+    TEST_ASSERT_EQUAL_UINT8(1U, state.storeVersionCalls);
+    TEST_ASSERT_EQUAL_UINT8(1U, state.writeAllConfigCalls);
+    TEST_ASSERT_EQUAL_UINT8(0U, state.loadConfigCalls);
+    TEST_ASSERT_EQUAL_UINT8(0U, state.writeCalibrationCalls);
+
+    TEST_ASSERT_EQUAL_UINT8(1U, configPage2.fanEnable);
+    TEST_ASSERT_EQUAL_UINT8(24U, configPage2.idleAdvTPS);
+    TEST_ASSERT_EQUAL_UINT8(34U, configPage2.iacTPSlimit);
+    TEST_ASSERT_EQUAL_UINT8(40U, configPage4.floodClear);
+    TEST_ASSERT_EQUAL_UINT8(42U, configPage4.dfcoTPSThresh);
+    TEST_ASSERT_EQUAL_UINT8(44U, configPage6.egoTPSMax);
+    TEST_ASSERT_EQUAL_UINT8(46U, configPage10.lnchCtrlTPS);
+    TEST_ASSERT_EQUAL_UINT8(48U, configPage10.wmiTPS);
+    TEST_ASSERT_EQUAL_UINT8(50U, configPage10.n2o_minTPS);
+    TEST_ASSERT_EQUAL_UINT16(60U, configPage10.fuel2SwitchValue);
+    TEST_ASSERT_EQUAL_UINT8(SPARK2_CONDITION_TPS, configPage10.spark2SwitchVariable);
+    TEST_ASSERT_EQUAL_UINT16(62U, configPage10.spark2SwitchValue);
+
+    assertAxisScaled(fuelTable, 10U, 4U);
+    assertAxisScaled(afrTable, 20U, 4U);
+    assertAxisScaled(ignitionTable, 110U, 4U);
+    assertAxisScaled(fuelTable2, 120U, 4U);
+    assertAxisScaled(ignitionTable2, 130U, 4U);
+    assertAxisScaled(boostTable, 140U, 2U);
+    assertAxisScaled(vvtTable, 150U, 2U);
+    assertAxisScaled(vvt2Table, 160U, 2U);
+    assertValuesUnchanged(fuelTable, 1U);
+    assertValuesUnchanged(ignitionTable2, 121U);
+
+    for (uint8_t i = 0; i < 8U; ++i) {
+        TEST_ASSERT_EQUAL_UINT8(uint8_t((10U + i) * 2U), configPage10.rotarySplitBins[i]);
+    }
+}
+
+void test_doUpdates_v18_to_v19_divides_non_tps_vvt_tables_and_resets_logging_defaults(void) {
+    resetMigrationState();
+    updatesTestSetInitialVersion(18U);
+    updatesTestSetStopAfterStore(true);
+
+    configPage6.fanUnused = 0U;
+    configPage6.vvtLoadSource = VVT_LOAD_MAP;
+    seedTableAxesAndValues(vvtTable, 2600U, 200U, 1U);
+    seedTableAxesAndValues(vvt2Table, 2700U, 220U, 21U);
+
+    configPage13.onboard_log_csv_separator = 1U;
+    configPage13.onboard_log_file_style = 1U;
+    configPage13.onboard_log_file_rate = 1U;
+    configPage13.onboard_log_filenaming = 1U;
+    configPage13.onboard_log_storage = 1U;
+    configPage13.onboard_log_trigger_boot = 1U;
+    configPage13.onboard_log_trigger_RPM = 1U;
+    configPage13.onboard_log_trigger_prot = 1U;
+    configPage13.onboard_log_trigger_Vbat = 1U;
+    configPage13.onboard_log_trigger_Epin = 1U;
+    configPage13.onboard_log_tr1_duration = 1U;
+    configPage13.onboard_log_tr2_thr_on = 1U;
+    configPage13.onboard_log_tr2_thr_off = 1U;
+    configPage13.onboard_log_tr3_thr_RPM = 1U;
+    configPage13.onboard_log_tr3_thr_MAP = 1U;
+    configPage13.onboard_log_tr3_thr_Oil = 1U;
+    configPage13.onboard_log_tr3_thr_AFR = 1U;
+    configPage13.onboard_log_tr4_thr_on = 1U;
+    configPage13.onboard_log_tr4_thr_off = 1U;
+    configPage13.onboard_log_tr5_Epin_pin = 1U;
+
+    doUpdates();
+
+    const updates_test_state state = updatesTestGetState();
+
+    TEST_ASSERT_EQUAL_UINT8(19U, state.eepromVersion);
+    TEST_ASSERT_EQUAL_UINT8(19U, state.lastStoredVersion);
+    TEST_ASSERT_EQUAL_UINT8(1U, state.storeVersionCalls);
+    TEST_ASSERT_EQUAL_UINT8(1U, state.writeAllConfigCalls);
+
+    auto axis = vvtTable.axisY.begin();
+    uint16_t expected = 200U;
+    while (!axis.at_end()) {
+        TEST_ASSERT_EQUAL_UINT16(expected / 2U, *axis);
+        ++axis;
+        ++expected;
+    }
+
+    auto axis2 = vvt2Table.axisY.begin();
+    expected = 220U;
+    while (!axis2.at_end()) {
+        TEST_ASSERT_EQUAL_UINT16(expected / 2U, *axis2);
+        ++axis2;
+        ++expected;
+    }
+
+    TEST_ASSERT_EQUAL_UINT8(0U, configPage13.onboard_log_csv_separator);
+    TEST_ASSERT_EQUAL_UINT8(0U, configPage13.onboard_log_file_style);
+    TEST_ASSERT_EQUAL_UINT8(0U, configPage13.onboard_log_file_rate);
+    TEST_ASSERT_EQUAL_UINT8(0U, configPage13.onboard_log_filenaming);
+    TEST_ASSERT_EQUAL_UINT8(0U, configPage13.onboard_log_storage);
+    TEST_ASSERT_EQUAL_UINT8(0U, configPage13.onboard_log_trigger_boot);
+    TEST_ASSERT_EQUAL_UINT8(0U, configPage13.onboard_log_trigger_RPM);
+    TEST_ASSERT_EQUAL_UINT8(0U, configPage13.onboard_log_trigger_prot);
+    TEST_ASSERT_EQUAL_UINT8(0U, configPage13.onboard_log_trigger_Vbat);
+    TEST_ASSERT_EQUAL_UINT8(0U, configPage13.onboard_log_trigger_Epin);
+    TEST_ASSERT_EQUAL_UINT8(0U, configPage13.onboard_log_tr1_duration);
+    TEST_ASSERT_EQUAL_UINT8(0U, configPage13.onboard_log_tr2_thr_on);
+    TEST_ASSERT_EQUAL_UINT8(0U, configPage13.onboard_log_tr2_thr_off);
+    TEST_ASSERT_EQUAL_UINT8(0U, configPage13.onboard_log_tr3_thr_RPM);
+    TEST_ASSERT_EQUAL_UINT8(0U, configPage13.onboard_log_tr3_thr_MAP);
+    TEST_ASSERT_EQUAL_UINT8(0U, configPage13.onboard_log_tr3_thr_Oil);
+    TEST_ASSERT_EQUAL_UINT8(0U, configPage13.onboard_log_tr3_thr_AFR);
+    TEST_ASSERT_EQUAL_UINT8(0U, configPage13.onboard_log_tr4_thr_on);
+    TEST_ASSERT_EQUAL_UINT8(0U, configPage13.onboard_log_tr4_thr_off);
+    TEST_ASSERT_EQUAL_UINT8(0U, configPage13.onboard_log_tr5_Epin_pin);
+}
+
 void test_doUpdates_v20_to_v21_updates_programmable_outputs_and_defaults(void) {
     resetMigrationState();
     updatesTestSetInitialVersion(20U);
@@ -569,6 +733,8 @@ void testConfigMigrations(void) {
     RUN_TEST(test_divideTableLoad_scales_only_load_axis);
     RUN_TEST(test_multiplyTableValue_scales_entire_page);
     RUN_TEST(test_divideTableValue_scales_entire_page);
+    RUN_TEST(test_doUpdates_v18_to_v19_scales_tps_inputs_and_tps_based_tables);
+    RUN_TEST(test_doUpdates_v18_to_v19_divides_non_tps_vvt_tables_and_resets_logging_defaults);
     RUN_TEST(test_doUpdates_v19_to_v20_sets_boost_lookup_defaults_and_afr_protection);
     RUN_TEST(test_doUpdates_v20_to_v21_updates_programmable_outputs_and_defaults);
     RUN_TEST(test_doUpdates_v21_to_v22_sets_rolling_cut_defaults_and_halves_dfco_hysteresis);

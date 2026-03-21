@@ -642,7 +642,7 @@ void doUpdates(void)
     configPage10.wmiTPS *= 2;
     configPage10.n2o_minTPS *= 2;
     if(configPage10.fuel2SwitchVariable == FUEL2_CONDITION_TPS) { configPage10.fuel2SwitchValue *= 2; }
-    if(configPage10.spark2SwitchVariable == SPARK2_CONDITION_TPS) { configPage10.spark2SwitchVariable *= 2; }
+    if(configPage10.spark2SwitchVariable == SPARK2_CONDITION_TPS) { configPage10.spark2SwitchValue *= 2; }
 
     // Each table Y axis need to be updated as well if TPS is the source
     if(configPage2.fuelAlgorithm == LOAD_SOURCE_TPS)
