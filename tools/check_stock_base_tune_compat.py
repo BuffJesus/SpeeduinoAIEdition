@@ -202,6 +202,7 @@ class IniAudit:
     signature: str
     constants: set[str]
     explicit_defaults: dict[str, str]
+    bit_options: dict[str, tuple[str, ...]]
 
 
 def parse_msq(msq_path: Path) -> MsqAudit:
@@ -248,11 +249,13 @@ def parse_ini(ini_path: Path) -> IniAudit:
 
     constants_block = _extract_constants_block(text)
     constant_names = _extract_ini_constant_names(constants_block)
-    explicit_defaults = _extract_ini_default_values(text)
+    bit_options = _extract_ini_bit_options(constants_block)
+    explicit_defaults = _extract_ini_default_values(text, bit_options)
     return IniAudit(
         signature=signature_match.group(1).strip(),
         constants=constant_names,
         explicit_defaults=explicit_defaults,
+        bit_options=bit_options,
     )
 
 
@@ -283,7 +286,26 @@ def _extract_ini_constant_names(constants_block: str) -> set[str]:
     return constant_names
 
 
-def _extract_ini_default_values(text: str) -> dict[str, str]:
+def _extract_ini_bit_options(constants_block: str) -> dict[str, tuple[str, ...]]:
+    bit_options: dict[str, tuple[str, ...]] = {}
+    for raw_line in constants_block.splitlines():
+        line = raw_line.split(";", 1)[0].strip()
+        if not line or line.startswith("#") or line.startswith("["):
+            continue
+
+        match = re.match(r"^([A-Za-z_][A-Za-z0-9_]*)\s*=\s*bits\b", line)
+        if match is None:
+            continue
+
+        options = tuple(re.findall(r'"([^"]*)"', line))
+        if options:
+            bit_options[match.group(1)] = options
+    return bit_options
+
+
+def _extract_ini_default_values(
+    text: str, bit_options: dict[str, tuple[str, ...]]
+) -> dict[str, str]:
     defaults: dict[str, str] = {}
     for raw_line in text.splitlines():
         line = raw_line.split(";", 1)[0].strip()
@@ -293,12 +315,21 @@ def _extract_ini_default_values(text: str) -> dict[str, str]:
         match = re.match(r"^defaultValue\s*=\s*([A-Za-z_][A-Za-z0-9_]*)\s*,\s*(.+)$", line)
         if match is None:
             continue
-        defaults[match.group(1)] = _normalize_ini_default_value(match.group(2))
+        name = match.group(1)
+        defaults[name] = _normalize_ini_default_value(match.group(2), bit_options.get(name))
     return defaults
 
 
-def _normalize_ini_default_value(raw: str) -> str:
-    return " ".join(raw.strip().strip('"').split())
+def _normalize_ini_default_value(raw: str, bit_labels: tuple[str, ...] | None = None) -> str:
+    normalized = " ".join(raw.strip().strip('"').split())
+    if bit_labels is not None:
+        try:
+            index = int(normalized, 10)
+        except ValueError:
+            return normalized
+        if 0 <= index < len(bit_labels):
+            return bit_labels[index]
+    return normalized
 
 
 def evaluate_compatibility(msq: MsqAudit, ini: IniAudit) -> list[str]:
@@ -391,7 +422,11 @@ def build_explicit_default_mismatch_report(
     for name in candidate_names:
         explicit_default = ini.explicit_defaults.get(name)
         actual = msq.constant_values.get(name)
-        if explicit_default is None or actual is None or explicit_default == actual:
+        if (
+            explicit_default is None
+            or actual is None
+            or _values_equivalent(explicit_default, actual)
+        ):
             continue
         mismatches.append(
             f"{name}: tune={actual!r}, ini_defaultValue={explicit_default!r}"
@@ -399,9 +434,62 @@ def build_explicit_default_mismatch_report(
     return mismatches
 
 
+def build_contract_default_conflict_report(
+    ini: IniAudit, names: list[str] | None = None
+) -> list[str]:
+    if names is None:
+        candidate_names = sorted(
+            name
+            for name in CRITICAL_VALUE_EXPECTATIONS
+            if name in ini.explicit_defaults
+        )
+    else:
+        candidate_names = names
+
+    conflicts = []
+    for name in candidate_names:
+        expected = CRITICAL_VALUE_EXPECTATIONS.get(name)
+        explicit_default = ini.explicit_defaults.get(name)
+        if (
+            expected is None
+            or explicit_default is None
+            or _values_equivalent(expected, explicit_default)
+        ):
+            continue
+        conflicts.append(
+            f"{name}: fork_contract={expected!r}, ini_defaultValue={explicit_default!r}"
+        )
+    return conflicts
+
+
 def _is_satisfied_by_parent_array_alias(name: str, msq_constants: set[str]) -> bool:
     parent_name = KNOWN_ARRAY_ALIAS_PARENTS.get(name)
     return parent_name is not None and parent_name in msq_constants
+
+
+def _values_equivalent(left: str, right: str) -> bool:
+    left_tokens = left.split()
+    right_tokens = right.split()
+    if len(left_tokens) != len(right_tokens):
+        return False
+
+    for left_token, right_token in zip(left_tokens, right_tokens):
+        if left_token == right_token:
+            continue
+        left_number = _try_parse_number(left_token)
+        right_number = _try_parse_number(right_token)
+        if left_number is None or right_number is None:
+            return False
+        if left_number != right_number:
+            return False
+    return True
+
+
+def _try_parse_number(token: str) -> float | None:
+    try:
+        return float(token)
+    except ValueError:
+        return None
 
 
 def _normalize_msq_constant_value(element: ET.Element) -> str:
@@ -427,6 +515,15 @@ def main(argv: list[str] | None = None) -> int:
             "If names are omitted, all explicit-default mismatches are reported."
         ),
     )
+    parser.add_argument(
+        "--report-contract-default-conflicts",
+        nargs="*",
+        metavar="NAME",
+        help=(
+            "Print enforced fork-contract values that differ from explicit INI defaultValue "
+            "entries. If names are omitted, all such conflicts are reported."
+        ),
+    )
     args = parser.parse_args(argv)
 
     try:
@@ -444,6 +541,17 @@ def main(argv: list[str] | None = None) -> int:
             None if not args.report_explicit_default_mismatches else args.report_explicit_default_mismatches,
         )
         print("\nExplicit defaultValue mismatches:")
+        if report:
+            for item in report:
+                print(f"- {item}")
+        else:
+            print("- None")
+    if args.report_contract_default_conflicts is not None:
+        report = build_contract_default_conflict_report(
+            ini,
+            None if not args.report_contract_default_conflicts else args.report_contract_default_conflicts,
+        )
+        print("\nFork Contract vs INI defaultValue conflicts:")
         if report:
             for item in report:
                 print(f"- {item}")
