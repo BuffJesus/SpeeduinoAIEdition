@@ -68,6 +68,58 @@ volatile unsigned long curGap3;
 volatile unsigned long lastGap;
 volatile unsigned long targetGap;
 
+#if defined(UNIT_TEST)
+static bool testPrimaryTriggerStateOverrideEnabled = false;
+static bool testSecondaryTriggerStateOverrideEnabled = false;
+static bool testThirdTriggerStateOverrideEnabled = false;
+static bool testPrimaryTriggerStateValue = false;
+static bool testSecondaryTriggerStateValue = false;
+static bool testThirdTriggerStateValue = false;
+
+bool readPrimaryTriggerState(void)
+{
+  const bool hardwareState = READ_PRI_TRIGGER_HW();
+  return testPrimaryTriggerStateOverrideEnabled ? testPrimaryTriggerStateValue : hardwareState;
+}
+
+bool readSecondaryTriggerState(void)
+{
+  const bool hardwareState = READ_SEC_TRIGGER_HW();
+  return testSecondaryTriggerStateOverrideEnabled ? testSecondaryTriggerStateValue : hardwareState;
+}
+
+bool readThirdTriggerState(void)
+{
+  const bool hardwareState = READ_THIRD_TRIGGER_HW();
+  return testThirdTriggerStateOverrideEnabled ? testThirdTriggerStateValue : hardwareState;
+}
+
+void testSetPrimaryTriggerState(bool state)
+{
+  testPrimaryTriggerStateOverrideEnabled = true;
+  testPrimaryTriggerStateValue = state;
+}
+
+void testSetSecondaryTriggerState(bool state)
+{
+  testSecondaryTriggerStateOverrideEnabled = true;
+  testSecondaryTriggerStateValue = state;
+}
+
+void testSetThirdTriggerState(bool state)
+{
+  testThirdTriggerStateOverrideEnabled = true;
+  testThirdTriggerStateValue = state;
+}
+
+void testClearTriggerStateOverrides(void)
+{
+  testPrimaryTriggerStateOverrideEnabled = false;
+  testSecondaryTriggerStateOverrideEnabled = false;
+  testThirdTriggerStateOverrideEnabled = false;
+}
+#endif
+
 TESTABLE_STATIC unsigned long MAX_STALL_TIME = MICROS_PER_SEC/2U; //The maximum time (in uS) that the system will continue to function before the engine is considered stalled/stopped. This is unique to each decoder, depending on the number of teeth etc. 500000 (half a second) is used as the default value, most decoders will be much less.
 volatile uint16_t toothCurrentCount = 0; //The current number of teeth (Once sync has been achieved, this can never actually be 0
 static volatile byte toothSystemCount = 0; //Used for decoders such as Audi 135 where not every tooth is used for calculating crank angle. This variable stores the actual number of teeth, not the number being used to calculate crank angle

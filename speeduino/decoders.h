@@ -3,6 +3,26 @@
 
 #include "globals.h"
 
+#if defined(UNIT_TEST)
+bool readPrimaryTriggerState(void);
+bool readSecondaryTriggerState(void);
+bool readThirdTriggerState(void);
+#endif
+
+#if defined(UNIT_TEST)
+  #define READ_PRI_TRIGGER() readPrimaryTriggerState()
+  #define READ_SEC_TRIGGER() readSecondaryTriggerState()
+  #define READ_THIRD_TRIGGER() readThirdTriggerState()
+#if defined(CORE_AVR)
+  #define READ_PRI_TRIGGER_HW() ((*triggerPri_pin_port & triggerPri_pin_mask) ? true : false)
+  #define READ_SEC_TRIGGER_HW() ((*triggerSec_pin_port & triggerSec_pin_mask) ? true : false)
+  #define READ_THIRD_TRIGGER_HW() ((*triggerThird_pin_port & triggerThird_pin_mask) ? true : false)
+#else
+  #define READ_PRI_TRIGGER_HW() digitalRead(pinTrigger)
+  #define READ_SEC_TRIGGER_HW() digitalRead(pinTrigger2)
+  #define READ_THIRD_TRIGGER_HW() digitalRead(pinTrigger3)
+#endif
+#else
 #if defined(CORE_AVR)
   #define READ_PRI_TRIGGER() ((*triggerPri_pin_port & triggerPri_pin_mask) ? true : false)
   #define READ_SEC_TRIGGER() ((*triggerSec_pin_port & triggerSec_pin_mask) ? true : false)
@@ -11,6 +31,7 @@
   #define READ_PRI_TRIGGER() digitalRead(pinTrigger)
   #define READ_SEC_TRIGGER() digitalRead(pinTrigger2)
   #define READ_THIRD_TRIGGER() digitalRead(pinTrigger3)  
+#endif
 #endif
 
 #define DECODER_MISSING_TOOTH     0
@@ -77,6 +98,10 @@ int testCrankingGetRPM(byte totalTeeth, bool isCamTeeth);
 void testSetFilter(unsigned long curGap);
 void testSetSecondaryToothCount(unsigned int count);
 unsigned int testGetSecondaryToothCount(void);
+void testSetPrimaryTriggerState(bool state);
+void testSetSecondaryTriggerState(bool state);
+void testSetThirdTriggerState(bool state);
+void testClearTriggerStateOverrides(void);
 #endif
 
 /*

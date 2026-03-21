@@ -56,6 +56,9 @@
 #include "traces/basic_distributor_sync_trace.h"
 #include "traces/basic_distributor_wrap_trace.h"
 #include "traces/basic_distributor_short_gap_trace.h"
+#include "traces/harley_sync_trace.h"
+#include "traces/harley_alternating_trace.h"
+#include "traces/harley_low_state_trace.h"
 #include "../test_utils.h"
 
 extern volatile unsigned long toothLastToothTime;
@@ -84,6 +87,7 @@ static void reset_trace_runtime(void)
     toothCurrentCount = 0U;
     revolutionOne = false;
     resetDecoder();
+    testClearTriggerStateOverrides();
 }
 
 static void setup_trace_k6a(void)
@@ -332,6 +336,21 @@ static void setup_trace_basic_distributor(void)
     toothLastToothTime = micros();
 }
 
+static void setup_trace_harley(void)
+{
+    reset_trace_runtime();
+    configPage4.TrigSpeed = CRANK_SPEED;
+    configPage4.sparkMode = IGN_MODE_WASTED;
+    configPage4.triggerAngle = 0;
+    configPage4.triggerFilter = TRIGGER_FILTER_LITE;
+    configPage2.nCylinders = 2U;
+    configPage2.strokes = FOUR_STROKE;
+    configPage2.injLayout = INJ_SEMISEQUENTIAL;
+    configPage2.perToothIgn = false;
+    triggerSetup_Harley();
+    toothLastToothTime = micros();
+}
+
 static void setup_trace_missing_tooth_36_1_sequential(void)
 {
     reset_trace_runtime();
@@ -425,6 +444,24 @@ static TraceReplayCallbacks makeAudi135Callbacks(void)
 static TraceReplayCallbacks makeGm24XCallbacks(void)
 {
     const TraceReplayCallbacks callbacks = {triggerPri_24X, nullptr, triggerSec_24X, nullptr};
+    return callbacks;
+}
+
+static void triggerPri_harley_high_trace(void)
+{
+    testSetPrimaryTriggerState(true);
+    triggerPri_Harley();
+}
+
+static void triggerPri_harley_low_trace(void)
+{
+    testSetPrimaryTriggerState(false);
+    triggerPri_Harley();
+}
+
+static TraceReplayCallbacks makeHarleyCallbacks(void)
+{
+    const TraceReplayCallbacks callbacks = {triggerPri_harley_high_trace, triggerPri_harley_low_trace, nullptr, nullptr};
     return callbacks;
 }
 
@@ -1001,6 +1038,42 @@ static void test_trace_replay_basic_distributor_short_gap_is_filtered_after_sync
     TEST_ASSERT_EQUAL_UINT16(1U, currentStatus.startRevolutions);
 }
 
+static void test_trace_replay_harley_first_long_gap_establishes_sync(void)
+{
+    setup_trace_harley();
+
+    replayTriggerTrace(makeTriggerTrace(kHarleySyncEvents), makeHarleyCallbacks());
+
+    TEST_ASSERT_TRUE(currentStatus.hasSync);
+    TEST_ASSERT_EQUAL_UINT8(0U, currentStatus.syncLossCounter);
+    TEST_ASSERT_EQUAL_UINT16(1U, toothCurrentCount);
+    TEST_ASSERT_EQUAL_UINT16(1U, currentStatus.startRevolutions);
+}
+
+static void test_trace_replay_harley_short_then_long_gap_toggles_between_teeth_two_and_one(void)
+{
+    setup_trace_harley();
+
+    replayTriggerTrace(makeTriggerTrace(kHarleyAlternatingEvents), makeHarleyCallbacks());
+
+    TEST_ASSERT_TRUE(currentStatus.hasSync);
+    TEST_ASSERT_EQUAL_UINT8(0U, currentStatus.syncLossCounter);
+    TEST_ASSERT_EQUAL_UINT16(1U, toothCurrentCount);
+    TEST_ASSERT_EQUAL_UINT16(3U, currentStatus.startRevolutions);
+}
+
+static void test_trace_replay_harley_low_primary_state_drops_sync(void)
+{
+    setup_trace_harley();
+
+    replayTriggerTrace(makeTriggerTrace(kHarleyLowStateEvents), makeHarleyCallbacks());
+
+    TEST_ASSERT_FALSE(currentStatus.hasSync);
+    TEST_ASSERT_EQUAL_UINT8(1U, currentStatus.syncLossCounter);
+    TEST_ASSERT_EQUAL_UINT16(0U, toothCurrentCount);
+    TEST_ASSERT_EQUAL_UINT16(1U, currentStatus.startRevolutions);
+}
+
 static void test_trace_replay_missing_tooth_36_1_noise_still_syncs(void)
 {
     setup_trace_missing_tooth_36_1();
@@ -1211,5 +1284,8 @@ void testTriggerTraceReplay(void)
         RUN_TEST_P(test_trace_replay_basic_distributor_first_pulse_establishes_sync);
         RUN_TEST_P(test_trace_replay_basic_distributor_wraps_on_fifth_pulse_for_four_cylinder_four_stroke);
         RUN_TEST_P(test_trace_replay_basic_distributor_short_gap_is_filtered_after_sync);
+        RUN_TEST_P(test_trace_replay_harley_first_long_gap_establishes_sync);
+        RUN_TEST_P(test_trace_replay_harley_short_then_long_gap_toggles_between_teeth_two_and_one);
+        RUN_TEST_P(test_trace_replay_harley_low_primary_state_drops_sync);
     }
 }
