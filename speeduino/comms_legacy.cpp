@@ -62,7 +62,10 @@ bool isLegacyCommandByte(byte highByte, bool allowLegacyComms)
     return true;
   }
 
-  return allowLegacyComms && ((((highByte >= 'A') && (highByte <= 'z')) || (highByte == '?')));
+  return allowLegacyComms
+      && ((((highByte >= 'A') && (highByte <= 'Z'))
+      || ((highByte >= 'a') && (highByte <= 'z'))
+      || (highByte == '?')));
 }
 
 bool shouldRouteSecondaryTunerStudioToPrimary(uint8_t secondaryProtocol, uint8_t status5)

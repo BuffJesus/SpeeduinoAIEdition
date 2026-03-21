@@ -49,16 +49,10 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include BOARD_H //Note that this is not a real file, it is defined in globals.h. 
 
 
-uint16_t req_fuel_uS = 0; /**< The required fuel variable (As calculated by TunerStudio) in uS */
-uint16_t inj_opentime_uS = 0;
-
 uint8_t ignitionChannelsOn; /**< The current state of the ignition system (on or off) */
 uint8_t ignitionChannelsPending = 0; /**< Any ignition channels that are pending injections before they are resumed */
 uint8_t fuelChannelsOn; /**< The current state of the fuel system (on or off) */
 uint32_t rollingCutLastRev = 0; /**< Tracks whether we're on the same or a different rev for the rolling cut */
-
-uint16_t staged_req_fuel_mult_pri = 0;
-uint16_t staged_req_fuel_mult_sec = 0;   
 #ifndef UNIT_TEST // Scope guard for unit testing
 void setup(void)
 {

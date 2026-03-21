@@ -7,6 +7,11 @@ const char TSfirmwareVersion[] PROGMEM = "Speeduino";
 
 const byte data_structure_version = 2; //This identifies the data structure when reading / writing. (outdated ?)
 
+uint16_t req_fuel_uS = 0;
+uint16_t inj_opentime_uS = 0;
+uint16_t staged_req_fuel_mult_pri = 0;
+uint16_t staged_req_fuel_mult_sec = 0;
+
 uint8_t getBoardCapabilityFlags(uint8_t pinMapping)
 {
   uint8_t flags = BOARD_CAP_NONE;

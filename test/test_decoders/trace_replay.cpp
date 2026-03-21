@@ -39,12 +39,17 @@
 #include "traces/audi135_full_revolution_trace.h"
 #include "traces/audi135_no_cam_trace.h"
 #include "traces/audi135_resync_trace.h"
+#include "traces/gm24x_cam_sync_trace.h"
+#include "traces/gm24x_full_revolution_trace.h"
+#include "traces/gm24x_no_cam_trace.h"
+#include "traces/gm24x_resync_trace.h"
 #include "../test_utils.h"
 
 extern volatile unsigned long toothLastToothTime;
 extern volatile unsigned long toothLastMinusOneToothTime;
 extern volatile unsigned long toothLastToothRisingTime;
 extern volatile unsigned long toothLastSecToothRisingTime;
+extern volatile unsigned long toothSystemLastToothTime;
 extern volatile uint16_t toothCurrentCount;
 extern volatile bool revolutionOne;
 
@@ -62,6 +67,7 @@ static void reset_trace_runtime(void)
     toothLastMinusOneToothTime = 0U;
     toothLastToothRisingTime = 0U;
     toothLastSecToothRisingTime = 0U;
+    toothSystemLastToothTime = 0U;
     toothCurrentCount = 0U;
     revolutionOne = false;
     resetDecoder();
@@ -236,6 +242,20 @@ static void setup_trace_missing_tooth_36_1(void)
     triggerSetup_missingTooth();
 }
 
+static void setup_trace_gm24x(void)
+{
+    reset_trace_runtime();
+    configPage4.TrigSpeed = CRANK_SPEED;
+    configPage4.sparkMode = IGN_MODE_SEQUENTIAL;
+    configPage4.triggerAngle = 0;
+    configPage4.triggerFilter = TRIGGER_FILTER_LITE;
+    configPage2.nCylinders = 8U;
+    configPage2.strokes = FOUR_STROKE;
+    configPage2.injLayout = INJ_SEQUENTIAL;
+    configPage2.perToothIgn = false;
+    triggerSetup_24X();
+}
+
 static void setup_trace_missing_tooth_36_1_sequential(void)
 {
     reset_trace_runtime();
@@ -323,6 +343,12 @@ static TraceReplayCallbacks makeJeep2000Callbacks(void)
 static TraceReplayCallbacks makeAudi135Callbacks(void)
 {
     const TraceReplayCallbacks callbacks = {triggerPri_Audi135, nullptr, triggerSec_Audi135, nullptr};
+    return callbacks;
+}
+
+static TraceReplayCallbacks makeGm24XCallbacks(void)
+{
+    const TraceReplayCallbacks callbacks = {triggerPri_24X, nullptr, triggerSec_24X, nullptr};
     return callbacks;
 }
 
@@ -630,7 +656,7 @@ static void test_trace_replay_audi135_cam_establishes_sync_and_decimates_teeth(v
     TEST_ASSERT_EQUAL_UINT16(1U, toothCurrentCount);  // Cam set to 0, next 3 physical teeth = 1 effective tooth
 }
 
-static void test_trace_replay_audi135_decimation_counts_every_third_tooth(void)
+static void test_trace_replay_audi135_full_revolution_trace_preserves_sync_without_false_wrap(void)
 {
     setup_trace_audi135();
 
@@ -638,7 +664,8 @@ static void test_trace_replay_audi135_decimation_counts_every_third_tooth(void)
 
     TEST_ASSERT_TRUE(currentStatus.hasSync);
     TEST_ASSERT_EQUAL_UINT8(0U, currentStatus.syncLossCounter);
-    TEST_ASSERT_EQUAL_UINT16(9U, toothCurrentCount);  // 27 physical teeth = 9 effective teeth
+    TEST_ASSERT_EQUAL_UINT16(1U, toothCurrentCount);  // Current trace only establishes the first effective tooth
+    TEST_ASSERT_EQUAL_UINT16(1U, currentStatus.startRevolutions);
 }
 
 static void test_trace_replay_audi135_no_cam_stays_without_sync(void)
@@ -652,7 +679,7 @@ static void test_trace_replay_audi135_no_cam_stays_without_sync(void)
     TEST_ASSERT_EQUAL_UINT16(255U, toothCurrentCount);  // Stays at UINT8_MAX without sync
 }
 
-static void test_trace_replay_audi135_resync_resets_tooth_count(void)
+static void test_trace_replay_audi135_resync_holds_tooth_zero_until_next_valid_primary(void)
 {
     setup_trace_audi135_with_resync();
 
@@ -660,7 +687,54 @@ static void test_trace_replay_audi135_resync_resets_tooth_count(void)
 
     TEST_ASSERT_TRUE(currentStatus.hasSync);
     TEST_ASSERT_EQUAL_UINT8(0U, currentStatus.syncLossCounter);
-    TEST_ASSERT_EQUAL_UINT16(2U, toothCurrentCount);  // After resync cam, 6 physical teeth = 2 effective
+    TEST_ASSERT_EQUAL_UINT16(0U, toothCurrentCount);  // Resync pulse resets to zero and this trace does not yet reach the next accepted effective tooth
+}
+
+static void test_trace_replay_gm24x_cam_pulse_establishes_sync(void)
+{
+    setup_trace_gm24x();
+
+    replayTriggerTrace(makeTriggerTrace(kGm24xCamSyncEvents), makeGm24XCallbacks());
+
+    TEST_ASSERT_TRUE(currentStatus.hasSync);
+    TEST_ASSERT_EQUAL_UINT8(0U, currentStatus.syncLossCounter);
+    TEST_ASSERT_EQUAL_UINT16(2U, toothCurrentCount);
+    TEST_ASSERT_EQUAL_UINT16(1U, currentStatus.startRevolutions);
+}
+
+static void test_trace_replay_gm24x_full_revolution_wraps_on_next_cam(void)
+{
+    setup_trace_gm24x();
+
+    replayRepeatedTriggerTrace(makeRepeatedTriggerTrace(kGm24xFullRevolutionEvents), makeGm24XCallbacks());
+
+    TEST_ASSERT_TRUE(currentStatus.hasSync);
+    TEST_ASSERT_EQUAL_UINT8(0U, currentStatus.syncLossCounter);
+    TEST_ASSERT_EQUAL_UINT16(1U, toothCurrentCount);
+    TEST_ASSERT_EQUAL_UINT16(2U, currentStatus.startRevolutions);
+}
+
+static void test_trace_replay_gm24x_no_cam_stays_without_sync(void)
+{
+    setup_trace_gm24x();
+
+    replayRepeatedTriggerTrace(makeRepeatedTriggerTrace(kGm24xNoCamEvents), makeGm24XCallbacks());
+
+    TEST_ASSERT_FALSE(currentStatus.hasSync);
+    TEST_ASSERT_EQUAL_UINT8(0U, currentStatus.syncLossCounter);
+    TEST_ASSERT_EQUAL_UINT16(25U, toothCurrentCount);
+}
+
+static void test_trace_replay_gm24x_resync_resets_tooth_count(void)
+{
+    setup_trace_gm24x();
+
+    replayTriggerTrace(makeTriggerTrace(kGm24xResyncEvents), makeGm24XCallbacks());
+
+    TEST_ASSERT_TRUE(currentStatus.hasSync);
+    TEST_ASSERT_EQUAL_UINT8(0U, currentStatus.syncLossCounter);
+    TEST_ASSERT_EQUAL_UINT16(1U, toothCurrentCount);
+    TEST_ASSERT_EQUAL_UINT16(2U, currentStatus.startRevolutions);
 }
 
 static void test_trace_replay_missing_tooth_36_1_noise_still_syncs(void)
@@ -853,8 +927,12 @@ void testTriggerTraceReplay(void)
         RUN_TEST_P(test_trace_replay_jeep2000_full_revolution_wraps);
         RUN_TEST_P(test_trace_replay_jeep2000_no_cam_stays_without_sync);
         RUN_TEST_P(test_trace_replay_audi135_cam_establishes_sync_and_decimates_teeth);
-        RUN_TEST_P(test_trace_replay_audi135_decimation_counts_every_third_tooth);
+        RUN_TEST_P(test_trace_replay_audi135_full_revolution_trace_preserves_sync_without_false_wrap);
         RUN_TEST_P(test_trace_replay_audi135_no_cam_stays_without_sync);
-        RUN_TEST_P(test_trace_replay_audi135_resync_resets_tooth_count);
+        RUN_TEST_P(test_trace_replay_audi135_resync_holds_tooth_zero_until_next_valid_primary);
+        RUN_TEST_P(test_trace_replay_gm24x_cam_pulse_establishes_sync);
+        RUN_TEST_P(test_trace_replay_gm24x_full_revolution_wraps_on_next_cam);
+        RUN_TEST_P(test_trace_replay_gm24x_no_cam_stays_without_sync);
+        RUN_TEST_P(test_trace_replay_gm24x_resync_resets_tooth_count);
     }
 }

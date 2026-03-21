@@ -8,7 +8,7 @@
 
 #define _countof(x) (sizeof(x) / sizeof (x[0]))
 
-extern void SetRevolutionTime(uint32_t revTime);
+extern bool SetRevolutionTime(uint32_t revTime);
 
 constexpr uint16_t DWELL_TIME_MS = 4;
 
