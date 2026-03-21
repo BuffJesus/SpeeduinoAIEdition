@@ -53,6 +53,9 @@
 #include "traces/hondad17_sync_trace.h"
 #include "traces/hondad17_no_sync_trace.h"
 #include "traces/hondad17_wrap_trace.h"
+#include "traces/basic_distributor_sync_trace.h"
+#include "traces/basic_distributor_wrap_trace.h"
+#include "traces/basic_distributor_short_gap_trace.h"
 #include "../test_utils.h"
 
 extern volatile unsigned long toothLastToothTime;
@@ -311,6 +314,21 @@ static void setup_trace_hondad17(void)
     configPage2.injLayout = INJ_SEMISEQUENTIAL;
     configPage2.perToothIgn = false;
     triggerSetup_HondaD17();
+    toothLastToothTime = micros();
+}
+
+static void setup_trace_basic_distributor(void)
+{
+    reset_trace_runtime();
+    configPage4.TrigSpeed = CAM_SPEED;
+    configPage4.sparkMode = IGN_MODE_WASTED;
+    configPage4.triggerAngle = 0;
+    configPage4.triggerFilter = TRIGGER_FILTER_LITE;
+    configPage2.nCylinders = 4U;
+    configPage2.strokes = FOUR_STROKE;
+    configPage2.injLayout = INJ_SEMISEQUENTIAL;
+    configPage2.perToothIgn = false;
+    triggerSetup_BasicDistributor();
     toothLastToothTime = micros();
 }
 
@@ -947,6 +965,42 @@ static void test_trace_replay_hondad17_synced_cycle_wraps_on_next_reference_toot
     TEST_ASSERT_EQUAL_UINT16(2U, currentStatus.startRevolutions);
 }
 
+static void test_trace_replay_basic_distributor_first_pulse_establishes_sync(void)
+{
+    setup_trace_basic_distributor();
+
+    replayRepeatedTriggerTrace(makeRepeatedTriggerTrace(kBasicDistributorSyncEvents), makePrimaryOnlyCallbacks(triggerPri_BasicDistributor));
+
+    TEST_ASSERT_TRUE(currentStatus.hasSync);
+    TEST_ASSERT_EQUAL_UINT8(0U, currentStatus.syncLossCounter);
+    TEST_ASSERT_EQUAL_UINT16(1U, toothCurrentCount);
+    TEST_ASSERT_EQUAL_UINT16(1U, currentStatus.startRevolutions);
+}
+
+static void test_trace_replay_basic_distributor_wraps_on_fifth_pulse_for_four_cylinder_four_stroke(void)
+{
+    setup_trace_basic_distributor();
+
+    replayRepeatedTriggerTrace(makeRepeatedTriggerTrace(kBasicDistributorWrapEvents), makePrimaryOnlyCallbacks(triggerPri_BasicDistributor));
+
+    TEST_ASSERT_TRUE(currentStatus.hasSync);
+    TEST_ASSERT_EQUAL_UINT8(0U, currentStatus.syncLossCounter);
+    TEST_ASSERT_EQUAL_UINT16(1U, toothCurrentCount);
+    TEST_ASSERT_EQUAL_UINT16(2U, currentStatus.startRevolutions);
+}
+
+static void test_trace_replay_basic_distributor_short_gap_is_filtered_after_sync(void)
+{
+    setup_trace_basic_distributor();
+
+    replayTriggerTrace(makeTriggerTrace(kBasicDistributorShortGapEvents), makePrimaryOnlyCallbacks(triggerPri_BasicDistributor));
+
+    TEST_ASSERT_TRUE(currentStatus.hasSync);
+    TEST_ASSERT_EQUAL_UINT8(0U, currentStatus.syncLossCounter);
+    TEST_ASSERT_EQUAL_UINT16(2U, toothCurrentCount);
+    TEST_ASSERT_EQUAL_UINT16(1U, currentStatus.startRevolutions);
+}
+
 static void test_trace_replay_missing_tooth_36_1_noise_still_syncs(void)
 {
     setup_trace_missing_tooth_36_1();
@@ -1154,5 +1208,8 @@ void testTriggerTraceReplay(void)
         RUN_TEST_P(test_trace_replay_hondad17_short_gap_establishes_sync);
         RUN_TEST_P(test_trace_replay_hondad17_uniform_gaps_do_not_sync);
         RUN_TEST_P(test_trace_replay_hondad17_synced_cycle_wraps_on_next_reference_tooth);
+        RUN_TEST_P(test_trace_replay_basic_distributor_first_pulse_establishes_sync);
+        RUN_TEST_P(test_trace_replay_basic_distributor_wraps_on_fifth_pulse_for_four_cylinder_four_stroke);
+        RUN_TEST_P(test_trace_replay_basic_distributor_short_gap_is_filtered_after_sync);
     }
 }
