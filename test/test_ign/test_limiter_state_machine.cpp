@@ -7,6 +7,14 @@
 
 extern void construct2dTables(void);
 
+static void seed_active_afr_inputs(void)
+{
+    currentStatus.MAP = 220U;
+    currentStatus.TPS = 60U;
+    currentStatus.O2 = 160U;
+    currentStatus.afrTarget = 100U;
+}
+
 static void setup_limiter_state_machine(void)
 {
     construct2dTables();
@@ -117,10 +125,7 @@ static void test_combined_rpm_limit_prioritizes_protection_then_launch_then_flat
     setup_limiter_state_machine();
     currentStatus.RPM = 7200U;
     currentStatus.RPMdiv100 = currentStatus.RPM / 100U;
-    currentStatus.TPS = 60U;
-    currentStatus.MAP = 220U;
-    currentStatus.O2 = 160U;
-    currentStatus.afrTarget = 100U;
+    seed_active_afr_inputs();
 
     TEST_ASSERT_EQUAL_UINT16(configPage4.HardRevLim * 100U, calculateMaxAllowedRPM());
 
@@ -185,14 +190,38 @@ static void test_flat_shift_state_machine_rolling_cut_uses_delta_threshold_but_k
     TEST_ASSERT_BIT_LOW(BIT_STATUS5_FLATSH, currentStatus.status5);
 }
 
+static void test_launch_state_machine_rolling_cut_respects_vss_gate_until_speed_drops(void)
+{
+    setup_limiter_state_machine();
+    configPage2.hardCutType = HARD_CUT_ROLLING;
+    configPage15.rollingProtRPMDelta[0] = -20;
+    configPage2.vssMode = 1U;
+
+    currentStatus.clutchEngagedRPM = (configPage6.flatSArm * 100U) - 100U;
+    currentStatus.TPS = configPage10.lnchCtrlTPS + 1U;
+    currentStatus.RPM = (configPage6.lnchHardLim * 100U) - 150U;
+    currentStatus.RPMdiv100 = currentStatus.RPM / 100U;
+    currentStatus.vss = configPage10.lnchCtrlVss;
+
+    checkLaunchAndFlatShift();
+
+    TEST_ASSERT_FALSE(currentStatus.launchingHard);
+    TEST_ASSERT_BIT_LOW(BIT_STATUS2_HLAUNCH, currentStatus.status2);
+    TEST_ASSERT_EQUAL_UINT16(configPage4.HardRevLim * 100U, calculateMaxAllowedRPM());
+
+    currentStatus.vss = configPage10.lnchCtrlVss - 1U;
+    checkLaunchAndFlatShift();
+
+    TEST_ASSERT_TRUE(currentStatus.launchingHard);
+    TEST_ASSERT_BIT_HIGH(BIT_STATUS2_HLAUNCH, currentStatus.status2);
+    TEST_ASSERT_EQUAL_UINT16(configPage6.lnchHardLim * 100U, calculateMaxAllowedRPM());
+}
+
 static void test_afr_protection_state_machine_latches_until_reactivation_tps(void)
 {
     setup_limiter_state_machine();
-    currentStatus.MAP = 220U;
+    seed_active_afr_inputs();
     currentStatus.RPMdiv100 = 40U;
-    currentStatus.TPS = 60U;
-    currentStatus.O2 = 160U;
-    currentStatus.afrTarget = 100U;
 
     TEST_ASSERT_EQUAL_UINT8(0U, checkAFRLimit());
     TEST_ASSERT_BIT_LOW(ENGINE_PROTECT_BIT_AFR, currentStatus.engineProtectStatus);
@@ -210,6 +239,48 @@ static void test_afr_protection_state_machine_latches_until_reactivation_tps(voi
     TEST_ASSERT_BIT_LOW(ENGINE_PROTECT_BIT_AFR, currentStatus.engineProtectStatus);
 }
 
+static void test_afr_protection_target_table_mode_uses_target_plus_deviation_threshold(void)
+{
+    setup_limiter_state_machine();
+    configPage9.afrProtectEnabled = 2U;
+    configPage9.afrProtectDeviation = 15U;
+    currentStatus.MAP = 220U;
+    currentStatus.RPMdiv100 = 40U;
+    currentStatus.TPS = 60U;
+    currentStatus.afrTarget = 120U;
+    currentStatus.O2 = 134U;
+
+    TEST_ASSERT_EQUAL_UINT8(0U, checkAFRLimit());
+    delay(120);
+    TEST_ASSERT_EQUAL_UINT8(0U, checkAFRLimit());
+    TEST_ASSERT_BIT_LOW(ENGINE_PROTECT_BIT_AFR, currentStatus.engineProtectStatus);
+
+    currentStatus.O2 = 135U;
+    TEST_ASSERT_EQUAL_UINT8(0U, checkAFRLimit());
+    delay(120);
+    TEST_ASSERT_EQUAL_UINT8(1U, checkAFRLimit());
+    TEST_ASSERT_BIT_HIGH(ENGINE_PROTECT_BIT_AFR, currentStatus.engineProtectStatus);
+}
+
+static void test_afr_protection_target_table_mode_stays_inactive_when_target_rises_above_current_o2(void)
+{
+    setup_limiter_state_machine();
+    configPage9.afrProtectEnabled = 2U;
+    configPage9.afrProtectDeviation = 15U;
+    currentStatus.MAP = 220U;
+    currentStatus.RPMdiv100 = 40U;
+    currentStatus.TPS = 60U;
+    currentStatus.afrTarget = 120U;
+    currentStatus.O2 = 140U;
+
+    TEST_ASSERT_EQUAL_UINT8(0U, checkAFRLimit());
+
+    currentStatus.afrTarget = 130U;
+    delay(120);
+    TEST_ASSERT_EQUAL_UINT8(0U, checkAFRLimit());
+    TEST_ASSERT_BIT_LOW(ENGINE_PROTECT_BIT_AFR, currentStatus.engineProtectStatus);
+}
+
 void test_limiter_state_machine(void)
 {
     SET_UNITY_FILENAME() {
@@ -218,6 +289,9 @@ void test_limiter_state_machine(void)
         RUN_TEST(test_combined_rpm_limit_prioritizes_protection_then_launch_then_flat_shift);
         RUN_TEST(test_launch_state_machine_rolling_cut_uses_delta_threshold_but_keeps_base_limit_source);
         RUN_TEST(test_flat_shift_state_machine_rolling_cut_uses_delta_threshold_but_keeps_latched_limit_source);
+        RUN_TEST(test_launch_state_machine_rolling_cut_respects_vss_gate_until_speed_drops);
         RUN_TEST(test_afr_protection_state_machine_latches_until_reactivation_tps);
+        RUN_TEST(test_afr_protection_target_table_mode_uses_target_plus_deviation_threshold);
+        RUN_TEST(test_afr_protection_target_table_mode_stays_inactive_when_target_rises_above_current_o2);
     }
 }
