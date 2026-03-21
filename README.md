@@ -75,6 +75,7 @@ Upstream references:
 - **Sensor State-Machine Tests**
   - MAP sampling fallback/reset behavior for cycle-average, cycle-minimum, and event-average modes
   - `mapSwitchPoint` boundary transitions and EMAP-disabled sentinel preservation
+  - MAP / EMAP / baro calibration helper coverage for clamping and enabled/disabled source behavior
 
 **Current decoder replay/runtime coverage** (`182/182` decoder tests passing):
 
@@ -121,16 +122,17 @@ Recent work as of `2026-03-21`:
 - Split migration coverage into stable `test_updates` and `test_updates_tail` suites
 - Expanded replay-backed decoder coverage to 12+ decoder families
 - Added ignition/protection state-machine coverage for rolling cut, VSS-gated launch, AFR target-table mode, and combined boost/AFR precedence
-- Added MAP sampling reset/fallback coverage for sensor state transitions, including `mapSwitchPoint` boundary resets and EMAP-disabled sentinel handling
+- Added MAP sampling reset/fallback coverage for sensor state transitions, including `mapSwitchPoint` boundary resets, EMAP-disabled sentinel handling, and MAP/baro calibration helper behavior
 - Verified `test_decoders`: `182/182`
 - Verified `test_updates`: `38/38`
 - Verified `test_updates_tail`: `5/5`
 - Verified `test_ign`: `146/146`
-- Verified `test_sensors`: `44/44`
+- Verified `test_sensors`: `50/50`
 
 Latest handoff references:
 
 - [SESSION_HANDOFF_2026-03-21_MAP_SWITCHPOINT_EMAP.md](speeduino/SESSION_HANDOFF_2026-03-21_MAP_SWITCHPOINT_EMAP.md)
+- [SESSION_HANDOFF_2026-03-21_MAP_BARO_HELPERS.md](speeduino/SESSION_HANDOFF_2026-03-21_MAP_BARO_HELPERS.md)
 - [SESSION_HANDOFF_2026-03-21_MAP_SAMPLING.md](speeduino/SESSION_HANDOFF_2026-03-21_MAP_SAMPLING.md)
 - [SESSION_HANDOFF_2026-03-21_LIMITER_AFR_VSS.md](speeduino/SESSION_HANDOFF_2026-03-21_LIMITER_AFR_VSS.md)
 - [SESSION_HANDOFF_2026-03-21_UPDATES_V15_V18.md](speeduino/SESSION_HANDOFF_2026-03-21_UPDATES_V15_V18.md)
@@ -199,7 +201,7 @@ pio test -e megaatmega2560_sim_unittest --filter test_sensors
 - `38/38` config migration tests passing
 - `5/5` migration tail tests passing
 - `146/146` ignition/protection tests passing
-- `44/44` sensor tests passing
+- `50/50` sensor tests passing
 - Other unit-test suites remain in regular use for regression checking
 
 Note: local Windows `pio test` invocations in this workspace can still hit wrapper/file-lock issues intermittently even when the produced simulator binary itself runs cleanly.
@@ -253,6 +255,7 @@ Development progress is tracked in session handoff documents that capture:
 
 Recent handoffs:
 
+- [SESSION_HANDOFF_2026-03-21_MAP_BARO_HELPERS.md](speeduino/SESSION_HANDOFF_2026-03-21_MAP_BARO_HELPERS.md) - MAP / EMAP / baro conversion helper coverage
 - [SESSION_HANDOFF_2026-03-21_MAP_SWITCHPOINT_EMAP.md](speeduino/SESSION_HANDOFF_2026-03-21_MAP_SWITCHPOINT_EMAP.md) - MAP switch-point boundary and EMAP sentinel coverage
 - [SESSION_HANDOFF_2026-03-21_MAP_SAMPLING.md](speeduino/SESSION_HANDOFF_2026-03-21_MAP_SAMPLING.md) - MAP sampling reset/fallback edge cases
 - [SESSION_HANDOFF_2026-03-21_LIMITER_AFR_VSS.md](speeduino/SESSION_HANDOFF_2026-03-21_LIMITER_AFR_VSS.md) - AFR target-table and VSS-gated limiter coverage

@@ -514,13 +514,13 @@ static inline void storeLastMAPReadings(map_last_read_t &lastRead, uint16_t oldM
   lastRead.currentReadingTime = currTime;
 }
 
-static inline uint16_t mapADCToMAP(uint16_t mapADC, int8_t mapMin, uint16_t mapMax) 
+TESTABLE_INLINE_STATIC uint16_t mapADCToMAP(uint16_t mapADC, int8_t mapMin, uint16_t mapMax) 
 {
   int16_t mapped = fastMap10Bit(mapADC, mapMin, mapMax); //Get the current MAP value
   return max((int16_t)0, mapped);  //Sanity check
 }
 
-static inline void setMAPValuesFromReadings(const map_adc_readings_t &readings, const config2 &page2, bool useEMAP, statuses &current) 
+TESTABLE_INLINE_STATIC void setMAPValuesFromReadings(const map_adc_readings_t &readings, const config2 &page2, bool useEMAP, statuses &current) 
 {
   current.MAP = mapADCToMAP(readings.mapADC, page2.mapMin, page2.mapMax); //Get the current MAP value
   //Repeat for EMAP if it's enabled
@@ -652,7 +652,7 @@ TESTABLE_INLINE_STATIC bool isValidBaro(uint8_t baro)
   return (baro >= BARO_MIN) && (baro <= BARO_MAX);
 }
 
-static inline void setBaroFromSensorReading(uint16_t sensorReading) 
+TESTABLE_INLINE_STATIC void setBaroFromSensorReading(uint16_t sensorReading) 
 {
   currentStatus.baroADC = sensorReading;
   int16_t tempValue = fastMap10Bit(currentStatus.baroADC, configPage2.baroMin, configPage2.baroMax);

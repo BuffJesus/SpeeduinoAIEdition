@@ -11,11 +11,15 @@
 #include "../test_utils.h"
 #include "globals.h"
 #include "sensors.h"
+#include "sensors_map_structs.h"
 
 // External test helpers exposed via TESTABLE_INLINE_STATIC
 extern int16_t fastMap10Bit(uint16_t value, int16_t rangeMin, int16_t rangeMax);
 extern uint16_t validateFilterMapSensorReading(uint16_t reading, uint8_t alpha, uint16_t prior);
 extern bool isValidBaro(uint8_t baro);
+extern uint16_t mapADCToMAP(uint16_t mapADC, int8_t mapMin, uint16_t mapMax);
+extern void setMAPValuesFromReadings(const map_adc_readings_t &readings, const config2 &page2, bool useEMAP, statuses &current);
+extern void setBaroFromSensorReading(uint16_t sensorReading);
 
 // ========================================== MAP Sensor Validation ==========================================
 
@@ -118,6 +122,82 @@ static void test_isValidBaro_boundary_values(void) {
     TEST_ASSERT_FALSE(isValidBaro(109)); // Just above max (invalid)
 }
 
+// ========================================== MAP / Baro Conversion Helpers ==========================================
+
+static config2 calibrated_pressure_page(void) {
+    config2 page2 {};
+    page2.mapMin = -20;
+    page2.mapMax = 300;
+    page2.EMAPMin = -10;
+    page2.EMAPMax = 400;
+    page2.baroMin = 60;
+    page2.baroMax = 120;
+    return page2;
+}
+
+static void test_mapADCToMAP_clamps_negative_mapped_values_to_zero(void) {
+    TEST_ASSERT_EQUAL_UINT16(0U, mapADCToMAP(0U, -20, 300));
+    TEST_ASSERT_EQUAL_UINT16(0U, mapADCToMAP(32U, -20, 300));
+}
+
+static void test_mapADCToMAP_maps_midrange_values(void) {
+    TEST_ASSERT_EQUAL_UINT16(140U, mapADCToMAP(512U, -20, 300));
+    TEST_ASSERT_EQUAL_UINT16(299U, mapADCToMAP(1023U, -20, 300));
+}
+
+static void test_setMAPValuesFromReadings_updates_map_and_emap_when_enabled(void) {
+    statuses current {};
+    config2 page2 = calibrated_pressure_page();
+    const map_adc_readings_t readings {
+        .mapADC = 512U,
+        .emapADC = 768U
+    };
+
+    setMAPValuesFromReadings(readings, page2, true, current);
+
+    TEST_ASSERT_EQUAL_UINT16(140U, current.MAP);
+    TEST_ASSERT_EQUAL_UINT16(297U, current.EMAP);
+}
+
+static void test_setMAPValuesFromReadings_leaves_emap_untouched_when_disabled(void) {
+    statuses current {};
+    config2 page2 = calibrated_pressure_page();
+    const map_adc_readings_t readings {
+        .mapADC = 640U,
+        .emapADC = UINT16_MAX
+    };
+    current.EMAP = 222U;
+
+    setMAPValuesFromReadings(readings, page2, false, current);
+
+    TEST_ASSERT_EQUAL_UINT16(180U, current.MAP);
+    TEST_ASSERT_EQUAL_UINT16(222U, current.EMAP);
+}
+
+static void test_setBaroFromSensorReading_updates_baro_and_adc(void) {
+    configPage2 = calibrated_pressure_page();
+    currentStatus.baro = 0U;
+    currentStatus.baroADC = 0U;
+
+    setBaroFromSensorReading(512U);
+
+    TEST_ASSERT_EQUAL_UINT16(512U, currentStatus.baroADC);
+    TEST_ASSERT_EQUAL_UINT8(90U, currentStatus.baro);
+}
+
+static void test_setBaroFromSensorReading_clamps_negative_mapped_baro_to_zero(void) {
+    configPage2 = calibrated_pressure_page();
+    configPage2.baroMin = -20;
+    configPage2.baroMax = 100;
+    currentStatus.baro = 55U;
+    currentStatus.baroADC = 100U;
+
+    setBaroFromSensorReading(0U);
+
+    TEST_ASSERT_EQUAL_UINT16(0U, currentStatus.baroADC);
+    TEST_ASSERT_EQUAL_UINT8(0U, currentStatus.baro);
+}
+
 // ========================================== fastMap10Bit Edge Cases ==========================================
 
 static void test_fastMap10Bit_zero_range(void) {
@@ -179,6 +259,14 @@ void test_filtering(void) {
     RUN_TEST(test_isValidBaro_rejects_too_low);
     RUN_TEST(test_isValidBaro_rejects_too_high);
     RUN_TEST(test_isValidBaro_boundary_values);
+
+    // MAP / baro conversion helper tests
+    RUN_TEST(test_mapADCToMAP_clamps_negative_mapped_values_to_zero);
+    RUN_TEST(test_mapADCToMAP_maps_midrange_values);
+    RUN_TEST(test_setMAPValuesFromReadings_updates_map_and_emap_when_enabled);
+    RUN_TEST(test_setMAPValuesFromReadings_leaves_emap_untouched_when_disabled);
+    RUN_TEST(test_setBaroFromSensorReading_updates_baro_and_adc);
+    RUN_TEST(test_setBaroFromSensorReading_clamps_negative_mapped_baro_to_zero);
 
     // fastMap10Bit edge case tests
     RUN_TEST(test_fastMap10Bit_zero_range);
