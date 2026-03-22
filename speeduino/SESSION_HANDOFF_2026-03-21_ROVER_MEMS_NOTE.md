@@ -78,6 +78,15 @@ The forum attachments were downloaded into [Resources/rover_mems_evidence](C:/Us
 - Test archive:
   - [T16-RoverMemsTesting.rar](C:/Users/Cornelio/Desktop/speeduino-202501.6/Resources/rover_mems_evidence/T16-RoverMemsTesting.rar)
 
+The PDFs are no longer opaque blobs. Embedded images were extracted into [pdf_images](C:/Users/Cornelio/Desktop/speeduino-202501.6/Resources/rover_mems_evidence/pdf_images) with manifest [manifest.json](C:/Users/Cornelio/Desktop/speeduino-202501.6/Resources/rover_mems_evidence/pdf_images/manifest.json) using [extract_pdf_images.py](C:/Users/Cornelio/Desktop/speeduino-202501.6/tools/extract_pdf_images.py).
+
+Recovered image counts:
+
+- `mems19_trigger_description.pdf`: `22`
+- `mems3_crank_and_cam.pdf`: `21`
+- `mems_2_crank_n_cam.pdf`: `22`
+- total extracted Rover PDF images: `65`
+
 ### What The Extracted Rover Project Confirms
 
 The recovered tune file [CurrentTune.msq](C:/Users/Cornelio/Desktop/speeduino-202501.6/Resources/rover_mems_evidence/extracted/T16-RoverMemsTesting/CurrentTune.msq) confirms this was not just a generic Rover setup:
@@ -130,6 +139,19 @@ What they do not yet safely tell us:
 - exact tooth numbers for each logged edge without first decoding the TunerStudio composite-log export format
 - exact tooth numbers for each logged edge without first aligning the named signal changes to the Rover wheel drawings
 - whether the `trigger` flag corresponds to the firmware's internal event marker in a way that can be used directly for replay expectations
+
+## PDF Extraction Status
+
+The Rover PDFs are now materially more usable:
+
+- embedded JPEG assets are extracted and locally inspectable
+- the extraction process is reproducible with a checked-in tool
+- the image corpus is summarized by manifest rather than requiring repeated PDF parsing
+
+What still remains unresolved:
+
+- which extracted images are the actual wheel drawings versus surrounding manual graphics or labels
+- which extracted images correspond to the exact `5-3-2 cam` plus crank-speed configuration used by the archived Rover test project
 
 ## What The Forum Evidence Safely Tells Us
 
@@ -213,5 +235,6 @@ It is still unsafe to:
 - assume the current forum summaries are enough to define exact timestamps
 - assume a single Rover trace will validate all five supported layouts
 - assume the named CSV signal changes already imply exact tooth positions without the wheel drawings
+- assume the extracted PDF image set already identifies the right Rover wheel drawing without inspection
 
-The blocker is now narrow and explicit: the attachment-level Rover captures are staged locally and the CSV channel mapping is solved, but the PDF wheel drawings and the exact signal-to-tooth alignment have not yet been converted into a precise replay spec.
+The blocker is now narrow and explicit: the attachment-level Rover captures are staged locally, the CSV channel mapping is solved, and the PDF image corpus is extracted, but the correct wheel drawings and the exact signal-to-tooth alignment have not yet been converted into a precise replay spec.
