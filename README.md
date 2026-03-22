@@ -136,6 +136,9 @@ Recent work as of `2026-03-21`:
 - Added project-doc evidence from the official wiki, especially the DropBear board page, to support future board-profile and packaged-tune decisions with primary Speeduino documentation
 - Added an external decoder research baseline from local rusEFI and MS3 source trees, narrowing the next blocked decoder research priorities to `Rover MEMS` first and `Honda J32` second, with `36-2-1` now explicitly treated as a real-capture-first problem
 - Added a Rover-specific decoder note that aligns the current Speeduino Rover MEMS implementation with the surviving forum evidence and the MS3/rusEFI references, and narrows the next safe Rover step to attachment extraction rather than new synthetic traces
+- Added an evidence-backed Honda J32 primary note from the `J35a4 Triggers` thread plus focused state-machine coverage for the existing `Honda J30 / J32` decoder's `15 teeth -> gap -> 7 teeth -> gap` primary sync path
+- Added a host-side `36-2-1` / `4B11` gap analyzer from the local rusEFI real-trigger CSVs, proving the steady-state `17 teeth -> single gap -> 16 teeth -> double gap` wheel topology while narrowing the remaining Speeduino blocker to the decoder's single-gap tooth-number ambiguity
+- Added a narrow AVR-side `36-2-1` decoder state test that locks the current Speeduino ISR contract in-tree without claiming the single-gap tooth numbering is physically correct
 - Downloaded and staged the Rover MEMS forum attachments locally, confirming the archived Rover test project used `Crank Speed` with `5-3-2 cam`, `Wasted Spark`, and `Sequential` injection, while narrowing the remaining Rover blocker to composite-log CSV channel mapping and PDF wheel rendering
 - Added a host-side composite-log parser at [tools/parse_speeduino_composite_csv.py](tools/parse_speeduino_composite_csv.py) and used it to resolve the Rover CSV channel names from the archived project INI, narrowing the remaining Rover blocker again to PDF wheel interpretation and exact signal-to-tooth alignment
 - Added a host-side PDF image extractor at [tools/extract_pdf_images.py](tools/extract_pdf_images.py) and used it to pull `65` embedded images out of the Rover MEMS PDFs into [Resources/rover_mems_evidence/pdf_images](Resources/rover_mems_evidence/pdf_images), so the remaining Rover blocker is now selecting the right wheel drawings and aligning them to the parsed signal streams
@@ -164,6 +167,8 @@ Latest handoff references:
 - [SESSION_HANDOFF_2026-03-22_ROVER_MEMS_BIT_WINDOW.md](speeduino/SESSION_HANDOFF_2026-03-22_ROVER_MEMS_BIT_WINDOW.md)
 - [SESSION_HANDOFF_2026-03-22_ROVER_MEMS_CAM_532.md](speeduino/SESSION_HANDOFF_2026-03-22_ROVER_MEMS_CAM_532.md)
 - [SESSION_HANDOFF_2026-03-22_ROVER_MEMS_TOOTH_LOG.md](speeduino/SESSION_HANDOFF_2026-03-22_ROVER_MEMS_TOOTH_LOG.md)
+- [SESSION_HANDOFF_2026-03-22_HONDAJ32.md](speeduino/SESSION_HANDOFF_2026-03-22_HONDAJ32.md)
+- [SESSION_HANDOFF_2026-03-22_36-2-1.md](speeduino/SESSION_HANDOFF_2026-03-22_36-2-1.md)
 - [SESSION_HANDOFF_2026-03-21_SUBARU67_REPLAY.md](speeduino/SESSION_HANDOFF_2026-03-21_SUBARU67_REPLAY.md)
 - [SESSION_HANDOFF_2026-03-21_BASIC_DISTRIBUTOR.md](speeduino/SESSION_HANDOFF_2026-03-21_BASIC_DISTRIBUTOR.md)
 - [SESSION_HANDOFF_2026-03-21_HONDAD17.md](speeduino/SESSION_HANDOFF_2026-03-21_HONDAD17.md)

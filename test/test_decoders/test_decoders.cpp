@@ -9,6 +9,8 @@
 #include "renix/renix.h"
 #include "Nissan360/Nissan360.h"
 #include "FordST170/FordST170.h"
+#include "HondaJ32/HondaJ32.h"
+#include "ThirtySixMinus21/ThirtySixMinus21.h"
 #include "NGC/test_ngc.h"
 #include "SuzukiK6A/SuzukiK6A.h"
 
@@ -32,13 +34,15 @@ void setup()
     testRenix();
     testNissan360();
     testFordST170();
+    testHondaJ32();
+    testThirtySixMinus21();
     testNGC();
     testSuzukiK6A_setEndTeeth();
     testSuzukiK6A_getCrankAngle();
     testSuzukiK6A_runtimeState();
     testTriggerTraceReplay();
     testDecoder_General();
-
+    
     UNITY_END(); // stop unit testing
 
 #if defined(SIMULATOR)       // Tell SimAVR we are done
