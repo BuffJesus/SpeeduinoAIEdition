@@ -19,6 +19,10 @@ Current phase 1 work started in:
 - Add host-side trigger tests that replay real captured crank/cam traces, not just synthetic edge sequences.
 - Create a small library of noisy and borderline trigger recordings to regression-test sync, dwell scheduling, and false-trigger handling.
 - Add scenario tests for launch, flat shift, hard/soft limiters, and protection reactivation behavior as named state-machine tests instead of only function-local checks.
+- Keep using the forum/manual evidence pipeline as a primary source for blocked decoder work:
+  - prefer canonical topic-level extraction from [Resources/speeduino_evidence_collector_stable.py](C:/Users/Cornelio/Desktop/speeduino-202501.6/Resources/speeduino_evidence_collector_stable.py), not raw search-engine dumps
+  - prioritize decoder families with surviving high-confidence forum evidence after topic dedupe and explicit family matching
+  - current best evidence-backed next decoder candidates are `Rover MEMS` first and `Honda J32` second; `36-2-1` still needs cleaner pattern-specific evidence before replay traces are synthesized
 
 ## Phase 3: Runtime Structure
 

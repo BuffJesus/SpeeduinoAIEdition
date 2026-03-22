@@ -40,6 +40,14 @@ class SpeeduinoEvidenceCollectorTests(unittest.TestCase):
             collector.normalize_thread_title("Messing with Subaru 6/7 trigger - Page 5"),
         )
 
+    def test_canonicalize_url_drops_forum_id_noise(self) -> None:
+        self.assertEqual(
+            "https://speeduino.com/forum/viewtopic.php?t=5544&start=280",
+            collector.canonicalize_url(
+                "https://speeduino.com/forum/viewtopic.php?f=19&t=5544&start=280"
+            ),
+        )
+
     def test_build_filtered_roadmap_query_specs_restricts_selected_area(self) -> None:
         specs = collector.build_filtered_roadmap_query_specs(
             ["Knock and pin/default policy"]
@@ -98,7 +106,7 @@ class SpeeduinoEvidenceCollectorTests(unittest.TestCase):
 
         collect_thread.assert_called_once()
         args = collect_thread.call_args.args
-        self.assertEqual("https://speeduino.com/forum/viewtopic.php?f=1&t=10", args[1])
+        self.assertEqual("https://speeduino.com/forum/viewtopic.php?t=10", args[1])
         self.assertEqual(["A10", "A8", "knock_pin"], args[3])
         self.assertEqual(["A8 A10 knock", "knock_pin"], args[4])
         self.assertEqual(["Knock and pin/default policy"], args[5])
@@ -304,6 +312,56 @@ class SpeeduinoEvidenceCollectorTests(unittest.TestCase):
 
         records = collector.build_decoder_records([("36-2-1", thread)])
         self.assertEqual([], records)
+
+    def test_collect_thread_honors_max_page_limit(self) -> None:
+        soups = {
+            "https://speeduino.com/forum/viewtopic.php?t=1": object(),
+            "https://speeduino.com/forum/viewtopic.php?t=1&start=10": object(),
+            "https://speeduino.com/forum/viewtopic.php?t=1&start=20": object(),
+        }
+        post = collector.PostEvidence(
+            author="PSIG",
+            date="Mon Sep 25, 2023 9:39 pm",
+            post_anchor="p1",
+            content_text="Honda J32 trigger scope and sync details.",
+            content_markdown="Honda J32 trigger scope and sync details.",
+            is_maintainer=True,
+            evidence_terms_found=["scope", "sync"],
+            attachments=[],
+            image_links=[],
+            score=8.0,
+            evidence_type=["maintainer explanation"],
+        )
+
+        with patch.object(collector, "fetch_soup", side_effect=lambda session, url: soups[url]) as fetch_soup, patch.object(
+            collector,
+            "topic_pagination_links",
+            side_effect=lambda soup, url, topic_id: [
+                "https://speeduino.com/forum/viewtopic.php?t=1&start=10",
+                "https://speeduino.com/forum/viewtopic.php?t=1&start=20",
+            ] if "start=20" not in url else [],
+        ), patch.object(
+            collector,
+            "extract_thread_posts_from_soup",
+            return_value=[post],
+        ), patch.object(
+            collector,
+            "extract_thread_title",
+            return_value="J35a4 Triggers - Page 2",
+        ), patch.object(
+            collector,
+            "parse_breadcrumb",
+            return_value=[],
+        ):
+            thread = collector.collect_thread(
+                session=None,
+                thread_url="https://speeduino.com/forum/viewtopic.php?t=1",
+                delay=0.0,
+                max_pages=2,
+            )
+
+        self.assertEqual(2, fetch_soup.call_count)
+        self.assertEqual("J35a4 Triggers - Page 2", thread.title)
 
 
 if __name__ == "__main__":

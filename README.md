@@ -131,6 +131,7 @@ Recent work as of `2026-03-21`:
 - Added MAP sampling reset/fallback coverage for sensor state transitions, including `mapSwitchPoint` boundary resets, EMAP-disabled sentinel handling, and MAP/baro calibration helper behavior
 - Added a host-side stock-base-tune compatibility audit for [Resources/Speeduino base tune.msq](Resources/Speeduino%20base%20tune.msq) against [speeduino.ini](speeduino.ini), now covering the full round-trippable constant surface plus selected fork-critical default values
 - Added a fork-owned compatible base tune at [Resources/Speeduino AI base tune.msq](Resources/Speeduino%20AI%20base%20tune.msq) that closes the current stock-tune drift
+- Tightened the forum evidence collector so it uses canonical topic URLs, explicit decoder-family matching, and bounded thread crawling instead of raw noisy search-result dumps
 - Verified `test_decoders`: `194/194`
 - Verified `test_updates`: `38/38`
 - Verified `test_updates_tail`: `5/5`
@@ -143,6 +144,7 @@ Latest handoff references:
 - [SESSION_HANDOFF_2026-03-21_STOCK_TUNE_AUDIT.md](speeduino/SESSION_HANDOFF_2026-03-21_STOCK_TUNE_AUDIT.md)
 - [SESSION_HANDOFF_2026-03-21_FORK_BASE_TUNE.md](speeduino/SESSION_HANDOFF_2026-03-21_FORK_BASE_TUNE.md)
 - [SESSION_HANDOFF_2026-03-21_TUNE_DEFAULT_VALUES.md](speeduino/SESSION_HANDOFF_2026-03-21_TUNE_DEFAULT_VALUES.md)
+- [SESSION_HANDOFF_2026-03-21_FORUM_EVIDENCE_CURATION.md](speeduino/SESSION_HANDOFF_2026-03-21_FORUM_EVIDENCE_CURATION.md)
 - [SESSION_HANDOFF_2026-03-21_SUBARU67_REPLAY.md](speeduino/SESSION_HANDOFF_2026-03-21_SUBARU67_REPLAY.md)
 - [SESSION_HANDOFF_2026-03-21_BASIC_DISTRIBUTOR.md](speeduino/SESSION_HANDOFF_2026-03-21_BASIC_DISTRIBUTOR.md)
 - [SESSION_HANDOFF_2026-03-21_HONDAD17.md](speeduino/SESSION_HANDOFF_2026-03-21_HONDAD17.md)
@@ -252,6 +254,12 @@ python tools/check_stock_base_tune_compat.py --msq "Resources/Speeduino AI base 
 
 # Verify the packaged hardware-profile override baseline
 python tools/check_stock_base_tune_compat.py --msq "Resources/Speeduino AI base tune.msq" --verify-expected-packaged-profile-overrides
+
+# Collect curated forum evidence for one roadmap area using the phpBB forum backend
+python Resources/speeduino_evidence_collector_stable.py --mode roadmap --search-engine forum --roadmap-area "Knock and pin/default policy" --per-query-limit 2 --limit-results 12 --max-thread-pages 12
+
+# Collect curated forum evidence for targeted blocked decoder families
+python Resources/speeduino_evidence_collector_stable.py --mode decoder --search-engine forum --decoder-family "Honda J32" --decoder-family "Rover MEMS" --per-query-limit 2 --limit-results 18 --max-thread-pages 12
 ```
 
 ### Current Test Status

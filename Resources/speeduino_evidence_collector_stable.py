@@ -25,6 +25,7 @@ DEFAULT_SEARCH_ENGINE = "forum"
 SCRIPT_DIR = Path(__file__).resolve().parent
 SEARCH_ENGINES = ("forum", "bing", "duckduckgo")
 DEFAULT_ENGINE_FAILURE_THRESHOLD = 3
+DEFAULT_MAX_THREAD_PAGES = 12
 
 MAINTAINER_NAMES = {
     "noisymime",
@@ -310,7 +311,7 @@ def log(message: str) -> None:
 def canonicalize_url(url: str) -> str:
     parsed = urlparse(url)
     qs = parse_qs(parsed.query, keep_blank_values=True)
-    allowed = {"f", "t", "p", "start"}
+    allowed = {"t", "p", "start"}
     clean_qs = {k: v for k, v in qs.items() if k in allowed}
     if clean_qs.get("start") == ["0"]:
         clean_qs.pop("start")
@@ -793,6 +794,7 @@ def collect_thread(
     focus_terms: Optional[list[str]] = None,
     source_queries: Optional[list[str]] = None,
     source_labels: Optional[list[str]] = None,
+    max_pages: int = DEFAULT_MAX_THREAD_PAGES,
 ) -> ThreadData:
     thread_url = canonicalize_url(thread_url)
     topic_id = parse_qs(urlparse(thread_url).query).get("t", [None])[0]
@@ -802,6 +804,9 @@ def collect_thread(
     pages: list[tuple[str, BeautifulSoup]] = []
 
     while queue:
+        if max_pages > 0 and len(pages) >= max_pages:
+            log(f"[thread] page limit reached for {thread_url} ({max_pages} pages)")
+            break
         url = queue.popleft()
         if url in visited:
             continue
@@ -1342,6 +1347,7 @@ def collect_threads_for_mode(
     per_query_limit: int,
     limit_results: int,
     failure_threshold: int = DEFAULT_ENGINE_FAILURE_THRESHOLD,
+    max_thread_pages: int = DEFAULT_MAX_THREAD_PAGES,
 ) -> list[tuple[str, ThreadData]]:
     hits = run_searches(
         session,
@@ -1382,6 +1388,7 @@ def collect_threads_for_mode(
                 sorted(focus_by_url[thread_url]),
                 sorted(queries_by_url[thread_url]),
                 labels,
+                max_thread_pages,
             )
             for label in labels:
                 threads.append((label, thread))
@@ -1400,6 +1407,7 @@ def main() -> int:
     parser.add_argument("--search-engine", choices=list(SEARCH_ENGINES), default=DEFAULT_SEARCH_ENGINE)
     parser.add_argument("--per-query-limit", type=int, default=5)
     parser.add_argument("--limit-results", type=int, default=0)
+    parser.add_argument("--max-thread-pages", type=int, default=DEFAULT_MAX_THREAD_PAGES)
     parser.add_argument(
         "--engine-failure-threshold",
         type=int,
@@ -1437,6 +1445,7 @@ def main() -> int:
             per_query_limit=args.per_query_limit,
             limit_results=args.limit_results,
             failure_threshold=args.engine_failure_threshold,
+            max_thread_pages=args.max_thread_pages,
         )
         roadmap_records = build_roadmap_records(roadmap_threads)
 
@@ -1449,6 +1458,7 @@ def main() -> int:
             per_query_limit=args.per_query_limit,
             limit_results=args.limit_results,
             failure_threshold=args.engine_failure_threshold,
+            max_thread_pages=args.max_thread_pages,
         )
         decoder_records = build_decoder_records(decoder_threads)
 
