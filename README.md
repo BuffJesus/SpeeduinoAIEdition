@@ -140,6 +140,7 @@ Recent work as of `2026-03-21`:
 - Added a host-side PDF image extractor at [tools/extract_pdf_images.py](tools/extract_pdf_images.py) and used it to pull `65` embedded images out of the Rover MEMS PDFs into [Resources/rover_mems_evidence/pdf_images](Resources/rover_mems_evidence/pdf_images), so the remaining Rover blocker is now selecting the right wheel drawings and aligning them to the parsed signal streams
 - Added an OCR-based Rover PDF image indexer at [tools/index_pdf_images.py](tools/index_pdf_images.py) and used it to rank the `65` extracted Rover images down to a small set of likely crank/cam diagram candidates in [Resources/rover_mems_evidence/pdf_images/ocr_index.json](Resources/rover_mems_evidence/pdf_images/ocr_index.json)
 - Added a PDF readiness inspector at [tools/inspect_pdf_evidence.py](tools/inspect_pdf_evidence.py) and used it to confirm the Rover manuals have no extractable text layer here and that no local page renderer is installed, turning the remaining blocker into an explicit environment limitation rather than a vague parsing gap
+- Installed a user-scope Poppler renderer, added [tools/render_pdf_pages.py](tools/render_pdf_pages.py), and rendered the full Rover manual pages into [Resources/rover_mems_evidence/rendered_pages](Resources/rover_mems_evidence/rendered_pages), which let the repo map OEM Rover wheel descriptions onto Speeduino's `11-5-12-4` and `2-14-3-13` patterns even though a first naive replay encoding still had to be backed out
 - Verified `test_decoders`: `194/194`
 - Verified `test_updates`: `38/38`
 - Verified `test_updates_tail`: `5/5`
@@ -283,6 +284,9 @@ python tools/index_pdf_images.py --image-dir Resources/rover_mems_evidence/pdf_i
 
 # Check whether the local environment can extract text or render Rover PDF pages
 python tools/inspect_pdf_evidence.py --pdf-dir Resources/rover_mems_evidence --output Resources/rover_mems_evidence/pdf_inspection.json
+
+# Render full Rover PDF pages now that pdftoppm/Poppler is available
+python tools/render_pdf_pages.py --pdf-dir Resources/rover_mems_evidence --output-dir Resources/rover_mems_evidence/rendered_pages --manifest Resources/rover_mems_evidence/rendered_pages/manifest.json --dpi 200
 ```
 
 ### Current Test Status
@@ -312,7 +316,9 @@ python tools/inspect_pdf_evidence.py --pdf-dir Resources/rover_mems_evidence --o
 - Rover MEMS CSV channel mapping is now resolved from the archived project INI via [parse_speeduino_composite_csv.py](tools/parse_speeduino_composite_csv.py); the remaining blocker is the last step from named signals to exact tooth positions, which still requires interpreting the Rover PDF wheel drawings
 - Rover MEMS PDF assets are now extracted into a local image corpus with [extract_pdf_images.py](tools/extract_pdf_images.py); the remaining blocker is no longer PDF access, but identifying which images are the relevant wheel diagrams and aligning them with the parsed Rover signal streams
 - Rover MEMS extracted PDF images are now OCR-ranked with [index_pdf_images.py](tools/index_pdf_images.py); the remaining blocker is no longer "which of the 65 images matter", but visually confirming the top-ranked candidate diagrams and aligning them with the parsed Rover signal streams
-- Rover MEMS PDF readiness is now explicitly inspected with [inspect_pdf_evidence.py](tools/inspect_pdf_evidence.py); in this environment the manuals have `0` extractable text-layer characters and no available `magick`, `pdftoppm`, or `gswin64c` renderer, so the current blocker is full-page visual rendering rather than unknown file contents
+- Rover MEMS PDF readiness is now explicitly inspected with [inspect_pdf_evidence.py](tools/inspect_pdf_evidence.py); in this environment the manuals still have `0` extractable text-layer characters, but `pdftoppm` is now available and full pages are rendered locally with [render_pdf_pages.py](tools/render_pdf_pages.py)
+- The rendered Rover manual pages now map `MEMS 1.9 MPi` to Speeduino's `11-5-12-4` Rover layout and `MEMS 3 MPi` / `MEMS 2 VVC` to `2-14-3-13`
+- A first primary-only Rover replay attempt based on naive long-gap traces for those layouts was intentionally backed out because the decoder's rolling `roverMEMSTeethSeen` match stayed at pattern `0`; the remaining blocker is now accurate bit-window modeling, not missing documents or rendering capability
 - Other unit-test suites remain in regular use for regression checking
 
 Note: local Windows `pio test` invocations in this workspace can still hit wrapper/file-lock issues intermittently even when the produced simulator binary itself runs cleanly.

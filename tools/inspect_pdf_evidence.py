@@ -11,8 +11,21 @@ from pypdf import PdfReader
 RENDERERS = ("magick", "pdftoppm", "gswin64c")
 
 
+def find_renderer_path(name: str) -> str | None:
+    if resolved := shutil.which(name):
+        return resolved
+
+    if name == "pdftoppm":
+        winget_root = Path.home() / "AppData" / "Local" / "Microsoft" / "WinGet" / "Packages"
+        matches = sorted(winget_root.glob("**/pdftoppm.exe"))
+        if matches:
+            return str(matches[0])
+
+    return None
+
+
 def find_renderers() -> dict[str, str | None]:
-    return {name: shutil.which(name) for name in RENDERERS}
+    return {name: find_renderer_path(name) for name in RENDERERS}
 
 
 def get_pdf_text_char_count(path: Path) -> int:

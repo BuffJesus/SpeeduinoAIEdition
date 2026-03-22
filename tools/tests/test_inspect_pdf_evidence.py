@@ -5,6 +5,7 @@ from unittest.mock import patch
 
 from pypdf import PdfWriter
 
+from tools.inspect_pdf_evidence import find_renderer_path
 from tools.inspect_pdf_evidence import find_renderers
 from tools.inspect_pdf_evidence import get_pdf_text_char_count
 from tools.inspect_pdf_evidence import summarize_pdf_dir
@@ -13,10 +14,28 @@ from tools.inspect_pdf_evidence import summarize_pdf_dir
 class InspectPdfEvidenceTests(unittest.TestCase):
     def test_find_renderers_reports_missing_entries(self) -> None:
         with patch("tools.inspect_pdf_evidence.shutil.which", return_value=None):
-            self.assertEqual(
-                find_renderers(),
-                {"magick": None, "pdftoppm": None, "gswin64c": None},
-            )
+            with patch("tools.inspect_pdf_evidence.Path.home", return_value=Path("C:/Users/test")):
+                with patch.object(Path, "glob", return_value=[]):
+                    self.assertEqual(
+                        find_renderers(),
+                        {"magick": None, "pdftoppm": None, "gswin64c": None},
+                    )
+
+    def test_find_renderer_path_falls_back_to_winget_pdftoppm(self) -> None:
+        fake_root = Path("C:/Users/test/AppData/Local/Microsoft/WinGet/Packages")
+        with patch("tools.inspect_pdf_evidence.shutil.which", return_value=None):
+            with patch("tools.inspect_pdf_evidence.Path.home", return_value=Path("C:/Users/test")):
+                with patch.object(Path, "glob", return_value=[fake_root / "pkg" / "pdftoppm.exe"]):
+                    self.assertEqual(
+                        find_renderer_path("pdftoppm"),
+                        str(fake_root / "pkg" / "pdftoppm.exe"),
+                    )
+
+    def test_find_renderer_path_does_not_glob_for_other_tools(self) -> None:
+        with patch("tools.inspect_pdf_evidence.shutil.which", return_value=None):
+            with patch("tools.inspect_pdf_evidence.Path.home", return_value=Path("C:/Users/test")):
+                with patch.object(Path, "glob", return_value=[Path("C:/unexpected/magick.exe")]):
+                    self.assertIsNone(find_renderer_path("magick"))
 
     def test_get_pdf_text_char_count_handles_blank_pdf(self) -> None:
         with tempfile.TemporaryDirectory() as temp_dir:

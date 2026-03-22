@@ -120,12 +120,21 @@ The environment-level PDF readiness is now also checked in a reproducible way wi
 Current inspection result:
 
 - all three Rover PDFs have `0` extractable text-layer characters under `pypdf`
-- no local page renderer is available in `PATH`:
+- a local page renderer is now available:
+  - `pdftoppm`: available via a user-scope Poppler install
   - `magick`: missing
-  - `pdftoppm`: missing
   - `gswin64c`: missing
 
-That means the Rover manuals are effectively image-only in this environment and cannot currently be turned into full-page diagrams without either:
+That means the Rover manuals are still image-only, but they can now be turned into full-page diagrams locally. Full pages were rendered into [rendered_pages](C:/Users/Cornelio/Desktop/speeduino-202501.6/Resources/rover_mems_evidence/rendered_pages) with manifest [manifest.json](C:/Users/Cornelio/Desktop/speeduino-202501.6/Resources/rover_mems_evidence/rendered_pages/manifest.json) using [render_pdf_pages.py](C:/Users/Cornelio/Desktop/speeduino-202501.6/tools/render_pdf_pages.py).
+
+Rendered page inventory:
+
+- [mems19_trigger_description-1.png](C:/Users/Cornelio/Desktop/speeduino-202501.6/Resources/rover_mems_evidence/rendered_pages/mems19_trigger_description-1.png)
+- [mems3_crank_and_cam-1.png](C:/Users/Cornelio/Desktop/speeduino-202501.6/Resources/rover_mems_evidence/rendered_pages/mems3_crank_and_cam-1.png)
+- [mems_2_crank_n_cam-1.png](C:/Users/Cornelio/Desktop/speeduino-202501.6/Resources/rover_mems_evidence/rendered_pages/mems_2_crank_n_cam-1.png)
+- [mems_2_crank_n_cam-2.png](C:/Users/Cornelio/Desktop/speeduino-202501.6/Resources/rover_mems_evidence/rendered_pages/mems_2_crank_n_cam-2.png)
+
+That means the Rover manuals no longer require:
 
 - manual viewing outside the harness, or
 - installing a page-rendering toolchain
@@ -207,6 +216,70 @@ These points are strong enough to treat as working assumptions:
 - The thread contains real captures, not just verbal descriptions, and those captures are the right next input for replay work.
 - The extracted Rover project confirms the relevant live configuration path is `Crank Speed` plus `5-3-2 cam`, not a no-cam or single-tooth-cam variant.
 
+## Manual-Backed Primary Wheel Mappings
+
+The rendered Rover manual pages are now strong enough to map two published wheel descriptions directly onto the current Speeduino Rover gap-pattern names.
+
+### MEMS 1.9 MPi
+
+Rendered source:
+
+- [mems19_trigger_description-1.png](C:/Users/Cornelio/Desktop/speeduino-202501.6/Resources/rover_mems_evidence/rendered_pages/mems19_trigger_description-1.png)
+
+Manual wording:
+
+- `32 poles spaced at 10 degree intervals, with 4 missing poles at 0, 120, 180 and 310 degrees`
+
+Converted to present-tooth runs between missing holes:
+
+- `11-5-12-4`
+
+Mapped Speeduino Rover layout:
+
+- `11-5-12-4` in [triggerPri_RoverMEMS()](C:/Users/Cornelio/Desktop/speeduino-202501.6/speeduino/decoders.cpp#L5443)
+
+### MEMS 3 MPi
+
+Rendered source:
+
+- [mems3_crank_and_cam-1.png](C:/Users/Cornelio/Desktop/speeduino-202501.6/Resources/rover_mems_evidence/rendered_pages/mems3_crank_and_cam-1.png)
+
+Manual wording:
+
+- `The 'missing' holes are positioned at 80, 110, 260 and 300 degrees before the CKP sensor position`
+
+Converted to present-tooth runs between missing holes:
+
+- `2-14-3-13`
+
+Mapped Speeduino Rover layout:
+
+- `2-14-3-13` in [triggerPri_RoverMEMS()](C:/Users/Cornelio/Desktop/speeduino-202501.6/speeduino/decoders.cpp#L5428)
+
+### MEMS 2 VVC
+
+Rendered source:
+
+- [mems_2_crank_n_cam-2.png](C:/Users/Cornelio/Desktop/speeduino-202501.6/Resources/rover_mems_evidence/rendered_pages/mems_2_crank_n_cam-2.png)
+
+Manual wording:
+
+- `32 poles spaced at 10 degree intervals, with 4 missing poles at 30, 60, 210 and 250 degrees`
+
+Converted to present-tooth runs between missing holes:
+
+- `2-14-3-13`
+
+Mapped Speeduino Rover layout:
+
+- `2-14-3-13`
+
+Safe conclusion:
+
+- the Rover manuals now anchor at least two current Speeduino primary-wheel layouts to specific OEM documentation
+- `MEMS 1.9 MPi` maps to `11-5-12-4`
+- `MEMS 3 MPi` and `MEMS 2 VVC` both map to `2-14-3-13`
+
 These points are not yet strong enough to encode as replay traces:
 
 - exact edge order and timing for the `17-17` layout under the current decoder
@@ -257,6 +330,22 @@ Safe hypothesis:
 - The existing Speeduino Rover decoder is conceptually correct in treating the family as a `36` slot wheel with different missing-tooth layouts and optional phase information from cam.
 - The `17-17` variant likely needs phase interpretation that is sensitive to where the cycle is sampled, which is why MS3 exposes `poll_level_tooth` and explicitly calls out `17`.
 - The missing piece for replay is not general wheel topology anymore. It is exact event sequencing from the attached Rover captures.
+- The current Rover replay blocker is narrower than before: the manuals do identify real OEM wheel layouts, but the decoder's rolling `roverMEMSTeethSeen` match is not reproduced by a naive one-cycle `1000 / 2000 us` long-gap trace built directly from those manual hole positions.
+
+## What Was Tried And Backed Out
+
+A primary-only Rover replay attempt was made after the manual page rendering work, using straightforward long-gap traces derived from the documented `11-5-12-4` and `2-14-3-13` layouts.
+
+Those traces were not kept because they did not safely match live decoder state:
+
+- `toothAngles[ID_TOOTH_PATTERN]` remained `0`
+- the decoder did not recognize either layout from that naive event encoding
+- therefore no Rover replay coverage was landed from that attempt
+
+Safe conclusion from that failed attempt:
+
+- Rover primary recognition in Speeduino is not captured by a naive "one 2000 us gap after each missing hole" model
+- future Rover replay work needs an explicit model of the rolling `roverMEMSTeethSeen` bit window before any new traces are added
 
 ## Next Safe Step
 
@@ -281,4 +370,4 @@ It is still unsafe to:
 - assume the named CSV signal changes already imply exact tooth positions without the wheel drawings
 - assume the extracted PDF image set already identifies the right Rover wheel drawing without inspection
 
-The blocker is now narrow and explicit: the attachment-level Rover captures are staged locally, the CSV channel mapping is solved, and the PDF image corpus is extracted, but the correct wheel drawings and the exact signal-to-tooth alignment have not yet been converted into a precise replay spec.
+The blocker is now narrow and explicit: the attachment-level Rover captures are staged locally, the CSV channel mapping is solved, the PDF pages are rendered, and specific OEM wheel layouts are mapped to current Speeduino Rover patterns, but the correct rolling-bit-window event encoding and the exact signal-to-tooth alignment have not yet been converted into a precise replay spec.
