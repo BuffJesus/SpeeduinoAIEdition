@@ -1,0 +1,30 @@
+{
+  "pdf_dir": "Resources\\rover_mems_evidence",
+  "output_dir": "Resources\\rover_mems_evidence\\rendered_pages",
+  "pdftoppm_path": "C:\\Users\\Cornelio\\AppData\\Local\\Microsoft\\WinGet\\Packages\\oschwartz10612.Poppler_Microsoft.Winget.Source_8wekyb3d8bbwe\\poppler-25.07.0\\Library\\bin\\pdftoppm.exe",
+  "dpi": 200,
+  "pdfs": [
+    {
+      "pdf_name": "mems19_trigger_description.pdf",
+      "page_count": 1,
+      "pages": [
+        "mems19_trigger_description-1.png"
+      ]
+    },
+    {
+      "pdf_name": "mems3_crank_and_cam.pdf",
+      "page_count": 1,
+      "pages": [
+        "mems3_crank_and_cam-1.png"
+      ]
+    },
+    {
+      "pdf_name": "mems_2_crank_n_cam.pdf",
+      "page_count": 2,
+      "pages": [
+        "mems_2_crank_n_cam-1.png",
+        "mems_2_crank_n_cam-2.png"
+      ]
+    }
+  ]
+}
