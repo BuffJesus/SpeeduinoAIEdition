@@ -302,20 +302,20 @@ void testNissan360()
   SET_UNITY_FILENAME() {
 
 
-    RUN_TEST(test_nissan360_newIgn_12_trig0_1);
-    RUN_TEST(test_nissan360_newIgn_12_trig90_1);
-    RUN_TEST(test_nissan360_newIgn_12_trig180_1);
-    RUN_TEST(test_nissan360_newIgn_12_trig270_1);
-    RUN_TEST(test_nissan360_newIgn_12_trig360_1);
-    RUN_TEST(test_nissan360_newIgn_12_trigNeg90_1);
-    RUN_TEST(test_nissan360_newIgn_12_trigNeg180_1);
-    RUN_TEST(test_nissan360_newIgn_12_trigNeg270_1);
-    RUN_TEST(test_nissan360_newIgn_12_trigNeg360_1);
-    RUN_TEST(test_nissan360_state_syncs_on_valid_long_window);
-    RUN_TEST(test_nissan360_state_syncs_on_other_valid_4cyl_windows);
-    RUN_TEST(test_nissan360_state_other_supported_cylinder_windows_sync);
-    RUN_TEST(test_nissan360_state_invalid_window_does_not_sync);
-    RUN_TEST(test_nissan360_state_wraps_and_counts_revolution_when_synced);
-    RUN_TEST(test_nissan360_state_resync_realigns_tooth_counter);
+    RUN_TEST_P(test_nissan360_newIgn_12_trig0_1);
+    RUN_TEST_P(test_nissan360_newIgn_12_trig90_1);
+    RUN_TEST_P(test_nissan360_newIgn_12_trig180_1);
+    RUN_TEST_P(test_nissan360_newIgn_12_trig270_1);
+    RUN_TEST_P(test_nissan360_newIgn_12_trig360_1);
+    RUN_TEST_P(test_nissan360_newIgn_12_trigNeg90_1);
+    RUN_TEST_P(test_nissan360_newIgn_12_trigNeg180_1);
+    RUN_TEST_P(test_nissan360_newIgn_12_trigNeg270_1);
+    RUN_TEST_P(test_nissan360_newIgn_12_trigNeg360_1);
+    RUN_TEST_P(test_nissan360_state_syncs_on_valid_long_window);
+    RUN_TEST_P(test_nissan360_state_syncs_on_other_valid_4cyl_windows);
+    RUN_TEST_P(test_nissan360_state_other_supported_cylinder_windows_sync);
+    RUN_TEST_P(test_nissan360_state_invalid_window_does_not_sync);
+    RUN_TEST_P(test_nissan360_state_wraps_and_counts_revolution_when_synced);
+    RUN_TEST_P(test_nissan360_state_resync_realigns_tooth_counter);
   }
 }

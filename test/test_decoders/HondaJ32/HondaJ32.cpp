@@ -1,6 +1,7 @@
 #include <decoders.h>
 #include <globals.h>
 #include <unity.h>
+#include "../test_utils.h"
 #include "HondaJ32.h"
 extern volatile unsigned long toothLastToothTime;
 extern volatile uint16_t toothCurrentCount;
@@ -117,6 +118,6 @@ void test_hj32_wrap(void)
 
 void testHondaJ32()
 {
-    RUN_TEST(test_hj32_sync);
-    RUN_TEST(test_hj32_wrap);
+    RUN_TEST_P(test_hj32_sync);
+    RUN_TEST_P(test_hj32_wrap);
 }

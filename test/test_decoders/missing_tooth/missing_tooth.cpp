@@ -447,29 +447,29 @@ void testMissingTooth()
 {
    SET_UNITY_FILENAME() {
 
-  RUN_TEST(test_missingtooth_newIgn_36_1_trig0_1);
-  RUN_TEST(test_missingtooth_newIgn_36_1_trig90_1);
-  RUN_TEST(test_missingtooth_newIgn_36_1_trig180_1);
-  RUN_TEST(test_missingtooth_newIgn_36_1_trig270_1);
-  RUN_TEST(test_missingtooth_newIgn_36_1_trig360_1);
-  RUN_TEST(test_missingtooth_newIgn_36_1_trigNeg90_1);
-  RUN_TEST(test_missingtooth_newIgn_36_1_trigNeg180_1);
-  RUN_TEST(test_missingtooth_newIgn_36_1_trigNeg270_1);
-  RUN_TEST(test_missingtooth_newIgn_36_1_trigNeg360_1);
+  RUN_TEST_P(test_missingtooth_newIgn_36_1_trig0_1);
+  RUN_TEST_P(test_missingtooth_newIgn_36_1_trig90_1);
+  RUN_TEST_P(test_missingtooth_newIgn_36_1_trig180_1);
+  RUN_TEST_P(test_missingtooth_newIgn_36_1_trig270_1);
+  RUN_TEST_P(test_missingtooth_newIgn_36_1_trig360_1);
+  RUN_TEST_P(test_missingtooth_newIgn_36_1_trigNeg90_1);
+  RUN_TEST_P(test_missingtooth_newIgn_36_1_trigNeg180_1);
+  RUN_TEST_P(test_missingtooth_newIgn_36_1_trigNeg270_1);
+  RUN_TEST_P(test_missingtooth_newIgn_36_1_trigNeg360_1);
 
-  RUN_TEST(test_missingtooth_newIgn_36_1_trig0_2);
-  RUN_TEST(test_missingtooth_newIgn_36_1_trig90_2);
-  RUN_TEST(test_missingtooth_newIgn_36_1_trig180_2);
-  RUN_TEST(test_missingtooth_newIgn_36_1_trig270_2);
-  RUN_TEST(test_missingtooth_newIgn_36_1_trig360_2);
-  RUN_TEST(test_missingtooth_newIgn_36_1_trigNeg90_2);
-  RUN_TEST(test_missingtooth_newIgn_36_1_trigNeg180_2);
-  RUN_TEST(test_missingtooth_newIgn_36_1_trigNeg270_2);
-  RUN_TEST(test_missingtooth_newIgn_36_1_trigNeg360_2);
+  RUN_TEST_P(test_missingtooth_newIgn_36_1_trig0_2);
+  RUN_TEST_P(test_missingtooth_newIgn_36_1_trig90_2);
+  RUN_TEST_P(test_missingtooth_newIgn_36_1_trig180_2);
+  RUN_TEST_P(test_missingtooth_newIgn_36_1_trig270_2);
+  RUN_TEST_P(test_missingtooth_newIgn_36_1_trig360_2);
+  RUN_TEST_P(test_missingtooth_newIgn_36_1_trigNeg90_2);
+  RUN_TEST_P(test_missingtooth_newIgn_36_1_trigNeg180_2);
+  RUN_TEST_P(test_missingtooth_newIgn_36_1_trigNeg270_2);
+  RUN_TEST_P(test_missingtooth_newIgn_36_1_trigNeg360_2);
 
-  RUN_TEST(test_missingtooth_state_sync_acquired_on_gap_after_full_cycle);
-  RUN_TEST(test_missingtooth_state_sequential_requires_cam_before_full_sync);
-  RUN_TEST(test_missingtooth_state_sync_loss_when_gap_arrives_too_early);
+  RUN_TEST_P(test_missingtooth_state_sync_acquired_on_gap_after_full_cycle);
+  RUN_TEST_P(test_missingtooth_state_sequential_requires_cam_before_full_sync);
+  RUN_TEST_P(test_missingtooth_state_sync_loss_when_gap_arrives_too_early);
 
   //RUN_TEST(test_missingtooth_newIgn_60_2_trig181_2);
   //RUN_TEST(test_missingtooth_newIgn_60_2_trig182_2);

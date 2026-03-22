@@ -98,8 +98,8 @@ static void test_k6a_state_short_gap_after_sync_is_filtered(void)
 void testSuzukiK6A_runtimeState(void)
 {
     SET_UNITY_FILENAME() {
-        RUN_TEST(test_k6a_state_descending_gaps_establish_sync_on_sync_tooth);
-        RUN_TEST(test_k6a_state_synced_cycle_wraps_and_counts_two_revolutions);
-        RUN_TEST(test_k6a_state_short_gap_after_sync_is_filtered);
+        RUN_TEST_P(test_k6a_state_descending_gaps_establish_sync_on_sync_tooth);
+        RUN_TEST_P(test_k6a_state_synced_cycle_wraps_and_counts_two_revolutions);
+        RUN_TEST_P(test_k6a_state_short_gap_after_sync_is_filtered);
     }
 }

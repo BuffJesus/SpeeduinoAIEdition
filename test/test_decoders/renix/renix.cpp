@@ -394,29 +394,29 @@ void testRenix()
 {
   SET_UNITY_FILENAME() {
 
-  RUN_TEST(test_Renix_newIgn_44_trig0_1);
-  RUN_TEST(test_Renix_newIgn_44_trig90_1);
-  RUN_TEST(test_Renix_newIgn_44_trig180_1);
-  RUN_TEST(test_Renix_newIgn_44_trig270_1);
-  RUN_TEST(test_Renix_newIgn_44_trig360_1);
-  RUN_TEST(test_Renix_newIgn_44_trigNeg90_1);
-  RUN_TEST(test_Renix_newIgn_44_trigNeg180_1);
-  RUN_TEST(test_Renix_newIgn_44_trigNeg270_1);
-  RUN_TEST(test_Renix_newIgn_44_trigNeg360_1);
+  RUN_TEST_P(test_Renix_newIgn_44_trig0_1);
+  RUN_TEST_P(test_Renix_newIgn_44_trig90_1);
+  RUN_TEST_P(test_Renix_newIgn_44_trig180_1);
+  RUN_TEST_P(test_Renix_newIgn_44_trig270_1);
+  RUN_TEST_P(test_Renix_newIgn_44_trig360_1);
+  RUN_TEST_P(test_Renix_newIgn_44_trigNeg90_1);
+  RUN_TEST_P(test_Renix_newIgn_44_trigNeg180_1);
+  RUN_TEST_P(test_Renix_newIgn_44_trigNeg270_1);
+  RUN_TEST_P(test_Renix_newIgn_44_trigNeg360_1);
 
-  RUN_TEST(test_Renix_newIgn_44_trig0_2);
-  RUN_TEST(test_Renix_newIgn_44_trig90_2);
-  RUN_TEST(test_Renix_newIgn_44_trig180_2);
-  RUN_TEST(test_Renix_newIgn_44_trig270_2);
-  RUN_TEST(test_Renix_newIgn_44_trig366);
-  RUN_TEST(test_Renix_newIgn_44_trigNeg90_2);
-  RUN_TEST(test_Renix_newIgn_44_trigNeg180_2);
-  RUN_TEST(test_Renix_newIgn_44_trigNeg270_2);
-  RUN_TEST(test_Renix_newIgn_44_trigNeg366);
+  RUN_TEST_P(test_Renix_newIgn_44_trig0_2);
+  RUN_TEST_P(test_Renix_newIgn_44_trig90_2);
+  RUN_TEST_P(test_Renix_newIgn_44_trig180_2);
+  RUN_TEST_P(test_Renix_newIgn_44_trig270_2);
+  RUN_TEST_P(test_Renix_newIgn_44_trig366);
+  RUN_TEST_P(test_Renix_newIgn_44_trigNeg90_2);
+  RUN_TEST_P(test_Renix_newIgn_44_trigNeg180_2);
+  RUN_TEST_P(test_Renix_newIgn_44_trigNeg270_2);
+  RUN_TEST_P(test_Renix_newIgn_44_trigNeg366);
 
-  RUN_TEST(test_Renix_newIgn_66_trig0_2);
-  RUN_TEST(test_Renix_newIgn_66_trig181_2);
-  RUN_TEST(test_renix_state_valid_gap_advances_virtual_tooth_without_sync_loss);
-  RUN_TEST(test_renix_state_short_gap_is_filtered_after_valid_group);
+  RUN_TEST_P(test_Renix_newIgn_66_trig0_2);
+  RUN_TEST_P(test_Renix_newIgn_66_trig181_2);
+  RUN_TEST_P(test_renix_state_valid_gap_advances_virtual_tooth_without_sync_loss);
+  RUN_TEST_P(test_renix_state_short_gap_is_filtered_after_valid_group);
   }           
 }

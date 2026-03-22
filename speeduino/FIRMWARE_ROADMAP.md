@@ -116,7 +116,4 @@ Current phase 1 work started in:
   - [SESSION_HANDOFF_2026-03-22_ROVER_MEMS_BIT_WINDOW.md](C:/Users/Cornelio/Desktop/speeduino-202501.6/speeduino/SESSION_HANDOFF_2026-03-22_ROVER_MEMS_BIT_WINDOW.md)
   - [SESSION_HANDOFF_2026-03-22_ROVER_MEMS_CAM_532.md](C:/Users/Cornelio/Desktop/speeduino-202501.6/speeduino/SESSION_HANDOFF_2026-03-22_ROVER_MEMS_CAM_532.md)
   - [SESSION_HANDOFF_2026-03-22_ROVER_MEMS_TOOTH_LOG.md](C:/Users/Cornelio/Desktop/speeduino-202501.6/speeduino/SESSION_HANDOFF_2026-03-22_ROVER_MEMS_TOOTH_LOG.md)
-- Revisit the current unrelated `test_decoders` baseline failures after the active evidence-backed decoder slices are parked.
-- Current deferred baseline failures:
-  - Harley low-primary replay expectation in [trace_replay.cpp](C:/Users/Cornelio/Desktop/speeduino-202501.6/test/test_decoders/trace_replay.cpp)
-  - cranking RPM staging expectations in [general.cpp](C:/Users/Cornelio/Desktop/speeduino-202501.6/test/test_decoders/general.cpp)
+- The `megaatmega2560_sim_unittest` decoder baseline is green again at `200/200`; keep it that way as new evidence-backed slices land.

@@ -268,18 +268,18 @@ void testFordST170()
 {
     SET_UNITY_FILENAME() {
 
-    RUN_TEST(test_fordst170_newIgn_12_trig0_1);
-    RUN_TEST(test_fordst170_newIgn_12_trig90_1);
-    RUN_TEST(test_fordst170_newIgn_12_trig180_1);
-    RUN_TEST(test_fordst170_newIgn_12_trig270_1);
-    RUN_TEST(test_fordst170_newIgn_12_trig360_1);
-    RUN_TEST(test_fordst170_newIgn_12_trigNeg90_1);
-    RUN_TEST(test_fordst170_newIgn_12_trigNeg180_1);
-    RUN_TEST(test_fordst170_newIgn_12_trigNeg270_1);
-    RUN_TEST(test_fordst170_newIgn_12_trigNeg360_1);
-    RUN_TEST(test_fordst170_state_primary_only_sets_half_sync);
-    RUN_TEST(test_fordst170_state_cam_activity_before_gap_establishes_full_sync);
-    RUN_TEST(test_fordst170_state_sixth_cam_tooth_restarts_grouping);
+    RUN_TEST_P(test_fordst170_newIgn_12_trig0_1);
+    RUN_TEST_P(test_fordst170_newIgn_12_trig90_1);
+    RUN_TEST_P(test_fordst170_newIgn_12_trig180_1);
+    RUN_TEST_P(test_fordst170_newIgn_12_trig270_1);
+    RUN_TEST_P(test_fordst170_newIgn_12_trig360_1);
+    RUN_TEST_P(test_fordst170_newIgn_12_trigNeg90_1);
+    RUN_TEST_P(test_fordst170_newIgn_12_trigNeg180_1);
+    RUN_TEST_P(test_fordst170_newIgn_12_trigNeg270_1);
+    RUN_TEST_P(test_fordst170_newIgn_12_trigNeg360_1);
+    RUN_TEST_P(test_fordst170_state_primary_only_sets_half_sync);
+    RUN_TEST_P(test_fordst170_state_cam_activity_before_gap_establishes_full_sync);
+    RUN_TEST_P(test_fordst170_state_sixth_cam_tooth_restarts_grouping);
     
     }
 }

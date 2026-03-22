@@ -4,14 +4,18 @@
 #include "globals.h"
 
 extern volatile unsigned long toothLastToothTime;
+extern volatile unsigned long toothSystemLastToothTime;
 
 static void reset_decoder_timing_state(void)
 {
+    resetDecoder();
+    testClearTriggerStateOverrides();
     currentStatus.hasSync = false;
     currentStatus.status3 = 0U;
     currentStatus.startRevolutions = 0U;
     currentStatus.RPM = 0U;
     currentStatus.crankRPM = 400U;
+    currentStatus.engine = 0U;
     configPage4.StgCycles = 0U;
     configPage4.triggerFilter = TRIGGER_FILTER_OFF;
     revolutionTime = 0U;
@@ -19,7 +23,9 @@ static void reset_decoder_timing_state(void)
     toothOneMinusOneTime = 0U;
     toothLastToothTime = 0U;
     toothLastMinusOneToothTime = 0U;
+    toothSystemLastToothTime = 0U;
     triggerFilterTime = 0U;
+    triggerSecFilterTime = 0U;
 }
 
 static void test_engineIsRunning(void)
@@ -149,13 +155,13 @@ static void test_setFilter_matches_trigger_filter_modes(void)
 void testDecoder_General()
 {
   SET_UNITY_FILENAME() {
-    RUN_TEST(test_engineIsRunning);
-    RUN_TEST(test_SetRevolutionTime_updates_only_on_change);
-    RUN_TEST(test_UpdateRevolutionTimeFromTeeth_requires_sync_and_noncranking_state);
-    RUN_TEST(test_UpdateRevolutionTimeFromTeeth_halves_cam_speed_period);
-    RUN_TEST(test_RpmFromRevolutionTimeUs_clamps_above_max_rpm);
-    RUN_TEST(test_crankingGetRPM_requires_staging_cycles_and_sync);
-    RUN_TEST(test_crankingGetRPM_accepts_half_sync_and_cam_speed);
-    RUN_TEST(test_setFilter_matches_trigger_filter_modes);
+    RUN_TEST_P(test_engineIsRunning);
+    RUN_TEST_P(test_SetRevolutionTime_updates_only_on_change);
+    RUN_TEST_P(test_UpdateRevolutionTimeFromTeeth_requires_sync_and_noncranking_state);
+    RUN_TEST_P(test_UpdateRevolutionTimeFromTeeth_halves_cam_speed_period);
+    RUN_TEST_P(test_RpmFromRevolutionTimeUs_clamps_above_max_rpm);
+    RUN_TEST_P(test_crankingGetRPM_requires_staging_cycles_and_sync);
+    RUN_TEST_P(test_crankingGetRPM_accepts_half_sync_and_cam_speed);
+    RUN_TEST_P(test_setFilter_matches_trigger_filter_modes);
   }
 }

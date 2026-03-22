@@ -53,6 +53,8 @@ Important limit:
 - Added [test_analyze_36_2_1.py](C:/Users/Cornelio/Desktop/speeduino-202501.6/tools/tests/test_analyze_36_2_1.py)
 - Added [ThirtySixMinus21.cpp](C:/Users/Cornelio/Desktop/speeduino-202501.6/test/test_decoders/ThirtySixMinus21/ThirtySixMinus21.cpp)
 - Added [ThirtySixMinus21.h](C:/Users/Cornelio/Desktop/speeduino-202501.6/test/test_decoders/ThirtySixMinus21/ThirtySixMinus21.h)
+- Added [3621_resync_trace.h](C:/Users/Cornelio/Desktop/speeduino-202501.6/test/test_decoders/traces/3621_resync_trace.h)
+- Added a narrow replay assertion in [trace_replay.cpp](C:/Users/Cornelio/Desktop/speeduino-202501.6/test/test_decoders/trace_replay.cpp)
 
 The helper:
 
@@ -68,10 +70,17 @@ The AVR decoder test intentionally validates current ISR behavior, not physical 
 - steady normal teeth can then carry the current code to `37` before the next explicit large-gap resync
 - a `~3.5x` gap sets `toothCurrentCount = 1`
 
+The replay test intentionally stays at the same scope:
+
+- it replays a primary-only `normal, normal, single-gap, 17 normal teeth, double-gap` sequence
+- it asserts the current code resyncs back to `toothCurrentCount = 1`
+- it does not claim the single-gap `20` assignment is physically correct
+
 ## Verification
 
 - `python -m unittest tools.tests.test_analyze_36_2_1`
 - temporary focused `pio test -e megaatmega2560_sim_unittest --filter test_decoders`
+- restored full `pio test -e megaatmega2560_sim_unittest --filter test_decoders`
 
 Verified results:
 
@@ -81,6 +90,11 @@ Verified results:
 - `4b11-running-doubled-edge.csv` preserves the same dominant pattern but surfaces one anomaly:
   - a `17 teeth before double gap` event caused by the injected duplicate edge
 - the focused `36-2-1` decoder suite passes with the restored current-code contract above
+- the narrow `36-2-1` replay trace passes in the restored full suite entrypoint
+- the current full-suite baseline in this tree is `200` cases with `8` failures, all outside the new `36-2-1` slice:
+  - Suzuki K6A crank-angle expectations
+  - Harley low-primary replay expectation
+  - general decoder timing/cranking helpers
 
 ## Remaining Blocker
 

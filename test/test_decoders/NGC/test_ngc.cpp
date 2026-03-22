@@ -237,17 +237,17 @@ void testNGC()
 {
    SET_UNITY_FILENAME() {
 
-    RUN_TEST(test_ngc_newIgn_12_trig0_1);
-    RUN_TEST(test_ngc_newIgn_12_trig90_1);
-    RUN_TEST(test_ngc_newIgn_12_trig180_1);
-    RUN_TEST(test_ngc_newIgn_12_trig270_1);
-    RUN_TEST(test_ngc_newIgn_12_trig360_1);
-    RUN_TEST(test_ngc_newIgn_12_trigNeg90_1);
-    RUN_TEST(test_ngc_newIgn_12_trigNeg180_1);
-    RUN_TEST(test_ngc_newIgn_12_trigNeg270_1);
-    RUN_TEST(test_ngc_newIgn_12_trigNeg360_1);
-    RUN_TEST(test_ngc4_state_primary_only_sets_half_sync);
-    RUN_TEST(test_ngc4_state_valid_cam_phase_establishes_full_sync);
-    RUN_TEST(test_ngc4_state_invalid_cam_phase_drops_back_to_half_sync);
+    RUN_TEST_P(test_ngc_newIgn_12_trig0_1);
+    RUN_TEST_P(test_ngc_newIgn_12_trig90_1);
+    RUN_TEST_P(test_ngc_newIgn_12_trig180_1);
+    RUN_TEST_P(test_ngc_newIgn_12_trig270_1);
+    RUN_TEST_P(test_ngc_newIgn_12_trig360_1);
+    RUN_TEST_P(test_ngc_newIgn_12_trigNeg90_1);
+    RUN_TEST_P(test_ngc_newIgn_12_trigNeg180_1);
+    RUN_TEST_P(test_ngc_newIgn_12_trigNeg270_1);
+    RUN_TEST_P(test_ngc_newIgn_12_trigNeg360_1);
+    RUN_TEST_P(test_ngc4_state_primary_only_sets_half_sync);
+    RUN_TEST_P(test_ngc4_state_valid_cam_phase_establishes_full_sync);
+    RUN_TEST_P(test_ngc4_state_invalid_cam_phase_drops_back_to_half_sync);
    }
 }

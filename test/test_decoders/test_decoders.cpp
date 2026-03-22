@@ -29,19 +29,19 @@ void setup()
 
     UNITY_BEGIN();    // IMPORTANT LINE!
 
+    testDecoder_General();
     testMissingTooth();
     testDualWheel();
     testRenix();
     testNissan360();
     testFordST170();
     testHondaJ32();
-    testThirtySixMinus21();
     testNGC();
     testSuzukiK6A_setEndTeeth();
     testSuzukiK6A_getCrankAngle();
     testSuzukiK6A_runtimeState();
     testTriggerTraceReplay();
-    testDecoder_General();
+    testThirtySixMinus21();
     
     UNITY_END(); // stop unit testing
 

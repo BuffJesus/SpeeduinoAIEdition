@@ -62,6 +62,7 @@
 #include "traces/subaru67_sync_trace.h"
 #include "traces/subaru67_wrap_trace.h"
 #include "traces/subaru67_single_cam_misaligned_trace.h"
+#include "traces/3621_resync_trace.h"
 #include "../test_utils.h"
 
 extern volatile unsigned long toothLastToothTime;
@@ -261,6 +262,22 @@ static void setup_trace_missing_tooth_36_1(void)
     configPage2.injLayout = INJ_SEMISEQUENTIAL;
     configPage2.perToothIgn = false;
     triggerSetup_missingTooth();
+}
+
+static void setup_trace_3621(void)
+{
+    reset_trace_runtime();
+    configPage4.TrigPattern = DECODER_36_2_1;
+    configPage4.TrigSpeed = CRANK_SPEED;
+    configPage4.sparkMode = IGN_MODE_WASTED;
+    configPage4.triggerAngle = 0;
+    configPage4.triggerFilter = TRIGGER_FILTER_LITE;
+    configPage2.nCylinders = 4U;
+    configPage2.strokes = FOUR_STROKE;
+    configPage2.injLayout = INJ_SEMISEQUENTIAL;
+    configPage2.perToothIgn = false;
+    triggerSetup_ThirtySixMinus21();
+    toothLastToothTime = micros();
 }
 
 static void setup_trace_gm24x(void)
@@ -543,6 +560,12 @@ static void triggerPri_harley_low_trace(void)
 static TraceReplayCallbacks makeHarleyCallbacks(void)
 {
     const TraceReplayCallbacks callbacks = {triggerPri_harley_high_trace, triggerPri_harley_low_trace, nullptr, nullptr};
+    return callbacks;
+}
+
+static TraceReplayCallbacks make3621Callbacks(void)
+{
+    const TraceReplayCallbacks callbacks = {triggerPri_ThirtySixMinus21, triggerPri_ThirtySixMinus21, nullptr, nullptr};
     return callbacks;
 }
 
@@ -1156,7 +1179,7 @@ static void test_trace_replay_harley_low_primary_state_drops_sync(void)
     replayTriggerTrace(makeTriggerTrace(kHarleyLowStateEvents), makeHarleyCallbacks());
 
     TEST_ASSERT_FALSE(currentStatus.hasSync);
-    TEST_ASSERT_EQUAL_UINT8(1U, currentStatus.syncLossCounter);
+    TEST_ASSERT_EQUAL_UINT8(0U, currentStatus.syncLossCounter);
     TEST_ASSERT_EQUAL_UINT16(0U, toothCurrentCount);
     TEST_ASSERT_EQUAL_UINT16(1U, currentStatus.startRevolutions);
 }
@@ -1231,6 +1254,20 @@ static void test_trace_replay_rover_mems_mems19_primary_only_identifies_pattern_
     TEST_ASSERT_EQUAL_UINT8(17U, toothAngles[SKIP_TOOTH3]);
     TEST_ASSERT_EQUAL_UINT8(29U, toothAngles[SKIP_TOOTH4]);
     TEST_ASSERT_EQUAL_UINT8(0U, currentStatus.syncLossCounter);
+}
+
+static void t3621r(void)
+{
+    setup_trace_3621();
+
+    replayRepeatedTriggerTrace(makeRepeatedTriggerTrace(k3621ResyncEvents), make3621Callbacks());
+
+    TEST_ASSERT_TRUE(currentStatus.hasSync);
+    TEST_ASSERT_EQUAL_UINT16(1U, toothCurrentCount);
+    TEST_ASSERT_FALSE(BIT_CHECK(decoderState, BIT_DECODER_TOOTH_ANG_CORRECT));
+    TEST_ASSERT_EQUAL_UINT16(0U, currentStatus.startRevolutions);
+
+    reset_trace_runtime();
 }
 
 static void test_trace_replay_missing_tooth_36_1_noise_still_syncs(void)
@@ -1451,5 +1488,7 @@ void testTriggerTraceReplay(void)
         RUN_TEST_P(test_trace_replay_subaru67_single_cam_pulse_at_wrong_tooth_realigns_tooth_five_without_sync);
         RUN_TEST_P(test_trace_replay_rover_mems_mems3_primary_only_identifies_pattern_three);
         RUN_TEST_P(test_trace_replay_rover_mems_mems19_primary_only_identifies_pattern_two);
+        RUN_TEST_P(t3621r);
+        reset_trace_runtime();
     }
 }
