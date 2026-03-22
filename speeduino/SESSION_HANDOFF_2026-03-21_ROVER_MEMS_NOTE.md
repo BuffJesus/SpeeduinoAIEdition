@@ -104,18 +104,32 @@ The extracted Rover project includes raw CSV logs in [DataLogs](C:/Users/Corneli
 - [2021-06-23_01.48.40_again.csv](C:/Users/Cornelio/Desktop/speeduino-202501.6/Resources/rover_mems_evidence/extracted/T16-RoverMemsTesting/DataLogs/2021-06-23_01.48.40_again.csv)
 - [2021-06-23_01.59.58_rising_ne.csv](C:/Users/Cornelio/Desktop/speeduino-202501.6/Resources/rover_mems_evidence/extracted/T16-RoverMemsTesting/DataLogs/2021-06-23_01.59.58_rising_ne.csv)
 
-Safe conclusions from those CSVs:
+The logger format is no longer opaque. The archived [mainController.ini](C:/Users/Cornelio/Desktop/speeduino-202501.6/Resources/rover_mems_evidence/extracted/T16-RoverMemsTesting/projectCfg/mainController.ini) defines the `compositeLogger` fields as:
+
+- `priLevel`
+- `secLevel`
+- `trigger`
+- `sync`
+- `refTime`
+
+That mapping is now captured in the host-side parser [parse_speeduino_composite_csv.py](C:/Users/Cornelio/Desktop/speeduino-202501.6/tools/parse_speeduino_composite_csv.py).
+
+Safe conclusions from those CSVs after parsing with named fields:
 
 - they preserve raw edge-state rows, not only a screenshot or summary
 - the three key CSVs each contain `127` parsed edge rows
 - each log includes repeated long-gap events consistent with a missing-tooth style primary pattern
 - the extracted long-gap counts were stable across the three sampled logs at `19`
-- the logs are therefore strong enough to support future replay construction if the column-to-channel mapping is decoded correctly
+- `priLevel` is the dominant toggling channel, which is consistent with primary-wheel activity:
+  - sample log `2021-06-23_01.12.43-cranking_risingoncam_crank.csv` produced `priLevel=103`, `secLevel=23`, `trigger=33`, `sync=2` toggles
+  - sample log `2021-06-23_01.59.58_rising_ne.csv` produced `priLevel=104`, `secLevel=22`, `trigger=35`, `sync=3` toggles
+- the logs are therefore strong enough to support future replay construction without guessing the CSV channel names
 
 What they do not yet safely tell us:
 
-- which CSV columns correspond to crank rising, crank falling, cam rising, and cam falling
 - exact tooth numbers for each logged edge without first decoding the TunerStudio composite-log export format
+- exact tooth numbers for each logged edge without first aligning the named signal changes to the Rover wheel drawings
+- whether the `trigger` flag corresponds to the firmware's internal event marker in a way that can be used directly for replay expectations
 
 ## What The Forum Evidence Safely Tells Us
 
@@ -132,7 +146,7 @@ These points are not yet strong enough to encode as replay traces:
 - exact edge order and timing for the `17-17` layout under the current decoder
 - exact relationship between the composite logs and `toothCurrentCount` transitions
 - exact secondary event timing needed to move from half-sync to full sync for the single-tooth or half-moon case
-- exact channel mapping inside the recovered Rover CSV exports
+- exact tooth-position mapping for the recovered named Rover CSV signals
 
 ## External Cross-Checks
 
@@ -182,13 +196,13 @@ Safe hypothesis:
 
 Before any new `test_decoders` replay work for Rover MEMS:
 
-1. Decode the TunerStudio composite-log CSV column mapping used in the recovered Rover project.
-2. Inspect the image-only Rover PDFs manually or via a rendering path so their wheel drawings can be compared with the current decoder's five hard-coded layouts.
-3. Convert one chosen Rover pattern into a short explicit note:
+1. Inspect the image-only Rover PDFs manually or via a rendering path so their wheel drawings can be compared with the current decoder's five hard-coded layouts.
+2. Convert one chosen Rover pattern into a short explicit note:
    - tooth order
    - missing-gap placement
    - expected cam relationship
    - expected half-sync and full-sync transitions
+3. Align the named CSV signal changes with that wheel note.
 4. Only then build replay traces for one pattern at a time.
 
 ## Not Safe Yet
@@ -198,6 +212,6 @@ It is still unsafe to:
 - reintroduce the earlier guessed `17-17` replay traces
 - assume the current forum summaries are enough to define exact timestamps
 - assume a single Rover trace will validate all five supported layouts
-- assume the recovered CSV columns are already mapped to the right crank/cam edges
+- assume the named CSV signal changes already imply exact tooth positions without the wheel drawings
 
-The blocker is now narrow and explicit: the attachment-level Rover captures are staged locally, but their CSV column mapping and PDF wheel drawings have not yet been converted into a precise replay spec.
+The blocker is now narrow and explicit: the attachment-level Rover captures are staged locally and the CSV channel mapping is solved, but the PDF wheel drawings and the exact signal-to-tooth alignment have not yet been converted into a precise replay spec.
