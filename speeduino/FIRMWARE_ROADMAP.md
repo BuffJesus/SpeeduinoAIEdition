@@ -22,7 +22,7 @@ Current phase 1 work started in:
 - Keep using the forum/manual evidence pipeline as a primary source for blocked decoder work:
   - prefer canonical topic-level extraction from [Resources/speeduino_evidence_collector_stable.py](C:/Users/Cornelio/Desktop/speeduino-202501.6/Resources/speeduino_evidence_collector_stable.py), not raw search-engine dumps
   - prioritize decoder families with surviving high-confidence forum evidence after topic dedupe and explicit family matching
-  - current best evidence-backed next decoder candidates are `Rover MEMS` first and `Honda J32` second; `36-2-1` should be approached from real captured logs rather than guessed synthetic traces
+  - current best evidence-backed next decoder candidates are `Honda J32` first; `36-2-1` should be approached from real captured logs rather than guessed synthetic traces, and the blocked Rover MEMS cam-phase slice is now explicitly deferred to the end-of-roadmap revisit list
   - use external decoder references as topology and sync-behavior evidence, not as drop-in waveform sources:
     - rusEFI real-trigger tests in [Resources/rusefi-2026-03-17/unit_tests/tests/trigger/test_real_4b11.cpp](C:/Users/Cornelio/Desktop/speeduino-202501.6/Resources/rusefi-2026-03-17/unit_tests/tests/trigger/test_real_4b11.cpp) are the best current external model for `36-2-1` work because they validate against real CSV captures
     - rusEFI decoder implementations in [Resources/rusefi-2026-03-17/firmware/controllers/trigger/decoders/trigger_honda.cpp](C:/Users/Cornelio/Desktop/speeduino-202501.6/Resources/rusefi-2026-03-17/firmware/controllers/trigger/decoders/trigger_honda.cpp) and [Resources/rusefi-2026-03-17/firmware/controllers/trigger/decoders/trigger_rover.cpp](C:/Users/Cornelio/Desktop/speeduino-202501.6/Resources/rusefi-2026-03-17/firmware/controllers/trigger/decoders/trigger_rover.cpp) are useful for `Honda J32` and Rover-family topology review
@@ -98,3 +98,19 @@ Current phase 1 work started in:
 - Keep borrowing from rusEFI where it improves verification discipline or hardware/config separation, not where it would require adopting their full architecture.
 - Highest-value patterns observed in [CLAUDE.md](C:/Users/Cornelio/Desktop/rusefi-2026-03-17/CLAUDE.md), [test_real_noisy_trigger.cpp](C:/Users/Cornelio/Desktop/rusefi-2026-03-17/unit_tests/tests/trigger/test_real_noisy_trigger.cpp), [test_launch.cpp](C:/Users/Cornelio/Desktop/rusefi-2026-03-17/unit_tests/tests/test_launch.cpp), [ComposedTuneMigrator.java](C:/Users/Cornelio/Desktop/rusefi-2026-03-17/java_console/io/src/main/java/com/rusefi/maintenance/migration/migrators/ComposedTuneMigrator.java), and [LiveData.yaml](C:/Users/Cornelio/Desktop/rusefi-2026-03-17/firmware/integration/LiveData.yaml).
 - Do not treat rusEFI as a direct implementation template for scheduler, RTOS, console, or generated-config architecture on this codebase; those would be separate major projects, not roadmap refinements.
+
+## Deferred Revisit
+
+- Revisit the blocked Rover MEMS `Crank Speed + 5-3-2 cam` full-sync slice after higher-confidence decoder work is complete.
+- Keep the existing Rover progress as-is:
+  - primary-wheel identification is evidence-backed for patterns `#1`, `#2`, and `#3`
+  - `roverMEMSTeethSeen` rolling-window behavior is derived and host-side tested
+  - `5-3-2 cam` ISR semantics are encoded and documented
+- The exact reason this is deferred:
+  - the repo still lacks a safe tooth-numbered mapping from a logged cam transition to the decoder's `secondaryToothCount == 6 / 4 / 3` gap event
+  - later `.mlg` runtime logs and scope screenshots improve confidence that the tested T16 path worked, but they do not expose the internal cam-gap edge needed for a full replay trace
+- Rover references to resume from:
+  - [SESSION_HANDOFF_2026-03-21_ROVER_MEMS_NOTE.md](C:/Users/Cornelio/Desktop/speeduino-202501.6/speeduino/SESSION_HANDOFF_2026-03-21_ROVER_MEMS_NOTE.md)
+  - [SESSION_HANDOFF_2026-03-22_ROVER_MEMS_BIT_WINDOW.md](C:/Users/Cornelio/Desktop/speeduino-202501.6/speeduino/SESSION_HANDOFF_2026-03-22_ROVER_MEMS_BIT_WINDOW.md)
+  - [SESSION_HANDOFF_2026-03-22_ROVER_MEMS_CAM_532.md](C:/Users/Cornelio/Desktop/speeduino-202501.6/speeduino/SESSION_HANDOFF_2026-03-22_ROVER_MEMS_CAM_532.md)
+  - [SESSION_HANDOFF_2026-03-22_ROVER_MEMS_TOOTH_LOG.md](C:/Users/Cornelio/Desktop/speeduino-202501.6/speeduino/SESSION_HANDOFF_2026-03-22_ROVER_MEMS_TOOTH_LOG.md)
