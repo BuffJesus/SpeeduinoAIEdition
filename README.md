@@ -78,7 +78,7 @@ Upstream references:
   - `mapSwitchPoint` boundary transitions and EMAP-disabled sentinel preservation
   - MAP / EMAP / baro calibration helper coverage for clamping and enabled/disabled source behavior
 
-**Current decoder replay/runtime coverage** (`194/194` decoder tests passing):
+**Current decoder replay/runtime coverage** (`196/196` decoder tests passing):
 
 - Basic Distributor
 - Dual-Wheel
@@ -96,6 +96,7 @@ Upstream references:
 - GM 7X
 - Honda D17
 - Harley
+- Rover MEMS
 - Subaru 6/7
 
 Highlighted behaviors now covered include:
@@ -141,7 +142,9 @@ Recent work as of `2026-03-21`:
 - Added an OCR-based Rover PDF image indexer at [tools/index_pdf_images.py](tools/index_pdf_images.py) and used it to rank the `65` extracted Rover images down to a small set of likely crank/cam diagram candidates in [Resources/rover_mems_evidence/pdf_images/ocr_index.json](Resources/rover_mems_evidence/pdf_images/ocr_index.json)
 - Added a PDF readiness inspector at [tools/inspect_pdf_evidence.py](tools/inspect_pdf_evidence.py) and used it to confirm the Rover manuals have no extractable text layer here and that no local page renderer is installed, turning the remaining blocker into an explicit environment limitation rather than a vague parsing gap
 - Installed a user-scope Poppler renderer, added [tools/render_pdf_pages.py](tools/render_pdf_pages.py), and rendered the full Rover manual pages into [Resources/rover_mems_evidence/rendered_pages](Resources/rover_mems_evidence/rendered_pages), which let the repo map OEM Rover wheel descriptions onto Speeduino's `11-5-12-4` and `2-14-3-13` patterns even though a first naive replay encoding still had to be backed out
-- Verified `test_decoders`: `194/194`
+- Added [tools/derive_rover_mems_windows.py](tools/derive_rover_mems_windows.py) to derive the Rover MEMS rolling `32`-bit decoder window from the documented `36`-slot wheels, plus focused tool tests that lock the helper to all five hard-coded Rover patterns
+- Added narrow Rover MEMS primary-only replay coverage for the two OEM-backed layouts, proving the current decoder recognizes `2-14-3-13` and `11-5-12-4` and lands in half-sync without speculative timing assumptions
+- Verified `test_decoders`: `196/196`
 - Verified `test_updates`: `38/38`
 - Verified `test_updates_tail`: `5/5`
 - Verified `test_ign`: `146/146`
@@ -157,6 +160,7 @@ Latest handoff references:
 - [SESSION_HANDOFF_2026-03-21_WIKI_BOARD_DOCS.md](speeduino/SESSION_HANDOFF_2026-03-21_WIKI_BOARD_DOCS.md)
 - [SESSION_HANDOFF_2026-03-21_EXTERNAL_DECODER_RESEARCH.md](speeduino/SESSION_HANDOFF_2026-03-21_EXTERNAL_DECODER_RESEARCH.md)
 - [SESSION_HANDOFF_2026-03-21_ROVER_MEMS_NOTE.md](speeduino/SESSION_HANDOFF_2026-03-21_ROVER_MEMS_NOTE.md)
+- [SESSION_HANDOFF_2026-03-22_ROVER_MEMS_BIT_WINDOW.md](speeduino/SESSION_HANDOFF_2026-03-22_ROVER_MEMS_BIT_WINDOW.md)
 - [SESSION_HANDOFF_2026-03-21_SUBARU67_REPLAY.md](speeduino/SESSION_HANDOFF_2026-03-21_SUBARU67_REPLAY.md)
 - [SESSION_HANDOFF_2026-03-21_BASIC_DISTRIBUTOR.md](speeduino/SESSION_HANDOFF_2026-03-21_BASIC_DISTRIBUTOR.md)
 - [SESSION_HANDOFF_2026-03-21_HONDAD17.md](speeduino/SESSION_HANDOFF_2026-03-21_HONDAD17.md)
@@ -287,11 +291,14 @@ python tools/inspect_pdf_evidence.py --pdf-dir Resources/rover_mems_evidence --o
 
 # Render full Rover PDF pages now that pdftoppm/Poppler is available
 python tools/render_pdf_pages.py --pdf-dir Resources/rover_mems_evidence --output-dir Resources/rover_mems_evidence/rendered_pages --manifest Resources/rover_mems_evidence/rendered_pages/manifest.json --dpi 200
+
+# Derive the Rover MEMS rolling decoder windows from documented wheel layouts
+python tools/derive_rover_mems_windows.py 2-14-3-13 11-5-12-4
 ```
 
 ### Current Test Status
 
-- `194/194` decoder tests passing
+- `196/196` decoder tests passing
 - `38/38` config migration tests passing
 - `5/5` migration tail tests passing
 - `146/146` ignition/protection tests passing
