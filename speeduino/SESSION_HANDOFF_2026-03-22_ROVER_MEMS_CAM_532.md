@@ -112,6 +112,26 @@ Safe conclusion from the external evidence:
 - once the cam VR polarity was corrected, the Rover setup progressed from high sync loss / no injector activity to working tooth logging and sync
 - the forum does support treating cam polarity as a first-order issue rather than a side note
 
+An additional attachment pass against the June 25 follow-up files under [forum_downloads](C:/Users/Cornelio/Desktop/speeduino-202501.6/Resources/rover_mems_evidence/forum_downloads) tightened the same conclusion rather than changing it:
+
+- [crank_cam_spark1_at_360_degree_trigger.png](C:/Users/Cornelio/Desktop/speeduino-202501.6/Resources/rover_mems_evidence/forum_downloads/crank_cam_spark1_at_360_degree_trigger.png) shows crank, cam, and ignition together, but without a tooth-number overlay or any marker that identifies which cam transition the decoder treated as the gap tooth
+- [trigger_0_degree_full_rotation_wrong_at_crank.png](C:/Users/Cornelio/Desktop/speeduino-202501.6/Resources/rover_mems_evidence/forum_downloads/trigger_0_degree_full_rotation_wrong_at_crank.png) and [trigger_360_nearly_perfectTDC.png](C:/Users/Cornelio/Desktop/speeduino-202501.6/Resources/rover_mems_evidence/forum_downloads/trigger_360_nearly_perfectTDC.png) refine absolute ignition timing against the crank waveform, but they do not show a labeled cam channel, so they cannot disambiguate `secondaryToothCount == 6 / 4 / 3`
+- [logging_fine.png](C:/Users/Cornelio/Desktop/speeduino-202501.6/Resources/rover_mems_evidence/forum_downloads/logging_fine.png) confirms the setup was running with sync losses and dwell activity visible in TunerStudio after the polarity fix, but it is a standard runtime graph rather than a composite/tooth view
+- [2021-06-25_03.16.31 - Copy.mlg.txt](C:/Users/Cornelio/Desktop/speeduino-202501.6/Resources/rover_mems_evidence/forum_downloads/2021-06-25_03.16.31%20-%20Copy.mlg.txt) is also only a regular `MLVLG` datalog with channels such as `SecL`, `Advance`, `Dwell`, and `Sync Loss #`, not a trigger/composite stream
+
+The later thread pages add one more configuration-level result, but still not the missing phase marker:
+
+- In [post `#51428`](https://speeduino.com/forum/viewtopic.php?t=1427&start=80#p51428), Trevor reports the car as running on the tested T16 pattern and says the attached running log was taken using the `360` trigger with `5` cranking and `10` fixed running timing.
+- In [post `#51543`](https://speeduino.com/forum/viewtopic.php?t=1427&start=90#p51543), he says that when fixed running ignition was set to `0` and `trigger angle` to `12 degrees`, the timing gun aligned perfectly at TDC and that this cam pattern was tested to completion.
+- In [post `#51554`](https://speeduino.com/forum/viewtopic.php?t=1427&start=90#p51554), he clarifies that the setup was running with `trigger angle = 12 degrees` and `0` cranking / cam timing to fire at `0 TDC`, and that the earlier `360/369` discussion was a temporary firmware bug rather than the final configured trigger angle.
+
+Safe conclusion from those follow-up posts:
+
+- the tested T16 Rover path was considered working in-thread
+- the practical timing calibration outcome for that path was `trigger angle = 12 degrees`
+- this helps validate runtime ignition alignment for the already-working path
+- it still does not identify which cam transition the decoder used as the `5`, `3`, or `2` gap tooth event
+
 What it still does not safely provide:
 
 - an exact mapping from a logged `secLevel` transition in the TunerStudio composite export to the decoder's internal "tooth after 5 / 3 / 2 gap" event
