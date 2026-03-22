@@ -87,6 +87,34 @@ Recovered image counts:
 - `mems_2_crank_n_cam.pdf`: `22`
 - total extracted Rover PDF images: `65`
 
+Those images are now indexed with OCR and keyword ranking in [ocr_index.json](C:/Users/Cornelio/Desktop/speeduino-202501.6/Resources/rover_mems_evidence/pdf_images/ocr_index.json) using [index_pdf_images.py](C:/Users/Cornelio/Desktop/speeduino-202501.6/tools/index_pdf_images.py).
+
+Current highest-ranked candidate images for the Rover crank/cam diagrams are:
+
+- [mems_2_crank_n_cam_p02_img10.jpg](C:/Users/Cornelio/Desktop/speeduino-202501.6/Resources/rover_mems_evidence/pdf_images/mems_2_crank_n_cam_p02_img10.jpg)
+  - OCR score `9.0`
+  - contains `cam`, `teeth`, `sensor`, and `position`
+  - OCR excerpt mentions the crankshaft position sensor and cam measurement in one image
+- [mems3_crank_and_cam_p01_img02.jpg](C:/Users/Cornelio/Desktop/speeduino-202501.6/Resources/rover_mems_evidence/pdf_images/mems3_crank_and_cam_p01_img02.jpg)
+  - OCR score `8.0`
+  - repeated `sensor` plus `position`
+  - OCR excerpt explicitly names `CKP` and `CMP`
+- [mems_2_crank_n_cam_p02_img11.jpg](C:/Users/Cornelio/Desktop/speeduino-202501.6/Resources/rover_mems_evidence/pdf_images/mems_2_crank_n_cam_p02_img11.jpg)
+  - OCR score `7.5`
+  - contains `flywheel`, `sensor`, and `position`
+  - OCR excerpt references the flywheel and crankshaft position sensor
+- [mems3_crank_and_cam_p01_img03.jpg](C:/Users/Cornelio/Desktop/speeduino-202501.6/Resources/rover_mems_evidence/pdf_images/mems3_crank_and_cam_p01_img03.jpg)
+  - OCR score `5.5`
+  - contains `flywheel`, `sensor`, `position`, and `vvc`
+  - OCR excerpt references camshaft position relative to the crankshaft
+
+Safe conclusion from the OCR ranking:
+
+- the relevant Rover wheel/sensor images are now narrowed to a small candidate set
+- the strongest candidates are concentrated in `mems_2_crank_n_cam` and `mems3_crank_and_cam`
+- the blocker is no longer "which of the 65 images matter at all"
+- the blocker is now manual visual alignment of those candidate images against the current Speeduino Rover layouts and the parsed composite-log signal changes
+
 ### What The Extracted Rover Project Confirms
 
 The recovered tune file [CurrentTune.msq](C:/Users/Cornelio/Desktop/speeduino-202501.6/Resources/rover_mems_evidence/extracted/T16-RoverMemsTesting/CurrentTune.msq) confirms this was not just a generic Rover setup:
@@ -150,8 +178,8 @@ The Rover PDFs are now materially more usable:
 
 What still remains unresolved:
 
-- which extracted images are the actual wheel drawings versus surrounding manual graphics or labels
-- which extracted images correspond to the exact `5-3-2 cam` plus crank-speed configuration used by the archived Rover test project
+- which of the OCR-ranked candidate images are the exact wheel drawings versus supporting sensor text
+- which candidate images correspond to the exact `5-3-2 cam` plus crank-speed configuration used by the archived Rover test project
 
 ## What The Forum Evidence Safely Tells Us
 

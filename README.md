@@ -138,6 +138,7 @@ Recent work as of `2026-03-21`:
 - Downloaded and staged the Rover MEMS forum attachments locally, confirming the archived Rover test project used `Crank Speed` with `5-3-2 cam`, `Wasted Spark`, and `Sequential` injection, while narrowing the remaining Rover blocker to composite-log CSV channel mapping and PDF wheel rendering
 - Added a host-side composite-log parser at [tools/parse_speeduino_composite_csv.py](tools/parse_speeduino_composite_csv.py) and used it to resolve the Rover CSV channel names from the archived project INI, narrowing the remaining Rover blocker again to PDF wheel interpretation and exact signal-to-tooth alignment
 - Added a host-side PDF image extractor at [tools/extract_pdf_images.py](tools/extract_pdf_images.py) and used it to pull `65` embedded images out of the Rover MEMS PDFs into [Resources/rover_mems_evidence/pdf_images](Resources/rover_mems_evidence/pdf_images), so the remaining Rover blocker is now selecting the right wheel drawings and aligning them to the parsed signal streams
+- Added an OCR-based Rover PDF image indexer at [tools/index_pdf_images.py](tools/index_pdf_images.py) and used it to rank the `65` extracted Rover images down to a small set of likely crank/cam diagram candidates in [Resources/rover_mems_evidence/pdf_images/ocr_index.json](Resources/rover_mems_evidence/pdf_images/ocr_index.json)
 - Verified `test_decoders`: `194/194`
 - Verified `test_updates`: `38/38`
 - Verified `test_updates_tail`: `5/5`
@@ -275,6 +276,9 @@ python Resources/speeduino_evidence_collector_stable.py --mode decoder --search-
 
 # Review the Rover-specific note before any new Rover MEMS replay work
 # See speeduino/SESSION_HANDOFF_2026-03-21_ROVER_MEMS_NOTE.md
+
+# Rebuild the OCR-ranked Rover image candidate index
+python tools/index_pdf_images.py --image-dir Resources/rover_mems_evidence/pdf_images --output Resources/rover_mems_evidence/pdf_images/ocr_index.json --top 20
 ```
 
 ### Current Test Status
@@ -303,6 +307,7 @@ python Resources/speeduino_evidence_collector_stable.py --mode decoder --search-
 - Rover MEMS now has a dedicated evidence note tying together the current Speeduino decoder, the maintainer-provided `32 poles / 4 missing` forum description, the real composite-log thread, the extracted Rover test project, and MS3's `poll_level_tooth` guidance; the remaining blocker is now specifically CSV channel mapping and PDF wheel rendering, not general topology or missing source files
 - Rover MEMS CSV channel mapping is now resolved from the archived project INI via [parse_speeduino_composite_csv.py](tools/parse_speeduino_composite_csv.py); the remaining blocker is the last step from named signals to exact tooth positions, which still requires interpreting the Rover PDF wheel drawings
 - Rover MEMS PDF assets are now extracted into a local image corpus with [extract_pdf_images.py](tools/extract_pdf_images.py); the remaining blocker is no longer PDF access, but identifying which images are the relevant wheel diagrams and aligning them with the parsed Rover signal streams
+- Rover MEMS extracted PDF images are now OCR-ranked with [index_pdf_images.py](tools/index_pdf_images.py); the remaining blocker is no longer "which of the 65 images matter", but visually confirming the top-ranked candidate diagrams and aligning them with the parsed Rover signal streams
 - Other unit-test suites remain in regular use for regression checking
 
 Note: local Windows `pio test` invocations in this workspace can still hit wrapper/file-lock issues intermittently even when the produced simulator binary itself runs cleanly.
