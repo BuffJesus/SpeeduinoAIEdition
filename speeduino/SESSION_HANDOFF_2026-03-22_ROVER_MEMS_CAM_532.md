@@ -122,6 +122,7 @@ An additional attachment pass against the June 25 follow-up files under [forum_d
 The later thread pages add one more configuration-level result, but still not the missing phase marker:
 
 - In [post `#51428`](https://speeduino.com/forum/viewtopic.php?t=1427&start=80#p51428), Trevor reports the car as running on the tested T16 pattern and says the attached running log was taken using the `360` trigger with `5` cranking and `10` fixed running timing.
+- The attached running log from that post, [2021-06-26_02.54.25using_fixed_10_degrees_run.mlg.txt](C:/Users/Cornelio/Desktop/speeduino-202501.6/Resources/rover_mems_evidence/forum_downloads/2021-06-26_02.54.25using_fixed_10_degrees_run.mlg.txt), is still only a standard `MLVLG` runtime log with channels such as `SecL`, `Advance`, `Dwell`, and `Sync Loss #`, not a composite/tooth capture.
 - In [post `#51543`](https://speeduino.com/forum/viewtopic.php?t=1427&start=90#p51543), he says that when fixed running ignition was set to `0` and `trigger angle` to `12 degrees`, the timing gun aligned perfectly at TDC and that this cam pattern was tested to completion.
 - In [post `#51554`](https://speeduino.com/forum/viewtopic.php?t=1427&start=90#p51554), he clarifies that the setup was running with `trigger angle = 12 degrees` and `0` cranking / cam timing to fire at `0 TDC`, and that the earlier `360/369` discussion was a temporary firmware bug rather than the final configured trigger angle.
 
