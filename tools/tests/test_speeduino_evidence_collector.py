@@ -34,6 +34,12 @@ class SpeeduinoEvidenceCollectorTests(unittest.TestCase):
         resolved = collector.resolve_output_path("report.md")
         self.assertEqual(MODULE_PATH.parent / "report.md", resolved)
 
+    def test_normalize_thread_title_strips_page_suffix(self) -> None:
+        self.assertEqual(
+            "Messing with Subaru 6/7 trigger",
+            collector.normalize_thread_title("Messing with Subaru 6/7 trigger - Page 5"),
+        )
+
     def test_build_filtered_roadmap_query_specs_restricts_selected_area(self) -> None:
         specs = collector.build_filtered_roadmap_query_specs(
             ["Knock and pin/default policy"]
@@ -215,7 +221,8 @@ class SpeeduinoEvidenceCollectorTests(unittest.TestCase):
 <html><body>
   <div class="postrow_container">
     <div class="well well-sm">
-      <h4><a href="./viewtopic.php?t=7211&amp;hilit=knock_pin&amp;sid=abc">Speeduino Dropbear V2 Knock sensor pin not available in Tunerstudio</a></h4>
+      <h4><a href="./viewtopic.php?p=73387&amp;hilit=knock_pin&amp;sid=abc#p73387">Re: Speeduino Dropbear V2 Knock sensor pin not available in Tunerstudio</a></h4>
+      <span class="text-muted">Topic: <a href="./viewtopic.php?t=7211&amp;hilit=knock_pin&amp;sid=abc">Speeduino Dropbear V2 Knock sensor pin not available in Tunerstudio</a></span>
       <div class="content"><p>I now understand, thanks!</p></div>
     </div>
   </div>
@@ -236,8 +243,67 @@ class SpeeduinoEvidenceCollectorTests(unittest.TestCase):
             "https://speeduino.com/forum/viewtopic.php?t=7211",
             hits[0].url,
         )
-        self.assertIn("Knock sensor pin", hits[0].title)
+        self.assertEqual(
+            "Speeduino Dropbear V2 Knock sensor pin not available in Tunerstudio",
+            hits[0].title,
+        )
         self.assertIn("I now understand", hits[0].snippet)
+
+    def test_thread_explicitly_matches_decoder_requires_thread_title_signal(self) -> None:
+        supporting_post = collector.PostEvidence(
+            author="PSIG",
+            date="Mon Sep 25, 2023 9:39 pm",
+            post_anchor="p65023",
+            content_text="It appears the Speeduino Honda J30 / J32 decoder may be similar or same.",
+            content_markdown="It appears the Speeduino Honda J30 / J32 decoder may be similar or same.",
+            is_maintainer=True,
+            evidence_terms_found=["trigger"],
+            attachments=[],
+            image_links=[],
+            score=8.0,
+            evidence_type=["maintainer explanation"],
+        )
+        matching = collector.ThreadData(
+            title="J35a4 Triggers - Page 2",
+            url="https://speeduino.com/forum/viewtopic.php?t=6027",
+            breadcrumb=[],
+            posts=[supporting_post],
+        )
+        generic = collector.ThreadData(
+            title="Just another Speedy ECU - Page 3",
+            url="https://speeduino.com/forum/viewtopic.php?t=74049&start=20",
+            breadcrumb=[],
+            posts=[],
+        )
+
+        self.assertTrue(collector.thread_explicitly_matches_decoder(matching, "Honda J32"))
+        self.assertFalse(collector.thread_explicitly_matches_decoder(generic, "36-2-1"))
+
+    def test_build_decoder_records_skips_threads_without_explicit_decoder_match(self) -> None:
+        post = collector.PostEvidence(
+            author="Black Knight",
+            date="Sat Feb 28, 2026 1:05 am",
+            post_anchor="p74172",
+            content_text="Finalizing VR with tooth logger and scope capture on crank signal.",
+            content_markdown="Finalizing VR with tooth logger and scope capture on crank signal.",
+            is_maintainer=False,
+            evidence_terms_found=["tooth logger", "scope"],
+            attachments=[],
+            image_links=[],
+            score=8.5,
+            evidence_type=["tooth log", "scope capture"],
+        )
+        thread = collector.ThreadData(
+            title="Just another Speedy ECU - Page 3",
+            url="https://speeduino.com/forum/viewtopic.php?t=74049&start=20",
+            breadcrumb=[],
+            posts=[post],
+            source_queries=["36-2-1 tooth logger"],
+            source_labels=["36-2-1"],
+        )
+
+        records = collector.build_decoder_records([("36-2-1", thread)])
+        self.assertEqual([], records)
 
 
 if __name__ == "__main__":

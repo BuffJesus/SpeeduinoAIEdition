@@ -332,6 +332,10 @@ def normalize_ws(text: str) -> str:
     return text.strip()
 
 
+def normalize_thread_title(title: str) -> str:
+    return re.sub(r"\s*-\s*Page\s+\d+\s*$", "", title or "", flags=re.I).strip()
+
+
 def fetch_soup(session: requests.Session, url: str) -> BeautifulSoup:
     response = session.get(url, timeout=TIMEOUT)
     response.raise_for_status()
@@ -449,17 +453,19 @@ def search_forum_site(session: requests.Session, query: str, delay: float, label
 
     for result in soup.select("div.postrow_container div.well.well-sm"):
         heading = result.select_one("h4 a[href*='viewtopic.php']")
+        topic_link = result.select_one("a[href*='viewtopic.php?t=']")
         snippet_node = result.select_one("div.content")
-        if not heading:
+        selected_link = topic_link or heading
+        if not selected_link:
             continue
-        href = urljoin("https://speeduino.com/forum/", heading.get("href", "").strip())
+        href = urljoin("https://speeduino.com/forum/", selected_link.get("href", "").strip())
         href = canonicalize_url(href)
         if "speeduino.com/forum/viewtopic.php" not in href:
             continue
         hits.append(
             SearchHit(
                 query=query,
-                title=text_or_empty(heading),
+                title=normalize_thread_title(text_or_empty(topic_link or heading)),
                 url=href,
                 snippet=text_or_empty(snippet_node) or text_or_empty(result),
                 label=label,
@@ -967,18 +973,55 @@ def infer_decoder_from_text(thread: ThreadData, post: PostEvidence) -> str:
     return "Unclassified decoder"
 
 
+def thread_explicitly_matches_decoder(thread: ThreadData, requested_decoder: str) -> bool:
+    combined = "\n".join(
+        [normalize_thread_title(thread.title)] + [post.content_text for post in thread.posts[:6]]
+    ).lower()
+    requested = requested_decoder.lower()
+    if requested in combined:
+        return True
+
+    normalized_patterns = {
+        "36-2-1": r"\b36\s*-\s*2\s*-\s*1\b",
+        "36-2-2-2": r"\b36\s*-\s*2\s*-\s*2\s*-\s*2\b",
+        "420a": r"\b420a\b",
+        "vmax": r"\bvmax\b",
+        "harley": r"\bharley\b",
+        "rover mems": r"\brover\s+mems\b",
+        "subaru 6/7": r"\bsubaru\s*6\s*/\s*7\b",
+        "honda d17": r"\bhonda\s*d17\b",
+        "honda j32": r"\bhonda\s*j(?:30|32)\b|\bj3[02]\b",
+        "mazda au": r"\bmazda\s*au\b",
+        "basic distributor": r"\bbasic\s+distributor\b|\bdistributor\b",
+        "daihatsu": r"\bdaihatsu\b",
+    }
+    pattern = normalized_patterns.get(requested)
+    if pattern and re.search(pattern, combined, flags=re.I):
+        return True
+    return False
+
+
 def build_roadmap_records(threads: list[tuple[str, ThreadData]]) -> list[EvidenceRecord]:
     out: list[EvidenceRecord] = []
+    seen: set[tuple[str, str, str]] = set()
     for area_name, thread in threads:
         ranked = sorted(thread.posts, key=lambda item: item.score, reverse=True)
         for post in ranked[:3]:
             if post.score < 3.0:
                 continue
+            dedupe_key = (
+                area_name,
+                normalize_thread_title(thread.title).lower(),
+                post.post_anchor,
+            )
+            if dedupe_key in seen:
+                continue
+            seen.add(dedupe_key)
             summary, why, details = summarize_post_for_area(post)
             out.append(
                 EvidenceRecord(
                     roadmap_area=area_name,
-                    thread_title=thread.title,
+                    thread_title=normalize_thread_title(thread.title),
                     url=thread.url + (f"#{post.post_anchor}" if post.post_anchor else ""),
                     date=post.date,
                     posted_by=post.author,
@@ -996,7 +1039,10 @@ def build_roadmap_records(threads: list[tuple[str, ThreadData]]) -> list[Evidenc
 
 def build_decoder_records(threads: list[tuple[str, ThreadData]]) -> list[EvidenceRecord]:
     out: list[EvidenceRecord] = []
+    seen: set[tuple[str, str, str]] = set()
     for requested_decoder, thread in threads:
+        if not thread_explicitly_matches_decoder(thread, requested_decoder):
+            continue
         ranked = sorted(thread.posts, key=lambda item: item.score, reverse=True)
         for post in ranked[:4]:
             lower = post.content_text.lower()
@@ -1007,11 +1053,19 @@ def build_decoder_records(threads: list[tuple[str, ThreadData]]) -> list[Evidenc
             decoder = infer_decoder_from_text(thread, post)
             if decoder == "Unclassified decoder":
                 decoder = requested_decoder
+            dedupe_key = (
+                decoder.lower(),
+                normalize_thread_title(thread.title).lower(),
+                post.post_anchor,
+            )
+            if dedupe_key in seen:
+                continue
+            seen.add(dedupe_key)
             summary, why, details = summarize_post_for_decoder(post, decoder)
             out.append(
                 EvidenceRecord(
                     decoder_pattern=decoder,
-                    thread_title=thread.title,
+                    thread_title=normalize_thread_title(thread.title),
                     url=thread.url + (f"#{post.post_anchor}" if post.post_anchor else ""),
                     date=post.date,
                     posted_by=post.author,
