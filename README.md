@@ -78,7 +78,7 @@ Upstream references:
   - `mapSwitchPoint` boundary transitions and EMAP-disabled sentinel preservation
   - MAP / EMAP / baro calibration helper coverage for clamping and enabled/disabled source behavior
 
-**Current decoder replay/runtime coverage** (`197/197` decoder tests passing):
+**Current decoder replay/runtime coverage** (`203/203` decoder tests passing):
 
 - Basic Distributor
 - Dual-Wheel
@@ -96,6 +96,7 @@ Upstream references:
 - GM 7X
 - Honda D17
 - Harley
+- 36-2-2-2
 - Rover MEMS
 - Subaru 6/7
 
@@ -140,6 +141,7 @@ Recent work as of `2026-03-21`:
 - Added a host-side `36-2-1` / `4B11` gap analyzer from the local rusEFI real-trigger CSVs, proving the steady-state `17 teeth -> single gap -> 16 teeth -> double gap` wheel topology while narrowing the remaining Speeduino blocker to the decoder's single-gap tooth-number ambiguity
 - Added a narrow AVR-side `36-2-1` decoder state test that locks the current Speeduino ISR contract in-tree without claiming the single-gap tooth numbering is physically correct
 - Added a matching narrow `36-2-1` replay trace that validates current-code primary resync behavior across the single-gap and double-gap sequence, again without claiming the single-gap tooth numbering is physically correct
+- Added a narrow AVR-side `36-2-2-2` H4 state suite that locks the current decoder's two sync-entry paths (`tooth 19` via consecutive long gaps and `tooth 35` via long-gap then normal tooth) plus synced wrap behavior without claiming real-capture tooth numbering
 - Downloaded and staged the Rover MEMS forum attachments locally, confirming the archived Rover test project used `Crank Speed` with `5-3-2 cam`, `Wasted Spark`, and `Sequential` injection, while narrowing the remaining Rover blocker to composite-log CSV channel mapping and PDF wheel rendering
 - Added a host-side composite-log parser at [tools/parse_speeduino_composite_csv.py](tools/parse_speeduino_composite_csv.py) and used it to resolve the Rover CSV channel names from the archived project INI, narrowing the remaining Rover blocker again to PDF wheel interpretation and exact signal-to-tooth alignment
 - Added a host-side PDF image extractor at [tools/extract_pdf_images.py](tools/extract_pdf_images.py) and used it to pull `65` embedded images out of the Rover MEMS PDFs into [Resources/rover_mems_evidence/pdf_images](Resources/rover_mems_evidence/pdf_images), so the remaining Rover blocker is now selecting the right wheel drawings and aligning them to the parsed signal streams
@@ -170,6 +172,7 @@ Latest handoff references:
 - [SESSION_HANDOFF_2026-03-22_ROVER_MEMS_TOOTH_LOG.md](speeduino/SESSION_HANDOFF_2026-03-22_ROVER_MEMS_TOOTH_LOG.md)
 - [SESSION_HANDOFF_2026-03-22_HONDAJ32.md](speeduino/SESSION_HANDOFF_2026-03-22_HONDAJ32.md)
 - [SESSION_HANDOFF_2026-03-22_36-2-1.md](speeduino/SESSION_HANDOFF_2026-03-22_36-2-1.md)
+- [SESSION_HANDOFF_2026-03-22_36-2-2-2.md](speeduino/SESSION_HANDOFF_2026-03-22_36-2-2-2.md)
 - [SESSION_HANDOFF_2026-03-21_SUBARU67_REPLAY.md](speeduino/SESSION_HANDOFF_2026-03-21_SUBARU67_REPLAY.md)
 - [SESSION_HANDOFF_2026-03-21_BASIC_DISTRIBUTOR.md](speeduino/SESSION_HANDOFF_2026-03-21_BASIC_DISTRIBUTOR.md)
 - [SESSION_HANDOFF_2026-03-21_HONDAD17.md](speeduino/SESSION_HANDOFF_2026-03-21_HONDAD17.md)
@@ -307,7 +310,7 @@ python tools/derive_rover_mems_windows.py 2-14-3-13 11-5-12-4
 
 ### Current Test Status
 
-- `196/196` decoder tests passing
+- `203/203` decoder tests passing
 - `38/38` config migration tests passing
 - `5/5` migration tail tests passing
 - `146/146` ignition/protection tests passing

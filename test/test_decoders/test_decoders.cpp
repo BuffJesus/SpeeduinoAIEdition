@@ -10,6 +10,7 @@
 #include "Nissan360/Nissan360.h"
 #include "FordST170/FordST170.h"
 #include "HondaJ32/HondaJ32.h"
+#include "ThirtySixMinus222/ThirtySixMinus222.h"
 #include "ThirtySixMinus21/ThirtySixMinus21.h"
 #include "NGC/test_ngc.h"
 #include "SuzukiK6A/SuzukiK6A.h"
@@ -36,6 +37,7 @@ void setup()
     testNissan360();
     testFordST170();
     testHondaJ32();
+    testThirtySixMinus222();
     testNGC();
     testSuzukiK6A_setEndTeeth();
     testSuzukiK6A_getCrankAngle();
