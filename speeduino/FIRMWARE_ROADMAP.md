@@ -22,7 +22,12 @@ Current phase 1 work started in:
 - Keep using the forum/manual evidence pipeline as a primary source for blocked decoder work:
   - prefer canonical topic-level extraction from [Resources/speeduino_evidence_collector_stable.py](C:/Users/Cornelio/Desktop/speeduino-202501.6/Resources/speeduino_evidence_collector_stable.py), not raw search-engine dumps
   - prioritize decoder families with surviving high-confidence forum evidence after topic dedupe and explicit family matching
-  - current best evidence-backed next decoder candidates are `Rover MEMS` first and `Honda J32` second; `36-2-1` still needs cleaner pattern-specific evidence before replay traces are synthesized
+  - current best evidence-backed next decoder candidates are `Rover MEMS` first and `Honda J32` second; `36-2-1` should be approached from real captured logs rather than guessed synthetic traces
+  - use external decoder references as topology and sync-behavior evidence, not as drop-in waveform sources:
+    - rusEFI real-trigger tests in [Resources/rusefi-2026-03-17/unit_tests/tests/trigger/test_real_4b11.cpp](C:/Users/Cornelio/Desktop/speeduino-202501.6/Resources/rusefi-2026-03-17/unit_tests/tests/trigger/test_real_4b11.cpp) are the best current external model for `36-2-1` work because they validate against real CSV captures
+    - rusEFI decoder implementations in [Resources/rusefi-2026-03-17/firmware/controllers/trigger/decoders/trigger_honda.cpp](C:/Users/Cornelio/Desktop/speeduino-202501.6/Resources/rusefi-2026-03-17/firmware/controllers/trigger/decoders/trigger_honda.cpp) and [Resources/rusefi-2026-03-17/firmware/controllers/trigger/decoders/trigger_rover.cpp](C:/Users/Cornelio/Desktop/speeduino-202501.6/Resources/rusefi-2026-03-17/firmware/controllers/trigger/decoders/trigger_rover.cpp) are useful for `Honda J32` and Rover-family topology review
+    - MS3 Rover references in [Resources/ms3-source-master/ms3/core.ini](C:/Users/Cornelio/Desktop/speeduino-202501.6/Resources/ms3-source-master/ms3/core.ini), [Resources/ms3-source-master/ms3/ms3_ign_in.c](C:/Users/Cornelio/Desktop/speeduino-202501.6/Resources/ms3-source-master/ms3/ms3_ign_in.c), and [Resources/ms3-source-master/ms3/ms3_ign_wheel.c](C:/Users/Cornelio/Desktop/speeduino-202501.6/Resources/ms3-source-master/ms3/ms3_ign_wheel.c) are the best current external clues for Rover phase and `poll_level_tooth` semantics
+  - before adding new replay traces for `Rover MEMS`, `Honda J32`, or `36-2-1`, first convert the surviving external/forum evidence into an explicit tooth/gap or poll-phase note instead of inferring directly from comments
 
 ## Phase 3: Runtime Structure
 
