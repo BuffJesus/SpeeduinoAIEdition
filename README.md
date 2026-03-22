@@ -139,6 +139,7 @@ Recent work as of `2026-03-21`:
 - Added a host-side composite-log parser at [tools/parse_speeduino_composite_csv.py](tools/parse_speeduino_composite_csv.py) and used it to resolve the Rover CSV channel names from the archived project INI, narrowing the remaining Rover blocker again to PDF wheel interpretation and exact signal-to-tooth alignment
 - Added a host-side PDF image extractor at [tools/extract_pdf_images.py](tools/extract_pdf_images.py) and used it to pull `65` embedded images out of the Rover MEMS PDFs into [Resources/rover_mems_evidence/pdf_images](Resources/rover_mems_evidence/pdf_images), so the remaining Rover blocker is now selecting the right wheel drawings and aligning them to the parsed signal streams
 - Added an OCR-based Rover PDF image indexer at [tools/index_pdf_images.py](tools/index_pdf_images.py) and used it to rank the `65` extracted Rover images down to a small set of likely crank/cam diagram candidates in [Resources/rover_mems_evidence/pdf_images/ocr_index.json](Resources/rover_mems_evidence/pdf_images/ocr_index.json)
+- Added a PDF readiness inspector at [tools/inspect_pdf_evidence.py](tools/inspect_pdf_evidence.py) and used it to confirm the Rover manuals have no extractable text layer here and that no local page renderer is installed, turning the remaining blocker into an explicit environment limitation rather than a vague parsing gap
 - Verified `test_decoders`: `194/194`
 - Verified `test_updates`: `38/38`
 - Verified `test_updates_tail`: `5/5`
@@ -279,6 +280,9 @@ python Resources/speeduino_evidence_collector_stable.py --mode decoder --search-
 
 # Rebuild the OCR-ranked Rover image candidate index
 python tools/index_pdf_images.py --image-dir Resources/rover_mems_evidence/pdf_images --output Resources/rover_mems_evidence/pdf_images/ocr_index.json --top 20
+
+# Check whether the local environment can extract text or render Rover PDF pages
+python tools/inspect_pdf_evidence.py --pdf-dir Resources/rover_mems_evidence --output Resources/rover_mems_evidence/pdf_inspection.json
 ```
 
 ### Current Test Status
@@ -308,6 +312,7 @@ python tools/index_pdf_images.py --image-dir Resources/rover_mems_evidence/pdf_i
 - Rover MEMS CSV channel mapping is now resolved from the archived project INI via [parse_speeduino_composite_csv.py](tools/parse_speeduino_composite_csv.py); the remaining blocker is the last step from named signals to exact tooth positions, which still requires interpreting the Rover PDF wheel drawings
 - Rover MEMS PDF assets are now extracted into a local image corpus with [extract_pdf_images.py](tools/extract_pdf_images.py); the remaining blocker is no longer PDF access, but identifying which images are the relevant wheel diagrams and aligning them with the parsed Rover signal streams
 - Rover MEMS extracted PDF images are now OCR-ranked with [index_pdf_images.py](tools/index_pdf_images.py); the remaining blocker is no longer "which of the 65 images matter", but visually confirming the top-ranked candidate diagrams and aligning them with the parsed Rover signal streams
+- Rover MEMS PDF readiness is now explicitly inspected with [inspect_pdf_evidence.py](tools/inspect_pdf_evidence.py); in this environment the manuals have `0` extractable text-layer characters and no available `magick`, `pdftoppm`, or `gswin64c` renderer, so the current blocker is full-page visual rendering rather than unknown file contents
 - Other unit-test suites remain in regular use for regression checking
 
 Note: local Windows `pio test` invocations in this workspace can still hit wrapper/file-lock issues intermittently even when the produced simulator binary itself runs cleanly.

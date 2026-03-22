@@ -1,0 +1,28 @@
+{
+  "pdf_dir": "Resources\\rover_mems_evidence",
+  "renderers": {
+    "magick": null,
+    "pdftoppm": null,
+    "gswin64c": null
+  },
+  "pdfs": [
+    {
+      "pdf_name": "mems19_trigger_description.pdf",
+      "page_count": 1,
+      "size_bytes": 546179,
+      "text_chars": 0
+    },
+    {
+      "pdf_name": "mems3_crank_and_cam.pdf",
+      "page_count": 1,
+      "size_bytes": 618338,
+      "text_chars": 0
+    },
+    {
+      "pdf_name": "mems_2_crank_n_cam.pdf",
+      "page_count": 2,
+      "size_bytes": 1187711,
+      "text_chars": 0
+    }
+  ]
+}

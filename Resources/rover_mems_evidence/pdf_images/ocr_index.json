@@ -1,0 +1,727 @@
+{
+  "image_dir": "Resources\\rover_mems_evidence\\pdf_images",
+  "images": [
+    {
+      "filename": "mems_2_crank_n_cam_p02_img10.jpg",
+      "width": 2130,
+      "height": 164,
+      "size_bytes": 74848,
+      "mean_brightness": 219.82,
+      "ocr_text": "The speed and position of the engine is detected by mode. The second is to measure the actual cam\nthe crankshaft position sensor which is bolted to, period, this measurement is achieved using teeth on\nand projects through, the engine adapter plate the camshafts to indicate when the valve opens and\n",
+      "keyword_hits": {
+        "cam": 1,
+        "teeth": 1,
+        "sensor": 1,
+        "position": 2
+      },
+      "score": 9.0
+    },
+    {
+      "filename": "mems3_crank_and_cam_p01_img02.jpg",
+      "width": 2135,
+      "height": 164,
+      "size_bytes": 67989,
+      "mean_brightness": 224.81,
+      "ocr_text": "The CKP sensor is variable reluctance sensor and Camshaft Position (CMP) Sensor\nprovides an analogue voltage output to the ECM\nrelative to the speed and position of the target on the The CMP sensor provides a signal which enables\n",
+      "keyword_hits": {
+        "sensor": 4,
+        "position": 2
+      },
+      "score": 8.0
+    },
+    {
+      "filename": "mems_2_crank_n_cam_p02_img11.jpg",
+      "width": 2130,
+      "height": 164,
+      "size_bytes": 52478,
+      "mean_brightness": 235.67,
+      "ocr_text": "adjacent to the flywheel. closes.\nThe crankshaft position sensor is an Ineluetivs If the camshaft position sensor fails when the engine\n\nCe ee ae ee eet Ce eS Me emer (rere METS ee Ree meen May foreeames! fr 5 PE ET Se ce eee ET! STE ee meee | Nee ce ee Rey ee mE re meT ree eg) | Carmen me\n",
+      "keyword_hits": {
+        "flywheel": 1,
+        "sensor": 2,
+        "position": 2
+      },
+      "score": 7.5
+    },
+    {
+      "filename": "mems3_crank_and_cam_p01_img03.jpg",
+      "width": 2135,
+      "height": 163,
+      "size_bytes": 82309,
+      "mean_brightness": 219.36,
+      "ocr_text": "flywheel. A permanent magnet inside the sensor the ECM to determine the position of the camshaft\napplies a magnetic flux to a sensing coil winding. relative to the crankshaft. This allows the ECM to\nThis creates an output voltage which is read by the synchronise fuel injection and, on VVC engines,\n\nm= AAR A\n",
+      "keyword_hits": {
+        "flywheel": 1,
+        "sensor": 1,
+        "position": 1,
+        "vvc": 1
+      },
+      "score": 5.5
+    },
+    {
+      "filename": "mems19_trigger_description_p01_img03.jpg",
+      "width": 2129,
+      "height": 164,
+      "size_bytes": 47439,
+      "mean_brightness": 232.16,
+      "ocr_text": "BASIC IGNITION TIMING - MPi Manifold absolute pressure sensor\n\nCrankshaft position sensor The manifold absolute pressure (MAP) sensor is\n",
+      "keyword_hits": {
+        "sensor": 3,
+        "position": 1
+      },
+      "score": 5.5
+    },
+    {
+      "filename": "mems_2_crank_n_cam_p02_img03.jpg",
+      "width": 2130,
+      "height": 164,
+      "size_bytes": 33389,
+      "mean_brightness": 239.08,
+      "ocr_text": "BASIC IGNITION TIMING - VVC\n\nCrankshaft position sensor\n\nCamshaft position sensor\n",
+      "keyword_hits": {
+        "sensor": 2,
+        "position": 2,
+        "vvc": 1
+      },
+      "score": 5.5
+    },
+    {
+      "filename": "mems19_trigger_description_p01_img11.jpg",
+      "width": 2129,
+      "height": 164,
+      "size_bytes": 31560,
+      "mean_brightness": 244.12,
+      "ocr_text": "adjacent to the flywheel.\nThe CKP sensor is an inductive sensor consisting of\n\ney ee pen Seem ee A: MN eR eer aces Same Seene Gee Sree ee Ce eee Mme ee res mee\n",
+      "keyword_hits": {
+        "flywheel": 1,
+        "sensor": 2
+      },
+      "score": 5.5
+    },
+    {
+      "filename": "mems_2_crank_n_cam_p02_img14.jpg",
+      "width": 2130,
+      "height": 164,
+      "size_bytes": 63193,
+      "mean_brightness": 229.03,
+      "ocr_text": "operation. rev limit: 5500/5800 rpm in comparison to the normal\nrev limit of 7000/7300 rpm. Camshaft position\nThe flywheel incorporates a reluctor ring which sensor failure can be identified using TestBook.\n\nMee eS EE oy SRN Ege oem a oe Po eee ee eg ee ere ee GENT. oN Poe\u2019 fl\n",
+      "keyword_hits": {
+        "flywheel": 1,
+        "sensor": 1,
+        "position": 1
+      },
+      "score": 5.0
+    },
+    {
+      "filename": "mems_2_crank_n_cam_p02_img15.jpg",
+      "width": 2130,
+      "height": 164,
+      "size_bytes": 51647,
+      "mean_brightness": 233.92,
+      "ocr_text": "VUTPololo VIVE PUIG OVaUOU aL PY MILI Vclo, WILT oF\nmissing poles at 30\u00b0, 60\u00b0, 210\u00b0and 250\u00b0. When the\nflywheel rotates, as a pole passes the CKP sensor, it\ndieturhs the manqnetic field inducing 9 voltage niilea\n",
+      "keyword_hits": {
+        "flywheel": 1,
+        "sensor": 1
+      },
+      "score": 4.0
+    },
+    {
+      "filename": "mems19_trigger_description_p01_img12.jpg",
+      "width": 2129,
+      "height": 164,
+      "size_bytes": 48816,
+      "mean_brightness": 234.08,
+      "ocr_text": "QA MIGUNRGLUITIVUTRGU WUUYy VUIMCIIY a OU ail a\npermanent magnet which provides a magnetic field.\nThe CKP sensor is situated so that an air gap exists\nhetween it and the flywheel. Air gan distance ic\n",
+      "keyword_hits": {
+        "flywheel": 1,
+        "sensor": 1
+      },
+      "score": 4.0
+    },
+    {
+      "filename": "mems19_trigger_description_p01_img10.jpg",
+      "width": 2129,
+      "height": 164,
+      "size_bytes": 42103,
+      "mean_brightness": 236.71,
+      "ocr_text": "The speed and position of the engine is detected by\nthe crankshaft position (CKP) sensor which is bolted\nto, and projects through, the engine adapter plate\n",
+      "keyword_hits": {
+        "sensor": 1,
+        "position": 2
+      },
+      "score": 3.5
+    },
+    {
+      "filename": "mems_2_crank_n_cam_p02_img12.jpg",
+      "width": 2130,
+      "height": 164,
+      "size_bytes": 87052,
+      "mean_brightness": 215.11,
+      "ocr_text": "PO TUTTI, CS GP WIT GUTS tho PU Peay oat\nsequential fuelling mode. If the sensor fails before\nthe engine is started, the engine will start but run in\nqdrouped fuelling mode The endqine running in\n\nVSTOVE LYUTISIOUIIY VI a VMIGUNGL TIVUTOu Wy\ncontaining a coil and a permanent magnet which\nprovides a magnetic field. The sensor is situated\ncuch that an air oan eyiscts hetween it and the\n",
+      "keyword_hits": {
+        "sensor": 2
+      },
+      "score": 3.0
+    },
+    {
+      "filename": "mems3_crank_and_cam_p01_img07.jpg",
+      "width": 2135,
+      "height": 164,
+      "size_bytes": 54694,
+      "mean_brightness": 229.2,
+      "ocr_text": "TOUF SUOKE CYCI\u20ac IPO Te UA SensOr dione. Wie\n\nCMP sensor must also be referenced to provide \u201ceT\nsufficient data for ignition control and sequential\nINnlActinn oon\n",
+      "keyword_hits": {
+        "sensor": 2
+      },
+      "score": 3.0
+    },
+    {
+      "filename": "mems3_crank_and_cam_p01_img12.jpg",
+      "width": 2135,
+      "height": 164,
+      "size_bytes": 34327,
+      "mean_brightness": 241.28,
+      "ocr_text": "110\u00b0\n\nThe sensor is a hall effect sensor which detects the\nreluctor mounted on the exhaust camshaft. The\n",
+      "keyword_hits": {
+        "sensor": 2
+      },
+      "score": 3.0
+    },
+    {
+      "filename": "mems3_crank_and_cam_p01_img15.jpg",
+      "width": 2135,
+      "height": 164,
+      "size_bytes": 58784,
+      "mean_brightness": 231.43,
+      "ocr_text": "a A a TRSnaay EER Se ANE aas See! UMASS AS Aas a a BERN RENE aterm vermee te Meme\u201d | I Makin aur tenes vie Remon TESETIS QP ekewines Rusts taee\n\nWhen the crankshaft i is $ positioned at TDC (cylinder detected as a digital signal by the ECM.\nnumber one firing position) the CKP sensor is\npositioned at 55\u00b0 BTDC. The \u2019missing\u2019 holes are\n",
+      "keyword_hits": {
+        "sensor": 1,
+        "position": 1
+      },
+      "score": 2.5
+    },
+    {
+      "filename": "mems19_trigger_description_p01_img15.jpg",
+      "width": 2129,
+      "height": 164,
+      "size_bytes": 50246,
+      "mean_brightness": 234.66,
+      "ocr_text": "TIHOOHTYy pPYUlto aly , lev , OV anu oly . Te\nmissing poles inform the ECM when to operate the\ngroups of injectors. When the flywheel rotates, as a\nnole nacces the CKP cancor it dicturhbs the maqnetic\n",
+      "keyword_hits": {
+        "flywheel": 1
+      },
+      "score": 2.5
+    },
+    {
+      "filename": "mems19_trigger_description_p01_img14.jpg",
+      "width": 2129,
+      "height": 164,
+      "size_bytes": 36791,
+      "mean_brightness": 241.77,
+      "ocr_text": "The flywheel incorporates a reluctor ring which\nconsists of 32 poles spaced at 10\u00b0 intervals, with 4\n\nces Be Ms ee ee ee ell Ey ad OE ees a eee OCT Be ee\n",
+      "keyword_hits": {
+        "flywheel": 1
+      },
+      "score": 2.5
+    },
+    {
+      "filename": "mems_2_crank_n_cam_p02_img13.jpg",
+      "width": 2130,
+      "height": 72,
+      "size_bytes": 36076,
+      "mean_brightness": 224.03,
+      "ocr_text": "a ia Bex\n\nflywheel. Air gap distance is s critical for correct grouped fuelling mode can 1 be detected by : a \u2018reduced\n\ni a OO 7\n",
+      "keyword_hits": {
+        "flywheel": 1
+      },
+      "score": 2.5
+    },
+    {
+      "filename": "mems3_crank_and_cam_p01_img16.jpg",
+      "width": 2135,
+      "height": 163,
+      "size_bytes": 22719,
+      "mean_brightness": 247.07,
+      "ocr_text": "positioned at 80\u00b0, 110\u00b0 , 260\u00b0 and 300\u00b0 before the\nCKP sensor position.\n",
+      "keyword_hits": {
+        "sensor": 1,
+        "position": 1
+      },
+      "score": 2.5
+    },
+    {
+      "filename": "mems3_crank_and_cam_p01_img14.jpg",
+      "width": 2135,
+      "height": 163,
+      "size_bytes": 87144,
+      "mean_brightness": 218.42,
+      "ocr_text": "olay. PIS oOSTIovVi VPSCIAIwo WET LIS METICIVIS VIA\nvoltage generated when the sensor is exposed to a\nmagnetic flux. This causes a potential difference in\nvoltage asc the reliictor nascas the cancor which ic\n\nThe \u2019spaces\u2019 on the target are spaced at a rate of\none hole per 10\u00b0. There are only 32 holes, this\nlaavesc four \u2019anacee\u2019 where 9 single hole ic miccing.\n",
+      "keyword_hits": {
+        "sensor": 1
+      },
+      "score": 1.5
+    },
+    {
+      "filename": "mems19_trigger_description_p01_img04.jpg",
+      "width": 2129,
+      "height": 164,
+      "size_bytes": 49620,
+      "mean_brightness": 235.33,
+      "ocr_text": "located within the ECM and detects manifold\npressure via a hose connected to the inlet manifold.\nThe MAP sensor converts pressure variations into\n\nes ee ee ee ee rr eT ee ie - a i ae\n",
+      "keyword_hits": {
+        "sensor": 1
+      },
+      "score": 1.5
+    },
+    {
+      "filename": "mems19_trigger_description_p01_img18.jpg",
+      "width": 2129,
+      "height": 164,
+      "size_bytes": 49610,
+      "mean_brightness": 234.47,
+      "ocr_text": "QA YIVUT UTI, WIG Livi Gall USOT UI Gh\nspeed. The output from the CKP sensor when used\nin conjunction with that from the manifold absolute\nnrecciire canscor nrovides idle ctahilication and\n",
+      "keyword_hits": {
+        "sensor": 1
+      },
+      "score": 1.5
+    },
+    {
+      "filename": "mems_2_crank_n_cam_p02_img18.jpg",
+      "width": 2130,
+      "height": 164,
+      "size_bytes": 47908,
+      "mean_brightness": 235.19,
+      "ocr_text": "OPECU. PHS VUIVULTIUITE Uilo OOHOUl Wiloll Uoseu Il\nconjunction with that from the manifold absolute\npressure sensor provides idle stabilisation and\nrefearance for hoth iqnition and iniection timing.\n",
+      "keyword_hits": {
+        "sensor": 1
+      },
+      "score": 1.5
+    },
+    {
+      "filename": "mems3_crank_and_cam_p01_img04.jpg",
+      "width": 2135,
+      "height": 164,
+      "size_bytes": 43622,
+      "mean_brightness": 236.33,
+      "ocr_text": "CUWl,. MONMNMOr VaIve UTMNG.\n\nAs the gaps between the poles of the target pass the CMP Sensor - MPi Engines\n\neanenr tin tha mannaticr fli ice intarriintad and thic\n",
+      "keyword_hits": {
+        "sensor": 1
+      },
+      "score": 1.5
+    },
+    {
+      "filename": "mems3_crank_and_cam_p01_img13.jpg",
+      "width": 2135,
+      "height": 73,
+      "size_bytes": 21874,
+      "mean_brightness": 234.9,
+      "ocr_text": "M18 0447B sensor receives a battery supply from the main\n\nee aa Se ee\n",
+      "keyword_hits": {
+        "sensor": 1
+      },
+      "score": 1.5
+    },
+    {
+      "filename": "mems3_crank_and_cam_p01_img06.jpg",
+      "width": 2135,
+      "height": 163,
+      "size_bytes": 45257,
+      "mean_brightness": 235.84,
+      "ocr_text": "It is important to note that the ECM is unable to\ndetermine the \u2018exact Position of the engine with its\n\nan oe 1. p\u00e9wivrr\u2122s  l\u201d\n",
+      "keyword_hits": {
+        "position": 1
+      },
+      "score": 1.0
+    },
+    {
+      "filename": "mems19_trigger_description_p01_img06.jpg",
+      "width": 2129,
+      "height": 164,
+      "size_bytes": 57850,
+      "mean_brightness": 229.63,
+      "ocr_text": "pressure provide the ECM with an accurate\nrepresentation of the load being placed on the\nengine allowing the ECM to adjust the quantity of\n\n",
+      "keyword_hits": {},
+      "score": 0.0
+    },
+    {
+      "filename": "mems3_crank_and_cam_p01_img11.jpg",
+      "width": 2135,
+      "height": 163,
+      "size_bytes": 57477,
+      "mean_brightness": 228.62,
+      "ocr_text": "= - \u00bb - - PRG ViVi O@LIOUr VIEL TVIT T SEIQHIGe IO MVALGU UIT LTS\n\\ camshaft cover (under the plastic cover) at the\n\u2122 // opposite end to the camshaft drive and reads off a\n, fi\n\nreluictor on the exhaust camschatt\n",
+      "keyword_hits": {},
+      "score": 0.0
+    },
+    {
+      "filename": "mems19_trigger_description_p01_img07.jpg",
+      "width": 2129,
+      "height": 164,
+      "size_bytes": 40798,
+      "mean_brightness": 237.84,
+      "ocr_text": "fuel being injected and the ignition timing to achieve\noptimum fuelling of the engine.\n",
+      "keyword_hits": {},
+      "score": 0.0
+    },
+    {
+      "filename": "mems_2_crank_n_cam_p02_img02.jpg",
+      "width": 2130,
+      "height": 164,
+      "size_bytes": 33830,
+      "mean_brightness": 212.46,
+      "ocr_text": "ENGINE MANAGEMENT SYSTEM - MEMS | Oe\n",
+      "keyword_hits": {},
+      "score": 0.0
+    },
+    {
+      "filename": "mems_2_crank_n_cam_p02_img06.jpg",
+      "width": 2130,
+      "height": 164,
+      "size_bytes": 33608,
+      "mean_brightness": 238.85,
+      "ocr_text": "aN\nCy Z\n",
+      "keyword_hits": {},
+      "score": 0.0
+    },
+    {
+      "filename": "mems19_trigger_description_p01_img02.jpg",
+      "width": 2129,
+      "height": 164,
+      "size_bytes": 33430,
+      "mean_brightness": 212.44,
+      "ocr_text": "ENGINE MANAGEMENT SYSTEM - MEMS | Ue\n",
+      "keyword_hits": {},
+      "score": 0.0
+    },
+    {
+      "filename": "mems_2_crank_n_cam_p02_img16.jpg",
+      "width": 2130,
+      "height": 164,
+      "size_bytes": 33037,
+      "mean_brightness": 242.83,
+      "ocr_text": "Se SEES RISO OS eg Or Sy rer win sonrnare.\n\nin in the coil, \u201cwhich i is ; transmitted \u2018to the. ECM.\n\nBy calculating the number of pulses that occur within\n",
+      "keyword_hits": {},
+      "score": 0.0
+    },
+    {
+      "filename": "mems3_crank_and_cam_p01_img10.jpg",
+      "width": 2135,
+      "height": 164,
+      "size_bytes": 31373,
+      "mean_brightness": 240.87,
+      "ocr_text": "M18 0701\n\nTbe gs FO ae ce ere oe a Oe Da ee ey Ee Beene Ree mK oerenEET A Sete\n",
+      "keyword_hits": {},
+      "score": 0.0
+    },
+    {
+      "filename": "mems19_trigger_description_p01_img16.jpg",
+      "width": 2129,
+      "height": 164,
+      "size_bytes": 28591,
+      "mean_brightness": 244.96,
+      "ocr_text": "SORE mae | Rep ntcren arr cere ere ee CA ut coe SE rciseen wenvacee ee Cuneie aeee Sh Nakestn eAee\n\nfield inducing a \\ voltage pulse i in the coil. This pulse\nis transmitted to the ECM.\n",
+      "keyword_hits": {},
+      "score": 0.0
+    },
+    {
+      "filename": "mems_2_crank_n_cam_p02_img07.jpg",
+      "width": 2130,
+      "height": 164,
+      "size_bytes": 27942,
+      "mean_brightness": 241.64,
+      "ocr_text": "",
+      "keyword_hits": {},
+      "score": 0.0
+    },
+    {
+      "filename": "mems_2_crank_n_cam_p02_img04.jpg",
+      "width": 2130,
+      "height": 164,
+      "size_bytes": 27804,
+      "mean_brightness": 242.77,
+      "ocr_text": "",
+      "keyword_hits": {},
+      "score": 0.0
+    },
+    {
+      "filename": "mems19_trigger_description_p01_img05.jpg",
+      "width": 2129,
+      "height": 72,
+      "size_bytes": 27076,
+      "mean_brightness": 225.52,
+      "ocr_text": "YrdQualea ClecuiCdl siQildals WICH Carl VE Fed D\nthe EGM. Increases and decreases in the manifold\n",
+      "keyword_hits": {},
+      "score": 0.0
+    },
+    {
+      "filename": "mems3_crank_and_cam_p01_img05.jpg",
+      "width": 2135,
+      "height": 73,
+      "size_bytes": 26437,
+      "mean_brightness": 228.36,
+      "ocr_text": "en ne nn ne ee ne\n\ncauses a change to the output voltage (e.m.f.).\n\n\u2014\u2014\n",
+      "keyword_hits": {},
+      "score": 0.0
+    },
+    {
+      "filename": "mems_2_crank_n_cam_p02_img09.jpg",
+      "width": 2130,
+      "height": 71,
+      "size_bytes": 23132,
+      "mean_brightness": 232.06,
+      "ocr_text": "Pri GCATTIOricalt VOI OClIioOVI Tido WHY PUPPOULIVto. PENG\nfirst is to enable the ECM to run a sequential fuelling\n",
+      "keyword_hits": {},
+      "score": 0.0
+    },
+    {
+      "filename": "mems_2_crank_n_cam_p02_img08.jpg",
+      "width": 2130,
+      "height": 164,
+      "size_bytes": 20345,
+      "mean_brightness": 249.44,
+      "ocr_text": "19M2031\n\nfon oat EE RY ners of OTL A Lem ne Re Ty ES Oe me eee: Le mE a! enn\n",
+      "keyword_hits": {},
+      "score": 0.0
+    },
+    {
+      "filename": "mems19_trigger_description_p01_img17.jpg",
+      "width": 2129,
+      "height": 71,
+      "size_bytes": 18803,
+      "mean_brightness": 237.24,
+      "ocr_text": "By calculating the number of pulses that occur within\n\nee ee a OR OA ee eid ee ie ee ee Od eee i ee\n",
+      "keyword_hits": {},
+      "score": 0.0
+    },
+    {
+      "filename": "mems_2_crank_n_cam_p02_img17.jpg",
+      "width": 2130,
+      "height": 71,
+      "size_bytes": 18169,
+      "mean_brightness": 238.4,
+      "ocr_text": "a given time, the ECM can determine the engine\n\na, a nl a en fe cc i [ee a ,\n",
+      "keyword_hits": {},
+      "score": 0.0
+    },
+    {
+      "filename": "mems19_trigger_description_p01_img19.jpg",
+      "width": 2129,
+      "height": 164,
+      "size_bytes": 16739,
+      "mean_brightness": 250.45,
+      "ocr_text": "ee SRAERE Renin EN | FUT wteverimnnl mn WMOMCe yon Me) Ree TS Ree S| FCC ret\n\nreference for injection timing.\n",
+      "keyword_hits": {},
+      "score": 0.0
+    },
+    {
+      "filename": "mems3_crank_and_cam_p01_img08.jpg",
+      "width": 2135,
+      "height": 163,
+      "size_bytes": 16528,
+      "mean_brightness": 249.49,
+      "ocr_text": "eee\n",
+      "keyword_hits": {},
+      "score": 0.0
+    },
+    {
+      "filename": "mems19_trigger_description_p01_img13.jpg",
+      "width": 2129,
+      "height": 72,
+      "size_bytes": 13760,
+      "mean_brightness": 245.59,
+      "ocr_text": "critical for correct operation.\n\na es\n",
+      "keyword_hits": {},
+      "score": 0.0
+    },
+    {
+      "filename": "mems19_trigger_description_p01_img08.jpg",
+      "width": 2129,
+      "height": 164,
+      "size_bytes": 12853,
+      "mean_brightness": 251.87,
+      "ocr_text": "OAL)\n\n19M2031\n",
+      "keyword_hits": {},
+      "score": 0.0
+    },
+    {
+      "filename": "mems3_crank_and_cam_p01_img21.jpg",
+      "width": 2135,
+      "height": 163,
+      "size_bytes": 10922,
+      "mean_brightness": 249.16,
+      "ocr_text": "",
+      "keyword_hits": {},
+      "score": 0.0
+    },
+    {
+      "filename": "mems19_trigger_description_p01_img22.jpg",
+      "width": 2129,
+      "height": 164,
+      "size_bytes": 10798,
+      "mean_brightness": 247.74,
+      "ocr_text": "",
+      "keyword_hits": {},
+      "score": 0.0
+    },
+    {
+      "filename": "mems_2_crank_n_cam_p02_img22.jpg",
+      "width": 2130,
+      "height": 164,
+      "size_bytes": 10798,
+      "mean_brightness": 247.74,
+      "ocr_text": "",
+      "keyword_hits": {},
+      "score": 0.0
+    },
+    {
+      "filename": "mems_2_crank_n_cam_p02_img19.jpg",
+      "width": 2130,
+      "height": 164,
+      "size_bytes": 9620,
+      "mean_brightness": 254.03,
+      "ocr_text": "",
+      "keyword_hits": {},
+      "score": 0.0
+    },
+    {
+      "filename": "mems3_crank_and_cam_p01_img09.jpg",
+      "width": 2135,
+      "height": 73,
+      "size_bytes": 9290,
+      "mean_brightness": 248.15,
+      "ocr_text": "",
+      "keyword_hits": {},
+      "score": 0.0
+    },
+    {
+      "filename": "mems_2_crank_n_cam_p02_img05.jpg",
+      "width": 2130,
+      "height": 72,
+      "size_bytes": 9073,
+      "mean_brightness": 246.08,
+      "ocr_text": "",
+      "keyword_hits": {},
+      "score": 0.0
+    },
+    {
+      "filename": "mems_2_crank_n_cam_p02_img01.jpg",
+      "width": 2130,
+      "height": 71,
+      "size_bytes": 7928,
+      "mean_brightness": 224.46,
+      "ocr_text": "",
+      "keyword_hits": {},
+      "score": 0.0
+    },
+    {
+      "filename": "mems19_trigger_description_p01_img01.jpg",
+      "width": 2129,
+      "height": 71,
+      "size_bytes": 7799,
+      "mean_brightness": 224.45,
+      "ocr_text": "",
+      "keyword_hits": {},
+      "score": 0.0
+    },
+    {
+      "filename": "mems3_crank_and_cam_p01_img01.jpg",
+      "width": 2135,
+      "height": 73,
+      "size_bytes": 7245,
+      "mean_brightness": 241.0,
+      "ocr_text": "",
+      "keyword_hits": {},
+      "score": 0.0
+    },
+    {
+      "filename": "mems19_trigger_description_p01_img20.jpg",
+      "width": 2129,
+      "height": 164,
+      "size_bytes": 6523,
+      "mean_brightness": 255.0,
+      "ocr_text": "",
+      "keyword_hits": {},
+      "score": 0.0
+    },
+    {
+      "filename": "mems3_crank_and_cam_p01_img18.jpg",
+      "width": 2135,
+      "height": 164,
+      "size_bytes": 6523,
+      "mean_brightness": 255.0,
+      "ocr_text": "",
+      "keyword_hits": {},
+      "score": 0.0
+    },
+    {
+      "filename": "mems3_crank_and_cam_p01_img19.jpg",
+      "width": 2135,
+      "height": 163,
+      "size_bytes": 6523,
+      "mean_brightness": 255.0,
+      "ocr_text": "",
+      "keyword_hits": {},
+      "score": 0.0
+    },
+    {
+      "filename": "mems_2_crank_n_cam_p02_img20.jpg",
+      "width": 2130,
+      "height": 164,
+      "size_bytes": 6523,
+      "mean_brightness": 255.0,
+      "ocr_text": "",
+      "keyword_hits": {},
+      "score": 0.0
+    },
+    {
+      "filename": "mems19_trigger_description_p01_img21.jpg",
+      "width": 2129,
+      "height": 157,
+      "size_bytes": 5987,
+      "mean_brightness": 255.0,
+      "ocr_text": "",
+      "keyword_hits": {},
+      "score": 0.0
+    },
+    {
+      "filename": "mems3_crank_and_cam_p01_img20.jpg",
+      "width": 2135,
+      "height": 149,
+      "size_bytes": 5987,
+      "mean_brightness": 255.0,
+      "ocr_text": "",
+      "keyword_hits": {},
+      "score": 0.0
+    },
+    {
+      "filename": "mems_2_crank_n_cam_p02_img21.jpg",
+      "width": 2130,
+      "height": 157,
+      "size_bytes": 5987,
+      "mean_brightness": 255.0,
+      "ocr_text": "",
+      "keyword_hits": {},
+      "score": 0.0
+    },
+    {
+      "filename": "mems19_trigger_description_p01_img09.jpg",
+      "width": 2129,
+      "height": 71,
+      "size_bytes": 3307,
+      "mean_brightness": 255.0,
+      "ocr_text": "",
+      "keyword_hits": {},
+      "score": 0.0
+    },
+    {
+      "filename": "mems3_crank_and_cam_p01_img17.jpg",
+      "width": 2135,
+      "height": 73,
+      "size_bytes": 3307,
+      "mean_brightness": 255.0,
+      "ocr_text": "",
+      "keyword_hits": {},
+      "score": 0.0
+    }
+  ]
+}

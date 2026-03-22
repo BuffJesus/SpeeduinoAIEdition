@@ -115,6 +115,21 @@ Safe conclusion from the OCR ranking:
 - the blocker is no longer "which of the 65 images matter at all"
 - the blocker is now manual visual alignment of those candidate images against the current Speeduino Rover layouts and the parsed composite-log signal changes
 
+The environment-level PDF readiness is now also checked in a reproducible way with [inspect_pdf_evidence.py](C:/Users/Cornelio/Desktop/speeduino-202501.6/tools/inspect_pdf_evidence.py), which wrote [pdf_inspection.json](C:/Users/Cornelio/Desktop/speeduino-202501.6/Resources/rover_mems_evidence/pdf_inspection.json).
+
+Current inspection result:
+
+- all three Rover PDFs have `0` extractable text-layer characters under `pypdf`
+- no local page renderer is available in `PATH`:
+  - `magick`: missing
+  - `pdftoppm`: missing
+  - `gswin64c`: missing
+
+That means the Rover manuals are effectively image-only in this environment and cannot currently be turned into full-page diagrams without either:
+
+- manual viewing outside the harness, or
+- installing a page-rendering toolchain
+
 ### What The Extracted Rover Project Confirms
 
 The recovered tune file [CurrentTune.msq](C:/Users/Cornelio/Desktop/speeduino-202501.6/Resources/rover_mems_evidence/extracted/T16-RoverMemsTesting/CurrentTune.msq) confirms this was not just a generic Rover setup:
@@ -180,6 +195,7 @@ What still remains unresolved:
 
 - which of the OCR-ranked candidate images are the exact wheel drawings versus supporting sensor text
 - which candidate images correspond to the exact `5-3-2 cam` plus crank-speed configuration used by the archived Rover test project
+- full-page rendering of the Rover manuals in this environment, because the PDFs have no text layer and no renderer is currently installed
 
 ## What The Forum Evidence Safely Tells Us
 
