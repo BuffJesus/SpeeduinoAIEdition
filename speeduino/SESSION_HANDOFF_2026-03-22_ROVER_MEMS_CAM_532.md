@@ -67,6 +67,27 @@ Practical meaning:
 - that is qualitatively compatible with a `5-3-2` family signal being exported as level transitions rather than already-decoded tooth groups
 - but the exported composite rows still do not safely tell us which specific transition is the tooth-after-gap event that the ISR keys off
 
+An additional local pass also confirmed:
+
+- [CurrentTune.msq](C:/Users/Cornelio/Desktop/speeduino-202501.6/Resources/rover_mems_evidence/extracted/T16-RoverMemsTesting/CurrentTune.msq) and every saved restore-point `.msq` in [restorePoints](C:/Users/Cornelio/Desktop/speeduino-202501.6/Resources/rover_mems_evidence/extracted/T16-RoverMemsTesting/restorePoints) use:
+  - `TrigEdge = RISING`
+  - `TrigEdgeSec = RISING`
+  - `TrigPattern = Rover MEMS`
+  - `trigPatternSec = 5-3-2 cam`
+  - `TrigSpeed = Crank Speed`
+  - `useResync = No`
+- splitting the post-sync composite transitions by `secLevel` still does not resolve the ambiguity:
+  - `2021-06-23_01.59.58_rising_ne.csv`
+    - rising transitions: `{4: 4, 5: 1, 11: 1}`
+    - falling transitions: `{2: 1, 5: 4, 10: 1, 23: 1}`
+  - `2021-06-23_01.12.43-cranking_risingoncam_crank.csv`
+    - rising transitions: `{4: 3, 5: 1, 12: 1}`
+    - falling transitions: `{2: 1, 5: 3, 22: 1}`
+
+Safe conclusion:
+
+- even knowing the tune used `TrigEdgeSec = RISING`, the composite export still does not map cleanly onto the decoder's internal `5-3-2` tooth-group state without another unstated assumption about how `secLevel` and `priLevel` are sampled
+
 ## Why Full-Sync Replay Is Still Not Safe
 
 The current blocker is now precise:
