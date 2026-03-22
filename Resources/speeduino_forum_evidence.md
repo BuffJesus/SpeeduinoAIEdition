@@ -4,7 +4,1859 @@ This report is generated from targeted public-forum searching and thread scrapin
 
 ## Roadmap evidence
 
+### Decoder and trigger-pattern evidence
+
+#### 1985 Honda Goldwing Limited Edition FI Model ECU Replacement - Page 67
+- URL: https://speeduino.com/forum/viewtopic.php?p=65044#p65044
+- Date: Wed Sep 27, 2023 11:54 pm
+- Who posted it: Rednaxs60
+- Evidence type: scope capture / wheel description
+- Confidence: high
+- Summary: @PSIG - Thanks for the info. Received the DC power supply from Amazon. Used it today to bench test the Cherry GS100701 Hall effect sensors with the OEM single tooth cam trigger wheel, and the OEM 8 tooth crank trigger wheel.
+- Why it matters: Contains concrete trace-oriented evidence that can support replay tests and decoder validation.
+- Specific details: Pattern mentions: 36-1 Edge or poll details: rising, change Signal roles: cam mentioned, crank mentioned Explicit sync-loss discussion present.
+- Matched search terms: trigger trace
+
+#### Messing with Subaru 6/7 trigger - Page 5
+- URL: https://speeduino.com/forum/viewtopic.php?p=72272#p72272
+- Date: Sat Jun 28, 2025 10:08 pm
+- Who posted it: ImprezaRSC
+- Evidence type: tooth log / composite log / scope capture
+- Confidence: high
+- Summary: Hi, guys. I'll be noodling with this. I have the full version of TunerStudio and a pocket oscilloscope.
+- Why it matters: Contains concrete trace-oriented evidence that can support replay tests and decoder validation. Relevant to pin-selection policy and board-specific packaged settings.
+- Specific details: Edge or poll details: change Signal roles: crank mentioned
+- Matched search terms: Subaru 6/7
+
+#### [strange project] Turbo Honda sh 150cc
+- URL: https://speeduino.com/forum/viewtopic.php?p=73949#p73958
+- Date: Fri Jan 16, 2026 11:13 pm
+- Who posted it: PSIG
+- Evidence type: tooth log / scope capture / wheel description
+- Confidence: high
+- Summary: I see your tooth log showing only 8 teeth and 3 missing, not 9 (12-3). From this I assume your decoder is missing tooth #1 for the reasons posted earlier. I also see in your last run-log 254 sync losses.
+- Why it matters: Contains concrete trace-oriented evidence that can support replay tests and decoder validation.
+- Specific details: Pattern mentions: 12-3 Signal roles: crank mentioned Explicit sync-loss discussion present.
+- Matched search terms: sync loss
+
+#### 1985 Honda Goldwing Limited Edition FI Model ECU Replacement - Page 67
+- URL: https://speeduino.com/forum/viewtopic.php?p=65044#p65073
+- Date: Sun Oct 01, 2023 5:17 pm
+- Who posted it: Rednaxs60
+- Evidence type: wheel description / image attachment
+- Confidence: high
+- Summary: Progress with the new sensors. Have made brackets and installed the Hall effect sensors on the engine. Use the OEM 8 tooth crank trigger wheel.
+- Why it matters: Touches wiring-dependent versus universal idle and A/C behavior.
+- Specific details: Edge or poll details: change Signal roles: cam mentioned, crank mentioned Explicit sync-loss discussion present. Attachments: Archive 6.zip -> https://speeduino.com/forum/download/file.php?id=12143; Cherry Hall Effect Sensor GS100701.pdf -> https://speeduino.com/forum/download/file.php?id=12141 Image or capture links found: 2
+- Matched search terms: trigger trace
+
+#### [strange project] Turbo Honda sh 150cc
+- URL: https://speeduino.com/forum/viewtopic.php?p=73949#p73504
+- Date: Thu Nov 06, 2025 9:06 pm
+- Who posted it: Alessio
+- Evidence type: tooth log / scope capture
+- Confidence: high
+- Summary: [PSIG](./memberlist.php?mode=viewprofile&u=149) wrote: [↑](./viewtopic.php?p=73487#p73487) Wed Nov 05, 2025 2:28 am Please take a Tooth Log cranking the engine. TS Tooth Logger.png The MAX9926 VR conditioner chip often does not do well with certain missing tooth gaps. It is a smart chip, but can be too smart, and can see the end of the gap with a large signal.
+- Why it matters: Contains concrete trace-oriented evidence that can support replay tests and decoder validation.
+- Specific details: Signal roles: crank mentioned
+- Matched search terms: sync loss
+
+#### 1985 Honda Goldwing Limited Edition FI Model ECU Replacement - Page 67
+- URL: https://speeduino.com/forum/viewtopic.php?p=65044#p61060
+- Date: Fri Feb 03, 2023 10:41 pm
+- Who posted it: Rednaxs60
+- Evidence type: composite log / scope capture / wheel description
+- Confidence: high
+- Summary: Have to do up a jig to test the new cam wheel. Thinking I should just install on the engine and give it a spin. Going to work or is not.
+- Why it matters: Contains concrete trace-oriented evidence that can support replay tests and decoder validation.
+- Specific details: Pattern mentions: 36-1 Signal roles: cam mentioned, crank mentioned Explicit sync-loss discussion present.
+- Matched search terms: trigger trace
+
+#### Just another Speedy ECU - Page 2
+- URL: https://speeduino.com/forum/viewtopic.php?p=74068#p74172
+- Date: Sat Feb 28, 2026 1:05 am
+- Who posted it: Black Knight
+- Evidence type: tooth log / scope capture
+- Confidence: high
+- Summary: Finalizing VR After a few revisions of the VR circuits we did come up with 4 that worked very well. The pics and wire diagrams are posted above. What we missed was posting the tooth logger so you can see how clean it looks and we also posted a pic of the oscope reading the AC input signal and the VR circuit output square wave.
+- Why it matters: Contains concrete trace-oriented evidence that can support replay tests and decoder validation.
+- Specific details: Attachments: bayview posting.mlg -> https://speeduino.com/forum/download/file.php?id=14815; tooth logger cold start and run.csv -> https://speeduino.com/forum/download/file.php?id=14818; up moose.mlg -> https://speeduino.com/forum/download/file.php?id=14816 Image or capture links found: 3
+- Matched search terms: tooth logger
+
+#### Just another Speedy ECU - Page 3
+- URL: https://speeduino.com/forum/viewtopic.php?p=74109#p74172
+- Date: Sat Feb 28, 2026 1:05 am
+- Who posted it: Black Knight
+- Evidence type: tooth log / scope capture
+- Confidence: high
+- Summary: Finalizing VR After a few revisions of the VR circuits we did come up with 4 that worked very well. The pics and wire diagrams are posted above. What we missed was posting the tooth logger so you can see how clean it looks and we also posted a pic of the oscope reading the AC input signal and the VR circuit output square wave.
+- Why it matters: Contains concrete trace-oriented evidence that can support replay tests and decoder validation.
+- Specific details: Attachments: bayview posting.mlg -> https://speeduino.com/forum/download/file.php?id=14815; tooth logger cold start and run.csv -> https://speeduino.com/forum/download/file.php?id=14818; up moose.mlg -> https://speeduino.com/forum/download/file.php?id=14816 Image or capture links found: 3
+- Matched search terms: 36-2-1
+
+#### Just another Speedy ECU - Page 4
+- URL: https://speeduino.com/forum/viewtopic.php?p=74153#p74172
+- Date: Sat Feb 28, 2026 1:05 am
+- Who posted it: Black Knight
+- Evidence type: tooth log / scope capture
+- Confidence: high
+- Summary: Finalizing VR After a few revisions of the VR circuits we did come up with 4 that worked very well. The pics and wire diagrams are posted above. What we missed was posting the tooth logger so you can see how clean it looks and we also posted a pic of the oscope reading the AC input signal and the VR circuit output square wave.
+- Why it matters: Contains concrete trace-oriented evidence that can support replay tests and decoder validation.
+- Specific details: Attachments: bayview posting.mlg -> https://speeduino.com/forum/download/file.php?id=14815; tooth logger cold start and run.csv -> https://speeduino.com/forum/download/file.php?id=14818; up moose.mlg -> https://speeduino.com/forum/download/file.php?id=14816 Image or capture links found: 3
+- Matched search terms: tooth logger
+
+#### Just another Speedy ECU - Page 4
+- URL: https://speeduino.com/forum/viewtopic.php?p=74172#p74172
+- Date: Sat Feb 28, 2026 1:05 am
+- Who posted it: Black Knight
+- Evidence type: tooth log / scope capture
+- Confidence: high
+- Summary: Finalizing VR After a few revisions of the VR circuits we did come up with 4 that worked very well. The pics and wire diagrams are posted above. What we missed was posting the tooth logger so you can see how clean it looks and we also posted a pic of the oscope reading the AC input signal and the VR circuit output square wave.
+- Why it matters: Contains concrete trace-oriented evidence that can support replay tests and decoder validation.
+- Specific details: Attachments: bayview posting.mlg -> https://speeduino.com/forum/download/file.php?id=14815; tooth logger cold start and run.csv -> https://speeduino.com/forum/download/file.php?id=14818; up moose.mlg -> https://speeduino.com/forum/download/file.php?id=14816 Image or capture links found: 3
+- Matched search terms: tooth logger
+
+#### [strange project] Turbo Honda sh 150cc
+- URL: https://speeduino.com/forum/viewtopic.php?p=73949#p73487
+- Date: Wed Nov 05, 2025 2:28 am
+- Who posted it: PSIG
+- Evidence type: tooth log / scope capture
+- Confidence: high
+- Summary: Please take a Tooth Log cranking the engine. TS Tooth Logger.png (18.47 KiB) Viewed 36957 times The MAX9926 VR conditioner chip often does not do well with certain missing tooth gaps. It is a smart chip, but can be too smart, and can see the end of the gap with a large signal.
+- Why it matters: Contains concrete trace-oriented evidence that can support replay tests and decoder validation.
+- Specific details: Signal roles: crank mentioned
+- Matched search terms: sync loss
+
+#### Sync code question
+- URL: https://speeduino.com/forum/viewtopic.php?p=74149#p74149
+- Date: Tue Feb 24, 2026 12:59 am
+- Who posted it: Banjo
+- Evidence type: tooth log / composite log / wheel description
+- Confidence: high
+- Summary: I'm having lots of problems understanding the "Synching" & "Re-Synching" approach of the code, when it comes to resynching, in particular, in Dual Wheel setups. Now I understand that the C.A.S. pulse is generated by the camshaft; & that the fact that it is driven by the chains & sprockets, or belts that stretch under severe acceleration; that it can have the jitters.
+- Why it matters: Contains concrete trace-oriented evidence that can support replay tests and decoder validation.
+- Specific details: Pattern mentions: 24-1 Signal roles: cam mentioned, crank mentioned
+- Matched search terms: tooth logger
+
+#### Sync code question
+- URL: https://speeduino.com/forum/viewtopic.php?p=74204#p74149
+- Date: Tue Feb 24, 2026 12:59 am
+- Who posted it: Banjo
+- Evidence type: tooth log / composite log / wheel description
+- Confidence: high
+- Summary: I'm having lots of problems understanding the "Synching" & "Re-Synching" approach of the code, when it comes to resynching, in particular, in Dual Wheel setups. Now I understand that the C.A.S. pulse is generated by the camshaft; & that the fact that it is driven by the chains & sprockets, or belts that stretch under severe acceleration; that it can have the jitters.
+- Why it matters: Contains concrete trace-oriented evidence that can support replay tests and decoder validation.
+- Specific details: Pattern mentions: 24-1 Signal roles: cam mentioned, crank mentioned
+- Matched search terms: trigger decoder
+
+#### Just another Speedy ECU - Page 2
+- URL: https://speeduino.com/forum/viewtopic.php?p=74068#p74153
+- Date: Wed Feb 25, 2026 3:39 am
+- Who posted it: Black Knight
+- Evidence type: tooth log / scope capture
+- Confidence: high
+- Summary: As we are learning various ways to design and build different circuits, like VR, power supply and others, we decided to build a pre prototype board to make all our mistakes on, also various circuits are mounted to the mother board by using header pins so we can play with circuit designs and plug them into the mother board for full testing. We took a couple of days to build this pre prototype board, build it into a project box with the correct connections to tie into the existing wire harness. Now we can test these circuits under real driving conditions.
+- Why it matters: Contains concrete trace-oriented evidence that can support replay tests and decoder validation.
+- Specific details: Signal roles: crank mentioned
+- Matched search terms: tooth logger
+
+#### Just another Speedy ECU - Page 3
+- URL: https://speeduino.com/forum/viewtopic.php?p=74109#p74153
+- Date: Wed Feb 25, 2026 3:39 am
+- Who posted it: Black Knight
+- Evidence type: tooth log / scope capture
+- Confidence: high
+- Summary: As we are learning various ways to design and build different circuits, like VR, power supply and others, we decided to build a pre prototype board to make all our mistakes on, also various circuits are mounted to the mother board by using header pins so we can play with circuit designs and plug them into the mother board for full testing. We took a couple of days to build this pre prototype board, build it into a project box with the correct connections to tie into the existing wire harness. Now we can test these circuits under real driving conditions.
+- Why it matters: Contains concrete trace-oriented evidence that can support replay tests and decoder validation.
+- Specific details: Signal roles: crank mentioned
+- Matched search terms: 36-2-1
+
+#### Just another Speedy ECU - Page 4
+- URL: https://speeduino.com/forum/viewtopic.php?p=74153#p74153
+- Date: Wed Feb 25, 2026 3:39 am
+- Who posted it: Black Knight
+- Evidence type: tooth log / scope capture
+- Confidence: high
+- Summary: As we are learning various ways to design and build different circuits, like VR, power supply and others, we decided to build a pre prototype board to make all our mistakes on, also various circuits are mounted to the mother board by using header pins so we can play with circuit designs and plug them into the mother board for full testing. We took a couple of days to build this pre prototype board, build it into a project box with the correct connections to tie into the existing wire harness. Now we can test these circuits under real driving conditions.
+- Why it matters: Contains concrete trace-oriented evidence that can support replay tests and decoder validation.
+- Specific details: Signal roles: crank mentioned
+- Matched search terms: tooth logger
+
+#### Just another Speedy ECU - Page 4
+- URL: https://speeduino.com/forum/viewtopic.php?p=74172#p74153
+- Date: Wed Feb 25, 2026 3:39 am
+- Who posted it: Black Knight
+- Evidence type: tooth log / scope capture
+- Confidence: high
+- Summary: As we are learning various ways to design and build different circuits, like VR, power supply and others, we decided to build a pre prototype board to make all our mistakes on, also various circuits are mounted to the mother board by using header pins so we can play with circuit designs and plug them into the mother board for full testing. We took a couple of days to build this pre prototype board, build it into a project box with the correct connections to tie into the existing wire harness. Now we can test these circuits under real driving conditions.
+- Why it matters: Contains concrete trace-oriented evidence that can support replay tests and decoder validation.
+- Specific details: Signal roles: crank mentioned
+- Matched search terms: tooth logger
+
+#### Speeduino system VW vanagon WBX 2.1 DJ with hiccups - Page 3
+- URL: https://speeduino.com/forum/viewtopic.php?p=73680#p73714
+- Date: Mon Dec 08, 2025 11:13 am
+- Who posted it: Iskander
+- Evidence type: tooth log / wheel description
+- Confidence: high
+- Summary: Hi I have done some test again. The new spark plugs arrived (Denso PK20PR-P8) and installed. I changed the WUE that its end at 100% Drived a short trip.
+- Why it matters: Contains concrete trace-oriented evidence that can support replay tests and decoder validation.
+- Specific details: Edge or poll details: rising, change Attachments: VR signal test 560RPM.zip -> https://speeduino.com/forum/download/file.php?id=14644 Image or capture links found: 1
+- Matched search terms: sync loss
+
+#### Speeduino system VW vanagon WBX 2.1 DJ with hiccups - Page 3
+- URL: https://speeduino.com/forum/viewtopic.php?p=73681#p73714
+- Date: Mon Dec 08, 2025 11:13 am
+- Who posted it: Iskander
+- Evidence type: tooth log / wheel description
+- Confidence: high
+- Summary: Hi I have done some test again. The new spark plugs arrived (Denso PK20PR-P8) and installed. I changed the WUE that its end at 100% Drived a short trip.
+- Why it matters: Contains concrete trace-oriented evidence that can support replay tests and decoder validation.
+- Specific details: Edge or poll details: rising, change Attachments: VR signal test 560RPM.zip -> https://speeduino.com/forum/download/file.php?id=14644 Image or capture links found: 1
+- Matched search terms: sync loss
+
+#### Speeduino system VW vanagon WBX 2.1 DJ with hiccups - Page 3
+- URL: https://speeduino.com/forum/viewtopic.php?p=73682#p73714
+- Date: Mon Dec 08, 2025 11:13 am
+- Who posted it: Iskander
+- Evidence type: tooth log / wheel description
+- Confidence: high
+- Summary: Hi I have done some test again. The new spark plugs arrived (Denso PK20PR-P8) and installed. I changed the WUE that its end at 100% Drived a short trip.
+- Why it matters: Contains concrete trace-oriented evidence that can support replay tests and decoder validation.
+- Specific details: Edge or poll details: rising, change Attachments: VR signal test 560RPM.zip -> https://speeduino.com/forum/download/file.php?id=14644 Image or capture links found: 1
+- Matched search terms: sync loss
+
+#### Messing with Subaru 6/7 trigger - Page 5
+- URL: https://speeduino.com/forum/viewtopic.php?p=72272#p47872
+- Date: Thu Jan 28, 2021 5:44 pm
+- Who posted it: Yoosyn
+- Evidence type: scope capture / wheel description
+- Confidence: high
+- Summary: jonathanlawley wrote: thats strange that its no different. Ive just ordered an oscilloscope to see if I can make a different type of filter with the code. In the mean time I made this little loop that should (hopefully) find the correct filter value for you.
+- Why it matters: Contains concrete trace-oriented evidence that can support replay tests and decoder validation.
+- Specific details: Edge or poll details: rising, falling, change Signal roles: crank mentioned
+- Matched search terms: Subaru 6/7
+
+#### Just another Speedy ECU - Page 2
+- URL: https://speeduino.com/forum/viewtopic.php?p=74068#p74068
+- Date: Sat Feb 07, 2026 3:16 am
+- Who posted it: Black Knight
+- Evidence type: tooth log / scope capture / wheel description
+- Confidence: high
+- Summary: [PSIG](./memberlist.php?mode=viewprofile&u=149) wrote: [↑](./viewtopic.php?p=74065#p74065) Fri Feb 06, 2026 2:02 am The input impedance as around 100 Megohms. However, there is a signal capacitor that requires charging to read analog signals, and they suggest input at 10K ohms or less. I read that as 500 microamps (1/2 mA) minimum per-channel.
+- Why it matters: Contains concrete trace-oriented evidence that can support replay tests and decoder validation.
+- Specific details: Pattern mentions: 26-8
+- Matched search terms: tooth logger
+
+#### Just another Speedy ECU - Page 3
+- URL: https://speeduino.com/forum/viewtopic.php?p=74109#p74068
+- Date: Sat Feb 07, 2026 3:16 am
+- Who posted it: Black Knight
+- Evidence type: tooth log / scope capture / wheel description
+- Confidence: high
+- Summary: [PSIG](./memberlist.php?mode=viewprofile&u=149) wrote: [↑](./viewtopic.php?p=74065#p74065) Fri Feb 06, 2026 2:02 am The input impedance as around 100 Megohms. However, there is a signal capacitor that requires charging to read analog signals, and they suggest input at 10K ohms or less. I read that as 500 microamps (1/2 mA) minimum per-channel.
+- Why it matters: Contains concrete trace-oriented evidence that can support replay tests and decoder validation.
+- Specific details: Pattern mentions: 26-8
+- Matched search terms: 36-2-1
+
+#### Just another Speedy ECU - Page 4
+- URL: https://speeduino.com/forum/viewtopic.php?p=74153#p74068
+- Date: Sat Feb 07, 2026 3:16 am
+- Who posted it: Black Knight
+- Evidence type: tooth log / scope capture / wheel description
+- Confidence: high
+- Summary: [PSIG](./memberlist.php?mode=viewprofile&u=149) wrote: [↑](./viewtopic.php?p=74065#p74065) Fri Feb 06, 2026 2:02 am The input impedance as around 100 Megohms. However, there is a signal capacitor that requires charging to read analog signals, and they suggest input at 10K ohms or less. I read that as 500 microamps (1/2 mA) minimum per-channel.
+- Why it matters: Contains concrete trace-oriented evidence that can support replay tests and decoder validation.
+- Specific details: Pattern mentions: 26-8
+- Matched search terms: tooth logger
+
+#### Just another Speedy ECU - Page 4
+- URL: https://speeduino.com/forum/viewtopic.php?p=74172#p74068
+- Date: Sat Feb 07, 2026 3:16 am
+- Who posted it: Black Knight
+- Evidence type: tooth log / scope capture / wheel description
+- Confidence: high
+- Summary: [PSIG](./memberlist.php?mode=viewprofile&u=149) wrote: [↑](./viewtopic.php?p=74065#p74065) Fri Feb 06, 2026 2:02 am The input impedance as around 100 Megohms. However, there is a signal capacitor that requires charging to read analog signals, and they suggest input at 10K ohms or less. I read that as 500 microamps (1/2 mA) minimum per-channel.
+- Why it matters: Contains concrete trace-oriented evidence that can support replay tests and decoder validation.
+- Specific details: Pattern mentions: 26-8
+- Matched search terms: tooth logger
+
+#### Honda K20 trigger pattern
+- URL: https://speeduino.com/forum/viewtopic.php?p=73689#p73689
+- Date: Sun Nov 30, 2025 9:16 pm
+- Who posted it: Michal327
+- Evidence type: wheel description
+- Confidence: high
+- Summary: Hi folks, I've created a new thread about k20 trigger because two years ago @miker wrote that the new pattern was ready but untested. To avoid deeming my project a failure, I really need any code or files you have for this engine so it can run in full sequential mode on Speeduino v0.4.3d. I'm trying to write my own custom decoder, but it's not working.
+- Why it matters: Contains technical evidence that may affect firmware behavior, tests, or documentation.
+- Specific details: Pattern mentions: 36-1, honda d17 Edge or poll details: change Signal roles: cam mentioned, crank mentioned
+- Matched search terms: trigger decoder
+
+#### Honda K20 trigger pattern
+- URL: https://speeduino.com/forum/viewtopic.php?p=73689#p73812
+- Date: Wed Dec 24, 2025 1:04 pm
+- Who posted it: Michal327
+- Evidence type: wheel description
+- Confidence: high
+- Summary: Sorry for not responding @delion This is crank and cam trigger pattern which I followed when creating the decoder: Honda D17 crank trigger wheel: 12+1 Honda K20 crank trigger wheel: 12+1 Honda K20 cam trigger wheel: 4+1 The D17 decoder is semi-sequential (wasted spark) and there is no script written for triggerSec_HondaD17 (for reading cam). Just to be clear, the principle of operation of the cam trigger is almost the same as the crank trigger ( it remembers the last tooth gap and checks if it is half the current gap, because it has +1 extra tooth in between ). I made sure that sync is triggered correctly in my code.
+- Why it matters: Contains technical evidence that may affect firmware behavior, tests, or documentation.
+- Specific details: Pattern mentions: honda d17 Signal roles: cam mentioned, crank mentioned
+- Matched search terms: trigger decoder
+
+#### Honda K20 trigger pattern
+- URL: https://speeduino.com/forum/viewtopic.php?p=73812#p73689
+- Date: Sun Nov 30, 2025 9:16 pm
+- Who posted it: Michal327
+- Evidence type: wheel description
+- Confidence: high
+- Summary: Hi folks, I've created a new thread about k20 trigger because two years ago @miker wrote that the new pattern was ready but untested. To avoid deeming my project a failure, I really need any code or files you have for this engine so it can run in full sequential mode on Speeduino v0.4.3d. I'm trying to write my own custom decoder, but it's not working.
+- Why it matters: Contains technical evidence that may affect firmware behavior, tests, or documentation.
+- Specific details: Pattern mentions: 36-1, honda d17 Edge or poll details: change Signal roles: cam mentioned, crank mentioned
+- Matched search terms: trigger decoder
+
+#### Honda K20 trigger pattern
+- URL: https://speeduino.com/forum/viewtopic.php?p=73812#p73812
+- Date: Wed Dec 24, 2025 1:04 pm
+- Who posted it: Michal327
+- Evidence type: wheel description
+- Confidence: high
+- Summary: Sorry for not responding @delion This is crank and cam trigger pattern which I followed when creating the decoder: Honda D17 crank trigger wheel: 12+1 Honda K20 crank trigger wheel: 12+1 Honda K20 cam trigger wheel: 4+1 The D17 decoder is semi-sequential (wasted spark) and there is no script written for triggerSec_HondaD17 (for reading cam). Just to be clear, the principle of operation of the cam trigger is almost the same as the crank trigger ( it remembers the last tooth gap and checks if it is half the current gap, because it has +1 extra tooth in between ). I made sure that sync is triggered correctly in my code.
+- Why it matters: Contains technical evidence that may affect firmware behavior, tests, or documentation.
+- Specific details: Pattern mentions: honda d17 Signal roles: cam mentioned, crank mentioned
+- Matched search terms: trigger decoder
+
+#### Progress report - August 2017
+- URL: https://speeduino.com/forum/viewtopic.php?p=21114#p21114
+- Date: Sat Sep 09, 2017 2:20 pm
+- Who posted it: noisymime
+- Evidence type: wheel description / maintainer explanation / image attachment
+- Confidence: high
+- Summary: Time again for another monthly dose of firmware goodness! Much of the effort this month has been around little tweaks specific to the MX5 / Miata PNP units, but there are a HEAP of other changes as well. Most significant of these is a complete rewrite of the closed loop boost control.
+- Why it matters: Includes maintainer guidance, which is more reliable for roadmap decisions.
+- Specific details: Pattern mentions: harley Edge or poll details: change Attachments: speeduino.ini -> https://speeduino.com/forum/download/file.php?id=2418 Image or capture links found: 1
+- Matched search terms: Harley decoder
+
+#### Wheel Decoder and VVT coder for Honda K series - Page 2
+- URL: https://speeduino.com/forum/viewtopic.php?p=73651#p73651
+- Date: Tue Nov 25, 2025 8:29 pm
+- Who posted it: Michal327
+- Evidence type: wheel description
+- Confidence: high
+- Summary: Hi folks, @miker if you already have a sequential decoder, could you please upload it to github? I'm trying to write my own custom decoder, but it's not working. Please help me, I'm out of ideas.
+- Why it matters: Contains technical evidence that may affect firmware behavior, tests, or documentation.
+- Specific details: Pattern mentions: 36-1, honda d17 Edge or poll details: change Signal roles: cam mentioned, crank mentioned
+- Matched search terms: trigger decoder
+
+#### Trying to build a trigger for uneven flywheel.
+- URL: https://speeduino.com/forum/viewtopic.php?p=53326#p52998
+- Date: Thu Sep 09, 2021 10:58 am
+- Who posted it: RempageR1
+- Evidence type: wheel description
+- Confidence: high
+- Summary: Hi, I`m trying to get this flywheel working using the ardustim but I`m having some issues: Wheel.JPG (35.01 KiB) Viewed 22151 times I`m using the change trigger in the setup and the code below syncs on the wider lobe. So there is a routine checking the width of a lobe compare with the others. When the wider lobe is found, the secondaryToothCount is set to 1.
+- Why it matters: Helps separate universal defaults from context-specific tune choices.
+- Specific details: Pattern mentions: 36-1 Edge or poll details: rising, falling, change Signal roles: crank mentioned
+- Matched search terms: Harley decoder
+
+#### 3sge - 91 toyota mr2 SW20 - struggling to get a crank signal.
+- URL: https://speeduino.com/forum/viewtopic.php?p=70074#p69680
+- Date: Sat Sep 28, 2024 9:00 pm
+- Who posted it: andyC
+- Evidence type: tooth log
+- Confidence: high
+- Summary: Well spotted, i should be have used the words trigger signal not crank. My engine is fitted with a 4 wire vr sensor at the cam and nothing at the crank. It has two wheels, a 24 tooth wheel, and a single tooth wheel.
+- Why it matters: Contains concrete trace-oriented evidence that can support replay tests and decoder validation.
+- Specific details: Signal roles: cam mentioned, crank mentioned
+- Matched search terms: trigger trace
+
+#### Speeduino system VW vanagon WBX 2.1 DJ with hiccups - Page 3
+- URL: https://speeduino.com/forum/viewtopic.php?p=73680#p73674
+- Date: Sat Nov 29, 2025 10:15 pm
+- Who posted it: Iskander
+- Evidence type: image attachment
+- Confidence: high
+- Summary: I‘ve made some improvements but there rise also more questions? I’ve tried several things to solve my hiccup problem. -2 Ferite bead over the complete loom entrée at ECU -MSD spark cables far away from speeduino wiring loom -DIS bobine earth cable outside the loom connected to other cylinder head -New VR sensor with separate cable outside the loom, shielded twisted pair.
+- Why it matters: Touches wiring-dependent versus universal idle and A/C behavior.
+- Specific details: Edge or poll details: change Explicit sync-loss discussion present. Attachments: Test drive 29112025.mlg -> https://speeduino.com/forum/download/file.php?id=14622 Image or capture links found: 1
+- Matched search terms: sync loss
+
+#### Speeduino system VW vanagon WBX 2.1 DJ with hiccups - Page 3
+- URL: https://speeduino.com/forum/viewtopic.php?p=73681#p73674
+- Date: Sat Nov 29, 2025 10:15 pm
+- Who posted it: Iskander
+- Evidence type: image attachment
+- Confidence: high
+- Summary: I‘ve made some improvements but there rise also more questions? I’ve tried several things to solve my hiccup problem. -2 Ferite bead over the complete loom entrée at ECU -MSD spark cables far away from speeduino wiring loom -DIS bobine earth cable outside the loom connected to other cylinder head -New VR sensor with separate cable outside the loom, shielded twisted pair.
+- Why it matters: Touches wiring-dependent versus universal idle and A/C behavior.
+- Specific details: Edge or poll details: change Explicit sync-loss discussion present. Attachments: Test drive 29112025.mlg -> https://speeduino.com/forum/download/file.php?id=14622 Image or capture links found: 1
+- Matched search terms: sync loss
+
+#### Speeduino system VW vanagon WBX 2.1 DJ with hiccups - Page 3
+- URL: https://speeduino.com/forum/viewtopic.php?p=73682#p73674
+- Date: Sat Nov 29, 2025 10:15 pm
+- Who posted it: Iskander
+- Evidence type: image attachment
+- Confidence: high
+- Summary: I‘ve made some improvements but there rise also more questions? I’ve tried several things to solve my hiccup problem. -2 Ferite bead over the complete loom entrée at ECU -MSD spark cables far away from speeduino wiring loom -DIS bobine earth cable outside the loom connected to other cylinder head -New VR sensor with separate cable outside the loom, shielded twisted pair.
+- Why it matters: Touches wiring-dependent versus universal idle and A/C behavior.
+- Specific details: Edge or poll details: change Explicit sync-loss discussion present. Attachments: Test drive 29112025.mlg -> https://speeduino.com/forum/download/file.php?id=14622 Image or capture links found: 1
+- Matched search terms: sync loss
+
+#### Speeduino system VW vanagon WBX 2.1 DJ with hiccups - Page 3
+- URL: https://speeduino.com/forum/viewtopic.php?p=73680#p73716
+- Date: Mon Dec 08, 2025 6:24 pm
+- Who posted it: PSIG
+- Evidence type: tooth log
+- Confidence: high
+- Summary: [Iskander](./memberlist.php?mode=viewprofile&u=9629) wrote: [↑](./viewtopic.php?p=73714#p73714) Mon Dec 08, 2025 11:13 am I looked to the tooth logger and saw a double trigger line at the missing tooth. Sensor connection: VR + > VR – VR - > VR + Trigger edge Rising . .
+- Why it matters: Contains concrete trace-oriented evidence that can support replay tests and decoder validation.
+- Specific details: Edge or poll details: rising, falling Signal roles: crank mentioned
+- Matched search terms: sync loss
+
+#### Speeduino system VW vanagon WBX 2.1 DJ with hiccups - Page 3
+- URL: https://speeduino.com/forum/viewtopic.php?p=73681#p73716
+- Date: Mon Dec 08, 2025 6:24 pm
+- Who posted it: PSIG
+- Evidence type: tooth log
+- Confidence: high
+- Summary: [Iskander](./memberlist.php?mode=viewprofile&u=9629) wrote: [↑](./viewtopic.php?p=73714#p73714) Mon Dec 08, 2025 11:13 am I looked to the tooth logger and saw a double trigger line at the missing tooth. Sensor connection: VR + > VR – VR - > VR + Trigger edge Rising . .
+- Why it matters: Contains concrete trace-oriented evidence that can support replay tests and decoder validation.
+- Specific details: Edge or poll details: rising, falling Signal roles: crank mentioned
+- Matched search terms: sync loss
+
+#### Speeduino system VW vanagon WBX 2.1 DJ with hiccups - Page 3
+- URL: https://speeduino.com/forum/viewtopic.php?p=73682#p73716
+- Date: Mon Dec 08, 2025 6:24 pm
+- Who posted it: PSIG
+- Evidence type: tooth log
+- Confidence: high
+- Summary: [Iskander](./memberlist.php?mode=viewprofile&u=9629) wrote: [↑](./viewtopic.php?p=73714#p73714) Mon Dec 08, 2025 11:13 am I looked to the tooth logger and saw a double trigger line at the missing tooth. Sensor connection: VR + > VR – VR - > VR + Trigger edge Rising . .
+- Why it matters: Contains concrete trace-oriented evidence that can support replay tests and decoder validation.
+- Specific details: Edge or poll details: rising, falling Signal roles: crank mentioned
+- Matched search terms: sync loss
+
+#### A cobbled together oddfire (Harley)
+- URL: https://speeduino.com/forum/viewtopic.php?p=17344#p17301
+- Date: Sat Mar 18, 2017 1:10 pm
+- Who posted it: Jcwood3
+- Evidence type: scope capture / wheel description
+- Confidence: high
+- Summary: Had a little more success with the setup. I was having trouble with ardustim so I wrote a simple program that maps a pot output to time delay on a square wave, effectively giving me rpm control. Works great and I'm getting sync, though there is no missing tooth on the signal, so I'm not sure what that's about.
+- Why it matters: Contains concrete trace-oriented evidence that can support replay tests and decoder validation.
+- Specific details: Pattern mentions: 32-2
+- Matched search terms: Harley decoder
+
+#### Subaru EJ25 DOHC - Page 3
+- URL: https://speeduino.com/forum/viewtopic.php?p=70704#p70688
+- Date: Mon Feb 03, 2025 8:48 pm
+- Who posted it: PSIG
+- Evidence type: tooth log / scope capture / wheel description
+- Confidence: high
+- Summary: Reviewing an image of the wheel, the tooth log makes more sense. You have to think in ONLY rising or falling edges (depending on decoder spec), and that a sensed edge is required to end a time bar in a tooth log. Using this and the 'scope image earlier, we can count 36 total teeth (real and missing) like this: If it helps to see what the sensor is reading, perhaps this may help.
+- Why it matters: Contains concrete trace-oriented evidence that can support replay tests and decoder validation.
+- Specific details: Pattern mentions: 36-2-2-2, 36-2-4 Edge or poll details: rising, falling Signal roles: crank mentioned
+- Matched search terms: Subaru 6/7
+
+#### Subaru EJ25 DOHC - Page 3
+- URL: https://speeduino.com/forum/viewtopic.php?p=70705#p70688
+- Date: Mon Feb 03, 2025 8:48 pm
+- Who posted it: PSIG
+- Evidence type: tooth log / scope capture / wheel description
+- Confidence: high
+- Summary: Reviewing an image of the wheel, the tooth log makes more sense. You have to think in ONLY rising or falling edges (depending on decoder spec), and that a sensed edge is required to end a time bar in a tooth log. Using this and the 'scope image earlier, we can count 36 total teeth (real and missing) like this: If it helps to see what the sensor is reading, perhaps this may help.
+- Why it matters: Contains concrete trace-oriented evidence that can support replay tests and decoder validation.
+- Specific details: Pattern mentions: 36-2-2-2, 36-2-4 Edge or poll details: rising, falling Signal roles: crank mentioned
+- Matched search terms: Subaru 6/7
+
+#### Sync code question
+- URL: https://speeduino.com/forum/viewtopic.php?p=74149#p74204
+- Date: Wed Mar 04, 2026 12:08 am
+- Who posted it: Banjo
+- Evidence type: technical discussion
+- Confidence: high
+- Summary: On the 24th February, I posted a query regarding the way that Speeduino firmware handles/ or presumably; doesn't handle resynching issues. This post have garnered 18,500 views in this short time, so it must be of importance to others, beside myself. I summary, I have come to these conclusions, (which may be incorrect), but would appreciate anyone please answering my queries.
+- Why it matters: Contains technical evidence that may affect firmware behavior, tests, or documentation.
+- Specific details: Edge or poll details: change Signal roles: crank mentioned
+- Matched search terms: tooth logger
+
+#### Sync code question
+- URL: https://speeduino.com/forum/viewtopic.php?p=74204#p74204
+- Date: Wed Mar 04, 2026 12:08 am
+- Who posted it: Banjo
+- Evidence type: technical discussion
+- Confidence: high
+- Summary: On the 24th February, I posted a query regarding the way that Speeduino firmware handles/ or presumably; doesn't handle resynching issues. This post have garnered 18,500 views in this short time, so it must be of importance to others, beside myself. I summary, I have come to these conclusions, (which may be incorrect), but would appreciate anyone please answering my queries.
+- Why it matters: Contains technical evidence that may affect firmware behavior, tests, or documentation.
+- Specific details: Edge or poll details: change Signal roles: crank mentioned
+- Matched search terms: trigger decoder
+
+#### Trying to build a trigger for uneven flywheel.
+- URL: https://speeduino.com/forum/viewtopic.php?p=53326#p53326
+- Date: Wed Sep 29, 2021 6:29 pm
+- Who posted it: RempageR1
+- Evidence type: wheel description
+- Confidence: high
+- Summary: I`ve written a working trigger that can sync on the width of a tooth. It`s been validated and works like a charm including the trigger filter . Sharing here so hopefully it can benefit someone else.
+- Why it matters: Contains technical evidence that may affect firmware behavior, tests, or documentation.
+- Specific details: Pattern mentions: 36-1, harley, vmax Edge or poll details: rising, falling, change Signal roles: crank mentioned
+- Matched search terms: Harley decoder
+
+#### Triumph TR5 Speeduino build / frequent resets - Page 3
+- URL: https://speeduino.com/forum/viewtopic.php?p=72725#p72815
+- Date: Thu Aug 14, 2025 8:02 am
+- Who posted it: newyankee
+- Evidence type: scope capture
+- Confidence: high
+- Summary: So I followed up the suggestion by PSIG from further up. [PSIG](./memberlist.php?mode=viewprofile&u=149) wrote: [↑](./viewtopic.php?p=72635#p72635) Sat Aug 02, 2025 7:12 pm Your reset idea has merit. While this could be due to a power glitch, I see no logged voltage change.
+- Why it matters: Contains concrete trace-oriented evidence that can support replay tests and decoder validation.
+- Specific details: Edge or poll details: change Attachments: 2025-08-14_19.50.48.mlg -> https://speeduino.com/forum/download/file.php?id=14348 Image or capture links found: 1
+- Matched search terms: trigger trace
+
+#### 3sge - 91 toyota mr2 SW20 - struggling to get a crank signal.
+- URL: https://speeduino.com/forum/viewtopic.php?p=70074#p70074
+- Date: Wed Nov 20, 2024 2:53 am
+- Who posted it: stum
+- Evidence type: wheel description
+- Confidence: high
+- Summary: I think you have the wrong trigger pattern. Looking at your trace and my experiences you should not have missing tooth selected. As it has no missing tooth.
+- Why it matters: Contains technical evidence that may affect firmware behavior, tests, or documentation.
+- Specific details: Signal roles: cam mentioned, crank mentioned
+- Matched search terms: trigger trace
+
+#### Messing with Subaru 6/7 trigger - Page 5
+- URL: https://speeduino.com/forum/viewtopic.php?p=72272#p47863
+- Date: Thu Jan 28, 2021 1:07 am
+- Who posted it: jonathanlawley
+- Evidence type: scope capture
+- Confidence: high
+- Summary: thats strange that its no different. Ive just ordered an oscilloscope to see if I can make a different type of filter with the code. In the mean time I made this little loop that should (hopefully) find the correct filter value for you.
+- Why it matters: Contains concrete trace-oriented evidence that can support replay tests and decoder validation.
+- Specific details: None extracted
+- Matched search terms: Subaru 6/7
+
+#### Reading RPM off 4 tooth irregular cam
+- URL: https://speeduino.com/forum/viewtopic.php?p=70614#p70614
+- Date: Sat Jan 25, 2025 9:35 pm
+- Who posted it: Lex_GTX
+- Evidence type: scope capture
+- Confidence: high
+- Summary: Excellent eye! The falling edges of the oscilloscope trace are indeed symmetrical. That means we should be able to set this up in the software as a Distributor with Falling Edge trigger.
+- Why it matters: Contains concrete trace-oriented evidence that can support replay tests and decoder validation.
+- Specific details: Edge or poll details: falling
+- Matched search terms: trigger trace
+
+#### A cobbled together oddfire (Harley)
+- URL: https://speeduino.com/forum/viewtopic.php?p=17344#p17362
+- Date: Mon Mar 20, 2017 8:43 pm
+- Who posted it: PSIG
+- Evidence type: scope capture / wheel description
+- Confidence: high
+- Summary: Random spewing among your quotes for simplicity: [Jcwood3](./memberlist.php?mode=viewprofile&u=940) wrote: [↑](./viewtopic.php?p=17344#p17344) Mon Mar 20, 2017 1:47 am ... A couple of differences I think I'll use will be the use of only one O2 sensor and no security system (not shown). Also the "active intake" is not used - pretty sure that was an emissions/noise thing used outside the US and is not installed.
+- Why it matters: Contains concrete trace-oriented evidence that can support replay tests and decoder validation.
+- Specific details: Pattern mentions: 4-6 Signal roles: cam mentioned, crank mentioned
+- Matched search terms: Harley decoder
+
+#### Triumph TR5 Speeduino build / frequent resets - Page 3
+- URL: https://speeduino.com/forum/viewtopic.php?p=72725#p72723
+- Date: Fri Aug 08, 2025 9:20 am
+- Who posted it: newyankee
+- Evidence type: tooth log / scope capture
+- Confidence: high
+- Summary: It's the conditioner that came with the board. I don't have it here right now. It should be MAX9926 based, I can read MAX from the photo.
+- Why it matters: Contains concrete trace-oriented evidence that can support replay tests and decoder validation.
+- Specific details: Signal roles: cam mentioned
+- Matched search terms: trigger trace
+
+#### Triumph TR5 Speeduino build / frequent resets - Page 3
+- URL: https://speeduino.com/forum/viewtopic.php?p=72725#p72732
+- Date: Fri Aug 08, 2025 9:12 pm
+- Who posted it: newyankee
+- Evidence type: scope capture
+- Confidence: high
+- Summary: I did scope the VR sensor a week ago to check for polarity. It is okay. I also went through an EPROM_clear and re-upload of FW and tune last weekend.
+- Why it matters: Contains concrete trace-oriented evidence that can support replay tests and decoder validation.
+- Specific details: Explicit sync-loss discussion present.
+- Matched search terms: trigger trace
+
+#### What else do I need? Nub question. - Page 2
+- URL: https://speeduino.com/forum/viewtopic.php?p=28025#p28025
+- Date: Thu Aug 23, 2018 9:16 am
+- Who posted it: PSIG
+- Evidence type: wheel description
+- Confidence: high
+- Summary: [doleckijohn](./memberlist.php?mode=viewprofile&u=2003) wrote: [↑](./viewtopic.php?p=28017#p28017) Wed Aug 22, 2018 11:37 am Also if I jut mount and aftermarket trigger wheel to the engine is the Speeduino capable of using it to run the odd firing order of a harley? Hey John — Twin Cam? I think that's a 32-2 trigger on the crank, right?
+- Why it matters: Contains technical evidence that may affect firmware behavior, tests, or documentation.
+- Specific details: Pattern mentions: 32-2, harley Signal roles: cam mentioned, crank mentioned
+- Matched search terms: Harley decoder
+
+#### How to re-open a composite logger file
+- URL: https://speeduino.com/forum/viewtopic.php?p=73586#p73583
+- Date: Mon Nov 17, 2025 9:07 pm
+- Who posted it: Donald G
+- Evidence type: tooth log / composite log
+- Confidence: high
+- Summary: When I do a composite log file, I can view the results. If I close the file and reopen it later, it opens up as a tooth log. How can I reopen the composite files to see the cam, crank and sync signals?
+- Why it matters: Contains technical evidence that may affect firmware behavior, tests, or documentation.
+- Specific details: Signal roles: cam mentioned, crank mentioned Attachments: 2025-11-17_14.46.53.csv -> https://speeduino.com/forum/download/file.php?id=14575 Image or capture links found: 1
+- Matched search terms: composite logger
+
+#### How to re-open a composite logger file
+- URL: https://speeduino.com/forum/viewtopic.php?p=73589#p73583
+- Date: Mon Nov 17, 2025 9:07 pm
+- Who posted it: Donald G
+- Evidence type: tooth log / composite log
+- Confidence: high
+- Summary: When I do a composite log file, I can view the results. If I close the file and reopen it later, it opens up as a tooth log. How can I reopen the composite files to see the cam, crank and sync signals?
+- Why it matters: Contains technical evidence that may affect firmware behavior, tests, or documentation.
+- Specific details: Signal roles: cam mentioned, crank mentioned Attachments: 2025-11-17_14.46.53.csv -> https://speeduino.com/forum/download/file.php?id=14575 Image or capture links found: 1
+- Matched search terms: composite logger
+
+#### How to re-open a composite logger file
+- URL: https://speeduino.com/forum/viewtopic.php?p=73597#p73583
+- Date: Mon Nov 17, 2025 9:07 pm
+- Who posted it: Donald G
+- Evidence type: tooth log / composite log
+- Confidence: high
+- Summary: When I do a composite log file, I can view the results. If I close the file and reopen it later, it opens up as a tooth log. How can I reopen the composite files to see the cam, crank and sync signals?
+- Why it matters: Contains technical evidence that may affect firmware behavior, tests, or documentation.
+- Specific details: Signal roles: cam mentioned, crank mentioned Attachments: 2025-11-17_14.46.53.csv -> https://speeduino.com/forum/download/file.php?id=14575 Image or capture links found: 1
+- Matched search terms: composite logger
+
+#### Firmware update for Jeep engines (4 and 6 cylinder support, sequential operation)
+- URL: https://speeduino.com/forum/viewtopic.php?p=73986#p73986
+- Date: Tue Jan 20, 2026 5:11 pm
+- Who posted it: FlashStopFall
+- Evidence type: wheel description
+- Confidence: high
+- Summary: I thought I'd make a quick post about this in case anyone is looking to run sequential injection on their Jeep 4.0 or 2.5 in the future. The trigger decoder (Jeep2000) did not support sequential operation, and there was no 4 cylinder support before. I added sequential support, and added a new decoder for the 4 cylinder (Jeep2000_4cyl) because it was significantly different, although it works in the same way.
+- Why it matters: Directly informs tune and INI compatibility handling plus migration expectations.
+- Specific details: Edge or poll details: change Signal roles: cam mentioned
+- Matched search terms: trigger decoder
+
+#### (Hardware test Inj 5-8 and Ign 5-8 grayed out) Help setting up v0.4.3d board
+- URL: https://speeduino.com/forum/viewtopic.php?p=73400#p73405
+- Date: Thu Oct 23, 2025 7:36 am
+- Who posted it: dazq
+- Evidence type: maintainer explanation
+- Confidence: high
+- Summary: [FlashStopFall](./memberlist.php?mode=viewprofile&u=10039) wrote: [↑](./viewtopic.php?p=73404#p73404) Thu Oct 23, 2025 7:27 am [FlashStopFall](./memberlist.php?mode=viewprofile&u=10039) wrote: [↑](./viewtopic.php?p=73401#p73401) Thu Oct 23, 2025 6:46 am Actually, I found that the injector count is reliant upon boardFuelOutputs in speeduino.ini. Changing it to 6 for v0.4 boards got me exactly the control I wanted. I can change the pins in init.cpp to the coil pins, and see the lights go on and off when I toggle them.
+- Why it matters: Includes maintainer guidance, which is more reliable for roadmap decisions. Directly informs tune and INI compatibility handling plus migration expectations.
+- Specific details: Edge or poll details: change
+- Matched search terms: 36-2-1
+
+#### (Hardware test Inj 5-8 and Ign 5-8 grayed out) Help setting up v0.4.3d board
+- URL: https://speeduino.com/forum/viewtopic.php?p=73403#p73405
+- Date: Thu Oct 23, 2025 7:36 am
+- Who posted it: dazq
+- Evidence type: maintainer explanation
+- Confidence: high
+- Summary: [FlashStopFall](./memberlist.php?mode=viewprofile&u=10039) wrote: [↑](./viewtopic.php?p=73404#p73404) Thu Oct 23, 2025 7:27 am [FlashStopFall](./memberlist.php?mode=viewprofile&u=10039) wrote: [↑](./viewtopic.php?p=73401#p73401) Thu Oct 23, 2025 6:46 am Actually, I found that the injector count is reliant upon boardFuelOutputs in speeduino.ini. Changing it to 6 for v0.4 boards got me exactly the control I wanted. I can change the pins in init.cpp to the coil pins, and see the lights go on and off when I toggle them.
+- Why it matters: Includes maintainer guidance, which is more reliable for roadmap decisions. Directly informs tune and INI compatibility handling plus migration expectations.
+- Specific details: Edge or poll details: change
+- Matched search terms: 36-2-1
+
+#### Spark only Subaru Project EJ22
+- URL: https://speeduino.com/forum/viewtopic.php?p=72364#p72364
+- Date: Mon Jul 07, 2025 4:16 pm
+- Who posted it: Donald G
+- Evidence type: tune file / image attachment
+- Confidence: high
+- Summary: Hello to all here, I am trying to use a v0.4.3d controller with an Arduino MEGA 2560 to control spark only on a Subaru Ej22. It uses a 6/7 crank cam trigger. I also have VR Conditioner to convert the cam and crank signals to DC out.
+- Why it matters: Contains technical evidence that may affect firmware behavior, tests, or documentation.
+- Specific details: Signal roles: cam mentioned, crank mentioned Attachments: 2025-07-07_16.27.02.msq -> https://speeduino.com/forum/download/file.php?id=14145 Image or capture links found: 1
+- Matched search terms: Subaru 6/7
+
+#### A cobbled together oddfire (Harley)
+- URL: https://speeduino.com/forum/viewtopic.php?p=17344#p16446
+- Date: Sun Feb 05, 2017 7:12 pm
+- Who posted it: Jcwood3
+- Evidence type: tune file / wheel description
+- Confidence: high
+- Summary: So here's where I'm at and still working, of course. I'll edit this post to maintain a running log or what I know/don't know, done/haven't done. I look forward to many, many hours of hair-pulling frustration punctuated by moments of jumping for joy.
+- Why it matters: Contains technical evidence that may affect firmware behavior, tests, or documentation.
+- Specific details: Pattern mentions: 32-2 Signal roles: cam mentioned, crank mentioned
+- Matched search terms: Harley decoder
+
+#### Subaru EJ25 DOHC - Page 3
+- URL: https://speeduino.com/forum/viewtopic.php?p=70704#p70702
+- Date: Tue Feb 04, 2025 6:20 pm
+- Who posted it: PSIG
+- Evidence type: tooth log / tune file / wheel description
+- Confidence: medium
+- Summary: [Laudper](./memberlist.php?mode=viewprofile&u=9265) wrote: [↑](./viewtopic.php?p=70694#p70694) Tue Feb 04, 2025 11:40 am If the tooth log tallies with the wheel, what is my best next move? Just to eliminate the possibility of different versions, I would first compare the decoder's coded 36-2-2-2 pattern to your physical wheel, for any differences in (-2) placement. This is why I posted all that info.
+- Why it matters: Contains technical evidence that may affect firmware behavior, tests, or documentation.
+- Specific details: Pattern mentions: 2-2, 36-2-2-2 Attachments: 2025-02-08_15.37.13_composite.csv -> https://speeduino.com/forum/download/file.php?id=13683; 2025-02-08_15.38.22.mlg -> https://speeduino.com/forum/download/file.php?id=13682; 2025-02-08_15.47.35.msq -> https://speeduino.com/forum/download/file.php?id=13684 Image or capture links found: 3
+- Matched search terms: Subaru 6/7
+
+#### Subaru EJ25 DOHC - Page 3
+- URL: https://speeduino.com/forum/viewtopic.php?p=70705#p70702
+- Date: Tue Feb 04, 2025 6:20 pm
+- Who posted it: PSIG
+- Evidence type: tooth log / tune file / wheel description
+- Confidence: medium
+- Summary: [Laudper](./memberlist.php?mode=viewprofile&u=9265) wrote: [↑](./viewtopic.php?p=70694#p70694) Tue Feb 04, 2025 11:40 am If the tooth log tallies with the wheel, what is my best next move? Just to eliminate the possibility of different versions, I would first compare the decoder's coded 36-2-2-2 pattern to your physical wheel, for any differences in (-2) placement. This is why I posted all that info.
+- Why it matters: Contains technical evidence that may affect firmware behavior, tests, or documentation.
+- Specific details: Pattern mentions: 2-2, 36-2-2-2 Attachments: 2025-02-08_15.37.13_composite.csv -> https://speeduino.com/forum/download/file.php?id=13683; 2025-02-08_15.38.22.mlg -> https://speeduino.com/forum/download/file.php?id=13682; 2025-02-08_15.47.35.msq -> https://speeduino.com/forum/download/file.php?id=13684 Image or capture links found: 3
+- Matched search terms: Subaru 6/7
+
+#### V0.4.3c accidentally shorted 12v now no rpm signal or inj LED's. NA6 MX5
+- URL: https://speeduino.com/forum/viewtopic.php?p=68573#p68573
+- Date: Sat Jun 08, 2024 10:22 am
+- Who posted it: ~Slideways
+- Evidence type: technical discussion
+- Confidence: medium
+- Summary: Hello, I have a 0.4.3c and an NA6 adapter board (adapting to the 48 pin ECU plug) that I built a few years ago, just getting round to testing out an ITB setup now. Had some good success getting it running, but the accidental shorting happened after I had installed a ULN2003A for fuel pump control, I was using a multi meter to confirm a few things then I stupidly shorted the 12v and ground on the adapter board. It let out the magic smoke from the adapter board.
+- Why it matters: Contains technical evidence that may affect firmware behavior, tests, or documentation.
+- Specific details: Edge or poll details: change Signal roles: cam mentioned, crank mentioned
+- Matched search terms: trigger trace
+
+#### Wheel Decoder and VVT coder for Honda K series - Page 2
+- URL: https://speeduino.com/forum/viewtopic.php?p=73651#p63897
+- Date: Sat Jul 08, 2023 1:59 am
+- Who posted it: NickZ
+- Evidence type: wheel description
+- Confidence: medium
+- Summary: I was working on a ford engine with an uneven 4 tooth cam trigger, I was able to isolate 1 tooth out of the pattern and use that as a sync for sequential operation on that engine. the way i did it was using the crank trigger teeth, i had a 36-1 crank trigger, I added code if it saw a cam tooth between crank tooth between 13-16 to use that cam tooth as sync. But I'm not a coder either so may not be the best solution.
+- Why it matters: Contains technical evidence that may affect firmware behavior, tests, or documentation.
+- Specific details: Pattern mentions: 36-1 Signal roles: cam mentioned, crank mentioned
+- Matched search terms: trigger decoder
+
+#### How to re-open a composite logger file
+- URL: https://speeduino.com/forum/viewtopic.php?p=73586#p73585
+- Date: Tue Nov 18, 2025 2:24 am
+- Who posted it: Donald G
+- Evidence type: tooth log / composite log
+- Confidence: medium
+- Summary: I am able to log the composite signals and save them, but I can't open them up again as the composite log that shows the triggers of the cam and crank signals along with the sync. It only opens up as a tooth log. [2025-11-17_14.46.53.csv](./download/file.php?id=14575) (85.57 KiB) Downloaded 95 times
+- Why it matters: Contains technical evidence that may affect firmware behavior, tests, or documentation.
+- Specific details: Signal roles: cam mentioned, crank mentioned
+- Matched search terms: composite logger
+
+#### How to re-open a composite logger file
+- URL: https://speeduino.com/forum/viewtopic.php?p=73589#p73585
+- Date: Tue Nov 18, 2025 2:24 am
+- Who posted it: Donald G
+- Evidence type: tooth log / composite log
+- Confidence: medium
+- Summary: I am able to log the composite signals and save them, but I can't open them up again as the composite log that shows the triggers of the cam and crank signals along with the sync. It only opens up as a tooth log. [2025-11-17_14.46.53.csv](./download/file.php?id=14575) (85.57 KiB) Downloaded 95 times
+- Why it matters: Contains technical evidence that may affect firmware behavior, tests, or documentation.
+- Specific details: Signal roles: cam mentioned, crank mentioned
+- Matched search terms: composite logger
+
+#### How to re-open a composite logger file
+- URL: https://speeduino.com/forum/viewtopic.php?p=73597#p73585
+- Date: Tue Nov 18, 2025 2:24 am
+- Who posted it: Donald G
+- Evidence type: tooth log / composite log
+- Confidence: medium
+- Summary: I am able to log the composite signals and save them, but I can't open them up again as the composite log that shows the triggers of the cam and crank signals along with the sync. It only opens up as a tooth log. [2025-11-17_14.46.53.csv](./download/file.php?id=14575) (85.57 KiB) Downloaded 95 times
+- Why it matters: Contains technical evidence that may affect firmware behavior, tests, or documentation.
+- Specific details: Signal roles: cam mentioned, crank mentioned
+- Matched search terms: composite logger
+
+#### Single tooth trigger pattern for Ignition only
+- URL: https://speeduino.com/forum/viewtopic.php?p=22342#p22216
+- Date: Wed Nov 08, 2017 9:59 pm
+- Who posted it: PSIG
+- Evidence type: scope capture
+- Confidence: medium
+- Summary: I would first explore the signals the current box receives and sends. Unless you can find very specific data it would require an oscilloscope. That will tell you what input you need, and the parameters of the outputs, such as each signal's voltage range, coil dwell if IDI, trigger polarity if CDI, leading or trailing action, etc.
+- Why it matters: Contains concrete trace-oriented evidence that can support replay tests and decoder validation.
+- Specific details: None extracted
+- Matched search terms: Harley decoder
+
+#### First tooth logs
+- URL: https://speeduino.com/forum/viewtopic.php?p=72253#p72253
+- Date: Sat Jun 28, 2025 4:32 am
+- Who posted it: ImprezaRSC
+- Evidence type: tooth log / wheel description
+- Confidence: medium
+- Summary: I think I finally have what looks to be my first tooth logs. The crank was spun by hand and I see what looks like a tooth pattern. Playback leaves a little to be desired, but maybe it's just Linux.
+- Why it matters: Contains technical evidence that may affect firmware behavior, tests, or documentation.
+- Specific details: Signal roles: crank mentioned Attachments: Compositelogger2025-06-27_22.26.31.csv -> https://speeduino.com/forum/download/file.php?id=14109 Image or capture links found: 1
+- Matched search terms: Subaru 6/7
+
+#### J35a4 Triggers - Page 2
+- URL: https://speeduino.com/forum/viewtopic.php?p=65023#p65023
+- Date: Mon Sep 25, 2023 9:39 pm
+- Who posted it: PSIG
+- Evidence type: wheel description
+- Confidence: medium
+- Summary: Your patterns are 12 (just 12 teeth or 12-0) on the crankshaft, and your cam views as 6-2. So the combination (using the / symbol for crank/cam) would be termed a 12/6-2 . It appears the Speeduino Honda J30 / J32 decoder may be similar or same.
+- Why it matters: Contains technical evidence that may affect firmware behavior, tests, or documentation.
+- Specific details: Pattern mentions: 12-0, 6-2 Edge or poll details: change Signal roles: cam mentioned, crank mentioned
+- Matched search terms: Honda J32
+
+#### J35a4 Triggers - Page 2
+- URL: https://speeduino.com/forum/viewtopic.php?p=65023#p65024
+- Date: Mon Sep 25, 2023 9:47 pm
+- Who posted it: OldKamikaze
+- Evidence type: wheel description
+- Confidence: medium
+- Summary: [PSIG](./memberlist.php?mode=viewprofile&u=149) wrote: [↑](./viewtopic.php?p=65023#p65023) Mon Sep 25, 2023 9:39 pm Your patterns are 12 (just 12 teeth or 12-0) on the crankshaft, and your cam views as 6-2. So the combination (using the / symbol for crank/cam) would be termed a 12/6-2 . It appears the Speeduino Honda J30 / J32 decoder may be similar or same.
+- Why it matters: Contains technical evidence that may affect firmware behavior, tests, or documentation.
+- Specific details: Pattern mentions: 12-0, 6-2 Edge or poll details: change Signal roles: cam mentioned, crank mentioned
+- Matched search terms: Honda J32
+
+#### J35a4 Triggers - Page 2
+- URL: https://speeduino.com/forum/viewtopic.php?p=65024#p65023
+- Date: Mon Sep 25, 2023 9:39 pm
+- Who posted it: PSIG
+- Evidence type: wheel description
+- Confidence: medium
+- Summary: Your patterns are 12 (just 12 teeth or 12-0) on the crankshaft, and your cam views as 6-2. So the combination (using the / symbol for crank/cam) would be termed a 12/6-2 . It appears the Speeduino Honda J30 / J32 decoder may be similar or same.
+- Why it matters: Contains technical evidence that may affect firmware behavior, tests, or documentation.
+- Specific details: Pattern mentions: 12-0, 6-2 Edge or poll details: change Signal roles: cam mentioned, crank mentioned
+- Matched search terms: Honda J32
+
+#### J35a4 Triggers - Page 2
+- URL: https://speeduino.com/forum/viewtopic.php?p=65024#p65024
+- Date: Mon Sep 25, 2023 9:47 pm
+- Who posted it: OldKamikaze
+- Evidence type: wheel description
+- Confidence: medium
+- Summary: [PSIG](./memberlist.php?mode=viewprofile&u=149) wrote: [↑](./viewtopic.php?p=65023#p65023) Mon Sep 25, 2023 9:39 pm Your patterns are 12 (just 12 teeth or 12-0) on the crankshaft, and your cam views as 6-2. So the combination (using the / symbol for crank/cam) would be termed a 12/6-2 . It appears the Speeduino Honda J30 / J32 decoder may be similar or same.
+- Why it matters: Contains technical evidence that may affect firmware behavior, tests, or documentation.
+- Specific details: Pattern mentions: 12-0, 6-2 Edge or poll details: change Signal roles: cam mentioned, crank mentioned
+- Matched search terms: Honda J32
+
+#### Subaru EJ25 DOHC - Page 3
+- URL: https://speeduino.com/forum/viewtopic.php?p=70704#p70705
+- Date: Tue Feb 04, 2025 9:04 pm
+- Who posted it: Laudper
+- Evidence type: tooth log / wheel description
+- Confidence: medium
+- Summary: jonbill wrote: I've just realised that the EJ25 is a 4 cylinder - I thought it was a 6 : but anyway - the (first) tooth log pattern looks right to me. the data log is very strange : very little changes through the log - the only thing thats interesting is at around 6.7 seconds vbat goes from 0 to 5.5 and then flits around up to 11 and then back down to 0, and at the same time MAP goes from 100 to 93 and back to 100. what's actually going on here?
+- Why it matters: Helps separate universal defaults from context-specific tune choices.
+- Specific details: Edge or poll details: change Signal roles: crank mentioned
+- Matched search terms: Subaru 6/7
+
+#### Subaru EJ25 DOHC - Page 3
+- URL: https://speeduino.com/forum/viewtopic.php?p=70705#p70705
+- Date: Tue Feb 04, 2025 9:04 pm
+- Who posted it: Laudper
+- Evidence type: tooth log / wheel description
+- Confidence: medium
+- Summary: jonbill wrote: I've just realised that the EJ25 is a 4 cylinder - I thought it was a 6 : but anyway - the (first) tooth log pattern looks right to me. the data log is very strange : very little changes through the log - the only thing thats interesting is at around 6.7 seconds vbat goes from 0 to 5.5 and then flits around up to 11 and then back down to 0, and at the same time MAP goes from 100 to 93 and back to 100. what's actually going on here?
+- Why it matters: Helps separate universal defaults from context-specific tune choices.
+- Specific details: Edge or poll details: change Signal roles: crank mentioned
+- Matched search terms: Subaru 6/7
+
+#### 'Start Doctor' is in the house - Page 2
+- URL: https://speeduino.com/forum/viewtopic.php?p=74143#p74143
+- Date: Mon Feb 23, 2026 6:59 am
+- Who posted it: scudderfish
+- Evidence type: tooth log / wheel description
+- Confidence: medium
+- Summary: I got the tooth logger working last night, but only against ardustim so no pressure variation. Thinking about it, it will only ever be able to say 'your timing is grossly off' anyway as a 36-1 wheel only has at best 10 degrees of precision, which comes back to (the correct philosophy) of tell not fix. I think getting someone who is struggling to get their shiny new PnP ECU working on their MX5 to plumb and wire in extra fuel pressure sensors might be a bit of a stretch
+- Why it matters: Contains concrete trace-oriented evidence that can support replay tests and decoder validation.
+- Specific details: Pattern mentions: 36-1
+- Matched search terms: tooth logger
+
+#### 'Start Doctor' is in the house - Page 2
+- URL: https://speeduino.com/forum/viewtopic.php?p=74146#p74143
+- Date: Mon Feb 23, 2026 6:59 am
+- Who posted it: scudderfish
+- Evidence type: tooth log / wheel description
+- Confidence: medium
+- Summary: I got the tooth logger working last night, but only against ardustim so no pressure variation. Thinking about it, it will only ever be able to say 'your timing is grossly off' anyway as a 36-1 wheel only has at best 10 degrees of precision, which comes back to (the correct philosophy) of tell not fix. I think getting someone who is struggling to get their shiny new PnP ECU working on their MX5 to plumb and wire in extra fuel pressure sensors might be a bit of a stretch
+- Why it matters: Contains concrete trace-oriented evidence that can support replay tests and decoder validation.
+- Specific details: Pattern mentions: 36-1
+- Matched search terms: 36-2-1
+
+#### Progress report - August 2017
+- URL: https://speeduino.com/forum/viewtopic.php?p=21114#p21201
+- Date: Wed Sep 13, 2017 11:41 pm
+- Who posted it: noisymime
+- Evidence type: wheel description / maintainer explanation
+- Confidence: medium
+- Summary: [stormfinder](./memberlist.php?mode=viewprofile&u=1310) wrote: [↑](./viewtopic.php?p=21199#p21199) Wed Sep 13, 2017 9:58 pm Possible bug in august stable, and sept dev firmware. I have collaborated this bug with one other person here (PSIG), and another member on miataturbo.net Since updating to the august (or in my case september) firmware, when writing a tune. i have to re write the tables, particularily the VE table most often, 3-5 times before it will stick.
+- Why it matters: Includes maintainer guidance, which is more reliable for roadmap decisions. Directly informs tune and INI compatibility handling plus migration expectations.
+- Specific details: Pattern mentions: 3-5 Edge or poll details: change
+- Matched search terms: Harley decoder
+
+#### 'Start Doctor' is in the house - Page 2
+- URL: https://speeduino.com/forum/viewtopic.php?p=74143#p74139
+- Date: Sun Feb 22, 2026 7:24 pm
+- Who posted it: PSIG
+- Evidence type: tooth log
+- Confidence: medium
+- Summary: +1 to a flow chart or diagnostic tree, however IMO that should be part of documentation, where I was under impression you are looking for software solutions and indicators for those diagnostics? For example in documentation; . .
+- Why it matters: Contains technical evidence that may affect firmware behavior, tests, or documentation.
+- Specific details: Signal roles: crank mentioned
+- Matched search terms: tooth logger
+
+#### 'Start Doctor' is in the house - Page 2
+- URL: https://speeduino.com/forum/viewtopic.php?p=74146#p74139
+- Date: Sun Feb 22, 2026 7:24 pm
+- Who posted it: PSIG
+- Evidence type: tooth log
+- Confidence: medium
+- Summary: +1 to a flow chart or diagnostic tree, however IMO that should be part of documentation, where I was under impression you are looking for software solutions and indicators for those diagnostics? For example in documentation; . .
+- Why it matters: Contains technical evidence that may affect firmware behavior, tests, or documentation.
+- Specific details: Signal roles: crank mentioned
+- Matched search terms: 36-2-1
+
+#### Sensor for cam wheel
+- URL: https://speeduino.com/forum/viewtopic.php?p=73803#p73803
+- Date: Tue Dec 23, 2025 6:42 pm
+- Who posted it: PSIG
+- Evidence type: wheel description
+- Confidence: medium
+- Summary: There are some old OptiSpark threads here for Speeduino background, or a ton of info on the web. The OptiSpark is a version of Mitsubishi-designed ignition, often seen here on Nissans and others. The current decoder is the [Nissan-360](https://wiki.speeduino.com/en/decoders/Nissan_360) , and would need code mods to work directly with OptiSpark.
+- Why it matters: Contains technical evidence that may affect firmware behavior, tests, or documentation.
+- Specific details: Pattern mentions: 2-2, 72-1 Signal roles: cam mentioned, crank mentioned
+- Matched search terms: 36-2-1
+
+#### Single tooth trigger pattern for Ignition only
+- URL: https://speeduino.com/forum/viewtopic.php?p=22342#p22580
+- Date: Wed Nov 22, 2017 1:52 pm
+- Who posted it: Bleeker
+- Evidence type: wheel description
+- Confidence: medium
+- Summary: Nice to see that others are also interested in this topic. As far as I understood now, L-Twin Engines and all other multi cylinder Engines with crankpin offset, require 2 or more Channels which are triggered separately, as a single tooth does not allow precise calculation of the 2nd cylinder. On my OEM Ducati Ignition I have two Pickups, which have an offset of 90° and flywheel has only one tooth.
+- Why it matters: Contains technical evidence that may affect firmware behavior, tests, or documentation.
+- Specific details: Pattern mentions: 36-1 Edge or poll details: change Signal roles: crank mentioned
+- Matched search terms: Harley decoder
+
+#### Single tooth trigger pattern for Ignition only
+- URL: https://speeduino.com/forum/viewtopic.php?p=22342#p22230
+- Date: Thu Nov 09, 2017 2:01 pm
+- Who posted it: Bleeker
+- Evidence type: scope capture
+- Confidence: medium
+- Summary: The system is IDI and has an inductive Pick-Up which I have already used for testing with speeduino and it worked well. Unfortunatelly I do not have an oscilloscope. I could use the wiring and coil driver which I have built for my Ducati for testing and drive the BMW coils with it.
+- Why it matters: Contains concrete trace-oriented evidence that can support replay tests and decoder validation.
+- Specific details: None extracted
+- Matched search terms: Harley decoder
+
+#### V0.4.3c accidentally shorted 12v now no rpm signal or inj LED's. NA6 MX5
+- URL: https://speeduino.com/forum/viewtopic.php?p=68573#p68604
+- Date: Thu Jun 13, 2024 10:01 pm
+- Who posted it: ~Slideways
+- Evidence type: technical discussion
+- Confidence: medium
+- Summary: Hi PSIG, Thanks for the reply and leads to try. I'll get some logs this weekend hopefully. The main concern is that it was running and idling etc until the shorted 12v.
+- Why it matters: Helps separate universal defaults from context-specific tune choices.
+- Specific details: Edge or poll details: change Signal roles: crank mentioned
+- Matched search terms: trigger trace
+
+#### 'Start Doctor' is in the house - Page 2
+- URL: https://speeduino.com/forum/viewtopic.php?p=74143#p74133
+- Date: Sat Feb 21, 2026 5:04 pm
+- Who posted it: PSIG
+- Evidence type: technical discussion
+- Confidence: medium
+- Summary: Much of what defeats a first-start is not visible. For example, we can see injectors operating, but we cannot see if fuel is injecting, and have to assume it is. Maybe it's not.
+- Why it matters: Contains technical evidence that may affect firmware behavior, tests, or documentation.
+- Specific details: Signal roles: crank mentioned
+- Matched search terms: tooth logger
+
+#### 'Start Doctor' is in the house - Page 2
+- URL: https://speeduino.com/forum/viewtopic.php?p=74146#p74133
+- Date: Sat Feb 21, 2026 5:04 pm
+- Who posted it: PSIG
+- Evidence type: technical discussion
+- Confidence: medium
+- Summary: Much of what defeats a first-start is not visible. For example, we can see injectors operating, but we cannot see if fuel is injecting, and have to assume it is. Maybe it's not.
+- Why it matters: Contains technical evidence that may affect firmware behavior, tests, or documentation.
+- Specific details: Signal roles: crank mentioned
+- Matched search terms: 36-2-1
+
+#### First tooth logs
+- URL: https://speeduino.com/forum/viewtopic.php?p=72253#p72296
+- Date: Wed Jul 02, 2025 3:54 am
+- Who posted it: ImprezaRSC
+- Evidence type: tooth log / wheel description
+- Confidence: medium
+- Summary: Digging a little deeper into these first tooth logs, I'm just getting used to how they read. Consider these signals were created by turning the crank by hand. Just the fact that they are there is a good thing.
+- Why it matters: Contains technical evidence that may affect firmware behavior, tests, or documentation.
+- Specific details: Signal roles: cam mentioned, crank mentioned
+- Matched search terms: Subaru 6/7
+
+#### (Hardware test Inj 5-8 and Ign 5-8 grayed out) Help setting up v0.4.3d board
+- URL: https://speeduino.com/forum/viewtopic.php?p=73400#p73406
+- Date: Thu Oct 23, 2025 7:59 am
+- Who posted it: FlashStopFall
+- Evidence type: technical discussion
+- Confidence: medium
+- Summary: [dazq](./memberlist.php?mode=viewprofile&u=186) wrote: [↑](./viewtopic.php?p=73405#p73405) Thu Oct 23, 2025 7:36 am [FlashStopFall](./memberlist.php?mode=viewprofile&u=10039) wrote: [↑](./viewtopic.php?p=73404#p73404) Thu Oct 23, 2025 7:27 am [FlashStopFall](./memberlist.php?mode=viewprofile&u=10039) wrote: [↑](./viewtopic.php?p=73401#p73401) Thu Oct 23, 2025 6:46 am Actually, I found that the injector count is reliant upon boardFuelOutputs in speeduino.ini. Changing it to 6 for v0.4 boards got me exactly the control I wanted. I can change the pins in init.cpp to the coil pins, and see the lights go on and off when I toggle them.
+- Why it matters: Directly informs tune and INI compatibility handling plus migration expectations.
+- Specific details: Edge or poll details: change
+- Matched search terms: 36-2-1
+
+#### (Hardware test Inj 5-8 and Ign 5-8 grayed out) Help setting up v0.4.3d board
+- URL: https://speeduino.com/forum/viewtopic.php?p=73403#p73406
+- Date: Thu Oct 23, 2025 7:59 am
+- Who posted it: FlashStopFall
+- Evidence type: technical discussion
+- Confidence: medium
+- Summary: [dazq](./memberlist.php?mode=viewprofile&u=186) wrote: [↑](./viewtopic.php?p=73405#p73405) Thu Oct 23, 2025 7:36 am [FlashStopFall](./memberlist.php?mode=viewprofile&u=10039) wrote: [↑](./viewtopic.php?p=73404#p73404) Thu Oct 23, 2025 7:27 am [FlashStopFall](./memberlist.php?mode=viewprofile&u=10039) wrote: [↑](./viewtopic.php?p=73401#p73401) Thu Oct 23, 2025 6:46 am Actually, I found that the injector count is reliant upon boardFuelOutputs in speeduino.ini. Changing it to 6 for v0.4 boards got me exactly the control I wanted. I can change the pins in init.cpp to the coil pins, and see the lights go on and off when I toggle them.
+- Why it matters: Directly informs tune and INI compatibility handling plus migration expectations.
+- Specific details: Edge or poll details: change
+- Matched search terms: 36-2-1
+
+#### V0.4.3c accidentally shorted 12v now no rpm signal or inj LED's. NA6 MX5
+- URL: https://speeduino.com/forum/viewtopic.php?p=68573#p68578
+- Date: Sun Jun 09, 2024 3:38 pm
+- Who posted it: PSIG
+- Evidence type: technical discussion
+- Confidence: medium
+- Summary: Injectors and coils are functioned by RPM, so I would start there, looking for signal and if it gets to the processor. However, the injectors also trigger on power-up (priming shot) before rpm. So: Do the injectors prime?
+- Why it matters: Helps separate universal defaults from context-specific tune choices.
+- Specific details: Edge or poll details: change Signal roles: crank mentioned
+- Matched search terms: trigger trace
+
+#### Reading RPM off 4 tooth irregular cam
+- URL: https://speeduino.com/forum/viewtopic.php?p=70614#p70609
+- Date: Sat Jan 25, 2025 5:45 am
+- Who posted it: PSIG
+- Evidence type: wheel description
+- Confidence: medium
+- Summary: [Lex_GTX](./memberlist.php?mode=viewprofile&u=9342) wrote: [↑](./viewtopic.php?p=70608#p70608) Sat Jan 25, 2025 12:00 am The simplest trigger is the cam. It has 4 teeth (like a distributor) but their spacing is NOT symmetrical as the OEM ECU uses this to know the position of the engine. Hmm.
+- Why it matters: Contains technical evidence that may affect firmware behavior, tests, or documentation.
+- Specific details: Signal roles: cam mentioned
+- Matched search terms: trigger trace
+
+#### 3sge - 91 toyota mr2 SW20 - struggling to get a crank signal.
+- URL: https://speeduino.com/forum/viewtopic.php?p=70074#p69649
+- Date: Fri Sep 27, 2024 11:11 am
+- Who posted it: andyC
+- Evidence type: technical discussion
+- Confidence: low
+- Summary: Hi and thanks for reading, I have been to struggling to wire my ECU into my car. In particular, I have been struggling with the crank signal. I was hoping someone with a similar engine could give some guidance.
+- Why it matters: Contains technical evidence that may affect firmware behavior, tests, or documentation.
+- Specific details: Signal roles: crank mentioned
+- Matched search terms: trigger trace
+
+#### Spark only Subaru Project EJ22
+- URL: https://speeduino.com/forum/viewtopic.php?p=72364#p72380
+- Date: Tue Jul 08, 2025 9:26 am
+- Who posted it: dazq
+- Evidence type: maintainer explanation
+- Confidence: low
+- Summary: [Donald G](./memberlist.php?mode=viewprofile&u=9822) wrote: [↑](./viewtopic.php?p=72374#p72374) Mon Jul 07, 2025 8:46 pm I believe this is the file you're asking for. I also figured out how to do the hardware test and it won't turn on either the ignition or injector Led outputs on the board. If the outputs don't operate in hardware test mode then it's not likely a setup issue .
+- Why it matters: Includes maintainer guidance, which is more reliable for roadmap decisions.
+- Specific details: None extracted
+- Matched search terms: Subaru 6/7
+
+#### Reading RPM off 4 tooth irregular cam
+- URL: https://speeduino.com/forum/viewtopic.php?p=70614#p70608
+- Date: Sat Jan 25, 2025 12:00 am
+- Who posted it: Lex_GTX
+- Evidence type: wheel description
+- Confidence: low
+- Summary: Hi Speeduino Community, I am building an aux fuel controller for a direct injected Ecoboost 4 cylinder. I want this to be batch fire past a certain load under higher boost so sequential injection is not needed. The simplest trigger is the cam.
+- Why it matters: Contains technical evidence that may affect firmware behavior, tests, or documentation.
+- Specific details: Signal roles: cam mentioned
+- Matched search terms: trigger trace
+
+#### Sensor for cam wheel
+- URL: https://speeduino.com/forum/viewtopic.php?p=73803#p73851
+- Date: Sun Jan 04, 2026 12:08 pm
+- Who posted it: SonOfSaturn
+- Evidence type: technical discussion
+- Confidence: low
+- Summary: That is exactly what I have now. Although the original optispark is bad, that is what sent me down this path. So the conditioner can read the 360 tooth wheel?
+- Why it matters: Contains technical evidence that may affect firmware behavior, tests, or documentation.
+- Specific details: Signal roles: crank mentioned
+- Matched search terms: 36-2-1
+
+#### Trying to build a trigger for uneven flywheel.
+- URL: https://speeduino.com/forum/viewtopic.php?p=53326#p54762
+- Date: Mon Jan 17, 2022 2:15 pm
+- Who posted it: RempageR1
+- Evidence type: technical discussion
+- Confidence: low
+- Summary: [PSIG](./memberlist.php?mode=viewprofile&u=149) wrote: [↑](./viewtopic.php?p=54703#p54703) Thu Jan 13, 2022 6:33 pm [RempageR1](./memberlist.php?mode=viewprofile&u=4011) wrote: [↑](./viewtopic.php?p=54691#p54691) Thu Jan 13, 2022 8:13 am … This was for my V3 VR-conditioner reference board using the MAX9926. OK, then relative to the edge you wish to read, and the wired polarity of your VR sensor, the MAX module will invert the signal. So, to step through the inversions; if you wish to read the leading edge of a tooth for position, and assuming correct VR sensor polarity wiring (rising voltage on leading edge, but which can also be inverted) , your module-inverted signal detection would be Falling .
+- Why it matters: Contains technical evidence that may affect firmware behavior, tests, or documentation.
+- Specific details: Edge or poll details: rising, falling
+- Matched search terms: Harley decoder
+
+#### (Hardware test Inj 5-8 and Ign 5-8 grayed out) Help setting up v0.4.3d board
+- URL: https://speeduino.com/forum/viewtopic.php?p=73400#p73400
+- Date: Thu Oct 23, 2025 6:24 am
+- Who posted it: pazi88
+- Evidence type: technical discussion
+- Confidence: low
+- Summary: You can look the init.cpp file to see what pins are used for ign/inj pins on v0.4 board: case 3: //Pin mappings as per the v0.4 shield pinInjector1 = 8; //Output pin injector 1 is on pinInjector2 = 9; //Output pin injector 2 is on pinInjector3 = 10; //Output pin injector 3 is on pinInjector4 = 11; //Output pin injector 4 is on pinInjector5 = 12; //Output pin injector 5 is on pinInjector6 = 50; //CAUTION: Uses the same as Coil 4 below. pinCoil1 = 40; //Pin for coil 1 pinCoil2 = 38; //Pin for coil 2 pinCoil3 = 52; //Pin for coil 3 pinCoil4 = 50; //Pin for coil 4 pinCoil5 = 34; //Pin for coil 5 PLACEHOLDER value for now The speeduino.ini for tunerstudio defines how many ign and inj outputs each board has on the "boardFuelOutputs" and "boardIgnOutputs" -parameters. For 0.4 it defines both to be 4, so you can only test up to 4 outputs.
+- Why it matters: Directly informs tune and INI compatibility handling plus migration expectations.
+- Specific details: Edge or poll details: change
+- Matched search terms: 36-2-1
+
+#### (Hardware test Inj 5-8 and Ign 5-8 grayed out) Help setting up v0.4.3d board
+- URL: https://speeduino.com/forum/viewtopic.php?p=73403#p73400
+- Date: Thu Oct 23, 2025 6:24 am
+- Who posted it: pazi88
+- Evidence type: technical discussion
+- Confidence: low
+- Summary: You can look the init.cpp file to see what pins are used for ign/inj pins on v0.4 board: case 3: //Pin mappings as per the v0.4 shield pinInjector1 = 8; //Output pin injector 1 is on pinInjector2 = 9; //Output pin injector 2 is on pinInjector3 = 10; //Output pin injector 3 is on pinInjector4 = 11; //Output pin injector 4 is on pinInjector5 = 12; //Output pin injector 5 is on pinInjector6 = 50; //CAUTION: Uses the same as Coil 4 below. pinCoil1 = 40; //Pin for coil 1 pinCoil2 = 38; //Pin for coil 2 pinCoil3 = 52; //Pin for coil 3 pinCoil4 = 50; //Pin for coil 4 pinCoil5 = 34; //Pin for coil 5 PLACEHOLDER value for now The speeduino.ini for tunerstudio defines how many ign and inj outputs each board has on the "boardFuelOutputs" and "boardIgnOutputs" -parameters. For 0.4 it defines both to be 4, so you can only test up to 4 outputs.
+- Why it matters: Directly informs tune and INI compatibility handling plus migration expectations.
+- Specific details: Edge or poll details: change
+- Matched search terms: 36-2-1
+
+#### Progress report - August 2017
+- URL: https://speeduino.com/forum/viewtopic.php?p=21114#p21126
+- Date: Sun Sep 10, 2017 5:44 am
+- Who posted it: noisymime
+- Evidence type: maintainer explanation
+- Confidence: low
+- Summary: [turbonetics](./memberlist.php?mode=viewprofile&u=1200) wrote: [↑](./viewtopic.php?p=21123#p21123) Sun Sep 10, 2017 12:11 am I'm intrested in hardware changes . Do you plan 0.5 or something? The v0.5 has been 'planned' for a long time, it's making it happen that's difficult
+- Why it matters: Includes maintainer guidance, which is more reliable for roadmap decisions.
+- Specific details: Edge or poll details: change
+- Matched search terms: Harley decoder
+
+### Idle advance, idle taper, and air-con defaults
+
+#### PCB for BMW m42/m50/m60 engine - Page 17
+- URL: https://speeduino.com/forum/viewtopic.php?p=39996#p38935
+- Date: Thu Nov 07, 2019 8:15 am
+- Who posted it: pazi88
+- Evidence type: tooth log / scope capture / wheel description
+- Confidence: high
+- Summary: Got reports about trigger problems using this PCB design and the base tunes so I did some investigation now when I got my new scope. All did work nicely with simulated signal, so I got OEM 60-2 trigger wheel mounted to dremel and used the OEM vr-sensor from car to find problems in my bench setup. First discovery was that the VR-sensor wire colors were mixed in actual wiring harness compared to wiring diagram.
+- Why it matters: Contains concrete trace-oriented evidence that can support replay tests and decoder validation. Helps separate universal defaults from context-specific tune choices.
+- Specific details: Pattern mentions: 60-2 Edge or poll details: rising, falling, change Explicit sync-loss discussion present.
+- Matched search terms: air con polarity
+
+#### PCB for BMW m42/m50/m60 engine - Page 17
+- URL: https://speeduino.com/forum/viewtopic.php?p=40020#p38935
+- Date: Thu Nov 07, 2019 8:15 am
+- Who posted it: pazi88
+- Evidence type: tooth log / scope capture / wheel description
+- Confidence: high
+- Summary: Got reports about trigger problems using this PCB design and the base tunes so I did some investigation now when I got my new scope. All did work nicely with simulated signal, so I got OEM 60-2 trigger wheel mounted to dremel and used the OEM vr-sensor from car to find problems in my bench setup. First discovery was that the VR-sensor wire colors were mixed in actual wiring harness compared to wiring diagram.
+- Why it matters: Contains concrete trace-oriented evidence that can support replay tests and decoder validation. Helps separate universal defaults from context-specific tune choices.
+- Specific details: Pattern mentions: 60-2 Edge or poll details: rising, falling, change Explicit sync-loss discussion present.
+- Matched search terms: air con polarity
+
+#### PCB for BMW m42/m50/m60 engine - Page 18
+- URL: https://speeduino.com/forum/viewtopic.php?p=40024#p38935
+- Date: Thu Nov 07, 2019 8:15 am
+- Who posted it: pazi88
+- Evidence type: tooth log / scope capture / wheel description
+- Confidence: high
+- Summary: Got reports about trigger problems using this PCB design and the base tunes so I did some investigation now when I got my new scope. All did work nicely with simulated signal, so I got OEM 60-2 trigger wheel mounted to dremel and used the OEM vr-sensor from car to find problems in my bench setup. First discovery was that the VR-sensor wire colors were mixed in actual wiring harness compared to wiring diagram.
+- Why it matters: Contains concrete trace-oriented evidence that can support replay tests and decoder validation. Helps separate universal defaults from context-specific tune choices.
+- Specific details: Pattern mentions: 60-2 Edge or poll details: rising, falling, change Explicit sync-loss discussion present.
+- Matched search terms: air con polarity
+
+#### PCB for BMW m42/m50/m60 engine - Page 18
+- URL: https://speeduino.com/forum/viewtopic.php?p=40069#p38935
+- Date: Thu Nov 07, 2019 8:15 am
+- Who posted it: pazi88
+- Evidence type: tooth log / scope capture / wheel description
+- Confidence: high
+- Summary: Got reports about trigger problems using this PCB design and the base tunes so I did some investigation now when I got my new scope. All did work nicely with simulated signal, so I got OEM 60-2 trigger wheel mounted to dremel and used the OEM vr-sensor from car to find problems in my bench setup. First discovery was that the VR-sensor wire colors were mixed in actual wiring harness compared to wiring diagram.
+- Why it matters: Contains concrete trace-oriented evidence that can support replay tests and decoder validation. Helps separate universal defaults from context-specific tune choices.
+- Specific details: Pattern mentions: 60-2 Edge or poll details: rising, falling, change Explicit sync-loss discussion present.
+- Matched search terms: air con polarity
+
+#### Adventures in tuning and driving a UA4C, Supercharged BMW V8
+- URL: https://speeduino.com/forum/viewtopic.php?p=58294#p58294
+- Date: Tue Aug 23, 2022 2:31 am
+- Who posted it: Mykk
+- Evidence type: wheel description
+- Confidence: high
+- Summary: Hello Tuners. I've wanted to make this thread sharing my various ideas, tests, experiments and tuning strategies I have tried and currently use over the last year since getting my project running, driving, racing, cruising and getting better at all of those things every day. These are just things I have tried.
+- Why it matters: Directly informs tune and INI compatibility handling plus migration expectations. Helps separate universal defaults from context-specific tune choices. Touches wiring-dependent versus universal idle and A/C behavior.
+- Specific details: Pattern mentions: 1-5, 1-5-4-8, 1-6, 4-7, 4-8, 5-3, 6-3, 6-3-7-2, 60-2, 7-2, 8-2 Edge or poll details: change Signal roles: cam mentioned, crank mentioned
+- Matched search terms: delay before idle control
+
+#### 1985 Honda Goldwing Limited Edition FI Model ECU Replacement - Page 67
+- URL: https://speeduino.com/forum/viewtopic.php?p=64477#p65044
+- Date: Wed Sep 27, 2023 11:54 pm
+- Who posted it: Rednaxs60
+- Evidence type: scope capture / wheel description
+- Confidence: high
+- Summary: @PSIG - Thanks for the info. Received the DC power supply from Amazon. Used it today to bench test the Cherry GS100701 Hall effect sensors with the OEM single tooth cam trigger wheel, and the OEM 8 tooth crank trigger wheel.
+- Why it matters: Contains concrete trace-oriented evidence that can support replay tests and decoder validation.
+- Specific details: Pattern mentions: 36-1 Edge or poll details: rising, change Signal roles: cam mentioned, crank mentioned Explicit sync-loss discussion present.
+- Matched search terms: idle taper
+
+#### 1985 Honda Goldwing Limited Edition FI Model ECU Replacement - Page 67
+- URL: https://speeduino.com/forum/viewtopic.php?p=64478#p65044
+- Date: Wed Sep 27, 2023 11:54 pm
+- Who posted it: Rednaxs60
+- Evidence type: scope capture / wheel description
+- Confidence: high
+- Summary: @PSIG - Thanks for the info. Received the DC power supply from Amazon. Used it today to bench test the Cherry GS100701 Hall effect sensors with the OEM single tooth cam trigger wheel, and the OEM 8 tooth crank trigger wheel.
+- Why it matters: Contains concrete trace-oriented evidence that can support replay tests and decoder validation.
+- Specific details: Pattern mentions: 36-1 Edge or poll details: rising, change Signal roles: cam mentioned, crank mentioned Explicit sync-loss discussion present.
+- Matched search terms: idle taper
+
+#### Range Rover Classic Speeduino Project
+- URL: https://speeduino.com/forum/viewtopic.php?p=50375#p50375
+- Date: Sun May 16, 2021 9:49 pm
+- Who posted it: ric355
+- Evidence type: wheel description
+- Confidence: high
+- Summary: [Razorbeam](./memberlist.php?mode=viewprofile&u=4615) wrote: [↑](./viewtopic.php?p=50368#p50368) Sun May 16, 2021 8:10 pm Hello all! I'm currently working on a speeduino install on my 1992 Range Rover Classic. I have owned the car for many years and am finally ready to get rid of the distributor and antiquated EFI.
+- Why it matters: Helps separate universal defaults from context-specific tune choices. Useful for protection-mode expectations and disabled or off-state behavior. Touches wiring-dependent versus universal idle and A/C behavior.
+- Specific details: Edge or poll details: change Signal roles: crank mentioned
+- Matched search terms: delay before idle control
+
+#### HugoW’s 1998 MX5 NB with 2004 1.8 VVT engine - Page 7
+- URL: https://speeduino.com/forum/viewtopic.php?p=54619#p55107
+- Date: Wed Feb 02, 2022 9:24 am
+- Who posted it: HugoW
+- Evidence type: technical discussion
+- Confidence: high
+- Summary: Going back to ye olde forum, I still prefer this over any fast and quick chat medium. On those media, I am often accused of just copying other people's tunes and wondering why they don't work. Let me quickly give the reader some background on me and my ways of approaching Speeduino tuning.
+- Why it matters: Helps separate universal defaults from context-specific tune choices. Touches wiring-dependent versus universal idle and A/C behavior.
+- Specific details: Edge or poll details: change Signal roles: cam mentioned, crank mentioned
+- Matched search terms: delay before idle control
+
+#### Opel Astra G project, original Ecu + speeduino (Parallel/piggyback) - Page 15
+- URL: https://speeduino.com/forum/viewtopic.php?p=67715#p67936
+- Date: Sun Apr 14, 2024 4:21 pm
+- Who posted it: lovosal
+- Evidence type: scope capture / tune file
+- Confidence: high
+- Summary: Hello Today I was with the car again. Knowing that I couldn't do anything with my oscilloscope since I'm missing the ammeter clamp and without it I haven't seen how I could do the checking of the coil dwell times, so I've done it the old way with the test method and mistake. I have removed the fuel relay so as not to choke or waste gasoline and I have started to touch the dwell menu...
+- Why it matters: Contains concrete trace-oriented evidence that can support replay tests and decoder validation.
+- Specific details: Signal roles: crank mentioned Attachments: ASTRA G 2024-03-20_23.09.17.msq -> https://speeduino.com/forum/download/file.php?id=12915; DataLogs.zip -> https://speeduino.com/forum/download/file.php?id=12920 Image or capture links found: 2
+- Matched search terms: idle taper
+
+#### Suzuki RE-5 EFI Conversion - Page 3
+- URL: https://speeduino.com/forum/viewtopic.php?p=69486#p67461
+- Date: Sun Mar 10, 2024 3:55 pm
+- Who posted it: MGR550
+- Evidence type: tooth log / wheel description
+- Confidence: high
+- Summary: Figured out the fuel pump issue, was bad crimp on the wiring on my part. For the trigger wheel, I hadn't actually ever counted the reduction from crank to distributor housing shafts; turns out it is 2:1, so I cut 1 more tooth off my 36-1 trigger wheel and made it into sortof a pair of 18-1 wheels which seems to work well in the tooth logger. Got the wiring onto the bike nicely, intake adapter and throttle body on and a temporary fuel feed hooked up and managed to fire it up!
+- Why it matters: Contains concrete trace-oriented evidence that can support replay tests and decoder validation. Touches wiring-dependent versus universal idle and A/C behavior.
+- Specific details: Pattern mentions: 18-1, 36-1 Signal roles: crank mentioned Attachments: 2024-03-10_12.21.17 Good Short Run.mlg -> https://speeduino.com/forum/download/file.php?id=12705 Image or capture links found: 1
+- Matched search terms: idle taper
+
+#### Opel Astra G project, original Ecu + speeduino (Parallel/piggyback) - Page 15
+- URL: https://speeduino.com/forum/viewtopic.php?p=67715#p67590
+- Date: Fri Mar 22, 2024 4:25 pm
+- Who posted it: PSIG
+- Evidence type: scope capture
+- Confidence: high
+- Summary: @lovosal, this is like cooking, and you need to know the ingredients you are cooking with. Research or measuring can provide answers close enough to get it to fire, then running, and then testing to find better values. For example, your injector was used in some application.
+- Why it matters: Contains concrete trace-oriented evidence that can support replay tests and decoder validation. Helps separate universal defaults from context-specific tune choices.
+- Specific details: Signal roles: crank mentioned
+- Matched search terms: idle taper
+
+#### Speeduino system VW vanagon WBX 2.1 DJ with hiccups - Page 3
+- URL: https://speeduino.com/forum/viewtopic.php?p=73674#p73714
+- Date: Mon Dec 08, 2025 11:13 am
+- Who posted it: Iskander
+- Evidence type: tooth log / wheel description
+- Confidence: high
+- Summary: Hi I have done some test again. The new spark plugs arrived (Denso PK20PR-P8) and installed. I changed the WUE that its end at 100% Drived a short trip.
+- Why it matters: Contains concrete trace-oriented evidence that can support replay tests and decoder validation.
+- Specific details: Edge or poll details: rising, change Attachments: VR signal test 560RPM.zip -> https://speeduino.com/forum/download/file.php?id=14644 Image or capture links found: 1
+- Matched search terms: idle advance
+
+#### 1985 Honda Goldwing Limited Edition FI Model ECU Replacement - Page 67
+- URL: https://speeduino.com/forum/viewtopic.php?p=64477#p59264
+- Date: Tue Nov 01, 2022 5:46 pm
+- Who posted it: Rednaxs60
+- Evidence type: scope capture / wheel description
+- Confidence: medium
+- Summary: PSIG - Thanks for the reply. The reason I have thought about just using a ground and not reassigning any pins is that when I trace out the power distribution on the CFI schematic, there is 12 VDC power supply to relay #5 from the Main Relay #4. Following the schematic wiring to the ECU from the Fuel Pump Relay #5 indicates to me that it is going for an ECU ground, completing the circuit.
+- Why it matters: Contains concrete trace-oriented evidence that can support replay tests and decoder validation.
+- Specific details: Pattern mentions: 8-3
+- Matched search terms: idle taper
+
+#### 1985 Honda Goldwing Limited Edition FI Model ECU Replacement - Page 67
+- URL: https://speeduino.com/forum/viewtopic.php?p=64478#p59264
+- Date: Tue Nov 01, 2022 5:46 pm
+- Who posted it: Rednaxs60
+- Evidence type: scope capture / wheel description
+- Confidence: medium
+- Summary: PSIG - Thanks for the reply. The reason I have thought about just using a ground and not reassigning any pins is that when I trace out the power distribution on the CFI schematic, there is 12 VDC power supply to relay #5 from the Main Relay #4. Following the schematic wiring to the ECU from the Fuel Pump Relay #5 indicates to me that it is going for an ECU ground, completing the circuit.
+- Why it matters: Contains concrete trace-oriented evidence that can support replay tests and decoder validation.
+- Specific details: Pattern mentions: 8-3
+- Matched search terms: idle taper
+
+#### 1985 Honda Goldwing Limited Edition FI Model ECU Replacement - Page 67
+- URL: https://speeduino.com/forum/viewtopic.php?p=64477#p60509
+- Date: Thu Jan 12, 2023 11:32 pm
+- Who posted it: PSIG
+- Evidence type: tooth log / composite log / tune file
+- Confidence: medium
+- Summary: [LPG2CV](./memberlist.php?mode=viewprofile&u=1236) wrote: [↑](./viewtopic.php?p=60507#p60507) Thu Jan 12, 2023 11:16 pm @psig David, would the Tooth/Composite logger be of use at this point? It's not something I recall using myself, but may help determine what is happening. Also useful to determine polarity of the VR sensors at an early stage.
+- Why it matters: Contains concrete trace-oriented evidence that can support replay tests and decoder validation.
+- Specific details: Edge or poll details: rising Attachments: GW-2_2023-01-12_11.58.07.msq -> https://speeduino.com/forum/download/file.php?id=10732 Image or capture links found: 1
+- Matched search terms: idle taper
+
+#### 1985 Honda Goldwing Limited Edition FI Model ECU Replacement - Page 67
+- URL: https://speeduino.com/forum/viewtopic.php?p=64478#p60509
+- Date: Thu Jan 12, 2023 11:32 pm
+- Who posted it: PSIG
+- Evidence type: tooth log / composite log / tune file
+- Confidence: medium
+- Summary: [LPG2CV](./memberlist.php?mode=viewprofile&u=1236) wrote: [↑](./viewtopic.php?p=60507#p60507) Thu Jan 12, 2023 11:16 pm @psig David, would the Tooth/Composite logger be of use at this point? It's not something I recall using myself, but may help determine what is happening. Also useful to determine polarity of the VR sensors at an early stage.
+- Why it matters: Contains concrete trace-oriented evidence that can support replay tests and decoder validation.
+- Specific details: Edge or poll details: rising Attachments: GW-2_2023-01-12_11.58.07.msq -> https://speeduino.com/forum/download/file.php?id=10732 Image or capture links found: 1
+- Matched search terms: idle taper
+
+#### Suzuki RE-5 EFI Conversion - Page 3
+- URL: https://speeduino.com/forum/viewtopic.php?p=69486#p67237
+- Date: Mon Feb 19, 2024 9:18 pm
+- Who posted it: MGR550
+- Evidence type: tune file / wheel description / image attachment
+- Confidence: medium
+- Summary: Hello, Re-did the wiring a bit in terms of fusing and relays, with an updated diagram to match. Got it wired into the bike, turning on and off with key and kill switch, reading sensors, and tested inj output so far. A bit of debugging and I got what I think is a clean signal from the trigger wheel .
+- Why it matters: Helps separate universal defaults from context-specific tune choices.
+- Specific details: Edge or poll details: rising Signal roles: crank mentioned Attachments: 2024-02-19_15.39.46.csv -> https://speeduino.com/forum/download/file.php?id=12604; 2024-02-19_16.08.03.msq -> https://speeduino.com/forum/download/file.php?id=12603 Image or capture links found: 2
+- Matched search terms: idle taper
+
+#### Range Rover Classic Speeduino Project
+- URL: https://speeduino.com/forum/viewtopic.php?p=50375#p53362
+- Date: Fri Oct 01, 2021 2:44 am
+- Who posted it: Razorbeam
+- Evidence type: tune file / image attachment
+- Confidence: medium
+- Summary: [Chris Wolfson](./memberlist.php?mode=viewprofile&u=4030) wrote: [↑](./viewtopic.php?p=53210#p53210) Wed Sep 22, 2021 1:53 pm Just a hint for your engine: The latest engine build of this range was the "Thor" with the Bosch Motronic. It has many improvements, but the one that is easy to adapt is the most useful in every day driving. It is very helpful to fit the intake plenum to any of the older engines, as you gain a huge amount of torque in the low end and reduce fuel consumption dramatically.
+- Why it matters: Helps separate universal defaults from context-specific tune choices. Touches wiring-dependent versus universal idle and A/C behavior.
+- Specific details: Signal roles: cam mentioned Attachments: 2021-09-30_21.12.56.msq -> https://speeduino.com/forum/download/file.php?id=8949 Image or capture links found: 1
+- Matched search terms: delay before idle control
+
+#### Speeduino system VW vanagon WBX 2.1 DJ with hiccups - Page 3
+- URL: https://speeduino.com/forum/viewtopic.php?p=73674#p73674
+- Date: Sat Nov 29, 2025 10:15 pm
+- Who posted it: Iskander
+- Evidence type: image attachment
+- Confidence: medium
+- Summary: I‘ve made some improvements but there rise also more questions? I’ve tried several things to solve my hiccup problem. -2 Ferite bead over the complete loom entrée at ECU -MSD spark cables far away from speeduino wiring loom -DIS bobine earth cable outside the loom connected to other cylinder head -New VR sensor with separate cable outside the loom, shielded twisted pair.
+- Why it matters: Touches wiring-dependent versus universal idle and A/C behavior.
+- Specific details: Edge or poll details: change Explicit sync-loss discussion present. Attachments: Test drive 29112025.mlg -> https://speeduino.com/forum/download/file.php?id=14622 Image or capture links found: 1
+- Matched search terms: idle advance
+
+#### Speeduino system VW vanagon WBX 2.1 DJ with hiccups - Page 3
+- URL: https://speeduino.com/forum/viewtopic.php?p=73674#p73716
+- Date: Mon Dec 08, 2025 6:24 pm
+- Who posted it: PSIG
+- Evidence type: tooth log
+- Confidence: medium
+- Summary: [Iskander](./memberlist.php?mode=viewprofile&u=9629) wrote: [↑](./viewtopic.php?p=73714#p73714) Mon Dec 08, 2025 11:13 am I looked to the tooth logger and saw a double trigger line at the missing tooth. Sensor connection: VR + > VR – VR - > VR + Trigger edge Rising . .
+- Why it matters: Contains concrete trace-oriented evidence that can support replay tests and decoder validation.
+- Specific details: Edge or poll details: rising, falling Signal roles: crank mentioned
+- Matched search terms: idle advance
+
+#### TunerStudio 3.3 causing Speeduino to lock-up (fairly sure)
+- URL: https://speeduino.com/forum/viewtopic.php?p=74248#p74248
+- Date: Mon Mar 16, 2026 12:22 pm
+- Who posted it: sako243
+- Evidence type: scope capture
+- Confidence: medium
+- Summary: I haven't managed to (not really had the time) to find the cause of this but it appears that something between TunerStudio 3.2.0.5 and 3.3.0.1 (paid up version but that shouldn't matter) is dropping the connection and also (not always) causing the ECU to lock up. I've got far more anecdotal information but the general scenario has been this - I'm more than happy to try and provide more evidence if there's specific things that would help. Context / Setup I've got an ECU built around the DIY-EFI Core4 module running a 4.6V8 in a 6x6 Land Rover, it's effectively my daily driver now.
+- Why it matters: Contains concrete trace-oriented evidence that can support replay tests and decoder validation. Touches wiring-dependent versus universal idle and A/C behavior.
+- Specific details: Edge or poll details: change Signal roles: cam mentioned
+- Matched search terms: idle up
+
+#### Ignition rollback
+- URL: https://speeduino.com/forum/viewtopic.php?p=73110#p73110
+- Date: Thu Sep 11, 2025 11:31 am
+- Who posted it: Philippov Pavel
+- Evidence type: scope capture / tune file / wheel description
+- Confidence: medium
+- Summary: Hello, dear community members, creators of speeduino, this is a wonderful project, I really like it. I have already assembled 3 ECUs based on standard Toyota ECUs and 2560 modules (as a so-called motherboard, using factory power supply circuits, filtering input analog signals, processing rotation sensors and power output circuits for load control. Injectors and so on.) Everything works great except for one annoying nuance - ignition rollbacks.
+- Why it matters: Contains concrete trace-oriented evidence that can support replay tests and decoder validation. Touches wiring-dependent versus universal idle and A/C behavior.
+- Specific details: Pattern mentions: 36-2, 6-7 Signal roles: cam mentioned, crank mentioned Attachments: 1jz-ge_speeduino.msq -> https://speeduino.com/forum/download/file.php?id=14448 Image or capture links found: 1
+- Matched search terms: idle advance
+
+#### PCB for BMW m42/m50/m60 engine - Page 17
+- URL: https://speeduino.com/forum/viewtopic.php?p=39996#p40069
+- Date: Sun Dec 29, 2019 8:36 pm
+- Who posted it: mafoose
+- Evidence type: technical discussion
+- Confidence: medium
+- Summary: [Raku](./memberlist.php?mode=viewprofile&u=845) wrote: [↑](./viewtopic.php?p=40016#p40016) Tue Dec 24, 2019 2:37 am [NickZ](./memberlist.php?mode=viewprofile&u=86) wrote: [↑](./viewtopic.php?p=39996#p39996) Sun Dec 22, 2019 8:50 am Now my question, How are people triggering the AIR Con Compressor as it was controlled by the original ecu? the tach wire, looks like its a 5v Pulse, is the right? AC compressor trigger output coming from the ecu is negative signal but ac trigger signal coming from the climate unit is 12v signal with very low current that cant even trigger a small relay.i used sip-1a05 5v reed switch as a relay and it worked perfectly.
+- Why it matters: Touches wiring-dependent versus universal idle and A/C behavior.
+- Specific details: Explicit sync-loss discussion present.
+- Matched search terms: air con polarity
+
+#### PCB for BMW m42/m50/m60 engine - Page 17
+- URL: https://speeduino.com/forum/viewtopic.php?p=40020#p40069
+- Date: Sun Dec 29, 2019 8:36 pm
+- Who posted it: mafoose
+- Evidence type: technical discussion
+- Confidence: medium
+- Summary: [Raku](./memberlist.php?mode=viewprofile&u=845) wrote: [↑](./viewtopic.php?p=40016#p40016) Tue Dec 24, 2019 2:37 am [NickZ](./memberlist.php?mode=viewprofile&u=86) wrote: [↑](./viewtopic.php?p=39996#p39996) Sun Dec 22, 2019 8:50 am Now my question, How are people triggering the AIR Con Compressor as it was controlled by the original ecu? the tach wire, looks like its a 5v Pulse, is the right? AC compressor trigger output coming from the ecu is negative signal but ac trigger signal coming from the climate unit is 12v signal with very low current that cant even trigger a small relay.i used sip-1a05 5v reed switch as a relay and it worked perfectly.
+- Why it matters: Touches wiring-dependent versus universal idle and A/C behavior.
+- Specific details: Explicit sync-loss discussion present.
+- Matched search terms: air con polarity
+
+#### PCB for BMW m42/m50/m60 engine - Page 18
+- URL: https://speeduino.com/forum/viewtopic.php?p=40024#p40069
+- Date: Sun Dec 29, 2019 8:36 pm
+- Who posted it: mafoose
+- Evidence type: technical discussion
+- Confidence: medium
+- Summary: [Raku](./memberlist.php?mode=viewprofile&u=845) wrote: [↑](./viewtopic.php?p=40016#p40016) Tue Dec 24, 2019 2:37 am [NickZ](./memberlist.php?mode=viewprofile&u=86) wrote: [↑](./viewtopic.php?p=39996#p39996) Sun Dec 22, 2019 8:50 am Now my question, How are people triggering the AIR Con Compressor as it was controlled by the original ecu? the tach wire, looks like its a 5v Pulse, is the right? AC compressor trigger output coming from the ecu is negative signal but ac trigger signal coming from the climate unit is 12v signal with very low current that cant even trigger a small relay.i used sip-1a05 5v reed switch as a relay and it worked perfectly.
+- Why it matters: Touches wiring-dependent versus universal idle and A/C behavior.
+- Specific details: Explicit sync-loss discussion present.
+- Matched search terms: air con polarity
+
+#### PCB for BMW m42/m50/m60 engine - Page 18
+- URL: https://speeduino.com/forum/viewtopic.php?p=40069#p40069
+- Date: Sun Dec 29, 2019 8:36 pm
+- Who posted it: mafoose
+- Evidence type: technical discussion
+- Confidence: medium
+- Summary: [Raku](./memberlist.php?mode=viewprofile&u=845) wrote: [↑](./viewtopic.php?p=40016#p40016) Tue Dec 24, 2019 2:37 am [NickZ](./memberlist.php?mode=viewprofile&u=86) wrote: [↑](./viewtopic.php?p=39996#p39996) Sun Dec 22, 2019 8:50 am Now my question, How are people triggering the AIR Con Compressor as it was controlled by the original ecu? the tach wire, looks like its a 5v Pulse, is the right? AC compressor trigger output coming from the ecu is negative signal but ac trigger signal coming from the climate unit is 12v signal with very low current that cant even trigger a small relay.i used sip-1a05 5v reed switch as a relay and it worked perfectly.
+- Why it matters: Touches wiring-dependent versus universal idle and A/C behavior.
+- Specific details: Explicit sync-loss discussion present.
+- Matched search terms: air con polarity
+
+#### Range Rover Classic Speeduino Project
+- URL: https://speeduino.com/forum/viewtopic.php?p=50375#p50368
+- Date: Sun May 16, 2021 8:10 pm
+- Who posted it: Razorbeam
+- Evidence type: wheel description
+- Confidence: medium
+- Summary: Hello all! I'm currently working on a speeduino install on my 1992 Range Rover Classic. I have owned the car for many years and am finally ready to get rid of the distributor and antiquated EFI.
+- Why it matters: Helps separate universal defaults from context-specific tune choices. Useful for protection-mode expectations and disabled or off-state behavior. Touches wiring-dependent versus universal idle and A/C behavior.
+- Specific details: Signal roles: crank mentioned
+- Matched search terms: delay before idle control
+
+#### Suzuki RE-5 EFI Conversion - Page 3
+- URL: https://speeduino.com/forum/viewtopic.php?p=69486#p66088
+- Date: Fri Dec 01, 2023 4:11 am
+- Who posted it: MGR550
+- Evidence type: tune file / wheel description / image attachment
+- Confidence: medium
+- Summary: Hello again, over a year later and little progress On the bright side, there now exists: a bike in the living room for convenient access, a colour matched wiring diagram, 3d printed 36-1 trigger wheel, brackets, an intake manifold, exhaust w/ WBO2 bung, a rough map of ignition timing and other settings, and last but not least a complete speeduino-side wiring harness that needs to be lightly spliced into the main bike harness. Please let me know if I've made any obvious errors in the wiring. I'd tested the TPS, CLT, IAT, sensors in the harness through tuner studio and all seemed to be responding well.
+- Why it matters: Contains technical evidence that may affect firmware behavior, tests, or documentation.
+- Specific details: Pattern mentions: 36-1 Attachments: 2024-02-19_15.39.46.csv -> https://speeduino.com/forum/download/file.php?id=12604; 2024-02-19_16.08.03.msq -> https://speeduino.com/forum/download/file.php?id=12603 Image or capture links found: 2
+- Matched search terms: idle taper
+
+#### HugoW’s 1998 MX5 NB with 2004 1.8 VVT engine - Page 7
+- URL: https://speeduino.com/forum/viewtopic.php?p=54619#p54619
+- Date: Sun Jan 09, 2022 10:50 am
+- Who posted it: HugoW
+- Evidence type: technical discussion
+- Confidence: medium
+- Summary: Update and next issue... With a new starter battery the car is flung to life a lot more enhousiastically, less voltage drop. Adding a sh*tload of fuel was the final fix to the bad starting.
+- Why it matters: Touches wiring-dependent versus universal idle and A/C behavior.
+- Specific details: Edge or poll details: change Signal roles: cam mentioned
+- Matched search terms: delay before idle control
+
+#### PCB for BMW m42/m50/m60 engine - Page 17
+- URL: https://speeduino.com/forum/viewtopic.php?p=39996#p38953
+- Date: Fri Nov 08, 2019 7:25 am
+- Who posted it: pazi88
+- Evidence type: wheel description
+- Confidence: medium
+- Summary: [PSIG](./memberlist.php?mode=viewprofile&u=149) wrote: [↑](./viewtopic.php?p=38948#p38948) Fri Nov 08, 2019 12:11 am Just a note that leaving the VR wires reversed and changing the detection edge will usually not solve all issues. Wiring reversed and detecting the rising voltage edge can cause timing drift. This effect is highly dependent on the specific sensor and wheel, but is why a specific wiring (rising sensor voltage on approaching tooth) and specific edge (falling edge voltage on departing tooth) is recommended as the "standard".
+- Why it matters: Contains technical evidence that may affect firmware behavior, tests, or documentation.
+- Specific details: Edge or poll details: rising, falling
+- Matched search terms: air con polarity
+
+#### PCB for BMW m42/m50/m60 engine - Page 17
+- URL: https://speeduino.com/forum/viewtopic.php?p=40020#p38953
+- Date: Fri Nov 08, 2019 7:25 am
+- Who posted it: pazi88
+- Evidence type: wheel description
+- Confidence: medium
+- Summary: [PSIG](./memberlist.php?mode=viewprofile&u=149) wrote: [↑](./viewtopic.php?p=38948#p38948) Fri Nov 08, 2019 12:11 am Just a note that leaving the VR wires reversed and changing the detection edge will usually not solve all issues. Wiring reversed and detecting the rising voltage edge can cause timing drift. This effect is highly dependent on the specific sensor and wheel, but is why a specific wiring (rising sensor voltage on approaching tooth) and specific edge (falling edge voltage on departing tooth) is recommended as the "standard".
+- Why it matters: Contains technical evidence that may affect firmware behavior, tests, or documentation.
+- Specific details: Edge or poll details: rising, falling
+- Matched search terms: air con polarity
+
+#### PCB for BMW m42/m50/m60 engine - Page 18
+- URL: https://speeduino.com/forum/viewtopic.php?p=40024#p38953
+- Date: Fri Nov 08, 2019 7:25 am
+- Who posted it: pazi88
+- Evidence type: wheel description
+- Confidence: medium
+- Summary: [PSIG](./memberlist.php?mode=viewprofile&u=149) wrote: [↑](./viewtopic.php?p=38948#p38948) Fri Nov 08, 2019 12:11 am Just a note that leaving the VR wires reversed and changing the detection edge will usually not solve all issues. Wiring reversed and detecting the rising voltage edge can cause timing drift. This effect is highly dependent on the specific sensor and wheel, but is why a specific wiring (rising sensor voltage on approaching tooth) and specific edge (falling edge voltage on departing tooth) is recommended as the "standard".
+- Why it matters: Contains technical evidence that may affect firmware behavior, tests, or documentation.
+- Specific details: Edge or poll details: rising, falling
+- Matched search terms: air con polarity
+
+#### PCB for BMW m42/m50/m60 engine - Page 18
+- URL: https://speeduino.com/forum/viewtopic.php?p=40069#p38953
+- Date: Fri Nov 08, 2019 7:25 am
+- Who posted it: pazi88
+- Evidence type: wheel description
+- Confidence: medium
+- Summary: [PSIG](./memberlist.php?mode=viewprofile&u=149) wrote: [↑](./viewtopic.php?p=38948#p38948) Fri Nov 08, 2019 12:11 am Just a note that leaving the VR wires reversed and changing the detection edge will usually not solve all issues. Wiring reversed and detecting the rising voltage edge can cause timing drift. This effect is highly dependent on the specific sensor and wheel, but is why a specific wiring (rising sensor voltage on approaching tooth) and specific edge (falling edge voltage on departing tooth) is recommended as the "standard".
+- Why it matters: Contains technical evidence that may affect firmware behavior, tests, or documentation.
+- Specific details: Edge or poll details: rising, falling
+- Matched search terms: air con polarity
+
+#### Opel Astra G project, original Ecu + speeduino (Parallel/piggyback) - Page 15
+- URL: https://speeduino.com/forum/viewtopic.php?p=67715#p61147
+- Date: Thu Feb 09, 2023 4:47 pm
+- Who posted it: PSIG
+- Evidence type: scope capture
+- Confidence: medium
+- Summary: lovosal wrote: I am looking for an ammeter clamp for my oscilloscope to be able to see the injection pulses and the sparks from the coils at the same time and thus be able to see, for example, the dwell that I have and if it is. correct You want to know the timing of events. A current clamp can be used for this and many other tests.
+- Why it matters: Contains concrete trace-oriented evidence that can support replay tests and decoder validation.
+- Specific details: None extracted
+- Matched search terms: idle taper
+
+#### Crank to run IGNITION TAPER
+- URL: https://speeduino.com/forum/viewtopic.php?p=63899#p64278
+- Date: Tue Aug 01, 2023 7:12 pm
+- Who posted it: PSIG
+- Evidence type: scope capture
+- Confidence: medium
+- Summary: Use any method that will indicate the source of the noise. While I've used pocket AM radios, and oscilloscopes with short wire "antennas", you can also power or disable certain circuits to focus the search for noisemakers. For example, turn everything off you can, and crank.
+- Why it matters: Contains concrete trace-oriented evidence that can support replay tests and decoder validation.
+- Specific details: Signal roles: crank mentioned
+- Matched search terms: crank to run taper
+
+#### Crank to run IGNITION TAPER
+- URL: https://speeduino.com/forum/viewtopic.php?p=63911#p64278
+- Date: Tue Aug 01, 2023 7:12 pm
+- Who posted it: PSIG
+- Evidence type: scope capture
+- Confidence: medium
+- Summary: Use any method that will indicate the source of the noise. While I've used pocket AM radios, and oscilloscopes with short wire "antennas", you can also power or disable certain circuits to focus the search for noisemakers. For example, turn everything off you can, and crank.
+- Why it matters: Contains concrete trace-oriented evidence that can support replay tests and decoder validation.
+- Specific details: Signal roles: crank mentioned
+- Matched search terms: crank to run taper
+
+#### Crank to run IGNITION TAPER
+- URL: https://speeduino.com/forum/viewtopic.php?p=64273#p64278
+- Date: Tue Aug 01, 2023 7:12 pm
+- Who posted it: PSIG
+- Evidence type: scope capture
+- Confidence: medium
+- Summary: Use any method that will indicate the source of the noise. While I've used pocket AM radios, and oscilloscopes with short wire "antennas", you can also power or disable certain circuits to focus the search for noisemakers. For example, turn everything off you can, and crank.
+- Why it matters: Contains concrete trace-oriented evidence that can support replay tests and decoder validation.
+- Specific details: Signal roles: crank mentioned
+- Matched search terms: crank to run taper
+
+#### Crank to run IGNITION TAPER
+- URL: https://speeduino.com/forum/viewtopic.php?p=64278#p64278
+- Date: Tue Aug 01, 2023 7:12 pm
+- Who posted it: PSIG
+- Evidence type: scope capture
+- Confidence: medium
+- Summary: Use any method that will indicate the source of the noise. While I've used pocket AM radios, and oscilloscopes with short wire "antennas", you can also power or disable certain circuits to focus the search for noisemakers. For example, turn everything off you can, and crank.
+- Why it matters: Contains concrete trace-oriented evidence that can support replay tests and decoder validation.
+- Specific details: Signal roles: crank mentioned
+- Matched search terms: crank to run taper
+
+#### Firmware 202305 things
+- URL: https://speeduino.com/forum/viewtopic.php?p=63426#p63419
+- Date: Wed Jun 07, 2023 6:40 pm
+- Who posted it: Ilotalo
+- Evidence type: image attachment
+- Confidence: medium
+- Summary: I have some issues in my car after i put this newest firmware. My PWM open loop is cutting after idle raise over 1100 rpm. Why?
+- Why it matters: Touches wiring-dependent versus universal idle and A/C behavior.
+- Specific details: Attachments: 2023-06-07_19.42.54.mlg.zip -> https://speeduino.com/forum/download/file.php?id=11619; 2023-06-09_18.12.22.csv.zip -> https://speeduino.com/forum/download/file.php?id=11627; 2023-06-09_20.50.29.mlg.zip -> https://speeduino.com/forum/download/file.php?id=11626 Image or capture links found: 5
+- Matched search terms: delay before idle control
+
+#### HugoW’s 1998 MX5 NB with 2004 1.8 VVT engine - Page 7
+- URL: https://speeduino.com/forum/viewtopic.php?p=54619#p55114
+- Date: Wed Feb 02, 2022 8:50 pm
+- Who posted it: HugoW
+- Evidence type: technical discussion
+- Confidence: medium
+- Summary: I fixed the alternator controller connector this afternoon and did two tests today. First I switched off the VVT control and then I ran a 30 minute drive with varying conditions while autotuning. The tune was adjusted and a second drive proved the tune was faily accurate.
+- Why it matters: Touches wiring-dependent versus universal idle and A/C behavior.
+- Specific details: None extracted
+- Matched search terms: delay before idle control
+
+#### Ignition rollback
+- URL: https://speeduino.com/forum/viewtopic.php?p=73110#p73243
+- Date: Sun Sep 28, 2025 9:15 am
+- Who posted it: Philippov Pavel
+- Evidence type: tune file / wheel description / image attachment
+- Confidence: low
+- Summary: Hello, community members, thank you to everyone who responded; your opinions are important. I measured the crankshaft and camshaft signals. The signal processor clearly inverts the signals.
+- Why it matters: Touches wiring-dependent versus universal idle and A/C behavior.
+- Specific details: Pattern mentions: 3-5, 36-2 Edge or poll details: rising, falling, change Signal roles: cam mentioned, crank mentioned Attachments: 1jz-ge_speeduino.msq -> https://speeduino.com/forum/download/file.php?id=14448 Image or capture links found: 1
+- Matched search terms: idle advance
+
+#### Firmware 202305 things
+- URL: https://speeduino.com/forum/viewtopic.php?p=63426#p63426
+- Date: Thu Jun 08, 2023 5:24 pm
+- Who posted it: PSIG
+- Evidence type: technical discussion
+- Confidence: low
+- Summary: [Ilotalo](./memberlist.php?mode=viewprofile&u=2021) wrote: [↑](./viewtopic.php?p=63419#p63419) Wed Jun 07, 2023 6:40 pm I have some issues in my car after i put this newest firmware. You did not include your tune file, so I cannot see more info, but you appear to have tune stability issues. Before looking at it again, you should do some tuning, then post the new tune with a new log and any questions at that point.
+- Why it matters: Touches wiring-dependent versus universal idle and A/C behavior.
+- Specific details: Edge or poll details: change
+- Matched search terms: delay before idle control
+
+#### 6 and 8 cylinder sequential injection PR#280
+- URL: https://speeduino.com/forum/viewtopic.php?p=74235#p46201
+- Date: Tue Nov 03, 2020 4:34 pm
+- Who posted it: Sunglasses
+- Evidence type: technical discussion
+- Confidence: low
+- Summary: Yes, @pazi88 is right. There have been a few contributions since then (including mine) to get this feature working. You will need to edit the globals.h.
+- Why it matters: Helps separate universal defaults from context-specific tune choices. Touches wiring-dependent versus universal idle and A/C behavior.
+- Specific details: None extracted
+- Matched search terms: idle up
+
+#### 6 and 8 cylinder sequential injection PR#280
+- URL: https://speeduino.com/forum/viewtopic.php?p=74236#p46201
+- Date: Tue Nov 03, 2020 4:34 pm
+- Who posted it: Sunglasses
+- Evidence type: technical discussion
+- Confidence: low
+- Summary: Yes, @pazi88 is right. There have been a few contributions since then (including mine) to get this feature working. You will need to edit the globals.h.
+- Why it matters: Helps separate universal defaults from context-specific tune choices. Touches wiring-dependent versus universal idle and A/C behavior.
+- Specific details: None extracted
+- Matched search terms: idle up
+
+#### TunerStudio 3.3 causing Speeduino to lock-up (fairly sure)
+- URL: https://speeduino.com/forum/viewtopic.php?p=74248#p74263
+- Date: Tue Mar 17, 2026 7:53 am
+- Who posted it: sako243
+- Evidence type: scope capture
+- Confidence: low
+- Summary: I still don't know if it's related to the Silicon Labs chip that's on board the Core4. Originally when we had the engine running I just drilled a hole through the case to gain access to the USB port. I ran like this for a while with the USB cable coming through the bulkhead from the engine bay but started getting resets of the ECU whilst the engine was running.
+- Why it matters: Contains concrete trace-oriented evidence that can support replay tests and decoder validation.
+- Specific details: None extracted
+- Matched search terms: idle up
+
+#### Adventures in tuning and driving a UA4C, Supercharged BMW V8
+- URL: https://speeduino.com/forum/viewtopic.php?p=58294#p58304
+- Date: Tue Aug 23, 2022 9:13 pm
+- Who posted it: PSIG
+- Evidence type: technical discussion
+- Confidence: low
+- Summary: An awesome post of tips and trials. I've found that most "issues" with aftermarket ECMs have creative solutions, and often better than the coded ones that may approach from theory rather than reality. Post as much as you have time for.
+- Why it matters: Touches wiring-dependent versus universal idle and A/C behavior.
+- Specific details: None extracted
+- Matched search terms: delay before idle control
+
+#### Pitbike EFI conversion
+- URL: https://speeduino.com/forum/viewtopic.php?p=74256#p74256
+- Date: Mon Mar 16, 2026 7:58 pm
+- Who posted it: peca
+- Evidence type: wheel description
+- Confidence: low
+- Summary: Thanks, that is now clear. Some information regarding this hobby project. Pitbike is a small supermoto bike with a single cylinder engine.
+- Why it matters: Touches wiring-dependent versus universal idle and A/C behavior.
+- Specific details: Pattern mentions: 1-2 Signal roles: cam mentioned
+- Matched search terms: idle up
+
+#### TunerStudio 3.3 causing Speeduino to lock-up (fairly sure)
+- URL: https://speeduino.com/forum/viewtopic.php?p=74248#p74252
+- Date: Mon Mar 16, 2026 6:03 pm
+- Who posted it: sako243
+- Evidence type: technical discussion
+- Confidence: low
+- Summary: I have not yet, I've been battling / debugging it a bit most of this morning and got some further anecdotal notes. After I posted that message I'd uninstalled 3.3 on my laptop and replaced it with 3.2 which I had an installer saved for (couldn't seem to find an archive of the older versions on EFI Analytics' website). When I came back from making a cup of tea TunerStudio had gone offline.
+- Why it matters: Contains technical evidence that may affect firmware behavior, tests, or documentation.
+- Specific details: Signal roles: cam mentioned
+- Matched search terms: idle up
+
+#### Coolant temperature issue
+- URL: https://speeduino.com/forum/viewtopic.php?p=74200#p74181
+- Date: Sat Feb 28, 2026 6:02 pm
+- Who posted it: scudderfish
+- Evidence type: technical discussion
+- Confidence: low
+- Summary: 82C is likely a default value if the ECU thinks the sensor (or something in between) is toast. Do you have another Mega to swap in? Another idea, do you have a working IAT?
+- Why it matters: Helps separate universal defaults from context-specific tune choices.
+- Specific details: None extracted
+- Matched search terms: idle up
+
+#### Firmware 202305 things
+- URL: https://speeduino.com/forum/viewtopic.php?p=63426#p63442
+- Date: Fri Jun 09, 2023 3:16 pm
+- Who posted it: Ilotalo
+- Evidence type: tooth log
+- Confidence: low
+- Summary: And tooth log loogs good.
+- Why it matters: Contains technical evidence that may affect firmware behavior, tests, or documentation.
+- Specific details: Attachments: 2023-06-09_18.12.22.csv.zip -> https://speeduino.com/forum/download/file.php?id=11627 Image or capture links found: 1
+- Matched search terms: delay before idle control
+
 ### Knock and pin/default policy
+
+#### PCB for BMW m52 engine - Page 18
+- URL: https://speeduino.com/forum/viewtopic.php?p=48468#p32425
+- Date: Fri Mar 01, 2019 5:38 am
+- Who posted it: noisymime
+- Evidence type: scope capture / wheel description / maintainer explanation
+- Confidence: high
+- Summary: [pazi88](./memberlist.php?mode=viewprofile&u=2291) wrote: [↑](./viewtopic.php?p=32400#p32400) Thu Feb 28, 2019 10:06 am So for example 7000RPM is 7000 pulses in second when using bmw 60-2 trigger wheel. Which is 0.00014285714 seconds between pulses. With gap, one tooth is 0.00007142857 which is 71uS.
+- Why it matters: Includes maintainer guidance, which is more reliable for roadmap decisions. Contains concrete trace-oriented evidence that can support replay tests and decoder validation.
+- Specific details: Pattern mentions: 60-2
+- Matched search terms: Teensy 4.1 knock
+
+#### Missing Knock Pins in tunerstudio
+- URL: https://speeduino.com/forum/viewtopic.php?p=72568#p72568
+- Date: Sat Jul 26, 2025 8:32 am
+- Who posted it: Patrick10072
+- Evidence type: image attachment
+- Confidence: medium
+- Summary: Im planning a project using a dropbear v2. I've uploaded the latest firmware (20251.4) onto a teensy 4.1 i have. Ive been thoroughly looking into knock control for this project.
+- Why it matters: Relevant to pin-selection policy and board-specific packaged settings.
+- Specific details: Attachments: 202501.4 - Copy.ini -> https://speeduino.com/forum/download/file.php?id=14184 Image or capture links found: 1
+- Matched search terms: Teensy 4.1 knock
+
+#### PCB for BMW m52 engine - Page 18
+- URL: https://speeduino.com/forum/viewtopic.php?p=48468#p38924
+- Date: Wed Nov 06, 2019 7:18 am
+- Who posted it: pazi88
+- Evidence type: scope capture / wheel description
+- Confidence: medium
+- Summary: I tried to do lot of stress testing with assembled m52 PnP speeduino using real components, but I really can't get the traces to burn or even hot. Also even with big spark gap and the coils/spark plugs close to ecu, I couldn't cause any noise to speeduino inputs. I probed around the ecu with scope and all is clean.
+- Why it matters: Contains concrete trace-oriented evidence that can support replay tests and decoder validation. Helps separate universal defaults from context-specific tune choices.
+- Specific details: Pattern mentions: 60-2 Edge or poll details: change Signal roles: crank mentioned
+- Matched search terms: Teensy 4.1 knock
+
+#### PCB for BMW m52 engine - Page 18
+- URL: https://speeduino.com/forum/viewtopic.php?p=48468#p49677
+- Date: Sat Apr 17, 2021 5:41 pm
+- Who posted it: Dzeerve
+- Evidence type: tune file / image attachment
+- Confidence: medium
+- Summary: Hi! checked all the leds, they are firing like they should when cranking. now car wont even start for few seconds.
+- Why it matters: Helps separate universal defaults from context-specific tune choices.
+- Specific details: Signal roles: crank mentioned Attachments: E34 SPEEDUINO .msq -> https://speeduino.com/forum/download/file.php?id=8231 Image or capture links found: 1
+- Matched search terms: Teensy 4.1 knock
+
+#### blitzbox - Page 13
+- URL: https://speeduino.com/forum/viewtopic.php?p=63463#p66462
+- Date: Thu Dec 28, 2023 3:14 pm
+- Who posted it: ME124
+- Evidence type: scope capture
+- Confidence: medium
+- Summary: [Carsten](./memberlist.php?mode=viewprofile&u=1447) wrote: [↑](./viewtopic.php?p=66453#p66453) Thu Dec 28, 2023 10:05 am Good to see that the latest version is fine. I will order now as well... Have you flashed the second micro-controller for for the wide-band circuit correctly?
+- Why it matters: Contains concrete trace-oriented evidence that can support replay tests and decoder validation.
+- Specific details: None extracted
+- Matched search terms: external knock controller
+
+#### NO2C 420cc Predator powered Honda Insight used on Robot Cantina video series
+- URL: https://speeduino.com/forum/viewtopic.php?p=55735#p55729
+- Date: Sun Mar 06, 2022 2:37 am
+- Who posted it: Jimbo
+- Evidence type: tune file / wheel description / image attachment
+- Confidence: medium
+- Summary: Hi everyone, This post is for anyone interested in the 420 CC Predator powered Honda Insight used in the Robot Cantina youtube video series. In the most recent video in the series I have invited the viewers over to this forum to discuss possible improvements to the tune on the car. Predator 420 cc engine Speeduino NO2C VR conditioner Mini max A2 V12 AEM 30-300 Wideband Ford 4.6 36-1 crank wheel Jeep 4.0 VR crank position sensor 30mm throttle body 310cc/min injector ignition by GM HEI 4 pin module Ford 4.6 ignition coil We built the car for the single purpose of going as fast as possible with a small engine.
+- Why it matters: Contains technical evidence that may affect firmware behavior, tests, or documentation.
+- Specific details: Pattern mentions: 36-1 Signal roles: crank mentioned Attachments: 2022-03-04_11.18.12.txt.txt -> https://speeduino.com/forum/download/file.php?id=9426; 2022-03-04_12.09.51.msq -> https://speeduino.com/forum/download/file.php?id=9425; 2022-03-04_12.09.51.msq -> https://speeduino.com/forum/download/file.php?id=9430 Image or capture links found: 3
+- Matched search terms: external knock controller
+
+#### blitzbox - Page 13
+- URL: https://speeduino.com/forum/viewtopic.php?p=63463#p69307
+- Date: Tue Aug 27, 2024 8:16 am
+- Who posted it: chaoschris
+- Evidence type: technical discussion
+- Confidence: medium
+- Summary: Hello pezi, >> Which pins is the Secondary Serial IO interface on? Is it on the 14-Pin header or on the 6-Pin header? most of the pins should be explained on the wikipage on the GitHub: [http://www.oelprinz.org/products/Blitzb ...
+- Why it matters: Helps separate universal defaults from context-specific tune choices. Useful for protection-mode expectations and disabled or off-state behavior. Touches wiring-dependent versus universal idle and A/C behavior.
+- Specific details: Signal roles: cam mentioned, crank mentioned
+- Matched search terms: external knock controller
+
+#### blitzbox - Page 13
+- URL: https://speeduino.com/forum/viewtopic.php?p=63463#p66453
+- Date: Thu Dec 28, 2023 10:05 am
+- Who posted it: Carsten
+- Evidence type: scope capture
+- Confidence: low
+- Summary: Good to see that the latest version is fine. I will order now as well... Have you flashed the second micro-controller for for the wide-band circuit correctly?
+- Why it matters: Contains concrete trace-oriented evidence that can support replay tests and decoder validation.
+- Specific details: None extracted
+- Matched search terms: external knock controller
+
+#### 87 f-150 5.0 supercharged build using UA4C vC5 - Page 5
+- URL: https://speeduino.com/forum/viewtopic.php?p=71983#p72508
+- Date: Sun Jul 20, 2025 6:00 am
+- Who posted it: Richard Burnside
+- Evidence type: tune file / image attachment
+- Confidence: low
+- Summary: I had been wondering about the balance issue with twin turbos and how much of an issue it would be. I haven't decided on what I'm going to do yet, but leaving it NA is firmly on the table. So far I'm liking what I'm seeing with it being NA and I'm seeing improvements every time I'm able to test it.
+- Why it matters: Contains technical evidence that may affect firmware behavior, tests, or documentation.
+- Specific details: Attachments: 2025-08-19_18.18.10.mlg -> https://speeduino.com/forum/download/file.php?id=14357; 2025-11-11_16.59.19.mlg -> https://speeduino.com/forum/download/file.php?id=14542; CurrentTune.msq -> https://speeduino.com/forum/download/file.php?id=14358 Image or capture links found: 4
+- Matched search terms: knock input
+
+#### NO2C 420cc Predator powered Honda Insight used on Robot Cantina video series
+- URL: https://speeduino.com/forum/viewtopic.php?p=55735#p55735
+- Date: Sun Mar 06, 2022 5:01 pm
+- Who posted it: digmorepaka
+- Evidence type: tune file / image attachment
+- Confidence: low
+- Summary: Hi Jimbo! I've been following the series for a while and I'm quite exctied that you have posted these here. As other forum members have mentioned, it is running quite rich, and you could get more out of it with extra ignition timing, a knock detection setup, either detcans, a discrete amplifier, or even a full controller like speedyknock(once that's released) would be able to help quite a lot.
+- Why it matters: Relevant to pin-selection policy and board-specific packaged settings.
+- Specific details: Attachments: 2022-03-04_12.09.51.msq -> https://speeduino.com/forum/download/file.php?id=9430 Image or capture links found: 1
+- Matched search terms: external knock controller
+
+#### 87 f-150 5.0 supercharged build using UA4C vC5 - Page 5
+- URL: https://speeduino.com/forum/viewtopic.php?p=71983#p71981
+- Date: Wed Jun 11, 2025 7:04 pm
+- Who posted it: jonbill
+- Evidence type: tune file / image attachment
+- Confidence: low
+- Summary: under tuning -> afr02, set the algorithm to 'no correction' - the tunes far too raw for any closed loop afr control. in engine constants, squirts per cycle should be 2 (or more) . do you have a knock sensor?
+- Why it matters: Relevant to pin-selection policy and board-specific packaged settings.
+- Specific details: Attachments: 2025-06-18_15.15.51.mlg -> https://speeduino.com/forum/download/file.php?id=14098; 2025-06-18_16.17.16.mlg -> https://speeduino.com/forum/download/file.php?id=14095; 2025-06-18_19.55.07.mlg -> https://speeduino.com/forum/download/file.php?id=14096 Image or capture links found: 8
+- Matched search terms: knock input
+
+#### 87 f-150 5.0 supercharged build using UA4C vC5 - Page 5
+- URL: https://speeduino.com/forum/viewtopic.php?p=71983#p71976
+- Date: Wed Jun 11, 2025 4:44 pm
+- Who posted it: PSIG
+- Evidence type: wheel description
+- Confidence: low
+- Summary: +1 to post bundled logs of issues with the exact tune used to take them. IMO, there is no such thing as "conservative" or "safe" timing, except correct timing. Whether you call it optimal, correct or most-efficient timing is safest.
+- Why it matters: Helps separate universal defaults from context-specific tune choices.
+- Specific details: None extracted
+- Matched search terms: knock input
+
+#### Alfa Romeo 147 2.0 TS 16v - race car - V0.4 board
+- URL: https://speeduino.com/forum/viewtopic.php?p=71958#p71962
+- Date: Mon Jun 09, 2025 9:38 am
+- Who posted it: dazq
+- Evidence type: maintainer explanation
+- Confidence: low
+- Summary: As you have the part numbers for the sensors you will most likely find the pin outs online easily. I find searching parts suppliers on eBay very useful for pin outs as they often post these details and images of connectors to help identification. The easiest way to connect to serial3 is to fit a stackable type through header on the vo4 rather than just pins .
+- Why it matters: Includes maintainer guidance, which is more reliable for roadmap decisions.
+- Specific details: None extracted
+- Matched search terms: knock input
+
+#### Speeduino Dropbear V2 Knock sensor pin not available in Tunerstudio
+- URL: https://speeduino.com/forum/viewtopic.php?p=73377#p73386
+- Date: Sat Oct 18, 2025 12:17 am
+- Who posted it: dazq
+- Evidence type: maintainer explanation
+- Confidence: low
+- Summary: [PVK](./memberlist.php?mode=viewprofile&u=10031) wrote: [↑](./viewtopic.php?p=73385#p73385) Fri Oct 17, 2025 9:40 pm I see now that Knock control is a feature of 202501: [https://github.com/speeduino/speeduino ... tag/202501](https://github.com/speeduino/speeduino/releases/tag/202501) Ik don't understand that I can't select the right Tunerstudio pin... As it says in that version , initial implementation, it is still under development by josh , that's what I meant by it not being a feature , as it's still WIP Suggest you post an issue on GitHub for the pin thing to be looked into (assuming it is not already logged)
+- Why it matters: Includes maintainer guidance, which is more reliable for roadmap decisions. Relevant to pin-selection policy and board-specific packaged settings.
+- Specific details: None extracted
+- Matched search terms: external knock controller
+
+#### Speeduino Dropbear V2 Knock sensor pin not available in Tunerstudio
+- URL: https://speeduino.com/forum/viewtopic.php?p=73380#p73386
+- Date: Sat Oct 18, 2025 12:17 am
+- Who posted it: dazq
+- Evidence type: maintainer explanation
+- Confidence: low
+- Summary: [PVK](./memberlist.php?mode=viewprofile&u=10031) wrote: [↑](./viewtopic.php?p=73385#p73385) Fri Oct 17, 2025 9:40 pm I see now that Knock control is a feature of 202501: [https://github.com/speeduino/speeduino ... tag/202501](https://github.com/speeduino/speeduino/releases/tag/202501) Ik don't understand that I can't select the right Tunerstudio pin... As it says in that version , initial implementation, it is still under development by josh , that's what I meant by it not being a feature , as it's still WIP Suggest you post an issue on GitHub for the pin thing to be looked into (assuming it is not already logged)
+- Why it matters: Includes maintainer guidance, which is more reliable for roadmap decisions. Relevant to pin-selection policy and board-specific packaged settings.
+- Specific details: None extracted
+- Matched search terms: knock_pin
+
+#### Speeduino Dropbear V2 Knock sensor pin not available in Tunerstudio
+- URL: https://speeduino.com/forum/viewtopic.php?p=73384#p73386
+- Date: Sat Oct 18, 2025 12:17 am
+- Who posted it: dazq
+- Evidence type: maintainer explanation
+- Confidence: low
+- Summary: [PVK](./memberlist.php?mode=viewprofile&u=10031) wrote: [↑](./viewtopic.php?p=73385#p73385) Fri Oct 17, 2025 9:40 pm I see now that Knock control is a feature of 202501: [https://github.com/speeduino/speeduino ... tag/202501](https://github.com/speeduino/speeduino/releases/tag/202501) Ik don't understand that I can't select the right Tunerstudio pin... As it says in that version , initial implementation, it is still under development by josh , that's what I meant by it not being a feature , as it's still WIP Suggest you post an issue on GitHub for the pin thing to be looked into (assuming it is not already logged)
+- Why it matters: Includes maintainer guidance, which is more reliable for roadmap decisions. Relevant to pin-selection policy and board-specific packaged settings.
+- Specific details: None extracted
+- Matched search terms: knock_pin
+
+#### Speeduino Dropbear V2 Knock sensor pin not available in Tunerstudio
+- URL: https://speeduino.com/forum/viewtopic.php?p=73385#p73386
+- Date: Sat Oct 18, 2025 12:17 am
+- Who posted it: dazq
+- Evidence type: maintainer explanation
+- Confidence: low
+- Summary: [PVK](./memberlist.php?mode=viewprofile&u=10031) wrote: [↑](./viewtopic.php?p=73385#p73385) Fri Oct 17, 2025 9:40 pm I see now that Knock control is a feature of 202501: [https://github.com/speeduino/speeduino ... tag/202501](https://github.com/speeduino/speeduino/releases/tag/202501) Ik don't understand that I can't select the right Tunerstudio pin... As it says in that version , initial implementation, it is still under development by josh , that's what I meant by it not being a feature , as it's still WIP Suggest you post an issue on GitHub for the pin thing to be looked into (assuming it is not already logged)
+- Why it matters: Includes maintainer guidance, which is more reliable for roadmap decisions. Relevant to pin-selection policy and board-specific packaged settings.
+- Specific details: None extracted
+- Matched search terms: knock_pin
 
 #### Speeduino Dropbear V2 Knock sensor pin not available in Tunerstudio
 - URL: https://speeduino.com/forum/viewtopic.php?p=73386#p73386
@@ -25,6 +1877,61 @@ This report is generated from targeted public-forum searching and thread scrapin
 - Confidence: low
 - Summary: [PVK](./memberlist.php?mode=viewprofile&u=10031) wrote: [↑](./viewtopic.php?p=73385#p73385) Fri Oct 17, 2025 9:40 pm I see now that Knock control is a feature of 202501: [https://github.com/speeduino/speeduino ... tag/202501](https://github.com/speeduino/speeduino/releases/tag/202501) Ik don't understand that I can't select the right Tunerstudio pin... As it says in that version , initial implementation, it is still under development by josh , that's what I meant by it not being a feature , as it's still WIP Suggest you post an issue on GitHub for the pin thing to be looked into (assuming it is not already logged)
 - Why it matters: Includes maintainer guidance, which is more reliable for roadmap decisions. Relevant to pin-selection policy and board-specific packaged settings.
+- Specific details: None extracted
+- Matched search terms: knock_pin
+
+#### Teensy based mainboard
+- URL: https://speeduino.com/forum/viewtopic.php?p=50182#p50189
+- Date: Sun May 09, 2021 10:00 pm
+- Who posted it: dazq
+- Evidence type: maintainer explanation
+- Confidence: low
+- Summary: There is support for teensy 3.6 and even a few boards designed and in use. External data stream out is possible via serial and via canbus at this time , but data input is only via serial right now though work is under way to support can too. Sounds like an exciting project, you should consider joining the slack group for techy discussions.
+- Why it matters: Includes maintainer guidance, which is more reliable for roadmap decisions.
+- Specific details: None extracted
+- Matched search terms: Teensy 4.1 knock
+
+#### Speeduino Dropbear V2 Knock sensor pin not available in Tunerstudio
+- URL: https://speeduino.com/forum/viewtopic.php?p=73377#p73377
+- Date: Fri Oct 17, 2025 11:47 am
+- Who posted it: PVK
+- Evidence type: technical discussion
+- Confidence: low
+- Summary: I have a Speeduino Dropbear V2 and I want to add a Knock sensor with an external controller that puts out a digital High/Low signal. As seen here: [https://wiki.speeduino.com/en/boards/dropbear](https://wiki.speeduino.com/en/boards/dropbear) there is no dedicated pin available so I have to use one of the spare pins: Spare Digital 1: tunerstudio pin 35 Spare Digital 2: tunerstudio pin 34 Spare Analog 1 : Tunerstudio pin A16 Spare Analog 2 : Tunerstudio pin A17 The problem is that in Tunerstudio the pin that can be selected are: digital pins 2,3,18,19 and 20 or analog pins A0 - A15. I don’t understand that the firmware has the option for Knock sense but the right pin can’t be selected.
+- Why it matters: Relevant to pin-selection policy and board-specific packaged settings.
+- Specific details: None extracted
+- Matched search terms: external knock controller
+
+#### Speeduino Dropbear V2 Knock sensor pin not available in Tunerstudio
+- URL: https://speeduino.com/forum/viewtopic.php?p=73380#p73377
+- Date: Fri Oct 17, 2025 11:47 am
+- Who posted it: PVK
+- Evidence type: technical discussion
+- Confidence: low
+- Summary: I have a Speeduino Dropbear V2 and I want to add a Knock sensor with an external controller that puts out a digital High/Low signal. As seen here: [https://wiki.speeduino.com/en/boards/dropbear](https://wiki.speeduino.com/en/boards/dropbear) there is no dedicated pin available so I have to use one of the spare pins: Spare Digital 1: tunerstudio pin 35 Spare Digital 2: tunerstudio pin 34 Spare Analog 1 : Tunerstudio pin A16 Spare Analog 2 : Tunerstudio pin A17 The problem is that in Tunerstudio the pin that can be selected are: digital pins 2,3,18,19 and 20 or analog pins A0 - A15. I don’t understand that the firmware has the option for Knock sense but the right pin can’t be selected.
+- Why it matters: Relevant to pin-selection policy and board-specific packaged settings.
+- Specific details: None extracted
+- Matched search terms: knock_pin
+
+#### Speeduino Dropbear V2 Knock sensor pin not available in Tunerstudio
+- URL: https://speeduino.com/forum/viewtopic.php?p=73384#p73377
+- Date: Fri Oct 17, 2025 11:47 am
+- Who posted it: PVK
+- Evidence type: technical discussion
+- Confidence: low
+- Summary: I have a Speeduino Dropbear V2 and I want to add a Knock sensor with an external controller that puts out a digital High/Low signal. As seen here: [https://wiki.speeduino.com/en/boards/dropbear](https://wiki.speeduino.com/en/boards/dropbear) there is no dedicated pin available so I have to use one of the spare pins: Spare Digital 1: tunerstudio pin 35 Spare Digital 2: tunerstudio pin 34 Spare Analog 1 : Tunerstudio pin A16 Spare Analog 2 : Tunerstudio pin A17 The problem is that in Tunerstudio the pin that can be selected are: digital pins 2,3,18,19 and 20 or analog pins A0 - A15. I don’t understand that the firmware has the option for Knock sense but the right pin can’t be selected.
+- Why it matters: Relevant to pin-selection policy and board-specific packaged settings.
+- Specific details: None extracted
+- Matched search terms: knock_pin
+
+#### Speeduino Dropbear V2 Knock sensor pin not available in Tunerstudio
+- URL: https://speeduino.com/forum/viewtopic.php?p=73385#p73377
+- Date: Fri Oct 17, 2025 11:47 am
+- Who posted it: PVK
+- Evidence type: technical discussion
+- Confidence: low
+- Summary: I have a Speeduino Dropbear V2 and I want to add a Knock sensor with an external controller that puts out a digital High/Low signal. As seen here: [https://wiki.speeduino.com/en/boards/dropbear](https://wiki.speeduino.com/en/boards/dropbear) there is no dedicated pin available so I have to use one of the spare pins: Spare Digital 1: tunerstudio pin 35 Spare Digital 2: tunerstudio pin 34 Spare Analog 1 : Tunerstudio pin A16 Spare Analog 2 : Tunerstudio pin A17 The problem is that in Tunerstudio the pin that can be selected are: digital pins 2,3,18,19 and 20 or analog pins A0 - A15. I don’t understand that the firmware has the option for Knock sense but the right pin can’t be selected.
+- Why it matters: Relevant to pin-selection policy and board-specific packaged settings.
 - Specific details: None extracted
 - Matched search terms: knock_pin
 
@@ -50,6 +1957,61 @@ This report is generated from targeted public-forum searching and thread scrapin
 - Specific details: None extracted
 - Matched search terms: knock_pin
 
+#### Missing Knock Pins in tunerstudio
+- URL: https://speeduino.com/forum/viewtopic.php?p=72568#p72569
+- Date: Sat Jul 26, 2025 9:19 am
+- Who posted it: dazq
+- Evidence type: maintainer explanation
+- Confidence: low
+- Summary: You won't find the board pin list in the ini or TS. The pins for each board type are set in the init CPP in the firmware. Please note that adding options in the ini won't necessarily add a working feature or option in the firmware.
+- Why it matters: Includes maintainer guidance, which is more reliable for roadmap decisions.
+- Specific details: None extracted
+- Matched search terms: Teensy 4.1 knock
+
+#### Speeduino Dropbear V2 Knock sensor pin not available in Tunerstudio
+- URL: https://speeduino.com/forum/viewtopic.php?p=73377#p73378
+- Date: Fri Oct 17, 2025 12:11 pm
+- Who posted it: dazq
+- Evidence type: maintainer explanation
+- Confidence: low
+- Summary: Knock sense is not yet an actual feature as it is still under development at this time.
+- Why it matters: Includes maintainer guidance, which is more reliable for roadmap decisions. Relevant to pin-selection policy and board-specific packaged settings.
+- Specific details: None extracted
+- Matched search terms: external knock controller
+
+#### Speeduino Dropbear V2 Knock sensor pin not available in Tunerstudio
+- URL: https://speeduino.com/forum/viewtopic.php?p=73380#p73378
+- Date: Fri Oct 17, 2025 12:11 pm
+- Who posted it: dazq
+- Evidence type: maintainer explanation
+- Confidence: low
+- Summary: Knock sense is not yet an actual feature as it is still under development at this time.
+- Why it matters: Includes maintainer guidance, which is more reliable for roadmap decisions. Relevant to pin-selection policy and board-specific packaged settings.
+- Specific details: None extracted
+- Matched search terms: knock_pin
+
+#### Speeduino Dropbear V2 Knock sensor pin not available in Tunerstudio
+- URL: https://speeduino.com/forum/viewtopic.php?p=73384#p73378
+- Date: Fri Oct 17, 2025 12:11 pm
+- Who posted it: dazq
+- Evidence type: maintainer explanation
+- Confidence: low
+- Summary: Knock sense is not yet an actual feature as it is still under development at this time.
+- Why it matters: Includes maintainer guidance, which is more reliable for roadmap decisions. Relevant to pin-selection policy and board-specific packaged settings.
+- Specific details: None extracted
+- Matched search terms: knock_pin
+
+#### Speeduino Dropbear V2 Knock sensor pin not available in Tunerstudio
+- URL: https://speeduino.com/forum/viewtopic.php?p=73385#p73378
+- Date: Fri Oct 17, 2025 12:11 pm
+- Who posted it: dazq
+- Evidence type: maintainer explanation
+- Confidence: low
+- Summary: Knock sense is not yet an actual feature as it is still under development at this time.
+- Why it matters: Includes maintainer guidance, which is more reliable for roadmap decisions. Relevant to pin-selection policy and board-specific packaged settings.
+- Specific details: None extracted
+- Matched search terms: knock_pin
+
 #### Speeduino Dropbear V2 Knock sensor pin not available in Tunerstudio
 - URL: https://speeduino.com/forum/viewtopic.php?p=73386#p73378
 - Date: Fri Oct 17, 2025 12:11 pm
@@ -72,17 +2034,6455 @@ This report is generated from targeted public-forum searching and thread scrapin
 - Specific details: None extracted
 - Matched search terms: knock_pin
 
+#### Teensy based mainboard
+- URL: https://speeduino.com/forum/viewtopic.php?p=50182#p50217
+- Date: Mon May 10, 2021 11:29 pm
+- Who posted it: dazq
+- Evidence type: maintainer explanation
+- Confidence: low
+- Summary: [JRockland](./memberlist.php?mode=viewprofile&u=4641) wrote: [↑](./viewtopic.php?p=50215#p50215) Mon May 10, 2021 9:58 pm OpelPanFan have a board who work with 3.6 on easyeda. Also im in for a ton of sensor as Im trying to make a board for a M73 (v12)... so 2 map sensors, 2 wideband sensors, 2 air intake sensors..
+- Why it matters: Includes maintainer guidance, which is more reliable for roadmap decisions.
+- Specific details: Signal roles: cam mentioned
+- Matched search terms: Teensy 4.1 knock
+
+### Tune compatibility, base tune, and INI/default drift
+
+#### LibreTune - Rust and Tauri powered FOSS Tuining Suite - GPLv2
+- URL: https://speeduino.com/forum/viewtopic.php?p=73904#p73904
+- Date: Sun Jan 11, 2026 7:46 pm
+- Who posted it: RallyPat
+- Evidence type: tooth log / composite log / tune file
+- Confidence: high
+- Summary: I have the nightly releases setup now. You can get them here: [https://github.com/RallyPat/LibreTune/r ... ag/nightly](https://github.com/RallyPat/LibreTune/releases/tag/nightly) Heres everything implemented since our first commit.
+- Why it matters: Directly informs tune and INI compatibility handling plus migration expectations. Contains concrete trace-oriented evidence that can support replay tests and decoder validation. Helps separate universal defaults from context-specific tune choices.
+- Specific details: Edge or poll details: change
+- Matched search terms: msq
+
+#### 1981 VW Rabbit here for research (Build) - Page 10
+- URL: https://speeduino.com/forum/viewtopic.php?p=67674#p67619
+- Date: Sun Mar 24, 2024 10:48 am
+- Who posted it: soultron
+- Evidence type: technical discussion
+- Confidence: high
+- Summary: I had the car running on a version of this tune but you're likely onto something. Starting from scratch could help. I've made a lot of hardware changes since then and I also haven't updated the firmware.
+- Why it matters: Helps separate universal defaults from context-specific tune choices. Touches wiring-dependent versus universal idle and A/C behavior.
+- Specific details: Edge or poll details: change
+- Matched search terms: tunerstudio defaults
+
+#### NO2C Fuel and spark LEDs
+- URL: https://speeduino.com/forum/viewtopic.php?p=73727#p73727
+- Date: Wed Dec 10, 2025 11:57 pm
+- Who posted it: PeterJones
+- Evidence type: tune file / wheel description / image attachment
+- Confidence: medium
+- Summary: Yes I assembled this board from a WM Kit. It has done many hours of testing on ardustim, and It had run, for up to 15 minutes at a time previously. The Tuner Studio hardware tests for injector and spark run fine (apart from the ignition LED, which is where we came in) A base tune has been downloaded and applied numerous times, and then modified from there, but my project and the base are so far apart about the only thing in common is they are both four stroke.
+- Why it matters: Helps separate universal defaults from context-specific tune choices. Touches wiring-dependent versus universal idle and A/C behavior.
+- Specific details: Pattern mentions: 18-1 Edge or poll details: rising Signal roles: cam mentioned Attachments: 2025-12-11_12.55.31.msq.zip -> https://speeduino.com/forum/download/file.php?id=14661 Image or capture links found: 1
+- Matched search terms: base tune
+
+#### Where find the MSQ base tuning file for version 202305?
+- URL: https://speeduino.com/forum/viewtopic.php?p=72675#p72675
+- Date: Tue Aug 05, 2025 9:14 am
+- Who posted it: LPG2CV
+- Evidence type: image attachment
+- Confidence: medium
+- Summary: In SpeedyLoader, select the version of firmware you have (but don't download it), then click on the Get Base Tune button. It should enable you to download the relevant tune. It's also important to have the correct .INI file.
+- Why it matters: Helps separate universal defaults from context-specific tune choices.
+- Specific details: Attachments: 202305.ini -> https://speeduino.com/forum/download/file.php?id=14246 Image or capture links found: 1
+- Matched search terms: ini mismatch
+
+#### 1981 VW Rabbit here for research (Build) - Page 10
+- URL: https://speeduino.com/forum/viewtopic.php?p=67674#p67674
+- Date: Wed Mar 27, 2024 3:47 pm
+- Who posted it: PSIG
+- Evidence type: technical discussion
+- Confidence: medium
+- Summary: [soultron](./memberlist.php?mode=viewprofile&u=4308) wrote: [↑](./viewtopic.php?p=67666#p67666) Wed Mar 27, 2024 3:38 am ok, That's a parameter I didn't set. … There's either a very specific thing I'm missing … This is the default setting in TunerStudio: DE_default_100.jpg (8.42 KiB) Viewed 5125 times If you did not change it: the tune is corrupted, or the tune was not built on a Base Tune. See my [earlier post](https://speeduino.com/forum/viewtopic.php?p=67617#p67617) .
+- Why it matters: Helps separate universal defaults from context-specific tune choices.
+- Specific details: Edge or poll details: change
+- Matched search terms: tunerstudio defaults
+
+#### 1981 VW Rabbit here for research (Build) - Page 10
+- URL: https://speeduino.com/forum/viewtopic.php?p=67674#p67679
+- Date: Thu Mar 28, 2024 2:47 am
+- Who posted it: soultron
+- Evidence type: technical discussion
+- Confidence: medium
+- Summary: [PSIG](./memberlist.php?mode=viewprofile&u=149) wrote: [↑](./viewtopic.php?p=67674#p67674) Wed Mar 27, 2024 3:47 pm See my [earlier post](https://speeduino.com/forum/viewtopic.php?p=67617#p67617) . The Base Tune sets the defaults that you then change specific settings for your specific engine, injectors, sensors, etc. I strongly suggest you download a Base Tune and modify it, in order to avoid missing settings that could prevent proper operation.
+- Why it matters: Helps separate universal defaults from context-specific tune choices. Touches wiring-dependent versus universal idle and A/C behavior.
+- Specific details: Edge or poll details: change
+- Matched search terms: tunerstudio defaults
+
+#### VW Golf Mk3 2.0 8V NO2C Build - Page 3
+- URL: https://speeduino.com/forum/viewtopic.php?p=71009#p71008
+- Date: Thu Feb 27, 2025 4:32 am
+- Who posted it: sandedmk.3
+- Evidence type: technical discussion
+- Confidence: medium
+- Summary: Reinstalled a clean version of 202501 that I did not code any inputs or outputs on so hopefully I can get this to come around. I got an error when loading in the base tune through TS that said it was for a different firmware and i loaded it anyways. It had a knock sensor set to pin 3 as an analog sensor but I turned it off as its not needed quiet yet and can be figured out later I just want to make sure that the tune being loaded onto this firmware is going to work properly.
+- Why it matters: Helps separate universal defaults from context-specific tune choices. Relevant to pin-selection policy and board-specific packaged settings.
+- Specific details: None extracted
+- Matched search terms: signature
+
+#### VW Golf Mk3 2.0 8V NO2C Build - Page 3
+- URL: https://speeduino.com/forum/viewtopic.php?p=71030#p71008
+- Date: Thu Feb 27, 2025 4:32 am
+- Who posted it: sandedmk.3
+- Evidence type: technical discussion
+- Confidence: medium
+- Summary: Reinstalled a clean version of 202501 that I did not code any inputs or outputs on so hopefully I can get this to come around. I got an error when loading in the base tune through TS that said it was for a different firmware and i loaded it anyways. It had a knock sensor set to pin 3 as an analog sensor but I turned it off as its not needed quiet yet and can be figured out later I just want to make sure that the tune being loaded onto this firmware is going to work properly.
+- Why it matters: Helps separate universal defaults from context-specific tune choices. Relevant to pin-selection policy and board-specific packaged settings.
+- Specific details: None extracted
+- Matched search terms: signature
+
+#### VW Golf Mk3 2.0 8V NO2C Build - Page 3
+- URL: https://speeduino.com/forum/viewtopic.php?p=71031#p71008
+- Date: Thu Feb 27, 2025 4:32 am
+- Who posted it: sandedmk.3
+- Evidence type: technical discussion
+- Confidence: medium
+- Summary: Reinstalled a clean version of 202501 that I did not code any inputs or outputs on so hopefully I can get this to come around. I got an error when loading in the base tune through TS that said it was for a different firmware and i loaded it anyways. It had a knock sensor set to pin 3 as an analog sensor but I turned it off as its not needed quiet yet and can be figured out later I just want to make sure that the tune being loaded onto this firmware is going to work properly.
+- Why it matters: Helps separate universal defaults from context-specific tune choices. Relevant to pin-selection policy and board-specific packaged settings.
+- Specific details: None extracted
+- Matched search terms: signature
+
+#### Progress report - August 2018 - Page 4
+- URL: https://speeduino.com/forum/viewtopic.php?p=29739#p28957
+- Date: Mon Sep 17, 2018 10:51 pm
+- Who posted it: noisymime
+- Evidence type: maintainer explanation
+- Confidence: medium
+- Summary: [jmunkdk](./memberlist.php?mode=viewprofile&u=1301) wrote: [↑](./viewtopic.php?p=28954#p28954) Mon Sep 17, 2018 8:50 pm I have tried your update and paid attention to the aux inputs, and I am pleased to tell that it now runs good. Thank you for looking into this. Thanks mate, good to hear!
+- Why it matters: Includes maintainer guidance, which is more reliable for roadmap decisions. Helps separate universal defaults from context-specific tune choices. Touches wiring-dependent versus universal idle and A/C behavior.
+- Specific details: Edge or poll details: change
+- Matched search terms: tune migration
+
+#### IDLE Control via Advance When Sparktable2 is Enabled
+- URL: https://speeduino.com/forum/viewtopic.php?p=72618#p72618
+- Date: Fri Aug 01, 2025 6:39 pm
+- Who posted it: @deywde
+- Evidence type: tune file / image attachment
+- Confidence: medium
+- Summary: Hello everyone, First of all, I’d like to thank you all for your dedication in keeping this project running — you’re amazing. I’d like to share an issue I’ve been experiencing with my Speeduino setup. When I activate the secondary ignition table ( Sparktable2 ) via digital input pin 36, I’ve noticed that the idle control through ignition advance stops working, and the “AdvanceCurrent” value simply mirrors what’s set in Sparktable2.
+- Why it matters: Useful for protection-mode expectations and disabled or off-state behavior. Touches wiring-dependent versus universal idle and A/C behavior.
+- Specific details: Attachments: CurrentTune.msq -> https://speeduino.com/forum/download/file.php?id=14205; SECOND SPARK TABLE_16.28.24.mlg -> https://speeduino.com/forum/download/file.php?id=14271 Image or capture links found: 2
+- Matched search terms: speeduino 202501
+
+#### O2 Control PID settings
+- URL: https://speeduino.com/forum/viewtopic.php?p=71215#p71179
+- Date: Wed Mar 12, 2025 2:31 am
+- Who posted it: BlackBird_SR71
+- Evidence type: tune file / wheel description
+- Confidence: medium
+- Summary: Having problems getting a starting point for O2 control PID settings. I've tried many different settings and I seem to have big oscillation problems with even the the Base Tunes that are listed in Speedyloaderx64 ( Base, Miata and Various BMW's . Using an AEM 30-0300 X series AFR Gauge and Controller.
+- Why it matters: Helps separate universal defaults from context-specific tune choices.
+- Specific details: Pattern mentions: 02-2
+- Matched search terms: signature
+
+#### Progress report - August 2018 - Page 4
+- URL: https://speeduino.com/forum/viewtopic.php?p=29739#p28917
+- Date: Mon Sep 17, 2018 3:29 am
+- Who posted it: noisymime
+- Evidence type: maintainer explanation
+- Confidence: medium
+- Summary: [jmunkdk](./memberlist.php?mode=viewprofile&u=1301) wrote: [↑](./viewtopic.php?p=28757#p28757) Tue Sep 11, 2018 6:35 pm I have tried this, but the result is the same. Kind of like it is running on 3 cylinders. Just to be sure, I have rolled back the last version, and it then runs fine again.
+- Why it matters: Includes maintainer guidance, which is more reliable for roadmap decisions.
+- Specific details: None extracted
+- Matched search terms: tune migration
+
+#### Triumph TR5 Speeduino build / frequent resets - Page 3
+- URL: https://speeduino.com/forum/viewtopic.php?p=72719#p72815
+- Date: Thu Aug 14, 2025 8:02 am
+- Who posted it: newyankee
+- Evidence type: scope capture
+- Confidence: medium
+- Summary: So I followed up the suggestion by PSIG from further up. [PSIG](./memberlist.php?mode=viewprofile&u=149) wrote: [↑](./viewtopic.php?p=72635#p72635) Sat Aug 02, 2025 7:12 pm Your reset idea has merit. While this could be due to a power glitch, I see no logged voltage change.
+- Why it matters: Contains concrete trace-oriented evidence that can support replay tests and decoder validation.
+- Specific details: Edge or poll details: change Attachments: 2025-08-14_19.50.48.mlg -> https://speeduino.com/forum/download/file.php?id=14348 Image or capture links found: 1
+- Matched search terms: speeduino 202501
+
+#### Triumph TR5 Speeduino build / frequent resets - Page 3
+- URL: https://speeduino.com/forum/viewtopic.php?p=72719#p72721
+- Date: Fri Aug 08, 2025 8:09 am
+- Who posted it: newyankee
+- Evidence type: tune file / image attachment
+- Confidence: medium
+- Summary: LPG2CV wrote: Check you haven't pushed back a pin in the connector. And pay particular attention to the screw connectors for ground and supply. I can't see any calibration in clt and iat!
+- Why it matters: Contains technical evidence that may affect firmware behavior, tests, or documentation.
+- Specific details: Edge or poll details: change Attachments: 2025-08-03_09.50.52.msq -> https://speeduino.com/forum/download/file.php?id=14265; 2025-08-07_20.54.57.csv -> https://speeduino.com/forum/download/file.php?id=14263; 2025-08-07_21.05.20.csv -> https://speeduino.com/forum/download/file.php?id=14264 Image or capture links found: 3
+- Matched search terms: speeduino 202501
+
+#### VW Golf Mk3 2.0 8V NO2C Build - Page 3
+- URL: https://speeduino.com/forum/viewtopic.php?p=71009#p71031
+- Date: Fri Feb 28, 2025 12:33 am
+- Who posted it: sandedmk.3
+- Evidence type: technical discussion
+- Confidence: medium
+- Summary: put the 202310 firmware on my arduino and uploaded a newly downloaded generic base tune. I only got error messages for the FPR and oil pressure. The I/O summary only had 4 things highlited which were the fan, fuel pump, tach and reset pins all labeled "Board default" .
+- Why it matters: Helps separate universal defaults from context-specific tune choices.
+- Specific details: None extracted
+- Matched search terms: signature
+
+#### VW Golf Mk3 2.0 8V NO2C Build - Page 3
+- URL: https://speeduino.com/forum/viewtopic.php?p=71030#p71031
+- Date: Fri Feb 28, 2025 12:33 am
+- Who posted it: sandedmk.3
+- Evidence type: technical discussion
+- Confidence: medium
+- Summary: put the 202310 firmware on my arduino and uploaded a newly downloaded generic base tune. I only got error messages for the FPR and oil pressure. The I/O summary only had 4 things highlited which were the fan, fuel pump, tach and reset pins all labeled "Board default" .
+- Why it matters: Helps separate universal defaults from context-specific tune choices.
+- Specific details: None extracted
+- Matched search terms: signature
+
+#### VW Golf Mk3 2.0 8V NO2C Build - Page 3
+- URL: https://speeduino.com/forum/viewtopic.php?p=71031#p71031
+- Date: Fri Feb 28, 2025 12:33 am
+- Who posted it: sandedmk.3
+- Evidence type: technical discussion
+- Confidence: medium
+- Summary: put the 202310 firmware on my arduino and uploaded a newly downloaded generic base tune. I only got error messages for the FPR and oil pressure. The I/O summary only had 4 things highlited which were the fan, fuel pump, tach and reset pins all labeled "Board default" .
+- Why it matters: Helps separate universal defaults from context-specific tune choices.
+- Specific details: None extracted
+- Matched search terms: signature
+
+#### VW Golf Mk3 2.0 8V NO2C Build - Page 3
+- URL: https://speeduino.com/forum/viewtopic.php?p=71009#p71009
+- Date: Thu Feb 27, 2025 6:14 am
+- Who posted it: sandedmk.3
+- Evidence type: tune file / image attachment
+- Confidence: medium
+- Summary: Current tune, I figured out my problem with the inputs not changing before and i just loaded the base tune anyways and ignored the warnings from the signature differences so this should be a clean new base tune other then the board being set to N02C and my CTS and IAT inputs have been put in as well as my TPS voltages for when i hook it back up i just want to make sure it all looks okay
+- Why it matters: Helps separate universal defaults from context-specific tune choices.
+- Specific details: Attachments: BEVMK3.msq -> https://speeduino.com/forum/download/file.php?id=13759 Image or capture links found: 1
+- Matched search terms: signature
+
+#### VW Golf Mk3 2.0 8V NO2C Build - Page 3
+- URL: https://speeduino.com/forum/viewtopic.php?p=71030#p71009
+- Date: Thu Feb 27, 2025 6:14 am
+- Who posted it: sandedmk.3
+- Evidence type: tune file / image attachment
+- Confidence: medium
+- Summary: Current tune, I figured out my problem with the inputs not changing before and i just loaded the base tune anyways and ignored the warnings from the signature differences so this should be a clean new base tune other then the board being set to N02C and my CTS and IAT inputs have been put in as well as my TPS voltages for when i hook it back up i just want to make sure it all looks okay
+- Why it matters: Helps separate universal defaults from context-specific tune choices.
+- Specific details: Attachments: BEVMK3.msq -> https://speeduino.com/forum/download/file.php?id=13759 Image or capture links found: 1
+- Matched search terms: signature
+
+#### VW Golf Mk3 2.0 8V NO2C Build - Page 3
+- URL: https://speeduino.com/forum/viewtopic.php?p=71031#p71009
+- Date: Thu Feb 27, 2025 6:14 am
+- Who posted it: sandedmk.3
+- Evidence type: tune file / image attachment
+- Confidence: medium
+- Summary: Current tune, I figured out my problem with the inputs not changing before and i just loaded the base tune anyways and ignored the warnings from the signature differences so this should be a clean new base tune other then the board being set to N02C and my CTS and IAT inputs have been put in as well as my TPS voltages for when i hook it back up i just want to make sure it all looks okay
+- Why it matters: Helps separate universal defaults from context-specific tune choices.
+- Specific details: Attachments: BEVMK3.msq -> https://speeduino.com/forum/download/file.php?id=13759 Image or capture links found: 1
+- Matched search terms: signature
+
+#### Progress report - August 2018 - Page 4
+- URL: https://speeduino.com/forum/viewtopic.php?p=29739#p28864
+- Date: Sat Sep 15, 2018 10:45 am
+- Who posted it: turtana
+- Evidence type: tune file / wheel description / image attachment
+- Confidence: medium
+- Summary: the trotle responce is beter with the filtering at 0. other promems are tacho output only in half speed ecu keeps resetting/or seeing rpm and fuelpump pulsing when connectin usb cable, it stops when tunerstudio has read the ecu configuration. and my ibm laptop is on battery power if wondering.
+- Why it matters: Contains technical evidence that may affect firmware behavior, tests, or documentation.
+- Specific details: Pattern mentions: 1-3 Attachments: not working righ 2018-09-15_13.37.29.msq -> https://speeduino.com/forum/download/file.php?id=3792; tps testing 2018-09-15_13.29.56.msl -> https://speeduino.com/forum/download/file.php?id=3793 Image or capture links found: 2
+- Matched search terms: tune migration
+
+#### Where find the MSQ base tuning file for version 202305?
+- URL: https://speeduino.com/forum/viewtopic.php?p=72675#p72666
+- Date: Tue Aug 05, 2025 1:21 am
+- Who posted it: keanecn
+- Evidence type: tune file / image attachment
+- Confidence: medium
+- Summary: Where can I find the MSQ base tuning file for version **202305**? I have an old commercial ECU (see post: [viewtopic.php?t=7084](https://speeduino.com/forum/viewtopic.php?t=7084) ), and its firmware version is 202305. I want to restore factory settings and reset parameters.
+- Why it matters: Contains technical evidence that may affect firmware behavior, tests, or documentation.
+- Specific details: Attachments: 202305.ini -> https://speeduino.com/forum/download/file.php?id=14246 Image or capture links found: 1
+- Matched search terms: ini mismatch
+
+#### not getting 5v
+- URL: https://speeduino.com/forum/viewtopic.php?p=73738#p73738
+- Date: Fri Dec 12, 2025 7:30 pm
+- Who posted it: PSIG
+- Evidence type: technical discussion
+- Confidence: medium
+- Summary: Which PCB version? Which pin? (IDC, processor, or... ?) Is firmware loaded? Is a base tune loaded? Have you selected your PCB version in TunerStudio? Is the board powered with clean 12V? While the PCB may have activity on some pins, many will not be correctly functional or any function for testing until all the above is complete.
+- Why it matters: Helps separate universal defaults from context-specific tune choices.
+- Specific details: None extracted
+- Matched search terms: base tune
+
+#### Issue with flex fuel settings - Page 2
+- URL: https://speeduino.com/forum/viewtopic.php?p=63022#p61544
+- Date: Tue Feb 28, 2023 7:15 am
+- Who posted it: PSIG
+- Evidence type: technical discussion
+- Confidence: medium
+- Summary: [Discovette](./memberlist.php?mode=viewprofile&u=5586) wrote: [↑](./viewtopic.php?p=61539#p61539) Tue Feb 28, 2023 3:44 am … you would think the default values would be close enough to work, but guess not. It is important to assume that the default values in Speeduino base tunes are not good for anything. They are simply placeholders filling empty values so the tune does not corrupt and features are functional (but not correct).
+- Why it matters: Helps separate universal defaults from context-specific tune choices.
+- Specific details: None extracted
+- Matched search terms: tunerstudio defaults
+
+#### 'Start Doctor' is in the house - Page 2
+- URL: https://speeduino.com/forum/viewtopic.php?p=74128#p74128
+- Date: Fri Feb 20, 2026 2:14 pm
+- Who posted it: scudderfish
+- Evidence type: technical discussion
+- Confidence: medium
+- Summary: [DStage](./memberlist.php?mode=viewprofile&u=5328) wrote: [↑](./viewtopic.php?p=74127#p74127) Fri Feb 20, 2026 12:37 pm Interesting idea. I would add a clear information about the criteria your automated diagnostic will use. For example the thresholds for rate of changes on one or the other signal, perhaps a possibility to tweak them from default.
+- Why it matters: Helps separate universal defaults from context-specific tune choices.
+- Specific details: Edge or poll details: change
+- Matched search terms: tunerstudio defaults
+
+#### NO2C Fuel and spark LEDs
+- URL: https://speeduino.com/forum/viewtopic.php?p=73727#p73720
+- Date: Wed Dec 10, 2025 1:40 am
+- Who posted it: PeterJones
+- Evidence type: tune file / image attachment
+- Confidence: medium
+- Summary: Does the intensity / brightness or lack of same indicate a problem with the system. My NO2C, (685cc single cylinder, single spark plug) KLR650 has a (what I would call normal) LED brightness for the fuel injector circuit, but the spark LED is so dim as to require the garage lights to be off in order to see it, however the hardware test delvers a healthy spark - about 8 - 10 mm between the end of the plug lead and the cylinder head. Using standard resistor plug lead and cap, standard NGK DPR8eA9 resistor plug.
+- Why it matters: Touches wiring-dependent versus universal idle and A/C behavior.
+- Specific details: Signal roles: crank mentioned Attachments: 2025-12-11_12.55.31.msq.zip -> https://speeduino.com/forum/download/file.php?id=14661 Image or capture links found: 1
+- Matched search terms: base tune
+
+#### Triumph TR5 Speeduino build / frequent resets - Page 3
+- URL: https://speeduino.com/forum/viewtopic.php?p=72719#p72732
+- Date: Fri Aug 08, 2025 9:12 pm
+- Who posted it: newyankee
+- Evidence type: scope capture
+- Confidence: medium
+- Summary: I did scope the VR sensor a week ago to check for polarity. It is okay. I also went through an EPROM_clear and re-upload of FW and tune last weekend.
+- Why it matters: Contains concrete trace-oriented evidence that can support replay tests and decoder validation.
+- Specific details: Explicit sync-loss discussion present.
+- Matched search terms: speeduino 202501
+
+#### E46 M50/M54 Frankenstien Build
+- URL: https://speeduino.com/forum/viewtopic.php?p=73754#p73754
+- Date: Mon Dec 15, 2025 6:25 am
+- Who posted it: uppy1273
+- Evidence type: technical discussion
+- Confidence: medium
+- Summary: So my project is a 2002 e46 330xi with and junk yard m50b25tu engine that I used for the head and the block with m54b30 crank, rods, pistons, cams, dual vanos. With the use of the m52b25tu throttle body and the M50 manifold to be compatible with the DIY-EFI PnP M54 ECU, I have Siemens deka injectors and the stock coils that came with the car, then im also using the wiring harness from the earlier e46's to be able to use the throttle body with both electronic and cable throttle and I have to re wire a few things but when through and checked the pinouts from both harnesses and changed anything that needed to be changed to make it correct for my current chassis, then also this is a turbo setup but I am having issues starting my car at all. it will fire but just won't fully turn over, and I'm just at a loss of where to go from here, and also I have burned the base tune provided from DIY-EfI that's meant for this engine setup, since I've kept it all the same in terms of the ecu, just a different block and modified head to fit the dual vanos, also to note I do have 40psi of fuel pressure at the regulator and the turbo spins when it fires but for testing to get it running I have the boot for the throttle body disconnected for the time being.
+- Why it matters: Helps separate universal defaults from context-specific tune choices.
+- Specific details: Edge or poll details: change Signal roles: cam mentioned, crank mentioned
+- Matched search terms: base tune
+
+#### E46 M50/M54 Frankenstien Build
+- URL: https://speeduino.com/forum/viewtopic.php?p=73754#p73773
+- Date: Fri Dec 19, 2025 12:45 pm
+- Who posted it: digmorepaka
+- Evidence type: technical discussion
+- Confidence: medium
+- Summary: [uppy1273](./memberlist.php?mode=viewprofile&u=10136) wrote: [↑](./viewtopic.php?p=73754#p73754) Mon Dec 15, 2025 6:25 am So my project is a 2002 e46 330xi with and junk yard m50b25tu engine that I used for the head and the block with m54b30 crank, rods, pistons, cams, dual vanos. With the use of the m52b25tu throttle body and the M50 manifold to be compatible with the DIY-EFI PnP M54 ECU, I have Siemens deka injectors and the stock coils that came with the car, then im also using the wiring harness from the earlier e46's to be able to use the throttle body with both electronic and cable throttle and I have to re wire a few things but when through and checked the pinouts from both harnesses and changed anything that needed to be changed to make it correct for my current chassis, then also this is a turbo setup but I am having issues starting my car at all. it will fire but just won't fully turn over, and I'm just at a loss of where to go from here, and also I have burned the base tune provided from DIY-EfI that's meant for this engine setup, since I've kept it all the same in terms of the ecu, just a different block and modified head to fit the dual vanos, also to note I do have 40psi of fuel pressure at the regulator and the turbo spins when it fires but for testing to get it running I have the boot for the throttle body disconnected for the time being.
+- Why it matters: Helps separate universal defaults from context-specific tune choices.
+- Specific details: Edge or poll details: change Signal roles: cam mentioned, crank mentioned
+- Matched search terms: base tune
+
+#### E46 M50/M54 Frankenstien Build
+- URL: https://speeduino.com/forum/viewtopic.php?p=73773#p73754
+- Date: Mon Dec 15, 2025 6:25 am
+- Who posted it: uppy1273
+- Evidence type: technical discussion
+- Confidence: medium
+- Summary: So my project is a 2002 e46 330xi with and junk yard m50b25tu engine that I used for the head and the block with m54b30 crank, rods, pistons, cams, dual vanos. With the use of the m52b25tu throttle body and the M50 manifold to be compatible with the DIY-EFI PnP M54 ECU, I have Siemens deka injectors and the stock coils that came with the car, then im also using the wiring harness from the earlier e46's to be able to use the throttle body with both electronic and cable throttle and I have to re wire a few things but when through and checked the pinouts from both harnesses and changed anything that needed to be changed to make it correct for my current chassis, then also this is a turbo setup but I am having issues starting my car at all. it will fire but just won't fully turn over, and I'm just at a loss of where to go from here, and also I have burned the base tune provided from DIY-EfI that's meant for this engine setup, since I've kept it all the same in terms of the ecu, just a different block and modified head to fit the dual vanos, also to note I do have 40psi of fuel pressure at the regulator and the turbo spins when it fires but for testing to get it running I have the boot for the throttle body disconnected for the time being.
+- Why it matters: Helps separate universal defaults from context-specific tune choices.
+- Specific details: Edge or poll details: change Signal roles: cam mentioned, crank mentioned
+- Matched search terms: base tune
+
+#### E46 M50/M54 Frankenstien Build
+- URL: https://speeduino.com/forum/viewtopic.php?p=73773#p73773
+- Date: Fri Dec 19, 2025 12:45 pm
+- Who posted it: digmorepaka
+- Evidence type: technical discussion
+- Confidence: medium
+- Summary: [uppy1273](./memberlist.php?mode=viewprofile&u=10136) wrote: [↑](./viewtopic.php?p=73754#p73754) Mon Dec 15, 2025 6:25 am So my project is a 2002 e46 330xi with and junk yard m50b25tu engine that I used for the head and the block with m54b30 crank, rods, pistons, cams, dual vanos. With the use of the m52b25tu throttle body and the M50 manifold to be compatible with the DIY-EFI PnP M54 ECU, I have Siemens deka injectors and the stock coils that came with the car, then im also using the wiring harness from the earlier e46's to be able to use the throttle body with both electronic and cable throttle and I have to re wire a few things but when through and checked the pinouts from both harnesses and changed anything that needed to be changed to make it correct for my current chassis, then also this is a turbo setup but I am having issues starting my car at all. it will fire but just won't fully turn over, and I'm just at a loss of where to go from here, and also I have burned the base tune provided from DIY-EfI that's meant for this engine setup, since I've kept it all the same in terms of the ecu, just a different block and modified head to fit the dual vanos, also to note I do have 40psi of fuel pressure at the regulator and the turbo spins when it fires but for testing to get it running I have the boot for the throttle body disconnected for the time being.
+- Why it matters: Helps separate universal defaults from context-specific tune choices.
+- Specific details: Edge or poll details: change Signal roles: cam mentioned, crank mentioned
+- Matched search terms: base tune
+
+#### Problems Connecting STM32F401 Blackpill
+- URL: https://speeduino.com/forum/viewtopic.php?p=65954#p65954
+- Date: Fri Nov 24, 2023 11:18 am
+- Who posted it: digmorepaka
+- Evidence type: technical discussion
+- Confidence: low
+- Summary: [damichi](./memberlist.php?mode=viewprofile&u=8150) wrote: [↑](./viewtopic.php?p=65933#p65933) Thu Nov 23, 2023 2:34 pm Hi folks, for a small pcb project, I wanted to use a blackpill board with a STM32F401CC. I am able to build the software release 202310 and load it to the board with no errors using VSC and PlatformIO as well as Arduino IDE. Both result in the chip not reporting a Serial Connection via USB and therefore not being recognized by Tunerstudio.
+- Why it matters: Helps separate universal defaults from context-specific tune choices.
+- Specific details: Edge or poll details: change
+- Matched search terms: tunerstudio defaults
+
+#### Bugs on Tunerstudio update
+- URL: https://speeduino.com/forum/viewtopic.php?p=55273#p55277
+- Date: Fri Feb 11, 2022 6:21 am
+- Who posted it: noisymime
+- Evidence type: maintainer explanation
+- Confidence: low
+- Summary: As mentioned above, if they're purely Warnings they can typically be ignored. It looks like the new version of TS provides Warnings on a bunch more things than the older version. I've just pushed some minor changes to the ini file in master now to resolve these, but for the current released version you can simply turn the Warnings off using the option mentioned by jdlaugh
+- Why it matters: Includes maintainer guidance, which is more reliable for roadmap decisions.
+- Specific details: Edge or poll details: change
+- Matched search terms: ini mismatch
+
+#### Dropbear bluetooth connection - Page 2
+- URL: https://speeduino.com/forum/viewtopic.php?p=57494#p57499
+- Date: Wed Jun 22, 2022 11:33 pm
+- Who posted it: dazq
+- Evidence type: maintainer explanation
+- Confidence: low
+- Summary: You can do a simple response test using the serial monitor in the Arduino IDE. Enter s or q and you will get the firmware version as a response . This is the first thing TS looks for.
+- Why it matters: Includes maintainer guidance, which is more reliable for roadmap decisions.
+- Specific details: None extracted
+- Matched search terms: ini mismatch
+
+#### 'Start Doctor' is in the house - Page 2
+- URL: https://speeduino.com/forum/viewtopic.php?p=74128#p74143
+- Date: Mon Feb 23, 2026 6:59 am
+- Who posted it: scudderfish
+- Evidence type: tooth log / wheel description
+- Confidence: low
+- Summary: I got the tooth logger working last night, but only against ardustim so no pressure variation. Thinking about it, it will only ever be able to say 'your timing is grossly off' anyway as a 36-1 wheel only has at best 10 degrees of precision, which comes back to (the correct philosophy) of tell not fix. I think getting someone who is struggling to get their shiny new PnP ECU working on their MX5 to plumb and wire in extra fuel pressure sensors might be a bit of a stretch
+- Why it matters: Contains concrete trace-oriented evidence that can support replay tests and decoder validation.
+- Specific details: Pattern mentions: 36-1
+- Matched search terms: tunerstudio defaults
+
+#### Dropbear bluetooth connection - Page 2
+- URL: https://speeduino.com/forum/viewtopic.php?p=57494#p57494
+- Date: Wed Jun 22, 2022 4:53 pm
+- Who posted it: dazq
+- Evidence type: maintainer explanation
+- Confidence: low
+- Summary: If TS doesn't see the teensy com port then it has nothing to do with an ini mismatch. If TS is connecting it will show a ini mismatch error if there is one. If TS won't find or connect t the com port it is likely something is holding the port open , thus preventing TS from being able to use it.
+- Why it matters: Includes maintainer guidance, which is more reliable for roadmap decisions.
+- Specific details: Edge or poll details: change
+- Matched search terms: ini mismatch
+
+#### 93 miata 1.6 supercharge unable to start
+- URL: https://speeduino.com/forum/viewtopic.php?p=73540#p73532
+- Date: Mon Nov 10, 2025 10:10 pm
+- Who posted it: PSIG
+- Evidence type: technical discussion
+- Confidence: low
+- Summary: Good advice, and my comment is that superchargers and turbos have little effect on starting and warmup. From that perspective, you should be able to use a 'stock' Miata base tune, only modified for your fuel and spark changes, in order to start and run in your driveway. Once you get it running for a stable warm idle (only!), you can then alter tables and other settings in order to accommodate for the boost and other factors specific to your mods.
+- Why it matters: Helps separate universal defaults from context-specific tune choices. Touches wiring-dependent versus universal idle and A/C behavior.
+- Specific details: Edge or poll details: change
+- Matched search terms: base map
+
+#### Only will run with Laptop Connected.
+- URL: https://speeduino.com/forum/viewtopic.php?p=54705#p54684
+- Date: Wed Jan 12, 2022 8:34 pm
+- Who posted it: MattSkelton
+- Evidence type: technical discussion
+- Confidence: low
+- Summary: I used Speedyloaderx64 and chose 202202 I downloaded a base tune too (did i need to do this?) Anway I am not connected to the ECU atm as its in the garage and fiddling with TS in the house on my TR7a current project; The title bar seems to indicate its speeduino 2022.02 firmware Screenshot 2022-01-12 202411.png (14.77 KiB) Viewed 2365 times If I try to load my current tune from my TR7a folder I can see the mismatch Screenshot 2022-01-12 202734.png (45.22 KiB) Viewed 2365 times However even loading the base tune obtained from Speedyloader there is a mismatch Screenshot 2022-01-12 202828.png (55.2 KiB) Viewed 2365 times
+- Why it matters: Helps separate universal defaults from context-specific tune choices.
+- Specific details: None extracted
+- Matched search terms: ini mismatch
+
+#### Something simple
+- URL: https://speeduino.com/forum/viewtopic.php?p=73230#p73230
+- Date: Fri Sep 26, 2025 8:06 am
+- Who posted it: Mark850
+- Evidence type: technical discussion
+- Confidence: low
+- Summary: Thanks for the detailed reply. Unfortunately wiring diagrams aren't available for these engines, even the few diagrams that are available for other systems in the car are quite poor. I guess that leaves me testing each one manually.
+- Why it matters: Helps separate universal defaults from context-specific tune choices.
+- Specific details: None extracted
+- Matched search terms: base map
+
+#### Something simple
+- URL: https://speeduino.com/forum/viewtopic.php?p=73230#p73246
+- Date: Sun Sep 28, 2025 5:16 pm
+- Who posted it: Mark850
+- Evidence type: technical discussion
+- Confidence: low
+- Summary: Good to know it can be done, thanks for the information. I need to get a measure off the sensors to be sure they're not 12v and see if I can find a suitable base map before I start ordering. I can get a VR conditioner added to the board and buy a smart coil pack from the same place.
+- Why it matters: Helps separate universal defaults from context-specific tune choices. Touches wiring-dependent versus universal idle and A/C behavior.
+- Specific details: Edge or poll details: rising
+- Matched search terms: base map
+
+#### Something simple
+- URL: https://speeduino.com/forum/viewtopic.php?p=73246#p73230
+- Date: Fri Sep 26, 2025 8:06 am
+- Who posted it: Mark850
+- Evidence type: technical discussion
+- Confidence: low
+- Summary: Thanks for the detailed reply. Unfortunately wiring diagrams aren't available for these engines, even the few diagrams that are available for other systems in the car are quite poor. I guess that leaves me testing each one manually.
+- Why it matters: Helps separate universal defaults from context-specific tune choices.
+- Specific details: None extracted
+- Matched search terms: base map
+
+#### Something simple
+- URL: https://speeduino.com/forum/viewtopic.php?p=73246#p73246
+- Date: Sun Sep 28, 2025 5:16 pm
+- Who posted it: Mark850
+- Evidence type: technical discussion
+- Confidence: low
+- Summary: Good to know it can be done, thanks for the information. I need to get a measure off the sensors to be sure they're not 12v and see if I can find a suitable base map before I start ordering. I can get a VR conditioner added to the board and buy a smart coil pack from the same place.
+- Why it matters: Helps separate universal defaults from context-specific tune choices. Touches wiring-dependent versus universal idle and A/C behavior.
+- Specific details: Edge or poll details: rising
+- Matched search terms: base map
+
+#### 'Start Doctor' is in the house - Page 2
+- URL: https://speeduino.com/forum/viewtopic.php?p=74128#p74139
+- Date: Sun Feb 22, 2026 7:24 pm
+- Who posted it: PSIG
+- Evidence type: tooth log
+- Confidence: low
+- Summary: +1 to a flow chart or diagnostic tree, however IMO that should be part of documentation, where I was under impression you are looking for software solutions and indicators for those diagnostics? For example in documentation; . .
+- Why it matters: Contains technical evidence that may affect firmware behavior, tests, or documentation.
+- Specific details: Signal roles: crank mentioned
+- Matched search terms: tunerstudio defaults
+
+#### 93 miata 1.6 supercharge unable to start
+- URL: https://speeduino.com/forum/viewtopic.php?p=73540#p73506
+- Date: Fri Nov 07, 2025 5:43 pm
+- Who posted it: Jeff98
+- Evidence type: tune file / image attachment
+- Confidence: low
+- Summary: Hi all. I have been looking for many posts about supercharged miata tune but still unable to get my car started I have tried with several timing tables and this feel like the closest to get it started. It did start and kinda idle before but I accidentally removed the tune.
+- Why it matters: Touches wiring-dependent versus universal idle and A/C behavior.
+- Specific details: Signal roles: crank mentioned Attachments: 2025-11-07_17.27.02.msq -> https://speeduino.com/forum/download/file.php?id=14533; sadmiatalogs.zip -> https://speeduino.com/forum/download/file.php?id=14532 Image or capture links found: 2
+- Matched search terms: base map
+
+#### Issue with flex fuel settings - Page 2
+- URL: https://speeduino.com/forum/viewtopic.php?p=63022#p63022
+- Date: Tue May 16, 2023 1:45 pm
+- Who posted it: nwalk7800
+- Evidence type: technical discussion
+- Confidence: low
+- Summary: [LPG2CV](./memberlist.php?mode=viewprofile&u=1236) wrote: [↑](./viewtopic.php?p=61531#p61531) Mon Feb 27, 2023 10:12 pm Did you correct the Flex fuel temperature table? I thank you for that as well. I see it in TunerStudio as just "fuel temp correction" and I don't see any mention of it in the wiki.
+- Why it matters: Helps separate universal defaults from context-specific tune choices.
+- Specific details: None extracted
+- Matched search terms: tunerstudio defaults
+
+#### Only will run with Laptop Connected.
+- URL: https://speeduino.com/forum/viewtopic.php?p=54705#p54687
+- Date: Wed Jan 12, 2022 9:15 pm
+- Who posted it: jonbill
+- Evidence type: technical discussion
+- Confidence: low
+- Summary: 202202 is the right new firmware. It does look like the default tune signatures haven't been updated from 202201, but I think that's a small thing. IF that tune properties you're showing of your tr7a after updating to the new firmware and successfully syncing with TunerStudio suggests a problem - something thinks your firmware is still 202103.
+- Why it matters: Helps separate universal defaults from context-specific tune choices.
+- Specific details: None extracted
+- Matched search terms: ini mismatch
+
+#### Bugs on Tunerstudio update
+- URL: https://speeduino.com/forum/viewtopic.php?p=55273#p55261
+- Date: Thu Feb 10, 2022 4:33 pm
+- Who posted it: jdlaugh
+- Evidence type: technical discussion
+- Confidence: low
+- Summary: I just updated Tunerstudio and I'm now getting a warning every time I open TS. Message says there are 0 errors and 25 warnings. I'm running 202012 firmware and now running v3.1.08 of TS, the latest version.
+- Why it matters: Contains technical evidence that may affect firmware behavior, tests, or documentation.
+- Specific details: None extracted
+- Matched search terms: ini mismatch
+
+#### Bugs on Tunerstudio update
+- URL: https://speeduino.com/forum/viewtopic.php?p=55273#p55273
+- Date: Fri Feb 11, 2022 4:19 am
+- Who posted it: jdlaugh
+- Evidence type: technical discussion
+- Confidence: low
+- Summary: Got this from Josh Stewart, the admin of the Speeduino Facebook group. "Warnings can almost always be safely ignored in TS. It's only Errors you really need to worry about.
+- Why it matters: Contains technical evidence that may affect firmware behavior, tests, or documentation.
+- Specific details: None extracted
+- Matched search terms: ini mismatch
+
+#### Issue with flex fuel settings - Page 2
+- URL: https://speeduino.com/forum/viewtopic.php?p=63022#p61539
+- Date: Tue Feb 28, 2023 3:44 am
+- Who posted it: Discovette
+- Evidence type: technical discussion
+- Confidence: low
+- Summary: [LPG2CV](./memberlist.php?mode=viewprofile&u=1236) wrote: [↑](./viewtopic.php?p=61531#p61531) Mon Feb 27, 2023 10:12 pm Did you correct the Flex fuel temperature table? Hey thank you so much for pointing that out. Yes that was the issue, I didn't see anything on that in the Speeduino Wiki, and you would think the default values would be close enough to work, but guess not.
+- Why it matters: Helps separate universal defaults from context-specific tune choices.
+- Specific details: None extracted
+- Matched search terms: tunerstudio defaults
+
+#### Problems Connecting STM32F401 Blackpill
+- URL: https://speeduino.com/forum/viewtopic.php?p=65954#p66048
+- Date: Wed Nov 29, 2023 1:06 pm
+- Who posted it: damichi
+- Evidence type: technical discussion
+- Confidence: low
+- Summary: Thanks you for your reply. I tried to change the pin defaults in the init.ino file under case 60 and #elif (definedSTM32F401xC), where the fuel pump output was definded at an USB pin. This however seems not to be all of the issue, as I still have the same problem.
+- Why it matters: Helps separate universal defaults from context-specific tune choices.
+- Specific details: Edge or poll details: change
+- Matched search terms: tunerstudio defaults
+
+#### Problems Connecting STM32F401 Blackpill
+- URL: https://speeduino.com/forum/viewtopic.php?p=65954#p66102
+- Date: Sat Dec 02, 2023 9:34 pm
+- Who posted it: ptownsin
+- Evidence type: technical discussion
+- Confidence: low
+- Summary: Hi Michael, I recently did exactly the same as you, and initially had the same result. I debugged the code and it was crashing initialising the eeprom. I got things working by adding a winbond spi chip and enabling it in the build by uncommenting the line In board_stm32_official.h starting #define USE_SPI_EEPROM There was one more gotcha.
+- Why it matters: Helps separate universal defaults from context-specific tune choices.
+- Specific details: Edge or poll details: change
+- Matched search terms: tunerstudio defaults
+
+#### New tuning software in development
+- URL: https://speeduino.com/forum/viewtopic.php?p=73892#p73892
+- Date: Sat Jan 10, 2026 11:30 am
+- Who posted it: scudderfish
+- Evidence type: tune file
+- Confidence: low
+- Summary: Screenshot 2026-01-10 at 11-21-03 VE Tuner.png (373.05 KiB) Viewed 53466 times This is where I currently am. This is general purpose software (like TS) so it parses INI and MSQ files and evaluates the expressions in real time. It talks to ECUs either over serial if the browser supports it, or web sockets.
+- Why it matters: Contains technical evidence that may affect firmware behavior, tests, or documentation.
+- Specific details: Edge or poll details: change
+- Matched search terms: msq
+
+#### New tuning software in development
+- URL: https://speeduino.com/forum/viewtopic.php?p=73898#p73892
+- Date: Sat Jan 10, 2026 11:30 am
+- Who posted it: scudderfish
+- Evidence type: tune file
+- Confidence: low
+- Summary: Screenshot 2026-01-10 at 11-21-03 VE Tuner.png (373.05 KiB) Viewed 53467 times This is where I currently am. This is general purpose software (like TS) so it parses INI and MSQ files and evaluates the expressions in real time. It talks to ECUs either over serial if the browser supports it, or web sockets.
+- Why it matters: Contains technical evidence that may affect firmware behavior, tests, or documentation.
+- Specific details: Edge or poll details: change
+- Matched search terms: msq
+
+### VSS, launch, rolling cut, and related protection behavior
+
+#### 2001 Forester NA/Turbo build
+- URL: https://speeduino.com/forum/viewtopic.php?p=63741#p63741
+- Date: Sat Jul 01, 2023 7:48 pm
+- Who posted it: jonbill
+- Evidence type: technical discussion
+- Confidence: high
+- Summary: A few observations: 1) You've got lots of advanced features on, which won't help when trying to build the tune - I'd advise turning it all off (I'm talking about DFCO, Launch Control, VSS, AirCon etc). DFCO in particular is set to 'on' below 10% TPS, so that's definitely going to make the throttle on/off. 2) your injector voltage correction looks a bit mad.
+- Why it matters: Useful for protection-mode expectations and disabled or off-state behavior. Touches wiring-dependent versus universal idle and A/C behavior.
+- Specific details: Signal roles: crank mentioned Explicit sync-loss discussion present.
+- Matched search terms: launch control VSS
+
+#### Speeduino and Realdash using USB cable
+- URL: https://speeduino.com/forum/viewtopic.php?p=71970#p70351
+- Date: Mon Dec 30, 2024 11:38 pm
+- Who posted it: kettlekev
+- Evidence type: wheel description
+- Confidence: high
+- Summary: Well, I have just spent 4 days working it out with help from the original author of the code and I still dont fully understand it in detail yet but it does function and I can add extra inputs to the dash screens. 1. Use an ESP32 (I used a Doit ESP32Dev1 which is available in the IDE board manager).
+- Why it matters: Helps separate universal defaults from context-specific tune choices. Relevant to pin-selection policy and board-specific packaged settings. Useful for protection-mode expectations and disabled or off-state behavior. Touches wiring-dependent versus universal idle and A/C behavior.
+- Specific details: Pattern mentions: 0-3, 0-7, 1-9 Signal roles: crank mentioned
+- Matched search terms: launch speed
+
+#### Speeduino and Realdash using USB cable
+- URL: https://speeduino.com/forum/viewtopic.php?p=71970#p71970
+- Date: Mon Jun 09, 2025 9:18 pm
+- Who posted it: kettlekev
+- Evidence type: wheel description
+- Confidence: medium
+- Summary: So working with the original code designer (thanks Peleppe) we came up with a fix for everything. The new RD XML file that is needed is; Code: [Select all](#) ``` <?xml version="1.0" encoding="utf-8"?> <!-- RealDash CAN XML description file, version 2 Requires RealDash version 1.5.8 or newer --> <RealDashCAN version="2"> <!-- baseId [optional] is added to each frame canId. --> <!-- frames baseId="3200" --> <frames> <!-- PARAMETERS FOR 'frame' --> <!-- 'id' can identifier (= baseId + id).
+- Why it matters: Helps separate universal defaults from context-specific tune choices. Useful for protection-mode expectations and disabled or off-state behavior. Touches wiring-dependent versus universal idle and A/C behavior.
+- Specific details: Pattern mentions: 0-3, 0-7, 1-9 Signal roles: cam mentioned, crank mentioned
+- Matched search terms: launch speed
+
+#### VSS input to serial3. - Page 3
+- URL: https://speeduino.com/forum/viewtopic.php?p=72043#p71865
+- Date: Wed May 21, 2025 8:15 am
+- Who posted it: dazq
+- Evidence type: maintainer explanation
+- Confidence: medium
+- Summary: [kettlekev](./memberlist.php?mode=viewprofile&u=3980) wrote: [↑](./viewtopic.php?p=71864#p71864) Wed May 21, 2025 5:12 am OK some progress. I started with confirming that my Honda VSS only puts out a 1v square wave. It is a 3 wire sensor (12v, 0v and signal) so I am guessing a hall effect sensor.
+- Why it matters: Includes maintainer guidance, which is more reliable for roadmap decisions. Useful for protection-mode expectations and disabled or off-state behavior.
+- Specific details: Edge or poll details: change
+- Matched search terms: VSS input mode
+
+#### VSS input to serial3. - Page 4
+- URL: https://speeduino.com/forum/viewtopic.php?p=72049#p71865
+- Date: Wed May 21, 2025 8:15 am
+- Who posted it: dazq
+- Evidence type: maintainer explanation
+- Confidence: medium
+- Summary: [kettlekev](./memberlist.php?mode=viewprofile&u=3980) wrote: [↑](./viewtopic.php?p=71864#p71864) Wed May 21, 2025 5:12 am OK some progress. I started with confirming that my Honda VSS only puts out a 1v square wave. It is a 3 wire sensor (12v, 0v and signal) so I am guessing a hall effect sensor.
+- Why it matters: Includes maintainer guidance, which is more reliable for roadmap decisions. Useful for protection-mode expectations and disabled or off-state behavior.
+- Specific details: Edge or poll details: change
+- Matched search terms: VSS input mode
+
+#### HELP! - Engine Protection Not *actually* turning on
+- URL: https://speeduino.com/forum/viewtopic.php?p=61846#p61857
+- Date: Tue Mar 14, 2023 4:01 pm
+- Who posted it: Zserbo98
+- Evidence type: tune file / image attachment
+- Confidence: medium
+- Summary: Allrighty, I attached the tune that is 100% from today and in use. Also attached a new log - from engine start up until I got to work (little less than 9 minutes). In the beginning it includes a little testing around 2500 - 3000 - 4000 rpm rev limiting while I sat in the parking lot.
+- Why it matters: Useful for protection-mode expectations and disabled or off-state behavior.
+- Specific details: Attachments: 2023-03-14_06.56.40.msl -> https://speeduino.com/forum/download/file.php?id=11197; Tune_20230314.msq -> https://speeduino.com/forum/download/file.php?id=11198 Image or capture links found: 2
+- Matched search terms: rolling cut
+
+#### HELP! - Engine Protection Not *actually* turning on
+- URL: https://speeduino.com/forum/viewtopic.php?p=61857#p61857
+- Date: Tue Mar 14, 2023 4:01 pm
+- Who posted it: Zserbo98
+- Evidence type: tune file / image attachment
+- Confidence: medium
+- Summary: Allrighty, I attached the tune that is 100% from today and in use. Also attached a new log - from engine start up until I got to work (little less than 9 minutes). In the beginning it includes a little testing around 2500 - 3000 - 4000 rpm rev limiting while I sat in the parking lot.
+- Why it matters: Useful for protection-mode expectations and disabled or off-state behavior.
+- Specific details: Attachments: 2023-03-14_06.56.40.msl -> https://speeduino.com/forum/download/file.php?id=11197; Tune_20230314.msq -> https://speeduino.com/forum/download/file.php?id=11198 Image or capture links found: 2
+- Matched search terms: rolling cut
+
+#### Help With Speeduino + Automatic Transmission Signals
+- URL: https://speeduino.com/forum/viewtopic.php?p=71638#p71714
+- Date: Mon Apr 28, 2025 8:59 am
+- Who posted it: dazq
+- Evidence type: maintainer explanation
+- Confidence: medium
+- Summary: [AlcaTech](./memberlist.php?mode=viewprofile&u=9579) wrote: [↑](./viewtopic.php?p=71712#p71712) Sun Apr 27, 2025 10:28 pm Hi AlexE. Thank you for your reply! [AlexE](./memberlist.php?mode=viewprofile&u=7151) wrote: [↑](./viewtopic.php?p=71644#p71644) Sun Apr 20, 2025 6:23 am 1.
+- Why it matters: Includes maintainer guidance, which is more reliable for roadmap decisions. Touches wiring-dependent versus universal idle and A/C behavior.
+- Specific details: None extracted
+- Matched search terms: flat shift
+
+#### electronic park brake - Page 2
+- URL: https://speeduino.com/forum/viewtopic.php?p=55951#p55949
+- Date: Sun Mar 13, 2022 12:49 am
+- Who posted it: dazq
+- Evidence type: maintainer explanation
+- Confidence: medium
+- Summary: [PSIG](./memberlist.php?mode=viewprofile&u=149) wrote: [↑](./viewtopic.php?p=55939#p55939) Sat Mar 12, 2022 6:43 pm Cool. As you create the project outline, I would like to add a few "universal" features that could be applied to specific projects. Wish List examples could be: basic switch (full on/off from high or low input, serial 0/1, etc) rotary input (dial the force and press (switch above) to engage/disengage) multi-button panel operation (switches or touch data) for per-wheel braking (cutting), Serial and CAN options to integrate to whatever else.
+- Why it matters: Includes maintainer guidance, which is more reliable for roadmap decisions.
+- Specific details: None extracted
+- Matched search terms: launch speed
+
+#### Mazda MX5 Miata mk1 mk2 mk2.5 PnP ECUs
+- URL: https://speeduino.com/forum/viewtopic.php?p=66849#p66849
+- Date: Fri Jan 26, 2024 9:46 am
+- Who posted it: AlexE
+- Evidence type: technical discussion
+- Confidence: medium
+- Summary: Hello, here are PnP ECUs for Mazda Mx5 I designed. They all fit original ECU cases, come with step-by-step manual and have preloaded maps for particular car model/engine to have as much as possible features running out of the box. In stock car installation time is within 15 minutes.
+- Why it matters: Useful for protection-mode expectations and disabled or off-state behavior. Touches wiring-dependent versus universal idle and A/C behavior.
+- Specific details: None extracted
+- Matched search terms: launch control VSS
+
+#### VSS input to serial3. - Page 3
+- URL: https://speeduino.com/forum/viewtopic.php?p=72043#p71822
+- Date: Fri May 09, 2025 10:11 am
+- Who posted it: kettlekev
+- Evidence type: scope capture
+- Confidence: medium
+- Summary: So. I went to github and downloaded the speeduino-202501.3 files. Then I modified init.cpp file again for the UA4C case moving the flex pin to pin 21 and in TS assigning VSS to pin 20.
+- Why it matters: Contains concrete trace-oriented evidence that can support replay tests and decoder validation. Useful for protection-mode expectations and disabled or off-state behavior.
+- Specific details: None extracted
+- Matched search terms: VSS input mode
+
+#### VSS input to serial3. - Page 4
+- URL: https://speeduino.com/forum/viewtopic.php?p=72049#p71822
+- Date: Fri May 09, 2025 10:11 am
+- Who posted it: kettlekev
+- Evidence type: scope capture
+- Confidence: medium
+- Summary: So. I went to github and downloaded the speeduino-202501.3 files. Then I modified init.cpp file again for the UA4C case moving the flex pin to pin 21 and in TS assigning VSS to pin 20.
+- Why it matters: Contains concrete trace-oriented evidence that can support replay tests and decoder validation. Useful for protection-mode expectations and disabled or off-state behavior.
+- Specific details: None extracted
+- Matched search terms: VSS input mode
+
+#### Help With Speeduino + Automatic Transmission Signals
+- URL: https://speeduino.com/forum/viewtopic.php?p=71638#p71638
+- Date: Sat Apr 19, 2025 4:55 pm
+- Who posted it: AlcaTech
+- Evidence type: scope capture
+- Confidence: medium
+- Summary: Hello Everyone! My name is Luiz (aka Alcatech), currently I own an 1995 Daewoo Espero with automatic trasnmission (for years this model was Brazil’s most popular imported car). I'm planning to install a sequential EFI system with Coils-on-Plugs Ignition based on Speeduino, I'm using the 0.4.3D Board, but the automatic transmission is causing some issues.
+- Why it matters: Contains concrete trace-oriented evidence that can support replay tests and decoder validation. Touches wiring-dependent versus universal idle and A/C behavior.
+- Specific details: Edge or poll details: change Signal roles: crank mentioned
+- Matched search terms: flat shift
+
+#### rev limiter cut method is switching itself
+- URL: https://speeduino.com/forum/viewtopic.php?p=65222#p65228
+- Date: Wed Oct 11, 2023 12:37 pm
+- Who posted it: jonbill
+- Evidence type: technical discussion
+- Confidence: medium
+- Summary: -25 degrees is a bit mad isn't it? thats sparks at 25 degrees AFTER TDC. It wouldn't surprise me if that feels like a pretty full cut.
+- Why it matters: Helps separate universal defaults from context-specific tune choices. Useful for protection-mode expectations and disabled or off-state behavior.
+- Specific details: None extracted
+- Matched search terms: rolling cut
+
+#### rev limiter cut method is switching itself
+- URL: https://speeduino.com/forum/viewtopic.php?p=65227#p65228
+- Date: Wed Oct 11, 2023 12:37 pm
+- Who posted it: jonbill
+- Evidence type: technical discussion
+- Confidence: medium
+- Summary: -25 degrees is a bit mad isn't it? thats sparks at 25 degrees AFTER TDC. It wouldn't surprise me if that feels like a pretty full cut.
+- Why it matters: Helps separate universal defaults from context-specific tune choices. Useful for protection-mode expectations and disabled or off-state behavior.
+- Specific details: None extracted
+- Matched search terms: rolling cut
+
+#### rev limiter cut method is switching itself
+- URL: https://speeduino.com/forum/viewtopic.php?p=65232#p65228
+- Date: Wed Oct 11, 2023 12:37 pm
+- Who posted it: jonbill
+- Evidence type: technical discussion
+- Confidence: medium
+- Summary: -25 degrees is a bit mad isn't it? thats sparks at 25 degrees AFTER TDC. It wouldn't surprise me if that feels like a pretty full cut.
+- Why it matters: Helps separate universal defaults from context-specific tune choices. Useful for protection-mode expectations and disabled or off-state behavior.
+- Specific details: None extracted
+- Matched search terms: rolling cut
+
+#### launch control based on speed input
+- URL: https://speeduino.com/forum/viewtopic.php?p=32151#p32151
+- Date: Sat Feb 16, 2019 5:01 pm
+- Who posted it: PSIG
+- Evidence type: technical discussion
+- Confidence: medium
+- Summary: Launch Control and power/flat-shift currently use RPM threshold as input. In the current form, you do not need a multi-position switch in order to have multiple rev-limit points. Only a single-position on/off switch and the clutch switch or button is necessary, and rev-limit is established by the switch-point set in TunerStudio.
+- Why it matters: Useful for protection-mode expectations and disabled or off-state behavior.
+- Specific details: None extracted
+- Matched search terms: VSS input mode
+
+#### launch control based on speed input
+- URL: https://speeduino.com/forum/viewtopic.php?p=67939#p32151
+- Date: Sat Feb 16, 2019 5:01 pm
+- Who posted it: PSIG
+- Evidence type: technical discussion
+- Confidence: medium
+- Summary: Launch Control and power/flat-shift currently use RPM threshold as input. In the current form, you do not need a multi-position switch in order to have multiple rev-limit points. Only a single-position on/off switch and the clutch switch or button is necessary, and rev-limit is established by the switch-point set in TunerStudio.
+- Why it matters: Useful for protection-mode expectations and disabled or off-state behavior.
+- Specific details: None extracted
+- Matched search terms: launch control VSS
+
+#### launch control based on speed input
+- URL: https://speeduino.com/forum/viewtopic.php?p=68399#p32151
+- Date: Sat Feb 16, 2019 5:01 pm
+- Who posted it: PSIG
+- Evidence type: technical discussion
+- Confidence: medium
+- Summary: Launch Control and power/flat-shift currently use RPM threshold as input. In the current form, you do not need a multi-position switch in order to have multiple rev-limit points. Only a single-position on/off switch and the clutch switch or button is necessary, and rev-limit is established by the switch-point set in TunerStudio.
+- Why it matters: Useful for protection-mode expectations and disabled or off-state behavior.
+- Specific details: None extracted
+- Matched search terms: launch control VSS
+
+#### launch control based on speed input
+- URL: https://speeduino.com/forum/viewtopic.php?p=69863#p32151
+- Date: Sat Feb 16, 2019 5:01 pm
+- Who posted it: PSIG
+- Evidence type: technical discussion
+- Confidence: medium
+- Summary: Launch Control and power/flat-shift currently use RPM threshold as input. In the current form, you do not need a multi-position switch in order to have multiple rev-limit points. Only a single-position on/off switch and the clutch switch or button is necessary, and rev-limit is established by the switch-point set in TunerStudio.
+- Why it matters: Useful for protection-mode expectations and disabled or off-state behavior.
+- Specific details: None extracted
+- Matched search terms: launch speed
+
+#### VSS input to serial3. - Page 3
+- URL: https://speeduino.com/forum/viewtopic.php?p=72043#p71964
+- Date: Mon Jun 09, 2025 5:48 pm
+- Who posted it: PSIG
+- Evidence type: image attachment
+- Confidence: medium
+- Summary: I haven't seen hard numbers of the sensor output, but it may be readable by a common signal conditioner module. A simple function test – assuming your testing of the sensor is complete and accurate – would be a (VR-style) signal conditioner anywhere between the sensor output and the processor input, such as the Speeduino Store Max9926, DSC, MiniMAX-A2, etc, or home-brew equivalent LM1815, LM358, etc. This is just a convenient function test.
+- Why it matters: Contains technical evidence that may affect firmware behavior, tests, or documentation.
+- Specific details: Signal roles: cam mentioned Attachments: MAX9924-MAX9927.pdf -> https://speeduino.com/forum/download/file.php?id=14090 Image or capture links found: 1
+- Matched search terms: VSS input mode
+
+#### VSS input to serial3. - Page 4
+- URL: https://speeduino.com/forum/viewtopic.php?p=72049#p71964
+- Date: Mon Jun 09, 2025 5:48 pm
+- Who posted it: PSIG
+- Evidence type: image attachment
+- Confidence: medium
+- Summary: I haven't seen hard numbers of the sensor output, but it may be readable by a common signal conditioner module. A simple function test – assuming your testing of the sensor is complete and accurate – would be a (VR-style) signal conditioner anywhere between the sensor output and the processor input, such as the Speeduino Store Max9926, DSC, MiniMAX-A2, etc, or home-brew equivalent LM1815, LM358, etc. This is just a convenient function test.
+- Why it matters: Contains technical evidence that may affect firmware behavior, tests, or documentation.
+- Specific details: Signal roles: cam mentioned Attachments: MAX9924-MAX9927.pdf -> https://speeduino.com/forum/download/file.php?id=14090 Image or capture links found: 1
+- Matched search terms: VSS input mode
+
+#### rev limiter cut method is switching itself
+- URL: https://speeduino.com/forum/viewtopic.php?p=65222#p65222
+- Date: Tue Oct 10, 2023 11:06 pm
+- Who posted it: hytrozion
+- Evidence type: tune file / image attachment
+- Confidence: medium
+- Summary: hi guys, I can't figure this out, in tunerstudio, the parameter for the rev limiter cut method is set to full. and it seems like above 2000rpm, the rev limiter cut method set itself to rolling. If at idle, I press the clutch and 100% tps, the launch is in full method.
+- Why it matters: Useful for protection-mode expectations and disabled or off-state behavior. Touches wiring-dependent versus universal idle and A/C behavior.
+- Specific details: Attachments: rev_limiter_cut_method_messed_up.msq -> https://speeduino.com/forum/download/file.php?id=12166; test_launch__shiftcut_at_different_rpm.mlg -> https://speeduino.com/forum/download/file.php?id=12169; test_launch_off.mlg -> https://speeduino.com/forum/download/file.php?id=12168 Image or capture links found: 4
+- Matched search terms: rolling cut
+
+#### rev limiter cut method is switching itself
+- URL: https://speeduino.com/forum/viewtopic.php?p=65222#p65227
+- Date: Wed Oct 11, 2023 9:47 am
+- Who posted it: hytrozion
+- Evidence type: image attachment
+- Confidence: medium
+- Summary: thanks you for helping me. I made three logs, one with nothing changed on the tune, one without launch control and one without shiftcut. the log with nothing changed, I was static, with slighty pressing the throttle more and more to gain rpm, and it was in full cut method all the time (guessing by the sound) when launch control was deactivated (with shiftcut still on), I couldn't rev above 4krpm.
+- Why it matters: Useful for protection-mode expectations and disabled or off-state behavior.
+- Specific details: Edge or poll details: change Attachments: test_launch__shiftcut_at_different_rpm.mlg -> https://speeduino.com/forum/download/file.php?id=12169; test_launch_off.mlg -> https://speeduino.com/forum/download/file.php?id=12168; test_shiftcut_off.mlg -> https://speeduino.com/forum/download/file.php?id=12170 Image or capture links found: 3
+- Matched search terms: rolling cut
+
+#### rev limiter cut method is switching itself
+- URL: https://speeduino.com/forum/viewtopic.php?p=65227#p65222
+- Date: Tue Oct 10, 2023 11:06 pm
+- Who posted it: hytrozion
+- Evidence type: tune file / image attachment
+- Confidence: medium
+- Summary: hi guys, I can't figure this out, in tunerstudio, the parameter for the rev limiter cut method is set to full. and it seems like above 2000rpm, the rev limiter cut method set itself to rolling. If at idle, I press the clutch and 100% tps, the launch is in full method.
+- Why it matters: Useful for protection-mode expectations and disabled or off-state behavior. Touches wiring-dependent versus universal idle and A/C behavior.
+- Specific details: Attachments: rev_limiter_cut_method_messed_up.msq -> https://speeduino.com/forum/download/file.php?id=12166; test_launch__shiftcut_at_different_rpm.mlg -> https://speeduino.com/forum/download/file.php?id=12169; test_launch_off.mlg -> https://speeduino.com/forum/download/file.php?id=12168 Image or capture links found: 4
+- Matched search terms: rolling cut
+
+#### rev limiter cut method is switching itself
+- URL: https://speeduino.com/forum/viewtopic.php?p=65227#p65227
+- Date: Wed Oct 11, 2023 9:47 am
+- Who posted it: hytrozion
+- Evidence type: image attachment
+- Confidence: medium
+- Summary: thanks you for helping me. I made three logs, one with nothing changed on the tune, one without launch control and one without shiftcut. the log with nothing changed, I was static, with slighty pressing the throttle more and more to gain rpm, and it was in full cut method all the time (guessing by the sound) when launch control was deactivated (with shiftcut still on), I couldn't rev above 4krpm.
+- Why it matters: Useful for protection-mode expectations and disabled or off-state behavior.
+- Specific details: Edge or poll details: change Attachments: test_launch__shiftcut_at_different_rpm.mlg -> https://speeduino.com/forum/download/file.php?id=12169; test_launch_off.mlg -> https://speeduino.com/forum/download/file.php?id=12168; test_shiftcut_off.mlg -> https://speeduino.com/forum/download/file.php?id=12170 Image or capture links found: 3
+- Matched search terms: rolling cut
+
+#### rev limiter cut method is switching itself
+- URL: https://speeduino.com/forum/viewtopic.php?p=65232#p65222
+- Date: Tue Oct 10, 2023 11:06 pm
+- Who posted it: hytrozion
+- Evidence type: tune file / image attachment
+- Confidence: medium
+- Summary: hi guys, I can't figure this out, in tunerstudio, the parameter for the rev limiter cut method is set to full. and it seems like above 2000rpm, the rev limiter cut method set itself to rolling. If at idle, I press the clutch and 100% tps, the launch is in full method.
+- Why it matters: Useful for protection-mode expectations and disabled or off-state behavior. Touches wiring-dependent versus universal idle and A/C behavior.
+- Specific details: Attachments: rev_limiter_cut_method_messed_up.msq -> https://speeduino.com/forum/download/file.php?id=12166; test_launch__shiftcut_at_different_rpm.mlg -> https://speeduino.com/forum/download/file.php?id=12169; test_launch_off.mlg -> https://speeduino.com/forum/download/file.php?id=12168 Image or capture links found: 4
+- Matched search terms: rolling cut
+
+#### rev limiter cut method is switching itself
+- URL: https://speeduino.com/forum/viewtopic.php?p=65232#p65227
+- Date: Wed Oct 11, 2023 9:47 am
+- Who posted it: hytrozion
+- Evidence type: image attachment
+- Confidence: medium
+- Summary: thanks you for helping me. I made three logs, one with nothing changed on the tune, one without launch control and one without shiftcut. the log with nothing changed, I was static, with slighty pressing the throttle more and more to gain rpm, and it was in full cut method all the time (guessing by the sound) when launch control was deactivated (with shiftcut still on), I couldn't rev above 4krpm.
+- Why it matters: Useful for protection-mode expectations and disabled or off-state behavior.
+- Specific details: Edge or poll details: change Attachments: test_launch__shiftcut_at_different_rpm.mlg -> https://speeduino.com/forum/download/file.php?id=12169; test_launch_off.mlg -> https://speeduino.com/forum/download/file.php?id=12168; test_shiftcut_off.mlg -> https://speeduino.com/forum/download/file.php?id=12170 Image or capture links found: 3
+- Matched search terms: rolling cut
+
+#### Speeduino and Realdash using USB cable
+- URL: https://speeduino.com/forum/viewtopic.php?p=71970#p70355
+- Date: Tue Dec 31, 2024 1:36 pm
+- Who posted it: dazq
+- Evidence type: maintainer explanation
+- Confidence: medium
+- Summary: [kettlekev](./memberlist.php?mode=viewprofile&u=3980) wrote: [↑](./viewtopic.php?p=70353#p70353) Tue Dec 31, 2024 11:02 am When you have done all of the above then the standard elements like RPM, CLT, IAT etc (as in the XML) will all be visible in RD. For the GPIO inputs you have used on the ESP, they will not be visible yet. To active them you need to go to garage in RD.
+- Why it matters: Includes maintainer guidance, which is more reliable for roadmap decisions.
+- Specific details: Edge or poll details: change
+- Matched search terms: launch speed
+
+#### 2001 Forester NA/Turbo build
+- URL: https://speeduino.com/forum/viewtopic.php?p=63741#p63739
+- Date: Sat Jul 01, 2023 2:47 pm
+- Who posted it: FozzyMan
+- Evidence type: tune file / wheel description / image attachment
+- Confidence: low
+- Summary: Hey all! I am working on a Subaru build and have run into some issues. I am completely new to tuning and have a few issues.
+- Why it matters: Relevant to pin-selection policy and board-specific packaged settings. Touches wiring-dependent versus universal idle and A/C behavior.
+- Specific details: Pattern mentions: 1-2, 3-4 Signal roles: cam mentioned Attachments: 2023-07-01_10.44.26.zip -> https://speeduino.com/forum/download/file.php?id=11721; Subie-base.msq -> https://speeduino.com/forum/download/file.php?id=11720 Image or capture links found: 2
+- Matched search terms: launch control VSS
+
+#### Speed input (VSS). Traction Control. - Page 2
+- URL: https://speeduino.com/forum/viewtopic.php?p=38949#p38957
+- Date: Fri Nov 08, 2019 1:43 pm
+- Who posted it: warhead
+- Evidence type: technical discussion
+- Confidence: low
+- Summary: [Falcao](./memberlist.php?mode=viewprofile&u=2854) wrote: [↑](./viewtopic.php?p=38945#p38945) Thu Nov 07, 2019 7:57 pm Great work ! How did you do to read vss signal from another pin than crank or cam ? Arduino Mega has 6 external interrupts inputs (pins 2, 3, 18, 19, 20, 21), pins 18 and 19 are for crank and cam signals.
+- Why it matters: Useful for protection-mode expectations and disabled or off-state behavior.
+- Specific details: Signal roles: cam mentioned, crank mentioned
+- Matched search terms: VSS input mode
+
+#### Speed input (VSS). Traction Control. - Page 2
+- URL: https://speeduino.com/forum/viewtopic.php?p=38957#p38957
+- Date: Fri Nov 08, 2019 1:43 pm
+- Who posted it: warhead
+- Evidence type: technical discussion
+- Confidence: low
+- Summary: [Falcao](./memberlist.php?mode=viewprofile&u=2854) wrote: [↑](./viewtopic.php?p=38945#p38945) Thu Nov 07, 2019 7:57 pm Great work ! How did you do to read vss signal from another pin than crank or cam ? Arduino Mega has 6 external interrupts inputs (pins 2, 3, 18, 19, 20, 21), pins 18 and 19 are for crank and cam signals.
+- Why it matters: Useful for protection-mode expectations and disabled or off-state behavior.
+- Specific details: Signal roles: cam mentioned, crank mentioned
+- Matched search terms: VSS input mode
+
+#### 2001 Forester NA/Turbo build
+- URL: https://speeduino.com/forum/viewtopic.php?p=63741#p63740
+- Date: Sat Jul 01, 2023 3:52 pm
+- Who posted it: FozzyMan
+- Evidence type: image attachment
+- Confidence: low
+- Summary: log from a drive a couple minutes ago. It has a very on/off feel at low throttle input. It runs "pretty well" when feathering the throttle, but roll into it and it spits and sputters.
+- Why it matters: Contains technical evidence that may affect firmware behavior, tests, or documentation.
+- Specific details: Attachments: 2023-07-01_10.44.26.zip -> https://speeduino.com/forum/download/file.php?id=11721 Image or capture links found: 1
+- Matched search terms: launch control VSS
+
+#### launch control based on speed input
+- URL: https://speeduino.com/forum/viewtopic.php?p=32151#p68399
+- Date: Sun May 19, 2024 1:22 am
+- Who posted it: LeeTaylor
+- Evidence type: technical discussion
+- Confidence: low
+- Summary: I saw this suggested on GitHub. I've used programmable outputs to essentially stop the ECU looking at the clutch switch pin above 5 km/h so launch works when stopped, and then re-enables over 5,000rpm which is where I have my flat shift set to start working. If you only set by VSS you'll hit the rev limiter trying to flat shift, ask me how I know
+- Why it matters: Useful for protection-mode expectations and disabled or off-state behavior.
+- Specific details: None extracted
+- Matched search terms: VSS input mode
+
+#### launch control based on speed input
+- URL: https://speeduino.com/forum/viewtopic.php?p=67939#p68399
+- Date: Sun May 19, 2024 1:22 am
+- Who posted it: LeeTaylor
+- Evidence type: technical discussion
+- Confidence: low
+- Summary: I saw this suggested on GitHub. I've used programmable outputs to essentially stop the ECU looking at the clutch switch pin above 5 km/h so launch works when stopped, and then re-enables over 5,000rpm which is where I have my flat shift set to start working. If you only set by VSS you'll hit the rev limiter trying to flat shift, ask me how I know
+- Why it matters: Useful for protection-mode expectations and disabled or off-state behavior.
+- Specific details: None extracted
+- Matched search terms: launch control VSS
+
+#### launch control based on speed input
+- URL: https://speeduino.com/forum/viewtopic.php?p=68399#p68399
+- Date: Sun May 19, 2024 1:22 am
+- Who posted it: LeeTaylor
+- Evidence type: technical discussion
+- Confidence: low
+- Summary: I saw this suggested on GitHub. I've used programmable outputs to essentially stop the ECU looking at the clutch switch pin above 5 km/h so launch works when stopped, and then re-enables over 5,000rpm which is where I have my flat shift set to start working. If you only set by VSS you'll hit the rev limiter trying to flat shift, ask me how I know
+- Why it matters: Useful for protection-mode expectations and disabled or off-state behavior.
+- Specific details: None extracted
+- Matched search terms: launch control VSS
+
+#### launch control based on speed input
+- URL: https://speeduino.com/forum/viewtopic.php?p=69863#p68399
+- Date: Sun May 19, 2024 1:22 am
+- Who posted it: LeeTaylor
+- Evidence type: technical discussion
+- Confidence: low
+- Summary: I saw this suggested on GitHub. I've used programmable outputs to essentially stop the ECU looking at the clutch switch pin above 5 km/h so launch works when stopped, and then re-enables over 5,000rpm which is where I have my flat shift set to start working. If you only set by VSS you'll hit the rev limiter trying to flat shift, ask me how I know
+- Why it matters: Useful for protection-mode expectations and disabled or off-state behavior.
+- Specific details: None extracted
+- Matched search terms: launch speed
+
+#### speedometer input
+- URL: https://speeduino.com/forum/viewtopic.php?p=32523#p32209
+- Date: Tue Feb 19, 2019 8:38 am
+- Who posted it: dazq
+- Evidence type: maintainer explanation
+- Confidence: low
+- Summary: If you convert the vss signal to analog(lm2917?) Then feed it to speeduino aux input , you could see it in TS.
+- Why it matters: Includes maintainer guidance, which is more reliable for roadmap decisions. Useful for protection-mode expectations and disabled or off-state behavior.
+- Specific details: None extracted
+- Matched search terms: vss pulses per km
+
+#### Speed input (VSS). Traction Control. - Page 2
+- URL: https://speeduino.com/forum/viewtopic.php?p=38949#p38969
+- Date: Fri Nov 08, 2019 11:05 pm
+- Who posted it: PSIG
+- Evidence type: technical discussion
+- Confidence: low
+- Summary: [evo_lucian](./memberlist.php?mode=viewprofile&u=103) wrote: [↑](./viewtopic.php?p=38950#p38950) Fri Nov 08, 2019 4:35 am I have always felt that first step in traction control should be ignition retard and followed by cutting of cylinders if it really gets out of hand. Cutting 1 out of 4 cylinders is an automatic 25% reduction in power. Correct, and why you may want to expand the range simply, by adding more "n" as I outlined.
+- Why it matters: Useful for protection-mode expectations and disabled or off-state behavior.
+- Specific details: None extracted
+- Matched search terms: VSS input mode
+
+#### Speed input (VSS). Traction Control. - Page 2
+- URL: https://speeduino.com/forum/viewtopic.php?p=38957#p38969
+- Date: Fri Nov 08, 2019 11:05 pm
+- Who posted it: PSIG
+- Evidence type: technical discussion
+- Confidence: low
+- Summary: [evo_lucian](./memberlist.php?mode=viewprofile&u=103) wrote: [↑](./viewtopic.php?p=38950#p38950) Fri Nov 08, 2019 4:35 am I have always felt that first step in traction control should be ignition retard and followed by cutting of cylinders if it really gets out of hand. Cutting 1 out of 4 cylinders is an automatic 25% reduction in power. Correct, and why you may want to expand the range simply, by adding more "n" as I outlined.
+- Why it matters: Useful for protection-mode expectations and disabled or off-state behavior.
+- Specific details: None extracted
+- Matched search terms: VSS input mode
+
+#### HELP! - Engine Protection Not *actually* turning on
+- URL: https://speeduino.com/forum/viewtopic.php?p=61846#p61822
+- Date: Mon Mar 13, 2023 4:19 pm
+- Who posted it: Zserbo98
+- Evidence type: tune file / image attachment
+- Confidence: low
+- Summary: Hello! My problem in short is the following: My engine protection doesn't exactly work. I was doing a pull for testing, but I noticed that it wasn't really limiting at the set 7000 rpm, so I tried it around 4000rpm with a soft limit value of 10 degrees upwards from 3500rpm.
+- Why it matters: Contains technical evidence that may affect firmware behavior, tests, or documentation.
+- Specific details: Attachments: 2023-03-14_06.56.40.msl -> https://speeduino.com/forum/download/file.php?id=11197; CurrentTune.msq -> https://speeduino.com/forum/download/file.php?id=11187; RevNotLimiting.msl -> https://speeduino.com/forum/download/file.php?id=11188 Image or capture links found: 4
+- Matched search terms: rolling cut
+
+#### HELP! - Engine Protection Not *actually* turning on
+- URL: https://speeduino.com/forum/viewtopic.php?p=61857#p61822
+- Date: Mon Mar 13, 2023 4:19 pm
+- Who posted it: Zserbo98
+- Evidence type: tune file / image attachment
+- Confidence: low
+- Summary: Hello! My problem in short is the following: My engine protection doesn't exactly work. I was doing a pull for testing, but I noticed that it wasn't really limiting at the set 7000 rpm, so I tried it around 4000rpm with a soft limit value of 10 degrees upwards from 3500rpm.
+- Why it matters: Contains technical evidence that may affect firmware behavior, tests, or documentation.
+- Specific details: Attachments: 2023-03-14_06.56.40.msl -> https://speeduino.com/forum/download/file.php?id=11197; CurrentTune.msq -> https://speeduino.com/forum/download/file.php?id=11187; RevNotLimiting.msl -> https://speeduino.com/forum/download/file.php?id=11188 Image or capture links found: 4
+- Matched search terms: rolling cut
+
+#### Flat shift usage
+- URL: https://speeduino.com/forum/viewtopic.php?p=69640#p69609
+- Date: Wed Sep 25, 2024 5:54 pm
+- Who posted it: jonbill
+- Evidence type: technical discussion
+- Confidence: low
+- Summary: Yes, I think flat shift is the feature intended for this. Have you seen the wiki page on it? I think it explains it ok.
+- Why it matters: Useful for protection-mode expectations and disabled or off-state behavior.
+- Specific details: None extracted
+- Matched search terms: flat shift
+
+#### Flat shift usage
+- URL: https://speeduino.com/forum/viewtopic.php?p=69645#p69609
+- Date: Wed Sep 25, 2024 5:54 pm
+- Who posted it: jonbill
+- Evidence type: technical discussion
+- Confidence: low
+- Summary: Yes, I think flat shift is the feature intended for this. Have you seen the wiki page on it? I think it explains it ok.
+- Why it matters: Useful for protection-mode expectations and disabled or off-state behavior.
+- Specific details: None extracted
+- Matched search terms: flat shift
+
+#### Flat shift usage
+- URL: https://speeduino.com/forum/viewtopic.php?p=69646#p69609
+- Date: Wed Sep 25, 2024 5:54 pm
+- Who posted it: jonbill
+- Evidence type: technical discussion
+- Confidence: low
+- Summary: Yes, I think flat shift is the feature intended for this. Have you seen the wiki page on it? I think it explains it ok.
+- Why it matters: Useful for protection-mode expectations and disabled or off-state behavior.
+- Specific details: None extracted
+- Matched search terms: flat shift
+
+#### Speed input (VSS). Traction Control. - Page 2
+- URL: https://speeduino.com/forum/viewtopic.php?p=38949#p38944
+- Date: Thu Nov 07, 2019 5:33 pm
+- Who posted it: warhead
+- Evidence type: wheel description
+- Confidence: low
+- Summary: Hi everyone. I've been working on a custom code (based on 05/2019 firmware). Consists in add to code to read one or two VSS (Vehicle speed sensor).
+- Why it matters: Useful for protection-mode expectations and disabled or off-state behavior.
+- Specific details: None extracted
+- Matched search terms: VSS input mode
+
+#### Speed input (VSS). Traction Control. - Page 2
+- URL: https://speeduino.com/forum/viewtopic.php?p=38957#p38944
+- Date: Thu Nov 07, 2019 5:33 pm
+- Who posted it: warhead
+- Evidence type: wheel description
+- Confidence: low
+- Summary: Hi everyone. I've been working on a custom code (based on 05/2019 firmware). Consists in add to code to read one or two VSS (Vehicle speed sensor).
+- Why it matters: Useful for protection-mode expectations and disabled or off-state behavior.
+- Specific details: None extracted
+- Matched search terms: VSS input mode
+
+#### electronic park brake - Page 2
+- URL: https://speeduino.com/forum/viewtopic.php?p=55951#p55953
+- Date: Sun Mar 13, 2022 8:58 am
+- Who posted it: dazq
+- Evidence type: maintainer explanation
+- Confidence: low
+- Summary: The driver chip I am using , the vnh5019 has internal current monitoring.. see link for details. [https://www.pololu.com/product/2507](https://www.pololu.com/product/2507) Operation and release times are surprisingly quick,not as quick as a hydraulic operation though.
+- Why it matters: Includes maintainer guidance, which is more reliable for roadmap decisions.
+- Specific details: Edge or poll details: rising
+- Matched search terms: launch speed
+
 ## Strongest evidence by roadmap area
 
-- **Knock and pin/default policy**: [Speeduino Dropbear V2 Knock sensor pin not available in Tunerstudio](https://speeduino.com/forum/viewtopic.php?p=73386#p73386) — dazq, Sat Oct 18, 2025 12:17 am, confidence low.
+- **Decoder and trigger-pattern evidence**: [1985 Honda Goldwing Limited Edition FI Model ECU Replacement - Page 67](https://speeduino.com/forum/viewtopic.php?p=65044#p65044) — Rednaxs60, Wed Sep 27, 2023 11:54 pm, confidence high.
+- **Idle advance, idle taper, and air-con defaults**: [PCB for BMW m42/m50/m60 engine - Page 17](https://speeduino.com/forum/viewtopic.php?p=39996#p38935) — pazi88, Thu Nov 07, 2019 8:15 am, confidence high.
+- **Knock and pin/default policy**: [PCB for BMW m52 engine - Page 18](https://speeduino.com/forum/viewtopic.php?p=48468#p32425) — noisymime, Fri Mar 01, 2019 5:38 am, confidence high.
+- **Tune compatibility, base tune, and INI/default drift**: [LibreTune - Rust and Tauri powered FOSS Tuining Suite - GPLv2](https://speeduino.com/forum/viewtopic.php?p=73904#p73904) — RallyPat, Sun Jan 11, 2026 7:46 pm, confidence high.
+- **VSS, launch, rolling cut, and related protection behavior**: [2001 Forester NA/Turbo build](https://speeduino.com/forum/viewtopic.php?p=63741#p63741) — jonbill, Sat Jul 01, 2023 7:48 pm, confidence high.
 
 ## Unresolved contradictions
 
-- No obvious contradictions were detected automatically; review medium-confidence entries manually.
+- Decoder and trigger-pattern evidence: some posts imply a universal default while others frame it as context-specific.
+- Decoder and trigger-pattern evidence: conflicting edge or polarity references appear across posts.
+- Idle advance, idle taper, and air-con defaults: some posts imply a universal default while others frame it as context-specific.
+- Idle advance, idle taper, and air-con defaults: conflicting edge or polarity references appear across posts.
+- Knock and pin/default policy: some posts imply a universal default while others frame it as context-specific.
+- Tune compatibility, base tune, and INI/default drift: some posts imply a universal default while others frame it as context-specific.
+- VSS, launch, rolling cut, and related protection behavior: some posts imply a universal default while others frame it as context-specific.
 
 ## Places the forum suggests code changes, tune changes, test additions, or documentation updates
 
+- Documentation and test addition: add explicit firmware, INI, and base-tune compatibility matrix checks plus migration guidance.
+- Test addition: build replay and regression coverage from real tooth/composite traces and sync-loss cases.
 - Code and documentation review: verify knock-pin enumerations, board pin exposure, and packaged tune defaults for board variants.
+- Documentation change: clarify that A/C polarity is wiring-dependent, not a universal default.
+- Test and documentation change: confirm disabled or off-state semantics for VSS, launch control, and rolling cut settings.
+
+## Trigger decoder and sync-behavior evidence
+
+### 1-1
+
+#### Subaru EJ20G do not start - Page 4
+- URL: https://speeduino.com/forum/viewtopic.php?p=62621#p62771
+- Date: Mon May 01, 2023 4:19 pm
+- Who posted it: PSIG
+- Evidence type: wheel description / image attachment
+- Confidence: medium
+- Summary: Yes, in part . This is because not only is the signal shape easier to detect (more vertical or sharper in voltage drop), but is also less prone to drift than a slower "lazy" swing, also adding the input circuit capacitor changes the shape of a positive signal. Likewise, the MAX992x is especially prone to ignoring teeth after a gap ("smart" adaptive function) if reading the leading edges. Lots of little things going on there, and much dependent on the specific sensor and tooth design.
+- Why it matters: Contains decoder-specific technical details that may support test coverage.
+- Replay-test details: Pattern references: 1-1, 60-2 Includes: missing tooth Includes: change Image or capture links: 2 Attachments: 2023-05-06_16.24.05.zip -> https://speeduino.com/forum/download/file.php?id=11444; 2023-05-06_16.25.10.zip -> https://speeduino.com/forum/download/file.php?id=11443
+- Matched search terms: Subaru 6/7 sync
+
+#### Subaru EJ20G do not start - Page 7
+- URL: https://speeduino.com/forum/viewtopic.php?p=63170#p62771
+- Date: Mon May 01, 2023 4:19 pm
+- Who posted it: PSIG
+- Evidence type: wheel description / image attachment
+- Confidence: medium
+- Summary: Yes, in part . This is because not only is the signal shape easier to detect (more vertical or sharper in voltage drop), but is also less prone to drift than a slower "lazy" swing, also adding the input circuit capacitor changes the shape of a positive signal. Likewise, the MAX992x is especially prone to ignoring teeth after a gap ("smart" adaptive function) if reading the leading edges. Lots of little things going on there, and much dependent on the specific sensor and tooth design.
+- Why it matters: Contains decoder-specific technical details that may support test coverage.
+- Replay-test details: Pattern references: 1-1, 60-2 Includes: missing tooth Includes: change Image or capture links: 2 Attachments: 2023-05-06_16.24.05.zip -> https://speeduino.com/forum/download/file.php?id=11444; 2023-05-06_16.25.10.zip -> https://speeduino.com/forum/download/file.php?id=11443
+- Matched search terms: Subaru 6/7 Speeduino trigger
+
+### 1-2
+
+#### DIYautotune Nissan optical trigger wheel - Page 2
+- URL: https://speeduino.com/forum/viewtopic.php?p=34587#p34587
+- Date: Fri May 10, 2019 8:26 am
+- Who posted it: JoostXT
+- Evidence type: scope capture / wheel description
+- Confidence: high
+- Summary: [LPG2CV](./memberlist.php?mode=viewprofile&u=1236) wrote: [↑](./viewtopic.php?p=34577#p34577) Thu May 09, 2019 11:05 pm Hi Sorry, its a bit late in the evening, so briefly Your temperature sensors don't appear to have been calibrated. I note in the log that Coolant is fluctuating a little and this could be because the value speedy is receiving is floating. So best get that calibrated. You mention the IAT is melted, is it working accurately?
+- Why it matters: Includes hardware-signal evidence, useful for edge and polarity interpretation.
+- Replay-test details: Pattern references: 1-2 Includes: cam Includes: crank
+- Matched search terms: Subaru 6/7 oscilloscope
+
+### 1-3-4-2
+
+#### Issues trying to start an EJ16 with Speeduino v0.4
+- URL: https://speeduino.com/forum/viewtopic.php?p=71709#p71697
+- Date: Fri Apr 25, 2025 4:22 pm
+- Who posted it: George Tsotsos
+- Evidence type: composite log / tune file / wheel description
+- Confidence: medium
+- Summary: We're having issues trying to start the engine, currently its setup as sequential injection with wasted spark, while cranking we do get Full Sync, and the car tries to run with one cylinder only, that being CYL3, the injectors seem to be correctly installed as the attachments show I am unsure about the firing order setup because in the speeduino documentation it shows that the coils should be wired this way for a typical i4 engine with a 1-3-4-2 firing order: IGN1 -> CYL1 + CYL4 IGN2 -> CYL2 + CYL3 Meaning it does the pattern IGN 1-2-1-2 The boxer engine has a different firing order: 1-3-2-4, meaning the IGN would have to be in a different order?: IGN 1-2-2-1 , thats what i believe the stock ECU does. Any ideas on what we should try/change? I've attached a picture of how the Injectors are wired wired up and the composite logger while running on 1 cylinder I can send a video of how it behaves when it runs on 1 cylinder if needed
+- Why it matters: Provides replay-test-relevant trigger traces.
+- Replay-test details: Pattern references: 1-2-1-2, 1-2-2-1, 1-3-2-4, 1-3-4-2 Includes: change Includes: crank Includes: sync Image or capture links: 2 Attachments: cranking.csv -> https://speeduino.com/forum/download/file.php?id=14091; subarugc4.msq -> https://speeduino.com/forum/download/file.php?id=14092
+- Matched search terms: 36-2-2-2 sync
+
+#### Issues trying to start an EJ16 with Speeduino v0.4
+- URL: https://speeduino.com/forum/viewtopic.php?p=72018#p71697
+- Date: Fri Apr 25, 2025 4:22 pm
+- Who posted it: George Tsotsos
+- Evidence type: composite log / tune file / wheel description
+- Confidence: medium
+- Summary: We're having issues trying to start the engine, currently its setup as sequential injection with wasted spark, while cranking we do get Full Sync, and the car tries to run with one cylinder only, that being CYL3, the injectors seem to be correctly installed as the attachments show I am unsure about the firing order setup because in the speeduino documentation it shows that the coils should be wired this way for a typical i4 engine with a 1-3-4-2 firing order: IGN1 -> CYL1 + CYL4 IGN2 -> CYL2 + CYL3 Meaning it does the pattern IGN 1-2-1-2 The boxer engine has a different firing order: 1-3-2-4, meaning the IGN would have to be in a different order?: IGN 1-2-2-1 , thats what i believe the stock ECU does. Any ideas on what we should try/change? I've attached a picture of how the Injectors are wired wired up and the composite logger while running on 1 cylinder I can send a video of how it behaves when it runs on 1 cylinder if needed
+- Why it matters: Provides replay-test-relevant trigger traces.
+- Replay-test details: Pattern references: 1-2-1-2, 1-2-2-1, 1-3-2-4, 1-3-4-2 Includes: change Includes: crank Includes: sync Image or capture links: 2 Attachments: cranking.csv -> https://speeduino.com/forum/download/file.php?id=14091; subarugc4.msq -> https://speeduino.com/forum/download/file.php?id=14092
+- Matched search terms: 36-2-2-2 Speeduino trigger
+
+### 12-3
+
+#### Trigger wheel missing tooth
+- URL: https://speeduino.com/forum/viewtopic.php?p=71921#p71975
+- Date: Wed Jun 11, 2025 9:40 am
+- Who posted it: imoze
+- Evidence type: scope capture / wheel description
+- Confidence: low
+- Summary: using 12-3 engine running fine and smooth with -130 trigger angle, but tachometer is not synced with value in tunerstudio, it's like 500-800 behind, tachhometer is digital bar style. do i need to hook oscilloscope to tacho wire with original ecu first?
+- Why it matters: Includes hardware-signal evidence, useful for edge and polarity interpretation.
+- Replay-test details: Pattern references: 12-3 Includes: sync
+- Matched search terms: 36-2-1 Speeduino trigger
+
+### 14-5
+
+#### HONDA TRANSALP XL650V
+- URL: https://speeduino.com/forum/viewtopic.php?p=73068#p73068
+- Date: Sat Sep 06, 2025 5:49 pm
+- Who posted it: Tutajjestem
+- Evidence type: scope capture / wheel description
+- Confidence: high
+- Summary: Engine Specs: Model: Honda Transalp 650 Configuration: V-twin, 52° cylinder angle Ignition: Odd-fire, 232° firing interval Trigger Wheel / Crank Sensor: Trigger pattern: 14-5 (14 teeth total, 5 missing) — 9 physical teeth and 5 gaps Trigger wheel rotates clockwise Ignition for the first cylinder (front cylinder) according to the mark on the magnetic wheel: 10° BTDC aligns exactly with tooth #9 Ignition for the second cylinder (rear cylinder) according to the mark on the magnetic wheel: 10° BTDC aligns exactly with tooth #4 Service manual specifies: first cylinder ignition at 232° and second cylinder ignition at 488° This creates an asymmetric odd-fire pattern that must be correctly mapped in Speeduino for accurate ignition timing. Trigger Wheel Explanation (Honda Transalp 650) The engine uses a 14-5 trigger wheel as the crank position reference. The wheel is divided into 14 equal segments, each covering ≈25.71° of crankshaft rotation. Out of these 14, 5 segments are missing, leaving 9 physical teeth on the wheel.
+- Why it matters: Includes hardware-signal evidence, useful for edge and polarity interpretation.
+- Replay-test details: Pattern references: 14-5, 36-1, 8-1 Includes: crank Includes: sync Image or capture links: 1 Attachments: DataLogs.zip -> https://speeduino.com/forum/download/file.php?id=14402
+- Matched search terms: 36-2-1 Speeduino trigger
+
+#### HONDA TRANSALP XL650V
+- URL: https://speeduino.com/forum/viewtopic.php?p=73072#p73068
+- Date: Sat Sep 06, 2025 5:49 pm
+- Who posted it: Tutajjestem
+- Evidence type: scope capture / wheel description
+- Confidence: high
+- Summary: Engine Specs: Model: Honda Transalp 650 Configuration: V-twin, 52° cylinder angle Ignition: Odd-fire, 232° firing interval Trigger Wheel / Crank Sensor: Trigger pattern: 14-5 (14 teeth total, 5 missing) — 9 physical teeth and 5 gaps Trigger wheel rotates clockwise Ignition for the first cylinder (front cylinder) according to the mark on the magnetic wheel: 10° BTDC aligns exactly with tooth #9 Ignition for the second cylinder (rear cylinder) according to the mark on the magnetic wheel: 10° BTDC aligns exactly with tooth #4 Service manual specifies: first cylinder ignition at 232° and second cylinder ignition at 488° This creates an asymmetric odd-fire pattern that must be correctly mapped in Speeduino for accurate ignition timing. Trigger Wheel Explanation (Honda Transalp 650) The engine uses a 14-5 trigger wheel as the crank position reference. The wheel is divided into 14 equal segments, each covering ≈25.71° of crankshaft rotation. Out of these 14, 5 segments are missing, leaving 9 physical teeth on the wheel.
+- Why it matters: Includes hardware-signal evidence, useful for edge and polarity interpretation.
+- Replay-test details: Pattern references: 14-5, 36-1, 8-1 Includes: crank Includes: sync Image or capture links: 1 Attachments: DataLogs.zip -> https://speeduino.com/forum/download/file.php?id=14402
+- Matched search terms: 36-2-1 Speeduino trigger
+
+### 2-3
+
+#### 1985 Honda Goldwing Limited Edition FI Model ECU Replacement - Page 67
+- URL: https://speeduino.com/forum/viewtopic.php?p=65044#p59227
+- Date: Mon Oct 31, 2022 3:45 pm
+- Who posted it: Rednaxs60
+- Evidence type: scope capture / wheel description
+- Confidence: medium
+- Summary: Thanks - much easier. The firmware I loaded is 202207.1. I am in the process of consolidating the information I have gathered regarding this project into one succinct folder. Having to search through multiple folders/files to find information/pictures is time consuming.
+- Why it matters: Includes hardware-signal evidence, useful for edge and polarity interpretation.
+- Replay-test details: Pattern references: 2-3
+- Matched search terms: 36-2-1 oscilloscope
+
+### 24-1
+
+#### Using distributor to obtain engine phase signal
+- URL: https://speeduino.com/forum/viewtopic.php?p=66027#p66054
+- Date: Wed Nov 29, 2023 5:41 pm
+- Who posted it: dazq
+- Evidence type: wheel description / maintainer explanation
+- Confidence: medium
+- Summary: Notarobot I have run cvh engines in various setups since the 80s. I bought one of those hall dizzys many years ago when I was converting my quantum saloon to speeduino . I planned on using it just like you but with a later wasted coil pack , using the trigger as my cam reference. I have attached some more pictures of the actual dizzy I have to assist you.
+- Why it matters: Maintainer explanation increases confidence in expected decoder behavior.
+- Replay-test details: Pattern references: 24-1 Includes: cam Includes: crank
+- Matched search terms: 36-2-1 scope
+
+### 26-8
+
+#### Just another Speedy ECU
+- URL: https://speeduino.com/forum/viewtopic.php?p=74049#p74068
+- Date: Sat Feb 07, 2026 3:16 am
+- Who posted it: Black Knight
+- Evidence type: tooth log / scope capture / wheel description
+- Confidence: medium
+- Summary: [PSIG](./memberlist.php?mode=viewprofile&u=149) wrote: [↑](./viewtopic.php?p=74065#p74065) Fri Feb 06, 2026 2:02 am The input impedance as around 100 Megohms. However, there is a signal capacitor that requires charging to read analog signals, and they suggest input at 10K ohms or less. I read that as 500 microamps (1/2 mA) minimum per-channel. That's momentary capacitance current, while the hold voltage and read speed would determine average current, but I have not measured it and assume it would be much lower.
+- Why it matters: Provides replay-test-relevant trigger traces. Includes hardware-signal evidence, useful for edge and polarity interpretation.
+- Replay-test details: Pattern references: 26-8
+- Matched search terms: 36-2-2-2 crank
+
+#### Just another Speedy ECU - Page 2
+- URL: https://speeduino.com/forum/viewtopic.php?p=74078#p74068
+- Date: Sat Feb 07, 2026 3:16 am
+- Who posted it: Black Knight
+- Evidence type: tooth log / scope capture / wheel description
+- Confidence: medium
+- Summary: [PSIG](./memberlist.php?mode=viewprofile&u=149) wrote: [↑](./viewtopic.php?p=74065#p74065) Fri Feb 06, 2026 2:02 am The input impedance as around 100 Megohms. However, there is a signal capacitor that requires charging to read analog signals, and they suggest input at 10K ohms or less. I read that as 500 microamps (1/2 mA) minimum per-channel. That's momentary capacitance current, while the hold voltage and read speed would determine average current, but I have not measured it and assume it would be much lower.
+- Why it matters: Provides replay-test-relevant trigger traces. Includes hardware-signal evidence, useful for edge and polarity interpretation.
+- Replay-test details: Pattern references: 26-8
+- Matched search terms: 36-2-2-2 crank
+
+#### Just another Speedy ECU - Page 3
+- URL: https://speeduino.com/forum/viewtopic.php?p=74109#p74068
+- Date: Sat Feb 07, 2026 3:16 am
+- Who posted it: Black Knight
+- Evidence type: tooth log / scope capture / wheel description
+- Confidence: medium
+- Summary: [PSIG](./memberlist.php?mode=viewprofile&u=149) wrote: [↑](./viewtopic.php?p=74065#p74065) Fri Feb 06, 2026 2:02 am The input impedance as around 100 Megohms. However, there is a signal capacitor that requires charging to read analog signals, and they suggest input at 10K ohms or less. I read that as 500 microamps (1/2 mA) minimum per-channel. That's momentary capacitance current, while the hold voltage and read speed would determine average current, but I have not measured it and assume it would be much lower.
+- Why it matters: Provides replay-test-relevant trigger traces. Includes hardware-signal evidence, useful for edge and polarity interpretation.
+- Replay-test details: Pattern references: 26-8
+- Matched search terms: 36-2-1 crank
+
+### 3-4
+
+#### 4age 16v smallport - Page 4
+- URL: https://speeduino.com/forum/viewtopic.php?p=67269#p64671
+- Date: Wed Aug 30, 2023 12:16 pm
+- Who posted it: CamJam
+- Evidence type: tune file / wheel description / image attachment
+- Confidence: medium
+- Summary: More updates - Car now runs and drives surprisingly stable, but still getting consistent sync loss in the data logs. - I initially set the timing to fixed 10deg, warmed the car up, played with the idle till it was pretty stable, and then went for a drive around the block. Played a little with the VE table and although it was sluggish due to fixed timing, there was no bucking or dips from the engine, which I would expect from sync loss. - I then turned off fixed timing and have been playing with the spark table.
+- Why it matters: Discusses sync-loss conditions that can inform negative test cases.
+- Replay-test details: Pattern references: 3-4 Includes: sync Includes: sync loss Image or capture links: 3 Attachments: 2023-08-29_08.11.16.mlg -> https://speeduino.com/forum/download/file.php?id=11955; 2023-08-29_12.02.14.mlg -> https://speeduino.com/forum/download/file.php?id=11956; 2023-08-29_17.24.22.msq -> https://speeduino.com/forum/download/file.php?id=11954
+- Matched search terms: Basic distributor sync
+
+#### Ford ST170 Cam trigger pattern - Page 2
+- URL: https://speeduino.com/forum/viewtopic.php?p=48080#p48119
+- Date: Sun Feb 07, 2021 2:03 pm
+- Who posted it: Jama
+- Evidence type: tune file / wheel description / image attachment
+- Confidence: low
+- Summary: Hey, I tried this on the bench, albeit with a few changes, I need 90 degree trigger angle and rising for the setup in my car due to the DSC. On the bench with the patterns I created I see 3 degrees with now VVT and 42 degrees with full VVT. This differs from the ME221. For the fun of it I went and loaded it onto my car, it did not do what was expected and the angle pretty much stayed at 3-4 degrees and the duty cycle never seemed to rise.
+- Why it matters: Contains decoder-specific technical details that may support test coverage.
+- Replay-test details: Pattern references: 3-4 Includes: change Includes: cam Image or capture links: 2 Attachments: 2021-02-07_11.45.35.mlg.txt -> https://speeduino.com/forum/download/file.php?id=7970; CurrentTune.msq -> https://speeduino.com/forum/download/file.php?id=7969
+- Matched search terms: 420a Speeduino trigger
+
+### 3-5
+
+#### Ignition rollback
+- URL: https://speeduino.com/forum/viewtopic.php?p=73245#p73243
+- Date: Sun Sep 28, 2025 9:15 am
+- Who posted it: Philippov Pavel
+- Evidence type: tune file / wheel description / image attachment
+- Confidence: low
+- Summary: Hello, community members, thank you to everyone who responded; your opinions are important. I measured the crankshaft and camshaft signals. The signal processor clearly inverts the signals. In the settings, I set the RISING edge to detect the actual trailing edge of the pulses, as stated.
+- Why it matters: Contains decoder-specific technical details that may support test coverage.
+- Replay-test details: Pattern references: 3-5, 36-2 Includes: rising edge Includes: change Includes: cam Includes: crank Includes: sync Image or capture links: 1 Attachments: 1jz-ge_speeduino.msq -> https://speeduino.com/forum/download/file.php?id=14448
+- Matched search terms: 36-2-2-2 Speeduino trigger
+
+### 36-1
+
+#### 1985 Honda Goldwing Limited Edition FI Model ECU Replacement - Page 67
+- URL: https://speeduino.com/forum/viewtopic.php?p=65044#p65044
+- Date: Wed Sep 27, 2023 11:54 pm
+- Who posted it: Rednaxs60
+- Evidence type: scope capture / wheel description
+- Confidence: high
+- Summary: @PSIG - Thanks for the info. Received the DC power supply from Amazon. Used it today to bench test the Cherry GS100701 Hall effect sensors with the OEM single tooth cam trigger wheel, and the OEM 8 tooth crank trigger wheel. Drill press RPM used was 1100 and 3100.
+- Why it matters: Includes hardware-signal evidence, useful for edge and polarity interpretation. Discusses sync-loss conditions that can inform negative test cases.
+- Replay-test details: Pattern references: 36-1 Includes: change Includes: cam Includes: crank Includes: sync Includes: sync loss
+- Matched search terms: 36-2-1 oscilloscope
+
+#### Suzuki RE-5 EFI Conversion - Page 3
+- URL: https://speeduino.com/forum/viewtopic.php?p=67461#p67461
+- Date: Sun Mar 10, 2024 3:55 pm
+- Who posted it: MGR550
+- Evidence type: tooth log / wheel description
+- Confidence: high
+- Summary: Figured out the fuel pump issue, was bad crimp on the wiring on my part. For the trigger wheel, I hadn't actually ever counted the reduction from crank to distributor housing shafts; turns out it is 2:1, so I cut 1 more tooth off my 36-1 trigger wheel and made it into sortof a pair of 18-1 wheels which seems to work well in the tooth logger. Got the wiring onto the bike nicely, intake adapter and throttle body on and a temporary fuel feed hooked up and managed to fire it up! Was giving a few puffs out the exhaust and a few coughs/prefire out the throttle body during cranking, but once it fired up it seemed to hold idle for the 2 or 3 seconds it was on for before I shut it off.
+- Why it matters: Provides replay-test-relevant trigger traces.
+- Replay-test details: Pattern references: 18-1, 36-1 Includes: crank Image or capture links: 1 Attachments: 2024-03-10_12.21.17 Good Short Run.mlg -> https://speeduino.com/forum/download/file.php?id=12705
+- Matched search terms: 36-2-1 tooth logger
+
+#### Dropbear with no cranking signal
+- URL: https://speeduino.com/forum/viewtopic.php?p=62540#p62540
+- Date: Wed Apr 19, 2023 4:26 pm
+- Who posted it: tefnet
+- Evidence type: tooth log / composite log / wheel description
+- Confidence: medium
+- Summary: I’ve a dropbear in a jeep Cherokee, I’ve been using it for a few months now and I had no problems until now. I was pulling a truck that was stuck the other day, after the second pull the car stopped and I was unable to start it again. In tunerstudio everything seems to be ok except I get no rpm when cranking. When trying to do a tooth log or composite log I get this error “Error: Unable to read Logger data.
+- Why it matters: Provides replay-test-relevant trigger traces.
+- Replay-test details: Pattern references: 36-1, 66-2-2-2 Includes: crank Includes: cas
+- Matched search terms: 36-2-1 tooth logger
+
+#### Tooth and Composit Logging Is Fun!
+- URL: https://speeduino.com/forum/viewtopic.php?p=73237#p73237
+- Date: Sat Sep 27, 2025 3:43 pm
+- Who posted it: michaellatini
+- Evidence type: tooth log / composite log / wheel description
+- Confidence: medium
+- Summary: Hello All, Logging some tooth and composite logs to try and chase down issues of course. Working on understanding what I have so far, searching, DIYAutotune and there is sync loss for the entire composite log. Tooth log shows what I think is 2 missing teeth maybe, for a 36-1 wheel. Seems about right but, that's not the reason for this post.
+- Why it matters: Discusses sync-loss conditions that can inform negative test cases.
+- Replay-test details: Pattern references: 36-1 Includes: change Includes: sync Includes: sync loss Image or capture links: 2 Attachments: TUNE & LOG 10-1-25.rar -> https://speeduino.com/forum/download/file.php?id=14465; TUNE AND LOG.zip -> https://speeduino.com/forum/download/file.php?id=14463
+- Matched search terms: 36-2-1 sync
+
+#### Tooth and Composit Logging Is Fun!
+- URL: https://speeduino.com/forum/viewtopic.php?p=73269#p73237
+- Date: Sat Sep 27, 2025 3:43 pm
+- Who posted it: michaellatini
+- Evidence type: tooth log / composite log / wheel description
+- Confidence: medium
+- Summary: Hello All, Logging some tooth and composite logs to try and chase down issues of course. Working on understanding what I have so far, searching, DIYAutotune and there is sync loss for the entire composite log. Tooth log shows what I think is 2 missing teeth maybe, for a 36-1 wheel. Seems about right but, that's not the reason for this post.
+- Why it matters: Discusses sync-loss conditions that can inform negative test cases.
+- Replay-test details: Pattern references: 36-1 Includes: change Includes: sync Includes: sync loss Image or capture links: 2 Attachments: TUNE & LOG 10-1-25.rar -> https://speeduino.com/forum/download/file.php?id=14465; TUNE AND LOG.zip -> https://speeduino.com/forum/download/file.php?id=14463
+- Matched search terms: 36-2-1 crank
+
+#### Tooth and Composit Logging Is Fun!
+- URL: https://speeduino.com/forum/viewtopic.php?p=73271#p73237
+- Date: Sat Sep 27, 2025 3:43 pm
+- Who posted it: michaellatini
+- Evidence type: tooth log / composite log / wheel description
+- Confidence: medium
+- Summary: Hello All, Logging some tooth and composite logs to try and chase down issues of course. Working on understanding what I have so far, searching, DIYAutotune and there is sync loss for the entire composite log. Tooth log shows what I think is 2 missing teeth maybe, for a 36-1 wheel. Seems about right but, that's not the reason for this post.
+- Why it matters: Discusses sync-loss conditions that can inform negative test cases.
+- Replay-test details: Pattern references: 36-1 Includes: change Includes: sync Includes: sync loss Image or capture links: 2 Attachments: TUNE & LOG 10-1-25.rar -> https://speeduino.com/forum/download/file.php?id=14465; TUNE AND LOG.zip -> https://speeduino.com/forum/download/file.php?id=14463
+- Matched search terms: 36-2-1 crank
+
+#### Decoders - What do you want to see? - Page 26
+- URL: https://speeduino.com/forum/viewtopic.php?p=52924#p17240
+- Date: Wed Mar 15, 2017 4:53 am
+- Who posted it: noisymime
+- Evidence type: wheel description / maintainer explanation
+- Confidence: medium
+- Summary: [PSIG](./memberlist.php?mode=viewprofile&u=149) wrote: [↑](./viewtopic.php?p=17131#p17131) Wed Mar 08, 2017 11:51 am So is there a way to use missing tooth crank with a cam trigger in Dual Wheel? Missing crank teeth is grayed-out in DW. I 'm adding a cam signal to a 36-1 setup. The missing tooth decoder will automatically use the cam signal if it receives it and track over 720 crank degrees, otherwise it will be limited to wasted/semi-seq over 360 degrees.
+- Why it matters: Maintainer explanation increases confidence in expected decoder behavior.
+- Replay-test details: Pattern references: 36-1 Includes: missing tooth Includes: cam Includes: crank
+- Matched search terms: Daihatsu crank
+
+#### Decoders - What do you want to see? - Page 26
+- URL: https://speeduino.com/forum/viewtopic.php?p=52932#p17240
+- Date: Wed Mar 15, 2017 4:53 am
+- Who posted it: noisymime
+- Evidence type: wheel description / maintainer explanation
+- Confidence: medium
+- Summary: [PSIG](./memberlist.php?mode=viewprofile&u=149) wrote: [↑](./viewtopic.php?p=17131#p17131) Wed Mar 08, 2017 11:51 am So is there a way to use missing tooth crank with a cam trigger in Dual Wheel? Missing crank teeth is grayed-out in DW. I 'm adding a cam signal to a 36-1 setup. The missing tooth decoder will automatically use the cam signal if it receives it and track over 720 crank degrees, otherwise it will be limited to wasted/semi-seq over 360 degrees.
+- Why it matters: Maintainer explanation increases confidence in expected decoder behavior.
+- Replay-test details: Pattern references: 36-1 Includes: missing tooth Includes: cam Includes: crank
+- Matched search terms: Daihatsu cam
+
+#### Using distributor to obtain engine phase signal
+- URL: https://speeduino.com/forum/viewtopic.php?p=66027#p66027
+- Date: Tue Nov 28, 2023 7:59 pm
+- Who posted it: notarobot
+- Evidence type: scope capture / wheel description
+- Confidence: medium
+- Summary: I have an old Lucas distributor as fitted to many 4 cylinder Ford cvh engined cars from mid 80's to mid 90's. I would like to run full sequential on engine. Crank pulley will have 36-1 trigger wheel with Hall sensor so I just need to get a phase signal from distributor to run FS. The distributor is the basic electronic type i.e.
+- Why it matters: Includes hardware-signal evidence, useful for edge and polarity interpretation.
+- Replay-test details: Pattern references: 36-1 Includes: change Includes: cam Includes: crank Includes: cas
+- Matched search terms: 36-2-1 scope
+
+#### Tooth and Composit Logging Is Fun!
+- URL: https://speeduino.com/forum/viewtopic.php?p=73269#p73269
+- Date: Wed Oct 01, 2025 6:25 pm
+- Who posted it: michaellatini
+- Evidence type: tooth log / wheel description
+- Confidence: medium
+- Summary: [FiatDuino](./memberlist.php?mode=viewprofile&u=5665) wrote: [↑](./viewtopic.php?p=73262#p73262) Wed Oct 01, 2025 12:58 am Can you record a tooth log and post that. We need to figure out what is causing this 'apparent' double missing tooth.. What crank sensor are you using? Is it a VR or a hall-effect?
+- Why it matters: Contains decoder-specific technical details that may support test coverage.
+- Replay-test details: Pattern references: 36-1 Includes: missing tooth Includes: change Includes: cam Includes: crank Image or capture links: 1 Attachments: TUNE & LOG 10-1-25.rar -> https://speeduino.com/forum/download/file.php?id=14465
+- Matched search terms: 36-2-1 crank
+
+#### Tooth and Composit Logging Is Fun!
+- URL: https://speeduino.com/forum/viewtopic.php?p=73271#p73269
+- Date: Wed Oct 01, 2025 6:25 pm
+- Who posted it: michaellatini
+- Evidence type: tooth log / wheel description
+- Confidence: medium
+- Summary: [FiatDuino](./memberlist.php?mode=viewprofile&u=5665) wrote: [↑](./viewtopic.php?p=73262#p73262) Wed Oct 01, 2025 12:58 am Can you record a tooth log and post that. We need to figure out what is causing this 'apparent' double missing tooth.. What crank sensor are you using? Is it a VR or a hall-effect?
+- Why it matters: Contains decoder-specific technical details that may support test coverage.
+- Replay-test details: Pattern references: 36-1 Includes: missing tooth Includes: change Includes: cam Includes: crank Image or capture links: 1 Attachments: TUNE & LOG 10-1-25.rar -> https://speeduino.com/forum/download/file.php?id=14465
+- Matched search terms: 36-2-1 crank
+
+#### Suzuki RE-5 EFI Conversion - Page 3
+- URL: https://speeduino.com/forum/viewtopic.php?p=67461#p66088
+- Date: Fri Dec 01, 2023 4:11 am
+- Who posted it: MGR550
+- Evidence type: tune file / wheel description / image attachment
+- Confidence: medium
+- Summary: Hello again, over a year later and little progress On the bright side, there now exists: a bike in the living room for convenient access, a colour matched wiring diagram, 3d printed 36-1 trigger wheel, brackets, an intake manifold, exhaust w/ WBO2 bung, a rough map of ignition timing and other settings, and last but not least a complete speeduino-side wiring harness that needs to be lightly spliced into the main bike harness. Please let me know if I've made any obvious errors in the wiring. I'd tested the TPS, CLT, IAT, sensors in the harness through tuner studio and all seemed to be responding well. Optical sensor I had working on the bench, but only recently got the trigger wheel done so that will go on the bike shortly.
+- Why it matters: Contains decoder-specific technical details that may support test coverage.
+- Replay-test details: Pattern references: 36-1 Image or capture links: 2 Attachments: 2024-02-19_15.39.46.csv -> https://speeduino.com/forum/download/file.php?id=12604; 2024-02-19_16.08.03.msq -> https://speeduino.com/forum/download/file.php?id=12603
+- Matched search terms: 36-2-1 tooth logger
+
+#### Tooth and Composit Logging Is Fun!
+- URL: https://speeduino.com/forum/viewtopic.php?p=73237#p73269
+- Date: Wed Oct 01, 2025 6:25 pm
+- Who posted it: michaellatini
+- Evidence type: tooth log / wheel description
+- Confidence: low
+- Summary: [FiatDuino](./memberlist.php?mode=viewprofile&u=5665) wrote: [↑](./viewtopic.php?p=73262#p73262) Wed Oct 01, 2025 12:58 am Can you record a tooth log and post that. We need to figure out what is causing this 'apparent' double missing tooth.. What crank sensor are you using? Is it a VR or a hall-effect?
+- Why it matters: Contains decoder-specific technical details that may support test coverage.
+- Replay-test details: Pattern references: 36-1 Includes: missing tooth Includes: change Includes: cam Includes: crank Image or capture links: 1 Attachments: TUNE & LOG 10-1-25.rar -> https://speeduino.com/forum/download/file.php?id=14465
+- Matched search terms: 36-2-1 sync
+
+#### Trying to build a trigger for uneven flywheel.
+- URL: https://speeduino.com/forum/viewtopic.php?p=53326#p52998
+- Date: Thu Sep 09, 2021 10:58 am
+- Who posted it: RempageR1
+- Evidence type: wheel description
+- Confidence: low
+- Summary: Hi, I`m trying to get this flywheel working using the ardustim but I`m having some issues: Wheel.JPG (35.01 KiB) Viewed 22159 times I`m using the change trigger in the setup and the code below syncs on the wider lobe. So there is a routine checking the width of a lobe compare with the others. When the wider lobe is found, the secondaryToothCount is set to 1. This syncs just fine, no problems.
+- Why it matters: Contains decoder-specific technical details that may support test coverage.
+- Replay-test details: Pattern references: 36-1 Includes: rising edge Includes: change Includes: crank Includes: sync
+- Matched search terms: Harley Speeduino trigger
+
+#### DIYautotune Nissan optical trigger wheel - Page 2
+- URL: https://speeduino.com/forum/viewtopic.php?p=34587#p25627
+- Date: Sun Apr 15, 2018 9:25 pm
+- Who posted it: dazq
+- Evidence type: wheel description / maintainer explanation
+- Confidence: low
+- Summary: From what I just read about the accuspark I don't see an issue myself As another idea, Could you discreetly mount a small 36-1 onto the crank pulley ( as small as possible) to provide your trigger? Then keep the distributor as is including advance mech as then you have no rotor phase issues The high Res trigger will give better spark timing and general stability especially at low and high revs... Or another idea, get a lumention trigger sensor for the distributor and make up a new wheel/vane with more than 4 fins , perhaps you might fit in a 12-1 shaped trigger. This would all be inside the dizzy...
+- Why it matters: Maintainer explanation increases confidence in expected decoder behavior.
+- Replay-test details: Pattern references: 12-1, 36-1 Includes: crank
+- Matched search terms: Subaru 6/7 oscilloscope
+
+### 36-2
+
+#### Toyota Starlet 4E-FTE
+- URL: https://speeduino.com/forum/viewtopic.php?p=38283#p38283
+- Date: Sat Oct 05, 2019 8:24 pm
+- Who posted it: Experion
+- Evidence type: composite log / tune file / wheel description
+- Confidence: medium
+- Summary: Hello everyone its been a while but its time to post something again My brother recently swapped the engine in his Starlet from the custom combination 1.1 12v engine to a built 4E-FTE and we are having trouble getting it to run right. the previous engine was also running speeduino and apart from mechanical engine problems it ran great with no weird misfires or anything like that. ever since we swapped the engine it has not run right. It uses the exact same crank trigger which is a 36-2 vr crank trigger from a 4E-FE DIS engine which worked fine on the previous engine and it also gives a good signal on the loggers.
+- Why it matters: Provides replay-test-relevant trigger traces.
+- Replay-test details: Pattern references: 36-2 Includes: cam Includes: crank Includes: sync Image or capture links: 4 Attachments: Semi Sequential log.msl -> https://speeduino.com/forum/download/file.php?id=5960; Sequential log.msl -> https://speeduino.com/forum/download/file.php?id=5961; Tune Semi-Sequential.msq -> https://speeduino.com/forum/download/file.php?id=5962
+- Matched search terms: 36-2-1 composite logger
+
+### 36-2-1
+
+#### Just another Speedy ECU - Page 3
+- URL: https://speeduino.com/forum/viewtopic.php?p=74109#p74172
+- Date: Sat Feb 28, 2026 1:05 am
+- Who posted it: Black Knight
+- Evidence type: tooth log / scope capture
+- Confidence: high
+- Summary: Finalizing VR After a few revisions of the VR circuits we did come up with 4 that worked very well. The pics and wire diagrams are posted above. What we missed was posting the tooth logger so you can see how clean it looks and we also posted a pic of the oscope reading the AC input signal and the VR circuit output square wave. The oscope was connected to the mother board with Dupont wires (so there is no shielding) in a running car with a potential for noise signals and to our pleasure, the signal is noise free.
+- Why it matters: Provides replay-test-relevant trigger traces. Includes hardware-signal evidence, useful for edge and polarity interpretation.
+- Replay-test details: Matched decoder family: 36-2-1 Image or capture links: 3 Attachments: bayview posting.mlg -> https://speeduino.com/forum/download/file.php?id=14815; tooth logger cold start and run.csv -> https://speeduino.com/forum/download/file.php?id=14818; up moose.mlg -> https://speeduino.com/forum/download/file.php?id=14816
+- Matched search terms: 36-2-1 crank
+
+#### Dropbear with no cranking signal
+- URL: https://speeduino.com/forum/viewtopic.php?p=62540#p62554
+- Date: Thu Apr 20, 2023 2:51 pm
+- Who posted it: noisymime
+- Evidence type: tooth log / scope capture / maintainer explanation
+- Confidence: high
+- Summary: Just to check around that tooth logger, have you got your TS project set to New Comms in the project settings? Basically the tooth logger will report those types of errors if it’s not seeing any (or enough) trigger pulses before it times out. Do you have access to a scope that you could measure the signal at the ECU itself?
+- Why it matters: Maintainer explanation increases confidence in expected decoder behavior. Provides replay-test-relevant trigger traces. Includes hardware-signal evidence, useful for edge and polarity interpretation.
+- Replay-test details: Matched decoder family: 36-2-1
+- Matched search terms: 36-2-1 tooth logger
+
+#### BMW E36/5 323TI turbo build
+- URL: https://speeduino.com/forum/viewtopic.php?p=69091#p69125
+- Date: Mon Aug 05, 2024 3:47 pm
+- Who posted it: PSIG
+- Evidence type: tooth log / scope capture
+- Confidence: high
+- Summary: Signals to the processor must have low voltage of less than 1.1V to be recognized as "low", and high of at least 3.3V to be seen as "high". The processor cannot withstand voltage below -0.5V or higher than 5.5V. If your input signals are outside this range, there are options such as VR signal conditioners, inline diodes or voltage dividers to limit them to that safe and functional range. Some VR conditioners require a positive and negative voltage to trigger properly, that Hall sensors cannot produce.
+- Why it matters: Provides replay-test-relevant trigger traces. Includes hardware-signal evidence, useful for edge and polarity interpretation.
+- Replay-test details: Matched decoder family: 36-2-1
+- Matched search terms: 36-2-1 sync
+
+#### Just another Speedy ECU - Page 3
+- URL: https://speeduino.com/forum/viewtopic.php?p=74109#p74153
+- Date: Wed Feb 25, 2026 3:39 am
+- Who posted it: Black Knight
+- Evidence type: tooth log / scope capture
+- Confidence: high
+- Summary: As we are learning various ways to design and build different circuits, like VR, power supply and others, we decided to build a pre prototype board to make all our mistakes on, also various circuits are mounted to the mother board by using header pins so we can play with circuit designs and plug them into the mother board for full testing. We took a couple of days to build this pre prototype board, build it into a project box with the correct connections to tie into the existing wire harness. Now we can test these circuits under real driving conditions. It had its first test run today and all worked well.
+- Why it matters: Provides replay-test-relevant trigger traces. Includes hardware-signal evidence, useful for edge and polarity interpretation.
+- Replay-test details: Includes: crank Matched decoder family: 36-2-1
+- Matched search terms: 36-2-1 crank
+
+#### 4a-f (carbureted) excessive spark retarding - Page 2
+- URL: https://speeduino.com/forum/viewtopic.php?p=59205#p59205
+- Date: Sun Oct 30, 2022 11:51 pm
+- Who posted it: Teslar
+- Evidence type: scope capture / wheel description
+- Confidence: medium
+- Summary: [Teslar](./memberlist.php?mode=viewprofile&u=5652) wrote: [↑](./viewtopic.php?p=59195#p59195) Sun Oct 30, 2022 6:27 pm [PSIG](./memberlist.php?mode=viewprofile&u=149) wrote: [↑](./viewtopic.php?p=59193#p59193) Sun Oct 30, 2022 5:51 pm Photo "idle spark" shows 20° BTC advance, correct? Photo "near WOT 2500rpm" yellow mark shows near 20° ATC retarded, yes? Is your sensor VR or Hall? What model?
+- Why it matters: Includes hardware-signal evidence, useful for edge and polarity interpretation.
+- Replay-test details: Includes: change Includes: cam Includes: crank Matched decoder family: 36-2-1
+- Matched search terms: 36-2-1 oscilloscope
+
+#### BMW E36/5 323TI turbo build
+- URL: https://speeduino.com/forum/viewtopic.php?p=69091#p69092
+- Date: Thu Aug 01, 2024 3:51 am
+- Who posted it: PSIG
+- Evidence type: tooth log / scope capture
+- Confidence: medium
+- Summary: Perhaps someone more familiar with your model and wiring can help you better. I have not reviewed your files yet (no time right now ). I'll respond to some comments you made. [crackedheadtv](./memberlist.php?mode=viewprofile&u=8726) wrote: [↑](./viewtopic.php?p=69091#p69091) Wed Jul 31, 2024 9:22 pm Trigger settings is missing tooth (2) and 36 Trigger angle ( [https://m54megasquirt3.blogspot.com/201 ...
+- Why it matters: Includes hardware-signal evidence, useful for edge and polarity interpretation.
+- Replay-test details: Includes: missing tooth Includes: cam Includes: crank Includes: sync Includes: cas Matched decoder family: 36-2-1
+- Matched search terms: 36-2-1 sync
+
+#### No RPM reading, all sensors work fine - Page 3
+- URL: https://speeduino.com/forum/viewtopic.php?p=66351#p66455
+- Date: Thu Dec 28, 2023 11:17 am
+- Who posted it: AL_AOA
+- Evidence type: scope capture / tune file
+- Confidence: medium
+- Summary: [PSIG](./memberlist.php?mode=viewprofile&u=149) wrote: [↑](./viewtopic.php?p=66356#p66356) Wed Dec 20, 2023 5:23 pm As you are on Missing Tooth decoder, reading the missing teeth is important for sync and resulting rpm. Assuming the probes were connected to + and - correctly, the sensor polarity is reversed. This can interfere with reading the missing teeth for sync properly. I would swap the sensor wires on the board input and set Trigger Edge for Rising (if MiniMAX-A2 conditioner) or set for Falling (if DSC), as a first step to set baseline configuration.
+- Why it matters: Includes hardware-signal evidence, useful for edge and polarity interpretation.
+- Replay-test details: Includes: missing tooth Includes: crank Includes: sync Matched decoder family: 36-2-1 Image or capture links: 3 Attachments: 2023-12-28_11.58.26.csv -> https://speeduino.com/forum/download/file.php?id=12414; 2023-12-28_11.58.26.mlg -> https://speeduino.com/forum/download/file.php?id=12415; 2023-12-28_11.58.45.msq -> https://speeduino.com/forum/download/file.php?id=12413
+- Matched search terms: 36-2-1 scope
+
+#### 1985 Honda Goldwing Limited Edition FI Model ECU Replacement - Page 67
+- URL: https://speeduino.com/forum/viewtopic.php?p=65044#p61340
+- Date: Sat Feb 18, 2023 7:50 pm
+- Who posted it: Rednaxs60
+- Evidence type: tune file / wheel description / image attachment
+- Confidence: medium
+- Summary: Good morning. Have been out in the garage for the past hour or so, didn't take note of the time. Have some data and trigger logs. Checked the O2 sensor for start voltages.
+- Why it matters: Discusses sync-loss conditions that can inform negative test cases.
+- Replay-test details: Includes: second trigger Includes: change Includes: crank Includes: sync Includes: sync loss Matched decoder family: 36-2-1 Image or capture links: 1 Attachments: Archive.zip -> https://speeduino.com/forum/download/file.php?id=11070
+- Matched search terms: 36-2-1 oscilloscope
+
+#### No RPM reading, all sensors work fine - Page 3
+- URL: https://speeduino.com/forum/viewtopic.php?p=66351#p66703
+- Date: Mon Jan 15, 2024 6:17 pm
+- Who posted it: AL_AOA
+- Evidence type: scope capture
+- Confidence: medium
+- Summary: [PSIG](./memberlist.php?mode=viewprofile&u=149) wrote: [↑](./viewtopic.php?p=66638#p66638) Mon Jan 08, 2024 7:28 pm [AL_AOA](./memberlist.php?mode=viewprofile&u=7691) wrote: [↑](./viewtopic.php?p=66629#p66629) Mon Jan 08, 2024 9:39 am Today I scoped filtered cam and crank signals VS coil No. 1 … Please continuously update your posts with the changing tune and log files for the post you are making. To simplify keeping those files together, put them in a ZIP file to track the files as a related set. Hi, thanks for getting back!
+- Why it matters: Includes hardware-signal evidence, useful for edge and polarity interpretation.
+- Replay-test details: Includes: cam Includes: crank Includes: sync Matched decoder family: 36-2-1 Image or capture links: 1 Attachments: dataLogs&tuneFile.zip -> https://speeduino.com/forum/download/file.php?id=12476
+- Matched search terms: 36-2-1 scope
+
+#### Toyota Starlet 4E-FTE
+- URL: https://speeduino.com/forum/viewtopic.php?p=38283#p38302
+- Date: Sun Oct 06, 2019 7:31 pm
+- Who posted it: PSIG
+- Evidence type: tooth log / scope capture
+- Confidence: medium
+- Summary: [theonewithin](./memberlist.php?mode=viewprofile&u=1729) wrote: [↑](./viewtopic.php?p=38287#p38287) Sat Oct 05, 2019 11:13 pm You need to post your tune and a log of the issue. ^^This. The order looks good. Trigger Angle may be off, as it should be based on the crank wheel only , or the distributor only .
+- Why it matters: Provides replay-test-relevant trigger traces. Includes hardware-signal evidence, useful for edge and polarity interpretation.
+- Replay-test details: Includes: crank Matched decoder family: 36-2-1
+- Matched search terms: 36-2-1 composite logger
+
+#### Cam Based Triggering Wheel - Page 2
+- URL: https://speeduino.com/forum/viewtopic.php?p=72943#p72844
+- Date: Fri Aug 15, 2025 7:23 am
+- Who posted it: Speeduino Kid
+- Evidence type: scope capture
+- Confidence: medium
+- Summary: "This would set-up in TunerStudio as a Dual Wheel 180/1." Not sure what the /1 is for, as I believe that only applies/required, if you are are using a "missing tooth", configuration ? It is working quite smoothly now, without any hiccups, until I hook it up to the Denso COPs, I am using. The COPs use a +5V signal pulse for their trigger input. The problem I'm experiencing, is that the COP's trigger input/s, appears to be loading down the Speeduino's 5V rail, during triggering.
+- Why it matters: Includes hardware-signal evidence, useful for edge and polarity interpretation.
+- Replay-test details: Includes: missing tooth Matched decoder family: 36-2-1
+- Matched search terms: 36-2-1 cam
+
+#### HONDA TRANSALP XL650V
+- URL: https://speeduino.com/forum/viewtopic.php?p=73068#p73147
+- Date: Sun Sep 14, 2025 4:34 pm
+- Who posted it: PSIG
+- Evidence type: composite log / scope capture
+- Confidence: medium
+- Summary: Usable logs. While there is no data log (cranking-start-run log), there is enough to suspect the VR conditioner is too 'smart' and not reading teeth after the gap. This is a problem with the smart MAX conditioners in A2 mode, which automatically adjusts the trigger threshold based on previous teeth. The MAX tends to respond poorly to missing tooth wheels by lowering trigger threshold during the missing teeth, then the sudden first-tooth spike following the gap it can adjust threshold up excessively, thereby blind to one or more teeth that are then below the new threshold.
+- Why it matters: Includes hardware-signal evidence, useful for edge and polarity interpretation.
+- Replay-test details: Includes: missing tooth Includes: change Includes: crank Matched decoder family: 36-2-1
+- Matched search terms: 36-2-1 Speeduino trigger
+
+#### HONDA TRANSALP XL650V
+- URL: https://speeduino.com/forum/viewtopic.php?p=73072#p73147
+- Date: Sun Sep 14, 2025 4:34 pm
+- Who posted it: PSIG
+- Evidence type: composite log / scope capture
+- Confidence: medium
+- Summary: Usable logs. While there is no data log (cranking-start-run log), there is enough to suspect the VR conditioner is too 'smart' and not reading teeth after the gap. This is a problem with the smart MAX conditioners in A2 mode, which automatically adjusts the trigger threshold based on previous teeth. The MAX tends to respond poorly to missing tooth wheels by lowering trigger threshold during the missing teeth, then the sudden first-tooth spike following the gap it can adjust threshold up excessively, thereby blind to one or more teeth that are then below the new threshold.
+- Why it matters: Includes hardware-signal evidence, useful for edge and polarity interpretation.
+- Replay-test details: Includes: missing tooth Includes: change Includes: crank Matched decoder family: 36-2-1
+- Matched search terms: 36-2-1 Speeduino trigger
+
+#### Tooth and Composit Logging Is Fun!
+- URL: https://speeduino.com/forum/viewtopic.php?p=73237#p73260
+- Date: Tue Sep 30, 2025 8:42 pm
+- Who posted it: michaellatini
+- Evidence type: composite log
+- Confidence: medium
+- Summary: Today I changed the location of the cam sensor from -42* to -340*. I read that if it's too close to TDC #1 cylinder it may not read correctly. Finally got a tune and composite log to share. According to what I see, there is sync loss for every spark.
+- Why it matters: Discusses sync-loss conditions that can inform negative test cases.
+- Replay-test details: Includes: change Includes: cam Includes: sync Includes: sync loss Matched decoder family: 36-2-1 Image or capture links: 1 Attachments: TUNE AND LOG.zip -> https://speeduino.com/forum/download/file.php?id=14463
+- Matched search terms: 36-2-1 sync
+
+#### Info on Teensy (for use with UA4C)
+- URL: https://speeduino.com/forum/viewtopic.php?p=67094#p67094
+- Date: Sat Feb 10, 2024 7:35 am
+- Who posted it: PSIG
+- Evidence type: technical discussion
+- Confidence: medium
+- Summary: What PCB layout pin assignment for Teensy 4.1 are you using? I would suggest (if possible) using one that is already set in init.ino , and match-up the pins on your new adapter board, e.g., A4 to A1. Else, create your own pin mapping for cleaner layout. Examples of UA4C (Mega2560) and Bear Cub (T4.1) from init.ino : Code: [Select all](#) ``` ---------- //Pin mappings as per the UA4C shield pinInjector1 = 8; //Output pin injector 1 is on pinInjector2 = 7; //Output pin injector 2 is on pinInjector3 = 6; //Output pin injector 3 is on pinInjector4 = 5; //Output pin injector 4 is on pinInjector5 = 45; //Output pin injector 5 is on PLACEHOLDER value for now pinCoil1 = 35; //Pin for coil 1 pinCoil2 = 36; //Pin for coil 2 pinCoil3 = 33; //Pin for coil 3 pinCoil4 = 34; //Pin for coil 4 pinCoil5 = 44; //Pin for coil 5 PLACEHOLDER value for now pinTrigger = 19; //The CAS pin pinTrigger2 = 18; //The Cam Sensor pin pinTrigger3 = 3; //The Cam sensor 2 pin pinFlex = 20; // Flex sensor pinTPS = A3; //TPS input pin pinMAP = A0; //MAP sensor pin pinBaro = A7; //Baro sensor pin pinIAT = A5; //IAT sensor pin pinCLT = A4; //CLS sensor pin pinO2 = A1; //O2 Sensor pin pinO2_2 = A9; //O2 sensor pin (second sensor) pinBat = A2; //Battery reference voltage pin pinSpareTemp1 = A8; //spare Analog input 1 pinLaunch = 37; //Can be overwritten below pinDisplayReset = 48; // OLED reset pin PLACEHOLDER value for now pinTachOut = 22; //Tacho output pin pinIdle1 = 9; //Single wire idle control pinIdle2 = 10; //2 wire idle control pinFuelPump = 23; //Fuel pump output pinVVT_1 = 11; //Default VVT output pinVVT_2 = 48; //Default VVT2 output pinStepperDir = 32; //Direction pin for DRV8825 driver pinStepperStep = 31; //Step pin for DRV8825 driver pinStepperEnable = 30; //Enable pin for DRV8825 driver pinBoost = 12; //Boost control pinSpareLOut1 = 26; //low current output spare1 pinSpareLOut2 = 27; //low current output spare2 pinSpareLOut3 = 28; //low current output spare3 pinSpareLOut4 = 29; //low current output spare4 pinFan = 24; //Pin for the fan output pinResetControl = 46; //Reset control output PLACEHOLDER value for now ---------- //Pin mappings for the Bear Cub (Teensy 4.1) pinInjector1 = 6; pinInjector2 = 7; pinInjector3 = 9; pinInjector4 = 8; pinInjector5 = 0; //Not used pinCoil1 = 2; pinCoil2 = 3; pinCoil3 = 4; pinCoil4 = 5; pinTrigger = 20; //The CAS pin pinTrigger2 = 21; //The Cam Sensor pin pinFlex = 37; // Flex sensor pinMAP = A5; //MAP sensor pin pinBaro = A4; //Baro sensor pin pinBat = A15; //Battery reference voltage pin pinTPS = A3; //TPS input pin pinIAT = A0; //IAT sensor pin pinCLT = A1; //CLS sensor pin pinO2 = A2; //O2 Sensor pin pinLaunch = 36; pinSpareTemp1 = A16; //spare Analog input 1 pinSpareTemp2 = A17; //spare Analog input 2 pinTachOut = 38; //Tacho output pin pinIdle1 = 27; //Single wire idle control pinIdle2 = 26; //2 wire idle control.
+- Why it matters: Contains decoder-specific technical details that may support test coverage.
+- Replay-test details: Includes: cam Includes: cas Matched decoder family: 36-2-1
+- Matched search terms: 36-2-1 CAS
+
+#### Dropbear with no cranking signal
+- URL: https://speeduino.com/forum/viewtopic.php?p=62540#p62589
+- Date: Sat Apr 22, 2023 3:43 pm
+- Who posted it: PSIG
+- Evidence type: scope capture
+- Confidence: medium
+- Summary: Which conditioner are you using? I would use a multimeter at each point in sequence to find signal. It is too slow to read accurate values, but meter activity indicates a signal is present. Be sure to set your meter on a reasonable range when testing this, and use care to avoid touching other pins.
+- Why it matters: Includes hardware-signal evidence, useful for edge and polarity interpretation.
+- Replay-test details: Matched decoder family: 36-2-1
+- Matched search terms: 36-2-1 tooth logger
+
+#### Suzuki RE-5 EFI Conversion - Page 3
+- URL: https://speeduino.com/forum/viewtopic.php?p=67461#p67237
+- Date: Mon Feb 19, 2024 9:18 pm
+- Who posted it: MGR550
+- Evidence type: tune file / wheel description / image attachment
+- Confidence: medium
+- Summary: Hello, Re-did the wiring a bit in terms of fusing and relays, with an updated diagram to match. Got it wired into the bike, turning on and off with key and kill switch, reading sensors, and tested inj output so far. A bit of debugging and I got what I think is a clean signal from the trigger wheel . I'm guessing the plot is showing µs per rising edge to rising edge of next tooth?
+- Why it matters: Contains decoder-specific technical details that may support test coverage.
+- Replay-test details: Includes: rising edge Includes: crank Matched decoder family: 36-2-1 Image or capture links: 2 Attachments: 2024-02-19_15.39.46.csv -> https://speeduino.com/forum/download/file.php?id=12604; 2024-02-19_16.08.03.msq -> https://speeduino.com/forum/download/file.php?id=12603
+- Matched search terms: 36-2-1 tooth logger
+
+#### Teensy 3.5 - Tooth and Composite logging freezes communication with TS - WORKAROUND NOW AVAILBLE - Page 3
+- URL: https://speeduino.com/forum/viewtopic.php?p=33479#p33479
+- Date: Sun Apr 07, 2019 2:26 am
+- Who posted it: tobbera
+- Evidence type: tune file
+- Confidence: medium
+- Summary: I have updated the pin definitions to separate ins and outs on two different left over pins. Code: [Select all](#) ``` #if defined(CORE_TEENSY) case 15: //Pin mappings as per "Tobbera Teensy 3.6 PCB v0.6" pinInjector1 = 2; //Output pin injector 1 is on pinInjector2 = 20; //Output pin injector 2 is on pinInjector3 = 6; //Output pin injector 3 is on pinInjector4 = 21; //Output pin injector 4 is on pinInjector5 = 5; //Output pin injector 5 is on pinInjector6 = 42; //Output pin injector 6 is on pinInjector7 = 56; //Output pin injector 7 is on pinInjector8 = 57; //Output pin injector 8 is on pinCoil1 = 29; //Pin for coil 1. When Teensy GPIO goes HIGH, Igntion MOSFET goes low and starts to charge coil. After about 40ms tge MOSFET goes HIGH no matter is the GPIO stays HIGH.
+- Why it matters: Contains decoder-specific technical details that may support test coverage.
+- Replay-test details: Includes: cam Includes: crank Includes: cas Matched decoder family: 36-2-1
+- Matched search terms: 36-2-1 composite logger
+
+#### programmable output not working
+- URL: https://speeduino.com/forum/viewtopic.php?p=68749#p68749
+- Date: Wed Jul 03, 2024 4:21 am
+- Who posted it: PSIG
+- Evidence type: technical discussion
+- Confidence: medium
+- Summary: [gummr](./memberlist.php?mode=viewprofile&u=8561) wrote: [↑](./viewtopic.php?p=68724#p68724) Tue Jul 02, 2024 9:46 am board is v0.3.7 and the firmware is speeduino 202207.1 This of course helps a lot, and allows you to examine the default pin assignments. Pulling-up the v0.3 board in the INIT.INO file shows this. See any conflicts? I would suggest pins that are either not used for anything before, or re-assignable in TS.
+- Why it matters: Contains decoder-specific technical details that may support test coverage.
+- Replay-test details: Includes: cam Includes: cas Matched decoder family: 36-2-1
+- Matched search terms: 36-2-1 CAS
+
+#### HONDA TRANSALP XL650V
+- URL: https://speeduino.com/forum/viewtopic.php?p=73068#p73071
+- Date: Sun Sep 07, 2025 7:35 am
+- Who posted it: jonbill
+- Evidence type: tooth log / composite log / wheel description
+- Confidence: medium
+- Summary: I doubt whether the trigger wheel pattern and its relationship to the firing pattern are the cause of the problems. Sync loss means the pattern read by the sensor is not matching the expected pattern. This can be caused by noise, runout, too much variation in crank speed causing a timeout waiting to read the next tooth etc. Please capture a tooth log and composite log and a the tune and a data log (zip them all together).
+- Why it matters: Discusses sync-loss conditions that can inform negative test cases.
+- Replay-test details: Includes: crank Includes: sync Includes: sync loss Matched decoder family: 36-2-1
+- Matched search terms: 36-2-1 Speeduino trigger
+
+#### HONDA TRANSALP XL650V
+- URL: https://speeduino.com/forum/viewtopic.php?p=73072#p73071
+- Date: Sun Sep 07, 2025 7:35 am
+- Who posted it: jonbill
+- Evidence type: tooth log / composite log / wheel description
+- Confidence: medium
+- Summary: I doubt whether the trigger wheel pattern and its relationship to the firing pattern are the cause of the problems. Sync loss means the pattern read by the sensor is not matching the expected pattern. This can be caused by noise, runout, too much variation in crank speed causing a timeout waiting to read the next tooth etc. Please capture a tooth log and composite log and a the tune and a data log (zip them all together).
+- Why it matters: Discusses sync-loss conditions that can inform negative test cases.
+- Replay-test details: Includes: crank Includes: sync Includes: sync loss Matched decoder family: 36-2-1
+- Matched search terms: 36-2-1 Speeduino trigger
+
+#### I/O Labels to Pin Mapping
+- URL: https://speeduino.com/forum/viewtopic.php?p=72194#p72194
+- Date: Sun Jun 22, 2025 8:14 pm
+- Who posted it: PSIG
+- Evidence type: technical discussion
+- Confidence: medium
+- Summary: You can find default pins for specific PCBs in the code INIT.CPP file, such as this: Code: [Select all](#) ``` case 9: #ifndef SMALL_FLASH_MODE //Pin mappings as per the 89-95 MX5 PNP shield pinInjector1 = 11; //Output pin injector 1 is on pinInjector2 = 10; //Output pin injector 2 is on pinInjector3 = 9; //Output pin injector 3 is on pinInjector4 = 8; //Output pin injector 4 is on pinInjector5 = 14; //Output pin injector 5 is on pinCoil1 = 39; //Pin for coil 1 pinCoil2 = 41; //Pin for coil 2 pinCoil3 = 32; //Pin for coil 3 pinCoil4 = 33; //Pin for coil 4 pinCoil5 = 34; //Pin for coil 5 PLACEHOLDER value for now pinTrigger = 19; //The CAS pin pinTrigger2 = 18; //The Cam Sensor pin pinTPS = A2;//TPS input pin pinMAP = A5; //MAP sensor pin pinIAT = A0; //IAT sensor pin pinCLT = A1; //CLS sensor pin pinO2 = A3; //O2 Sensor pin pinBat = A4; //Battery reference voltage pin pinDisplayReset = 48; // OLED reset pin pinTachOut = 49; //Tacho output pin (Goes to ULN2803) pinIdle1 = 2; //Single wire idle control pinBoost = 4; pinIdle2 = 4; //2 wire idle control (Note this is shared with boost!!!) pinFuelPump = 37; //Fuel pump output //Note that there is no stepper driver output on the PNP boards. These pins are unconnected and remain here just to prevent issues with random pin numbers occurring pinStepperEnable = 15; //Enable pin for the DRV8825 pinStepperDir = 16; //Direction pin for DRV8825 driver pinStepperStep = 17; //Step pin for DRV8825 driver pinFan = 35; //Pin for the fan output pinLaunch = 12; //Can be overwritten below pinFlex = 3; // Flex sensor (Must be external interrupt enabled) pinResetControl = 44; //Reset control output pinVSS = 20; pinIdleUp = 48; pinCTPS = 47; #endif #if defined(CORE_TEENSY35) pinTrigger = 23; pinTrigger2 = 36; pinStepperDir = 34; pinStepperStep = 35; pinCoil1 = 33; //Done pinCoil2 = 24; //Done pinCoil3 = 51; //Won't work (No mapping for pin 32) pinCoil4 = 52; //Won't work (No mapping for pin 33) pinFuelPump = 26; //Requires PVT4 adapter or above pinFan = 50; //Won't work (No mapping for pin 35) pinTachOut = 28; //Done #endif break; ``` You can see this particular board version does not have a Fan2 pin by default. Perhaps yours does.
+- Why it matters: Contains decoder-specific technical details that may support test coverage.
+- Replay-test details: Includes: cam Includes: cas Matched decoder family: 36-2-1
+- Matched search terms: 36-2-1 CAS
+
+#### Using distributor to obtain engine phase signal
+- URL: https://speeduino.com/forum/viewtopic.php?p=66027#p66077
+- Date: Thu Nov 30, 2023 5:47 pm
+- Who posted it: dazq
+- Evidence type: wheel description / maintainer explanation
+- Confidence: medium
+- Summary: You can run very small ( 50ish mm od) trigger wheels, in fact quite a few do inside OEM dizzys. But don't forget you only need the dog drive with the shaft support part of the dizzy. Cut the whole body away then you can have a bigger wheel . Obviously this is only an option if you are going coil pack and not using the dizzy to distribute sparks to plugs.
+- Why it matters: Maintainer explanation increases confidence in expected decoder behavior.
+- Replay-test details: Matched decoder family: 36-2-1
+- Matched search terms: 36-2-1 scope
+
+#### Tooth and Composit Logging Is Fun!
+- URL: https://speeduino.com/forum/viewtopic.php?p=73269#p73260
+- Date: Tue Sep 30, 2025 8:42 pm
+- Who posted it: michaellatini
+- Evidence type: composite log
+- Confidence: low
+- Summary: Today I changed the location of the cam sensor from -42* to -340*. I read that if it's too close to TDC #1 cylinder it may not read correctly. Finally got a tune and composite log to share. According to what I see, there is sync loss for every spark.
+- Why it matters: Discusses sync-loss conditions that can inform negative test cases.
+- Replay-test details: Includes: change Includes: cam Includes: sync Includes: sync loss Matched decoder family: 36-2-1 Image or capture links: 1 Attachments: TUNE AND LOG.zip -> https://speeduino.com/forum/download/file.php?id=14463
+- Matched search terms: 36-2-1 crank
+
+#### Tooth and Composit Logging Is Fun!
+- URL: https://speeduino.com/forum/viewtopic.php?p=73271#p73260
+- Date: Tue Sep 30, 2025 8:42 pm
+- Who posted it: michaellatini
+- Evidence type: composite log
+- Confidence: low
+- Summary: Today I changed the location of the cam sensor from -42* to -340*. I read that if it's too close to TDC #1 cylinder it may not read correctly. Finally got a tune and composite log to share. According to what I see, there is sync loss for every spark.
+- Why it matters: Discusses sync-loss conditions that can inform negative test cases.
+- Replay-test details: Includes: change Includes: cam Includes: sync Includes: sync loss Matched decoder family: 36-2-1 Image or capture links: 1 Attachments: TUNE AND LOG.zip -> https://speeduino.com/forum/download/file.php?id=14463
+- Matched search terms: 36-2-1 crank
+
+#### Trigger wheel missing tooth
+- URL: https://speeduino.com/forum/viewtopic.php?p=71921#p71978
+- Date: Wed Jun 11, 2025 4:59 pm
+- Who posted it: PSIG
+- Evidence type: scope capture
+- Confidence: low
+- Summary: It's easy to confirm correct frequency with an oscilloscope, but if unavailable I would use a PWM signal to the tachometer to prove tach accuracy. This can be a frequency generator 1k signal, or even a PWM signal produced by Speeduino from the Mega, jumped from an output to the tach. Likewise, a spare Arduino with a simple Blink program at a specific frequency, calculated to produce a certain rpm value. Many ways to check which end has issues.
+- Why it matters: Includes hardware-signal evidence, useful for edge and polarity interpretation.
+- Replay-test details: Matched decoder family: 36-2-1
+- Matched search terms: 36-2-1 Speeduino trigger
+
+#### Trigger wheel missing tooth
+- URL: https://speeduino.com/forum/viewtopic.php?p=71921#p72025
+- Date: Tue Jun 17, 2025 6:43 am
+- Who posted it: imoze
+- Evidence type: scope capture
+- Confidence: low
+- Summary: tested with oscilloscope first image from original ECU: Freq: 48Hz Vp-p: 4.8V Duty: 33% second image from Speeduino: Freq: 32Hz Duty: 9% Vp-p: 6.6V what i already did is, trying Pulse Width from 1 - 6 ms in Tacho Output with no different, and change pullup resistor from 12V to 5V and result is still the same, maybe transistor in NO2C or arduino mega itself has issue? or any direction in this problem? Thanks
+- Why it matters: Includes hardware-signal evidence, useful for edge and polarity interpretation.
+- Replay-test details: Includes: change Matched decoder family: 36-2-1
+- Matched search terms: 36-2-1 Speeduino trigger
+
+#### Teensy 3.5 - Tooth and Composite logging freezes communication with TS - WORKAROUND NOW AVAILBLE - Page 3
+- URL: https://speeduino.com/forum/viewtopic.php?p=33479#p33322
+- Date: Tue Apr 02, 2019 10:34 am
+- Who posted it: tobbera
+- Evidence type: technical discussion
+- Confidence: low
+- Summary: I added placeholders in the end, assigned to pin 0, as I don't have enough avilble pins to assign them all to. But could not make a difference in the freezing behavious in TS. Code: [Select all](#) ``` #if defined(CORE_TEENSY) case 15: //Pin mappings as per "Tobbera Teensy 3.6 PCB v0.6" pinInjector1 = 2; //Output pin injector 1 is on pinInjector2 = 20; //Output pin injector 2 is on pinInjector3 = 6; //Output pin injector 3 is on pinInjector4 = 21; //Output pin injector 4 is on pinInjector5 = 5; //Output pin injector 5 is on pinInjector6 = 42; //Output pin injector 6 is on pinInjector7 = 56; //Output pin injector 7 is on pinInjector8 = 57; //Output pin injector 8 is on pinCoil1 = 29; //Pin for coil 1. When Teensy GPIO goes HIGH, Igntion MOSFET goes low and starts to charge coil.
+- Why it matters: Contains decoder-specific technical details that may support test coverage.
+- Replay-test details: Includes: cam Includes: crank Includes: cas Matched decoder family: 36-2-1
+- Matched search terms: 36-2-1 composite logger
+
+#### Using distributor to obtain engine phase signal
+- URL: https://speeduino.com/forum/viewtopic.php?p=66027#p66041
+- Date: Wed Nov 29, 2023 5:25 am
+- Who posted it: PSIG
+- Evidence type: scope capture
+- Confidence: low
+- Summary: I would power it up and 'scope it for signal character before cutting. Bench testing is fairly simple and can give you at least some of the info you need to know. Stuff of that era is probably 12V powered, but unless you can verify that with a factory wiring diagram, I'd start with 5V just in-case. If it connected to coil(-), the output should be float/ground, but again that can be verified in testing so you know how to set it up.
+- Why it matters: Includes hardware-signal evidence, useful for edge and polarity interpretation.
+- Replay-test details: Includes: cas Matched decoder family: 36-2-1
+- Matched search terms: 36-2-1 scope
+
+#### Info on Teensy (for use with UA4C)
+- URL: https://speeduino.com/forum/viewtopic.php?p=67094#p67019
+- Date: Mon Feb 05, 2024 9:31 am
+- Who posted it: dazq
+- Evidence type: maintainer explanation
+- Confidence: low
+- Summary: The teensy adaptor was removed from the hardware GitHub some time back to get an update, then COVID hit and teensy3.5 became hard to source. You can see the design still (some of us saved it) ,take a look at my GitHub speedy files ( I am autohome2 on GitHub) It could be updated to support teensy 4.1 which DOES work (josh did some more work recently)
+- Why it matters: Maintainer explanation increases confidence in expected decoder behavior.
+- Replay-test details: Includes: cam Matched decoder family: 36-2-1
+- Matched search terms: 36-2-1 CAS
+
+#### 4a-f (carbureted) excessive spark retarding - Page 2
+- URL: https://speeduino.com/forum/viewtopic.php?p=59205#p59183
+- Date: Sun Oct 30, 2022 2:27 pm
+- Who posted it: jonbill
+- Evidence type: image attachment
+- Confidence: low
+- Summary: [Teslar](./memberlist.php?mode=viewprofile&u=5652) wrote: [↑](./viewtopic.php?p=59174#p59174) Sun Oct 30, 2022 1:15 pm [jonbill](./memberlist.php?mode=viewprofile&u=1981) wrote: [↑](./viewtopic.php?p=59167#p59167) Sun Oct 30, 2022 12:53 pm Do you have a log too? There's plenty to work on in that tune - but the first thing I'd check is spark settings-> spark output triggers. You've got it 'going high' but I think it is nearly always 'going low'. Are you sure?
+- Why it matters: Contains decoder-specific technical details that may support test coverage.
+- Replay-test details: Includes: change Matched decoder family: 36-2-1 Image or capture links: 1 Attachments: corolla-1992-4a-f-2022-10-30_05.18.38.rar -> https://speeduino.com/forum/download/file.php?id=10343
+- Matched search terms: 36-2-1 oscilloscope
+
+#### 4a-f (carbureted) excessive spark retarding - Page 2
+- URL: https://speeduino.com/forum/viewtopic.php?p=59205#p59190
+- Date: Sun Oct 30, 2022 4:26 pm
+- Who posted it: Teslar
+- Evidence type: image attachment
+- Confidence: low
+- Summary: I made the registration, here I upload it it doesn't last long but I leave the minimum and then I accelerate, after making the registration I ran out of fuel (I have to refuel) something tells me that it is not the speeduino because the minimum advance is at 20° . because it is reflected very behind the pulley of crankshaft and in the distributor it advances but in the pulley it is delayed, but now I think that the lack of fuel can cause this variation I leave a photo so that you understand what I am trying to say
+- Why it matters: Contains decoder-specific technical details that may support test coverage.
+- Replay-test details: Includes: crank Matched decoder family: 36-2-1 Image or capture links: 1 Attachments: corolla-1992-4a-f-2022-10-30_05.18.38.rar -> https://speeduino.com/forum/download/file.php?id=10343
+- Matched search terms: 36-2-1 oscilloscope
+
+### 36-2-2-2
+
+#### Fresh build, no sync. Subaru EJ20.
+- URL: https://speeduino.com/forum/viewtopic.php?p=64751#p64751
+- Date: Tue Sep 05, 2023 1:23 am
+- Who posted it: rozap
+- Evidence type: scope capture / tune file / wheel description
+- Confidence: high
+- Summary: Hi everyone, This is my second speeduino install and the first one went really smoothly (on a VW VR6) while this one is kicking my ass. Engine is a Subaru EJ20 with the 36-2-2-2 wheel. I've been unable to get any sync to occur. I've tried two different VR conditioners, one mini max A2, and one regular DSC conditioner.
+- Why it matters: Includes hardware-signal evidence, useful for edge and polarity interpretation.
+- Replay-test details: Pattern references: 36-2-2-2 Includes: cam Includes: crank Includes: sync Image or capture links: 2 Attachments: 2023-09-04_18.08.38.csv -> https://speeduino.com/forum/download/file.php?id=11985; CurrentTune.msq -> https://speeduino.com/forum/download/file.php?id=11984
+- Matched search terms: 36-2-2-2 scope
+
+#### First time setup no crank signal
+- URL: https://speeduino.com/forum/viewtopic.php?p=55387#p55401
+- Date: Fri Feb 18, 2022 10:17 pm
+- Who posted it: mattt_damon
+- Evidence type: tooth log / composite log / wheel description
+- Confidence: high
+- Summary: [jonbill](./memberlist.php?mode=viewprofile&u=1981) wrote: [↑](./viewtopic.php?p=55388#p55388) Fri Feb 18, 2022 8:51 am Is the VR signal actually coming from the car while cranking, or are you using a simulator? isn't 2004 Subaru new age, so 36-2-2-2 rather than 6/7? I get rpm data during cranking now thank you! Except..
+- Why it matters: Provides replay-test-relevant trigger traces.
+- Replay-test details: Pattern references: 36-2-2-2 Includes: cam Includes: crank Image or capture links: 7 Attachments: 2022-02-18_21.54.07.csv -> https://speeduino.com/forum/download/file.php?id=9367; both.csv -> https://speeduino.com/forum/download/file.php?id=9395; camOnly.csv -> https://speeduino.com/forum/download/file.php?id=9394
+- Matched search terms: Subaru 6/7 composite logger
+
+#### First time setup no crank signal - Page 2
+- URL: https://speeduino.com/forum/viewtopic.php?p=55401#p55401
+- Date: Fri Feb 18, 2022 10:17 pm
+- Who posted it: mattt_damon
+- Evidence type: tooth log / composite log / wheel description
+- Confidence: high
+- Summary: [jonbill](./memberlist.php?mode=viewprofile&u=1981) wrote: [↑](./viewtopic.php?p=55388#p55388) Fri Feb 18, 2022 8:51 am Is the VR signal actually coming from the car while cranking, or are you using a simulator? isn't 2004 Subaru new age, so 36-2-2-2 rather than 6/7? I get rpm data during cranking now thank you! Except..
+- Why it matters: Provides replay-test-relevant trigger traces.
+- Replay-test details: Pattern references: 36-2-2-2 Includes: cam Includes: crank Image or capture links: 7 Attachments: 2022-02-18_21.54.07.csv -> https://speeduino.com/forum/download/file.php?id=9367; both.csv -> https://speeduino.com/forum/download/file.php?id=9395; camOnly.csv -> https://speeduino.com/forum/download/file.php?id=9394
+- Matched search terms: Subaru 6/7 tooth logger
+
+#### Just another Speedy ECU
+- URL: https://speeduino.com/forum/viewtopic.php?p=74049#p74172
+- Date: Sat Feb 28, 2026 1:05 am
+- Who posted it: Black Knight
+- Evidence type: tooth log / scope capture
+- Confidence: high
+- Summary: Finalizing VR After a few revisions of the VR circuits we did come up with 4 that worked very well. The pics and wire diagrams are posted above. What we missed was posting the tooth logger so you can see how clean it looks and we also posted a pic of the oscope reading the AC input signal and the VR circuit output square wave. The oscope was connected to the mother board with Dupont wires (so there is no shielding) in a running car with a potential for noise signals and to our pleasure, the signal is noise free.
+- Why it matters: Provides replay-test-relevant trigger traces. Includes hardware-signal evidence, useful for edge and polarity interpretation.
+- Replay-test details: Matched decoder family: 36-2-2-2 Image or capture links: 3 Attachments: bayview posting.mlg -> https://speeduino.com/forum/download/file.php?id=14815; tooth logger cold start and run.csv -> https://speeduino.com/forum/download/file.php?id=14818; up moose.mlg -> https://speeduino.com/forum/download/file.php?id=14816
+- Matched search terms: 36-2-2-2 crank
+
+#### Just another Speedy ECU - Page 2
+- URL: https://speeduino.com/forum/viewtopic.php?p=74078#p74172
+- Date: Sat Feb 28, 2026 1:05 am
+- Who posted it: Black Knight
+- Evidence type: tooth log / scope capture
+- Confidence: high
+- Summary: Finalizing VR After a few revisions of the VR circuits we did come up with 4 that worked very well. The pics and wire diagrams are posted above. What we missed was posting the tooth logger so you can see how clean it looks and we also posted a pic of the oscope reading the AC input signal and the VR circuit output square wave. The oscope was connected to the mother board with Dupont wires (so there is no shielding) in a running car with a potential for noise signals and to our pleasure, the signal is noise free.
+- Why it matters: Provides replay-test-relevant trigger traces. Includes hardware-signal evidence, useful for edge and polarity interpretation.
+- Replay-test details: Matched decoder family: 36-2-2-2 Image or capture links: 3 Attachments: bayview posting.mlg -> https://speeduino.com/forum/download/file.php?id=14815; tooth logger cold start and run.csv -> https://speeduino.com/forum/download/file.php?id=14818; up moose.mlg -> https://speeduino.com/forum/download/file.php?id=14816
+- Matched search terms: 36-2-2-2 crank
+
+#### January 2020 firmware update
+- URL: https://speeduino.com/forum/viewtopic.php?p=40969#p40969
+- Date: Sun Feb 16, 2020 10:38 am
+- Who posted it: noisymime
+- Evidence type: composite log / wheel description / maintainer explanation
+- Confidence: high
+- Summary: On top of the recently release new wiki and new websites, here's the first new firmware for 2020! Like the websites, there's been a LOT happening in the background on the firmware front, including the introduction of a proper, hardware based CI/CD unit testing framework. Without getting too technical, this now means the every code commit is now automatically run through a growing number of tests, on a physical board, and the results reported immediately, allowing for much faster identification of new issues. Primarily this is intended as a maintenance release with a huge list of bug fixes and minor tweaks here and there, but there some nice new features including the WUE analyse live ('auto tuning'), new info dialogs and a much more solid tooth/composite logger.
+- Why it matters: Maintainer explanation increases confidence in expected decoder behavior. Provides replay-test-relevant trigger traces.
+- Replay-test details: Pattern references: 36-2-2-2 Includes: change Includes: crank Includes: sync
+- Matched search terms: 36-2-1 composite logger
+
+#### comission someone to make a subaru h6 36-2-2-2 work please
+- URL: https://speeduino.com/forum/viewtopic.php?p=61397#p61397
+- Date: Fri Feb 24, 2023 1:39 am
+- Who posted it: PSIG
+- Evidence type: tooth log / scope capture / wheel description
+- Confidence: high
+- Summary: @miker, it's a mess. Lots of contradictions to confuse everyone. I'm not using this, and I do not have a wheel from any of them to know anything, so keep that in-mind. If it was just you or just me — no problem.
+- Why it matters: Includes hardware-signal evidence, useful for edge and polarity interpretation.
+- Replay-test details: Pattern references: 27-3-6, 36-2-2, 36-2-2-2, 36-2-3-3 Includes: cas
+- Matched search terms: 36-2-1 scope
+
+#### Just another Speedy ECU
+- URL: https://speeduino.com/forum/viewtopic.php?p=74049#p74153
+- Date: Wed Feb 25, 2026 3:39 am
+- Who posted it: Black Knight
+- Evidence type: tooth log / scope capture
+- Confidence: high
+- Summary: As we are learning various ways to design and build different circuits, like VR, power supply and others, we decided to build a pre prototype board to make all our mistakes on, also various circuits are mounted to the mother board by using header pins so we can play with circuit designs and plug them into the mother board for full testing. We took a couple of days to build this pre prototype board, build it into a project box with the correct connections to tie into the existing wire harness. Now we can test these circuits under real driving conditions. It had its first test run today and all worked well.
+- Why it matters: Provides replay-test-relevant trigger traces. Includes hardware-signal evidence, useful for edge and polarity interpretation.
+- Replay-test details: Includes: crank Matched decoder family: 36-2-2-2
+- Matched search terms: 36-2-2-2 crank
+
+#### Just another Speedy ECU - Page 2
+- URL: https://speeduino.com/forum/viewtopic.php?p=74078#p74153
+- Date: Wed Feb 25, 2026 3:39 am
+- Who posted it: Black Knight
+- Evidence type: tooth log / scope capture
+- Confidence: high
+- Summary: As we are learning various ways to design and build different circuits, like VR, power supply and others, we decided to build a pre prototype board to make all our mistakes on, also various circuits are mounted to the mother board by using header pins so we can play with circuit designs and plug them into the mother board for full testing. We took a couple of days to build this pre prototype board, build it into a project box with the correct connections to tie into the existing wire harness. Now we can test these circuits under real driving conditions. It had its first test run today and all worked well.
+- Why it matters: Provides replay-test-relevant trigger traces. Includes hardware-signal evidence, useful for edge and polarity interpretation.
+- Replay-test details: Includes: crank Matched decoder family: 36-2-2-2
+- Matched search terms: 36-2-2-2 crank
+
+#### Fresh build, no sync. Subaru EJ20.
+- URL: https://speeduino.com/forum/viewtopic.php?p=64768#p64751
+- Date: Tue Sep 05, 2023 1:23 am
+- Who posted it: rozap
+- Evidence type: scope capture / tune file / wheel description
+- Confidence: medium
+- Summary: Hi everyone, This is my second speeduino install and the first one went really smoothly (on a VW VR6) while this one is kicking my ass. Engine is a Subaru EJ20 with the 36-2-2-2 wheel. I've been unable to get any sync to occur. I've tried two different VR conditioners, one mini max A2, and one regular DSC conditioner.
+- Why it matters: Includes hardware-signal evidence, useful for edge and polarity interpretation.
+- Replay-test details: Pattern references: 36-2-2-2 Includes: cam Includes: crank Includes: sync Image or capture links: 2 Attachments: 2023-09-04_18.08.38.csv -> https://speeduino.com/forum/download/file.php?id=11985; CurrentTune.msq -> https://speeduino.com/forum/download/file.php?id=11984
+- Matched search terms: Subaru 6/7 Speeduino trigger
+
+#### RPM spike causing engine shut off
+- URL: https://speeduino.com/forum/viewtopic.php?p=69137#p69137
+- Date: Tue Aug 06, 2024 3:11 pm
+- Who posted it: peroni93
+- Evidence type: tooth log / wheel description
+- Confidence: medium
+- Summary: Hi all, First post on the forum. I have a turbo charged 1.3L petrol engine. It runs quite well and is bags of fun, but I'm having an intermittent fault where the RPM spikes for a millisecond, always when under boost or near WOT, and the engine cuts out. I have no engine protection settings at all so there should be no coded cut out.
+- Why it matters: Provides replay-test-relevant trigger traces.
+- Replay-test details: Pattern references: 36-2-2-2 Includes: crank Image or capture links: 3 Attachments: 2024-08-06_15.09.25.mlg -> https://speeduino.com/forum/download/file.php?id=13250; 2024-08-06_15.39.53.csv -> https://speeduino.com/forum/download/file.php?id=13251; 2024-08-06_15.41.03.mlg -> https://speeduino.com/forum/download/file.php?id=13252
+- Matched search terms: 36-2-1 tooth logger
+
+#### Fresh build, no sync. Subaru EJ20.
+- URL: https://speeduino.com/forum/viewtopic.php?p=64751#p64770
+- Date: Wed Sep 06, 2023 5:55 am
+- Who posted it: rozap
+- Evidence type: composite log / scope capture
+- Confidence: medium
+- Summary: Digging into the code a bit, would I be right in thinking that this line sets the flag that the composite logger ultimately uses to display the blue square wave? Code: [Select all](#) ``` BIT_SET(decoderState, BIT_DECODER_VALID_TRIGGER); ``` [https://github.com/noisymime/speeduino/ ... .ino#L3587](https://github.com/noisymime/speeduino/blob/master/speeduino/decoders.ino#L3587) If so, then that'd narrow things down a bit since I know at this point that there are trigger pulses but we never enter a statement where hasSync is set to true. According to the scope, it's doing one rotation every (approx) 300ms, so about 200 RPM.
+- Why it matters: Provides replay-test-relevant trigger traces. Includes hardware-signal evidence, useful for edge and polarity interpretation.
+- Replay-test details: Includes: sync Matched decoder family: 36-2-2-2
+- Matched search terms: 36-2-2-2 scope
+
+#### Cylinder 1 on a 3 cylinder engine not firing properly - Page 6
+- URL: https://speeduino.com/forum/viewtopic.php?p=36123#p36018
+- Date: Sun Jun 30, 2019 12:58 pm
+- Who posted it: Xortex
+- Evidence type: scope capture / wheel description
+- Confidence: medium
+- Summary: [ric355](./memberlist.php?mode=viewprofile&u=1649) wrote: [↑](./viewtopic.php?p=36017#p36017) Sun Jun 30, 2019 12:18 pm Have you verified what the trigger wheel looks like yet? You can't possibly know how the tooth pattern should look until you know what the physical pattern of the wheel is. Based on what others have posted: [viewtopic.php?f=19&t=1662&p=24399&hilit ... 1kr#p24399](https://speeduino.com/forum/viewtopic.php?f=19&t=1662&p=24399&hilit=toyota+krfe+1kr#p24399) [viewtopic.php?f=18&t=744&hilit=3+cylind ...
+- Why it matters: Includes hardware-signal evidence, useful for edge and polarity interpretation.
+- Replay-test details: Pattern references: 36-2, 36-2-2-2 Includes: missing tooth Includes: cam Includes: crank Includes: cas
+- Matched search terms: Daihatsu Speeduino trigger
+
+#### Issues trying to start an EJ16 with Speeduino v0.4
+- URL: https://speeduino.com/forum/viewtopic.php?p=71709#p71709
+- Date: Sat Apr 26, 2025 6:52 am
+- Who posted it: dazq
+- Evidence type: wheel description / maintainer explanation
+- Confidence: medium
+- Summary: [George Tsotsos](./memberlist.php?mode=viewprofile&u=9594) wrote: [↑](./viewtopic.php?p=71705#p71705) Fri Apr 25, 2025 6:30 pm Still no luck with getting it to run, it still sometimes misfires and causes the engine to brake while cranking or it will misfire from the intake. I used the 36-2-2-2 trigger pattern and it does fully sync, I don't know exactly how the trigger wheel looks as you need to take off the crank pulley to get the timing covers off to see What should I try next? Set it to locked timing and check timing with a strobe light and adjust trigger offset so it is correct .
+- Why it matters: Maintainer explanation increases confidence in expected decoder behavior.
+- Replay-test details: Pattern references: 36-2-2-2 Includes: crank Includes: sync
+- Matched search terms: 36-2-2-2 sync
+
+#### Subaru EJ25 DOHC - Page 2
+- URL: https://speeduino.com/forum/viewtopic.php?p=70688#p70688
+- Date: Mon Feb 03, 2025 8:48 pm
+- Who posted it: PSIG
+- Evidence type: tooth log / scope capture / wheel description
+- Confidence: medium
+- Summary: Reviewing an image of the wheel, the tooth log makes more sense. You have to think in ONLY rising or falling edges (depending on decoder spec), and that a sensed edge is required to end a time bar in a tooth log. Using this and the 'scope image earlier, we can count 36 total teeth (real and missing) like this: If it helps to see what the sensor is reading, perhaps this may help. Please pardon the crude drawing .
+- Why it matters: Includes hardware-signal evidence, useful for edge and polarity interpretation.
+- Replay-test details: Pattern references: 36-2-2-2, 36-2-4 Includes: falling edge Includes: crank
+- Matched search terms: 36-2-2-2 scope
+
+#### Subaru EJ25 DOHC
+- URL: https://speeduino.com/forum/viewtopic.php?p=70668#p70668
+- Date: Sun Feb 02, 2025 1:53 pm
+- Who posted it: Laudper
+- Evidence type: composite log / tune file / wheel description
+- Confidence: medium
+- Summary: I am using the 36-2-2-2, so see no problems using that pattern? Current tune uploaded. I haven't got a tooth/composite logger to share currently as I am doing a bit of wiring. Will share as soon as I can crank the engine.
+- Why it matters: Provides replay-test-relevant trigger traces.
+- Replay-test details: Pattern references: 36-2-2-2 Includes: crank Image or capture links: 1 Attachments: 2025-02-01_13.01.19.msq -> https://speeduino.com/forum/download/file.php?id=13649
+- Matched search terms: 36-2-2-2 tooth logger
+
+#### Just another Speedy ECU
+- URL: https://speeduino.com/forum/viewtopic.php?p=74049#p74049
+- Date: Wed Feb 04, 2026 1:16 am
+- Who posted it: Black Knight
+- Evidence type: scope capture / wheel description
+- Confidence: medium
+- Summary: VR circuit bench testing done. I machined a bushing and did some light adapting work to have the 36-2-2-2 mount on the shaft of the 3 phase motor. Built a bracket to support the sensor. By the way, I learned that as the rpm and tooth count increased there’s a lot more magnetic force generated in the sensor.
+- Why it matters: Includes hardware-signal evidence, useful for edge and polarity interpretation.
+- Replay-test details: Pattern references: 36-2-2-2 Includes: change Includes: crank
+- Matched search terms: 36-2-2-2 crank
+
+#### Just another Speedy ECU - Page 2
+- URL: https://speeduino.com/forum/viewtopic.php?p=74078#p74078
+- Date: Wed Feb 11, 2026 2:21 am
+- Who posted it: Black Knight
+- Evidence type: scope capture / wheel description
+- Confidence: medium
+- Summary: 3 VR circuits working First, these circuits have only been tested on a 36-2-2-2 sprocket wheel with a Subaru crank sensor. So until they are tested on something else there is no way to know if they will work on anything else. We will be testing them on different things soon. We started by retesting the circuit we posted earlier because we found after the single missing tooth area that the very next tooth/signal was missing on the oscope when it neared 3000 rpm and above.
+- Why it matters: Includes hardware-signal evidence, useful for edge and polarity interpretation.
+- Replay-test details: Pattern references: 36-2-2-2 Includes: missing tooth Includes: change Includes: crank
+- Matched search terms: 36-2-2-2 crank
+
+#### Issues trying to start an EJ16 with Speeduino v0.4
+- URL: https://speeduino.com/forum/viewtopic.php?p=72018#p71709
+- Date: Sat Apr 26, 2025 6:52 am
+- Who posted it: dazq
+- Evidence type: wheel description / maintainer explanation
+- Confidence: medium
+- Summary: [George Tsotsos](./memberlist.php?mode=viewprofile&u=9594) wrote: [↑](./viewtopic.php?p=71705#p71705) Fri Apr 25, 2025 6:30 pm Still no luck with getting it to run, it still sometimes misfires and causes the engine to brake while cranking or it will misfire from the intake. I used the 36-2-2-2 trigger pattern and it does fully sync, I don't know exactly how the trigger wheel looks as you need to take off the crank pulley to get the timing covers off to see What should I try next? Set it to locked timing and check timing with a strobe light and adjust trigger offset so it is correct .
+- Why it matters: Maintainer explanation increases confidence in expected decoder behavior.
+- Replay-test details: Pattern references: 36-2-2-2 Includes: crank Includes: sync
+- Matched search terms: 36-2-2-2 Speeduino trigger
+
+#### Subaru EJ25 DOHC
+- URL: https://speeduino.com/forum/viewtopic.php?p=70668#p70688
+- Date: Mon Feb 03, 2025 8:48 pm
+- Who posted it: PSIG
+- Evidence type: tooth log / scope capture / wheel description
+- Confidence: medium
+- Summary: Reviewing an image of the wheel, the tooth log makes more sense. You have to think in ONLY rising or falling edges (depending on decoder spec), and that a sensed edge is required to end a time bar in a tooth log. Using this and the 'scope image earlier, we can count 36 total teeth (real and missing) like this: If it helps to see what the sensor is reading, perhaps this may help. Please pardon the crude drawing .
+- Why it matters: Includes hardware-signal evidence, useful for edge and polarity interpretation.
+- Replay-test details: Pattern references: 36-2-2-2, 36-2-4 Includes: falling edge Includes: crank
+- Matched search terms: 36-2-2-2 tooth logger
+
+#### comission someone to make a subaru h6 36-2-2-2 work please
+- URL: https://speeduino.com/forum/viewtopic.php?p=61397#p61427
+- Date: Fri Feb 24, 2023 9:09 am
+- Who posted it: JHolland
+- Evidence type: tooth log / scope capture
+- Confidence: medium
+- Summary: [PSIG](./memberlist.php?mode=viewprofile&u=149) wrote: [↑](./viewtopic.php?p=61397#p61397) Fri Feb 24, 2023 1:39 am ... the proof is in a 'scope trace or tooth log. They have a 'scope trace depicted in the drawing, but whether I count it leading or trailing or inverted... it's wrong and shows 37 edges.
+- Why it matters: Includes hardware-signal evidence, useful for edge and polarity interpretation.
+- Replay-test details: Matched decoder family: 36-2-2-2
+- Matched search terms: 36-2-1 scope
+
+#### Just another Speedy ECU - Page 3
+- URL: https://speeduino.com/forum/viewtopic.php?p=74109#p74078
+- Date: Wed Feb 11, 2026 2:21 am
+- Who posted it: Black Knight
+- Evidence type: scope capture / wheel description
+- Confidence: medium
+- Summary: 3 VR circuits working First, these circuits have only been tested on a 36-2-2-2 sprocket wheel with a Subaru crank sensor. So until they are tested on something else there is no way to know if they will work on anything else. We will be testing them on different things soon. We started by retesting the circuit we posted earlier because we found after the single missing tooth area that the very next tooth/signal was missing on the oscope when it neared 3000 rpm and above.
+- Why it matters: Includes hardware-signal evidence, useful for edge and polarity interpretation.
+- Replay-test details: Pattern references: 36-2-2-2 Includes: missing tooth Includes: change Includes: crank
+- Matched search terms: 36-2-1 crank
+
+#### First time setup no crank signal - Page 2
+- URL: https://speeduino.com/forum/viewtopic.php?p=55401#p56978
+- Date: Mon May 16, 2022 4:48 pm
+- Who posted it: PSIG
+- Evidence type: scope capture / wheel description
+- Confidence: medium
+- Summary: Is this on simulator or working engine? We need more info to diagnose this. While it appears to be a decoder-to-signal mismatch, you need to verify. I suggest if on-sim, the patterns may not match each other, so either compare them or move to the engine.
+- Why it matters: Includes hardware-signal evidence, useful for edge and polarity interpretation.
+- Replay-test details: Pattern references: 2-2-2, 36-2-2-2 Includes: change Includes: cam Includes: crank
+- Matched search terms: Subaru 6/7 tooth logger
+
+#### Subaru EJ25 DOHC
+- URL: https://speeduino.com/forum/viewtopic.php?p=70668#p70705
+- Date: Tue Feb 04, 2025 9:04 pm
+- Who posted it: Laudper
+- Evidence type: tooth log / wheel description
+- Confidence: low
+- Summary: jonbill wrote: I've just realised that the EJ25 is a 4 cylinder - I thought it was a 6 : but anyway - the (first) tooth log pattern looks right to me. the data log is very strange : very little changes through the log - the only thing thats interesting is at around 6.7 seconds vbat goes from 0 to 5.5 and then flits around up to 11 and then back down to 0, and at the same time MAP goes from 100 to 93 and back to 100. what's actually going on here? are you connecting a battery and cranking, or?
+- Why it matters: Contains decoder-specific technical details that may support test coverage.
+- Replay-test details: Includes: change Includes: crank Matched decoder family: 36-2-2-2
+- Matched search terms: 36-2-2-2 tooth logger
+
+#### Subaru EJ25 DOHC - Page 2
+- URL: https://speeduino.com/forum/viewtopic.php?p=70688#p70705
+- Date: Tue Feb 04, 2025 9:04 pm
+- Who posted it: Laudper
+- Evidence type: tooth log / wheel description
+- Confidence: low
+- Summary: jonbill wrote: I've just realised that the EJ25 is a 4 cylinder - I thought it was a 6 : but anyway - the (first) tooth log pattern looks right to me. the data log is very strange : very little changes through the log - the only thing thats interesting is at around 6.7 seconds vbat goes from 0 to 5.5 and then flits around up to 11 and then back down to 0, and at the same time MAP goes from 100 to 93 and back to 100. what's actually going on here? are you connecting a battery and cranking, or?
+- Why it matters: Contains decoder-specific technical details that may support test coverage.
+- Replay-test details: Includes: change Includes: crank Matched decoder family: 36-2-2-2
+- Matched search terms: 36-2-2-2 scope
+
+#### Issues trying to start an EJ16 with Speeduino v0.4
+- URL: https://speeduino.com/forum/viewtopic.php?p=71709#p72017
+- Date: Mon Jun 16, 2025 3:53 pm
+- Who posted it: George Tsotsos
+- Evidence type: tooth log / wheel description
+- Confidence: low
+- Summary: We tried to fix the timing but i noticed that the timing mark keeps moving ahead while cranking, sometimes its at 0 and other times it goes off like 90 ahead, i believe the trigger wheel is not correct or something The tooth logger looks weird as well, any suggestions?
+- Why it matters: Provides replay-test-relevant trigger traces.
+- Replay-test details: Includes: crank Matched decoder family: 36-2-2-2
+- Matched search terms: 36-2-2-2 sync
+
+#### Issues trying to start an EJ16 with Speeduino v0.4
+- URL: https://speeduino.com/forum/viewtopic.php?p=72018#p72017
+- Date: Mon Jun 16, 2025 3:53 pm
+- Who posted it: George Tsotsos
+- Evidence type: tooth log / wheel description
+- Confidence: low
+- Summary: We tried to fix the timing but i noticed that the timing mark keeps moving ahead while cranking, sometimes its at 0 and other times it goes off like 90 ahead, i believe the trigger wheel is not correct or something The tooth logger looks weird as well, any suggestions?
+- Why it matters: Provides replay-test-relevant trigger traces.
+- Replay-test details: Includes: crank Matched decoder family: 36-2-2-2
+- Matched search terms: 36-2-2-2 Speeduino trigger
+
+#### Subaru EJ25 DOHC - Page 2
+- URL: https://speeduino.com/forum/viewtopic.php?p=70688#p71057
+- Date: Sun Mar 02, 2025 7:14 pm
+- Who posted it: Laudper
+- Evidence type: tune file / image attachment
+- Confidence: low
+- Summary: Hi everyone, I have had the van running and although it is driveable, there are a couple of issues: 1) It backfires, mainly during deceleration. 2) There are occasional RPM spikes 3) Perhaps related to 2), it seems to cut out/misfire occassionally. 4) The advance on the crank is about 7 degrees more advanced than the spark table. Unsure how to rectify this?!
+- Why it matters: Contains decoder-specific technical details that may support test coverage.
+- Replay-test details: Includes: crank Includes: cas Matched decoder family: 36-2-2-2 Image or capture links: 2 Attachments: 2025-03-02_11.19.05.mlg -> https://speeduino.com/forum/download/file.php?id=13765; CurrentTune.msq -> https://speeduino.com/forum/download/file.php?id=13766
+- Matched search terms: 36-2-2-2 scope
+
+### 4-1
+
+#### Ford ST170 Cam trigger pattern - Page 2
+- URL: https://speeduino.com/forum/viewtopic.php?p=48080#p47573
+- Date: Thu Jan 14, 2021 1:53 pm
+- Who posted it: Jama
+- Evidence type: tune file / wheel description / image attachment
+- Confidence: medium
+- Summary: [CCS](./memberlist.php?mode=viewprofile&u=2919) wrote: [↑](./viewtopic.php?p=47565#p47565) Wed Jan 13, 2021 10:03 pm Sorry I've been Ill with covid for a while now, before that day work along with other family members projects have kept me out of the garage. The cold air just wrecks my lungs, sucks. I'm going to slap on some new bosch CoPs & find someone with a rolling road; or buy one. Got a new garage away from home that has three phase so I should be able to pickup an uncoverted rolling road for cheap.
+- Why it matters: Contains decoder-specific technical details that may support test coverage.
+- Replay-test details: Pattern references: 4-1 Includes: sync Image or capture links: 2 Attachments: 2021-02-07_11.45.35.mlg.txt -> https://speeduino.com/forum/download/file.php?id=7970; CurrentTune.msq -> https://speeduino.com/forum/download/file.php?id=7969
+- Matched search terms: 420a Speeduino trigger
+
+#### Tooth and Composit Logging Is Fun!
+- URL: https://speeduino.com/forum/viewtopic.php?p=73237#p73272
+- Date: Thu Oct 02, 2025 2:38 pm
+- Who posted it: michaellatini
+- Evidence type: wheel description
+- Confidence: low
+- Summary: Oh my goodness!!! Between my memory and not knowing what I'm doing... The crank sensor is a VR and not Hall, just looked at what I bought on the website and it shows that the VR sensor has 3 wires that I bought, and the Hall has only 2 wires. Additional info on the CB Performance cam sync, talks about using it for sequential ignition and no mention of sequential FI.
+- Why it matters: Contains decoder-specific technical details that may support test coverage.
+- Replay-test details: Pattern references: 4-1 Includes: missing tooth Includes: cam Includes: crank Includes: sync Includes: cas
+- Matched search terms: 36-2-1 sync
+
+#### Tooth and Composit Logging Is Fun!
+- URL: https://speeduino.com/forum/viewtopic.php?p=73269#p73272
+- Date: Thu Oct 02, 2025 2:38 pm
+- Who posted it: michaellatini
+- Evidence type: wheel description
+- Confidence: low
+- Summary: Oh my goodness!!! Between my memory and not knowing what I'm doing... The crank sensor is a VR and not Hall, just looked at what I bought on the website and it shows that the VR sensor has 3 wires that I bought, and the Hall has only 2 wires. Additional info on the CB Performance cam sync, talks about using it for sequential ignition and no mention of sequential FI.
+- Why it matters: Contains decoder-specific technical details that may support test coverage.
+- Replay-test details: Pattern references: 4-1 Includes: missing tooth Includes: cam Includes: crank Includes: sync Includes: cas
+- Matched search terms: 36-2-1 crank
+
+#### Tooth and Composit Logging Is Fun!
+- URL: https://speeduino.com/forum/viewtopic.php?p=73271#p73272
+- Date: Thu Oct 02, 2025 2:38 pm
+- Who posted it: michaellatini
+- Evidence type: wheel description
+- Confidence: low
+- Summary: Oh my goodness!!! Between my memory and not knowing what I'm doing... The crank sensor is a VR and not Hall, just looked at what I bought on the website and it shows that the VR sensor has 3 wires that I bought, and the Hall has only 2 wires. Additional info on the CB Performance cam sync, talks about using it for sequential ignition and no mention of sequential FI.
+- Why it matters: Contains decoder-specific technical details that may support test coverage.
+- Replay-test details: Pattern references: 4-1 Includes: missing tooth Includes: cam Includes: crank Includes: sync Includes: cas
+- Matched search terms: 36-2-1 crank
+
+### 420a
+
+#### How to configure Primary Base Teeth and Trigger Angle on the 420A engine?
+- URL: https://speeduino.com/forum/viewtopic.php?p=70720#p70720
+- Date: Wed Feb 05, 2025 10:36 pm
+- Who posted it: PedroV9
+- Evidence type: scope capture / tune file
+- Confidence: high
+- Summary: Would anyone be able to tell me, based on these images, the correct Primary Base Teeth and Trigger Angle configuration? Using a timing light, I found a value of -3 degrees, but I’m experiencing Lost Sync at intermediate RPMs. Checking with an oscilloscope, the signal looks clean, and there is also no reading fluctuation in TunerStudio. I believe it might be an issue with the decoder settings.
+- Why it matters: Includes hardware-signal evidence, useful for edge and polarity interpretation.
+- Replay-test details: Includes: sync Matched decoder family: 420a Image or capture links: 4 Attachments: 2025-02-05_11.05.39.mlg -> https://speeduino.com/forum/download/file.php?id=13677; 2025-02-06_18.52.31.csv -> https://speeduino.com/forum/download/file.php?id=13678; noovo.csv -> https://speeduino.com/forum/download/file.php?id=13675
+- Matched search terms: 420a oscilloscope
+
+#### How to configure Primary Base Teeth and Trigger Angle on the 420A engine?
+- URL: https://speeduino.com/forum/viewtopic.php?p=70746#p70720
+- Date: Wed Feb 05, 2025 10:36 pm
+- Who posted it: PedroV9
+- Evidence type: scope capture / tune file
+- Confidence: high
+- Summary: Would anyone be able to tell me, based on these images, the correct Primary Base Teeth and Trigger Angle configuration? Using a timing light, I found a value of -3 degrees, but I’m experiencing Lost Sync at intermediate RPMs. Checking with an oscilloscope, the signal looks clean, and there is also no reading fluctuation in TunerStudio. I believe it might be an issue with the decoder settings.
+- Why it matters: Includes hardware-signal evidence, useful for edge and polarity interpretation.
+- Replay-test details: Includes: sync Matched decoder family: 420a Image or capture links: 4 Attachments: 2025-02-05_11.05.39.mlg -> https://speeduino.com/forum/download/file.php?id=13677; 2025-02-06_18.52.31.csv -> https://speeduino.com/forum/download/file.php?id=13678; noovo.csv -> https://speeduino.com/forum/download/file.php?id=13675
+- Matched search terms: 420a oscilloscope
+
+#### How to configure Primary Base Teeth and Trigger Angle on the 420A engine?
+- URL: https://speeduino.com/forum/viewtopic.php?p=70749#p70720
+- Date: Wed Feb 05, 2025 10:36 pm
+- Who posted it: PedroV9
+- Evidence type: scope capture / tune file
+- Confidence: high
+- Summary: Would anyone be able to tell me, based on these images, the correct Primary Base Teeth and Trigger Angle configuration? Using a timing light, I found a value of -3 degrees, but I’m experiencing Lost Sync at intermediate RPMs. Checking with an oscilloscope, the signal looks clean, and there is also no reading fluctuation in TunerStudio. I believe it might be an issue with the decoder settings.
+- Why it matters: Includes hardware-signal evidence, useful for edge and polarity interpretation.
+- Replay-test details: Includes: sync Matched decoder family: 420a Image or capture links: 4 Attachments: 2025-02-05_11.05.39.mlg -> https://speeduino.com/forum/download/file.php?id=13677; 2025-02-06_18.52.31.csv -> https://speeduino.com/forum/download/file.php?id=13678; noovo.csv -> https://speeduino.com/forum/download/file.php?id=13675
+- Matched search terms: 420a sync
+
+#### How to configure Primary Base Teeth and Trigger Angle on the 420A engine?
+- URL: https://speeduino.com/forum/viewtopic.php?p=70755#p70720
+- Date: Wed Feb 05, 2025 10:36 pm
+- Who posted it: PedroV9
+- Evidence type: scope capture / tune file
+- Confidence: high
+- Summary: Would anyone be able to tell me, based on these images, the correct Primary Base Teeth and Trigger Angle configuration? Using a timing light, I found a value of -3 degrees, but I’m experiencing Lost Sync at intermediate RPMs. Checking with an oscilloscope, the signal looks clean, and there is also no reading fluctuation in TunerStudio. I believe it might be an issue with the decoder settings.
+- Why it matters: Includes hardware-signal evidence, useful for edge and polarity interpretation.
+- Replay-test details: Includes: sync Matched decoder family: 420a Image or capture links: 4 Attachments: 2025-02-05_11.05.39.mlg -> https://speeduino.com/forum/download/file.php?id=13677; 2025-02-06_18.52.31.csv -> https://speeduino.com/forum/download/file.php?id=13678; noovo.csv -> https://speeduino.com/forum/download/file.php?id=13675
+- Matched search terms: 420a oscilloscope
+
+#### How to configure Primary Base Teeth and Trigger Angle on the 420A engine?
+- URL: https://speeduino.com/forum/viewtopic.php?p=70720#p70755
+- Date: Sat Feb 08, 2025 3:50 pm
+- Who posted it: PedroV9
+- Evidence type: composite log / scope capture
+- Confidence: high
+- Summary: [PSIG](./memberlist.php?mode=viewprofile&u=149) wrote: [↑](./viewtopic.php?p=70746#p70746) Sat Feb 08, 2025 12:14 am Are you using any VR or signal conditioner? My first guess is noise. You have 164 sync losses in 23 seconds. My next clue is your run log, which shows rpm spikes when the engine is off and not cranking.
+- Why it matters: Includes hardware-signal evidence, useful for edge and polarity interpretation. Discusses sync-loss conditions that can inform negative test cases.
+- Replay-test details: Includes: change Includes: cam Includes: crank Includes: sync Includes: sync loss Includes: cas Matched decoder family: 420a
+- Matched search terms: 420a oscilloscope
+
+#### How to configure Primary Base Teeth and Trigger Angle on the 420A engine?
+- URL: https://speeduino.com/forum/viewtopic.php?p=70746#p70755
+- Date: Sat Feb 08, 2025 3:50 pm
+- Who posted it: PedroV9
+- Evidence type: composite log / scope capture
+- Confidence: high
+- Summary: [PSIG](./memberlist.php?mode=viewprofile&u=149) wrote: [↑](./viewtopic.php?p=70746#p70746) Sat Feb 08, 2025 12:14 am Are you using any VR or signal conditioner? My first guess is noise. You have 164 sync losses in 23 seconds. My next clue is your run log, which shows rpm spikes when the engine is off and not cranking.
+- Why it matters: Includes hardware-signal evidence, useful for edge and polarity interpretation. Discusses sync-loss conditions that can inform negative test cases.
+- Replay-test details: Includes: change Includes: cam Includes: crank Includes: sync Includes: sync loss Includes: cas Matched decoder family: 420a
+- Matched search terms: 420a oscilloscope
+
+#### How to configure Primary Base Teeth and Trigger Angle on the 420A engine?
+- URL: https://speeduino.com/forum/viewtopic.php?p=70749#p70755
+- Date: Sat Feb 08, 2025 3:50 pm
+- Who posted it: PedroV9
+- Evidence type: composite log / scope capture
+- Confidence: high
+- Summary: [PSIG](./memberlist.php?mode=viewprofile&u=149) wrote: [↑](./viewtopic.php?p=70746#p70746) Sat Feb 08, 2025 12:14 am Are you using any VR or signal conditioner? My first guess is noise. You have 164 sync losses in 23 seconds. My next clue is your run log, which shows rpm spikes when the engine is off and not cranking.
+- Why it matters: Includes hardware-signal evidence, useful for edge and polarity interpretation. Discusses sync-loss conditions that can inform negative test cases.
+- Replay-test details: Includes: change Includes: cam Includes: crank Includes: sync Includes: sync loss Includes: cas Matched decoder family: 420a
+- Matched search terms: 420a sync
+
+#### How to configure Primary Base Teeth and Trigger Angle on the 420A engine?
+- URL: https://speeduino.com/forum/viewtopic.php?p=70755#p70755
+- Date: Sat Feb 08, 2025 3:50 pm
+- Who posted it: PedroV9
+- Evidence type: composite log / scope capture
+- Confidence: high
+- Summary: [PSIG](./memberlist.php?mode=viewprofile&u=149) wrote: [↑](./viewtopic.php?p=70746#p70746) Sat Feb 08, 2025 12:14 am Are you using any VR or signal conditioner? My first guess is noise. You have 164 sync losses in 23 seconds. My next clue is your run log, which shows rpm spikes when the engine is off and not cranking.
+- Why it matters: Includes hardware-signal evidence, useful for edge and polarity interpretation. Discusses sync-loss conditions that can inform negative test cases.
+- Replay-test details: Includes: change Includes: cam Includes: crank Includes: sync Includes: sync loss Includes: cas Matched decoder family: 420a
+- Matched search terms: 420a oscilloscope
+
+#### How to configure Primary Base Teeth and Trigger Angle on the 420A engine?
+- URL: https://speeduino.com/forum/viewtopic.php?p=70760#p70755
+- Date: Sat Feb 08, 2025 3:50 pm
+- Who posted it: PedroV9
+- Evidence type: composite log / scope capture
+- Confidence: high
+- Summary: [PSIG](./memberlist.php?mode=viewprofile&u=149) wrote: [↑](./viewtopic.php?p=70746#p70746) Sat Feb 08, 2025 12:14 am Are you using any VR or signal conditioner? My first guess is noise. You have 164 sync losses in 23 seconds. My next clue is your run log, which shows rpm spikes when the engine is off and not cranking.
+- Why it matters: Includes hardware-signal evidence, useful for edge and polarity interpretation. Discusses sync-loss conditions that can inform negative test cases.
+- Replay-test details: Includes: change Includes: cam Includes: crank Includes: sync Includes: sync loss Includes: cas Matched decoder family: 420a
+- Matched search terms: 420a crank
+
+#### How to configure Primary Base Teeth and Trigger Angle on the 420A engine?
+- URL: https://speeduino.com/forum/viewtopic.php?p=70720#p70746
+- Date: Sat Feb 08, 2025 12:14 am
+- Who posted it: PSIG
+- Evidence type: composite log / scope capture
+- Confidence: high
+- Summary: Are you using any VR or signal conditioner? My first guess is noise. You have 164 sync losses in 23 seconds. My next clue is your run log, which shows rpm spikes when the engine is off and not cranking.
+- Why it matters: Includes hardware-signal evidence, useful for edge and polarity interpretation. Discusses sync-loss conditions that can inform negative test cases.
+- Replay-test details: Includes: cam Includes: crank Includes: sync Includes: sync loss Matched decoder family: 420a
+- Matched search terms: 420a oscilloscope
+
+#### How to configure Primary Base Teeth and Trigger Angle on the 420A engine?
+- URL: https://speeduino.com/forum/viewtopic.php?p=70746#p70746
+- Date: Sat Feb 08, 2025 12:14 am
+- Who posted it: PSIG
+- Evidence type: composite log / scope capture
+- Confidence: high
+- Summary: Are you using any VR or signal conditioner? My first guess is noise. You have 164 sync losses in 23 seconds. My next clue is your run log, which shows rpm spikes when the engine is off and not cranking.
+- Why it matters: Includes hardware-signal evidence, useful for edge and polarity interpretation. Discusses sync-loss conditions that can inform negative test cases.
+- Replay-test details: Includes: cam Includes: crank Includes: sync Includes: sync loss Matched decoder family: 420a
+- Matched search terms: 420a oscilloscope
+
+#### How to configure Primary Base Teeth and Trigger Angle on the 420A engine?
+- URL: https://speeduino.com/forum/viewtopic.php?p=70749#p70746
+- Date: Sat Feb 08, 2025 12:14 am
+- Who posted it: PSIG
+- Evidence type: composite log / scope capture
+- Confidence: high
+- Summary: Are you using any VR or signal conditioner? My first guess is noise. You have 164 sync losses in 23 seconds. My next clue is your run log, which shows rpm spikes when the engine is off and not cranking.
+- Why it matters: Includes hardware-signal evidence, useful for edge and polarity interpretation. Discusses sync-loss conditions that can inform negative test cases.
+- Replay-test details: Includes: cam Includes: crank Includes: sync Includes: sync loss Matched decoder family: 420a
+- Matched search terms: 420a sync
+
+#### How to configure Primary Base Teeth and Trigger Angle on the 420A engine?
+- URL: https://speeduino.com/forum/viewtopic.php?p=70755#p70746
+- Date: Sat Feb 08, 2025 12:14 am
+- Who posted it: PSIG
+- Evidence type: composite log / scope capture
+- Confidence: high
+- Summary: Are you using any VR or signal conditioner? My first guess is noise. You have 164 sync losses in 23 seconds. My next clue is your run log, which shows rpm spikes when the engine is off and not cranking.
+- Why it matters: Includes hardware-signal evidence, useful for edge and polarity interpretation. Discusses sync-loss conditions that can inform negative test cases.
+- Replay-test details: Includes: cam Includes: crank Includes: sync Includes: sync loss Matched decoder family: 420a
+- Matched search terms: 420a oscilloscope
+
+#### How to configure Primary Base Teeth and Trigger Angle on the 420A engine?
+- URL: https://speeduino.com/forum/viewtopic.php?p=70760#p70746
+- Date: Sat Feb 08, 2025 12:14 am
+- Who posted it: PSIG
+- Evidence type: composite log / scope capture
+- Confidence: high
+- Summary: Are you using any VR or signal conditioner? My first guess is noise. You have 164 sync losses in 23 seconds. My next clue is your run log, which shows rpm spikes when the engine is off and not cranking.
+- Why it matters: Includes hardware-signal evidence, useful for edge and polarity interpretation. Discusses sync-loss conditions that can inform negative test cases.
+- Replay-test details: Includes: cam Includes: crank Includes: sync Includes: sync loss Matched decoder family: 420a
+- Matched search terms: 420a crank
+
+#### How to configure Primary Base Teeth and Trigger Angle on the 420A engine?
+- URL: https://speeduino.com/forum/viewtopic.php?p=70745#p70720
+- Date: Wed Feb 05, 2025 10:36 pm
+- Who posted it: PedroV9
+- Evidence type: scope capture / tune file
+- Confidence: medium
+- Summary: Would anyone be able to tell me, based on these images, the correct Primary Base Teeth and Trigger Angle configuration? Using a timing light, I found a value of -3 degrees, but I’m experiencing Lost Sync at intermediate RPMs. Checking with an oscilloscope, the signal looks clean, and there is also no reading fluctuation in TunerStudio. I believe it might be an issue with the decoder settings.
+- Why it matters: Includes hardware-signal evidence, useful for edge and polarity interpretation.
+- Replay-test details: Includes: sync Matched decoder family: 420a Image or capture links: 4 Attachments: 2025-02-05_11.05.39.mlg -> https://speeduino.com/forum/download/file.php?id=13677; 2025-02-06_18.52.31.csv -> https://speeduino.com/forum/download/file.php?id=13678; noovo.csv -> https://speeduino.com/forum/download/file.php?id=13675
+- Matched search terms: 420a Speeduino trigger
+
+#### How to configure Primary Base Teeth and Trigger Angle on the 420A engine?
+- URL: https://speeduino.com/forum/viewtopic.php?p=70760#p70720
+- Date: Wed Feb 05, 2025 10:36 pm
+- Who posted it: PedroV9
+- Evidence type: scope capture / tune file
+- Confidence: medium
+- Summary: Would anyone be able to tell me, based on these images, the correct Primary Base Teeth and Trigger Angle configuration? Using a timing light, I found a value of -3 degrees, but I’m experiencing Lost Sync at intermediate RPMs. Checking with an oscilloscope, the signal looks clean, and there is also no reading fluctuation in TunerStudio. I believe it might be an issue with the decoder settings.
+- Why it matters: Includes hardware-signal evidence, useful for edge and polarity interpretation.
+- Replay-test details: Includes: sync Matched decoder family: 420a Image or capture links: 4 Attachments: 2025-02-05_11.05.39.mlg -> https://speeduino.com/forum/download/file.php?id=13677; 2025-02-06_18.52.31.csv -> https://speeduino.com/forum/download/file.php?id=13678; noovo.csv -> https://speeduino.com/forum/download/file.php?id=13675
+- Matched search terms: 420a crank
+
+#### How to configure Primary Base Teeth and Trigger Angle on the 420A engine?
+- URL: https://speeduino.com/forum/viewtopic.php?p=71670#p70720
+- Date: Wed Feb 05, 2025 10:36 pm
+- Who posted it: PedroV9
+- Evidence type: scope capture / tune file
+- Confidence: medium
+- Summary: Would anyone be able to tell me, based on these images, the correct Primary Base Teeth and Trigger Angle configuration? Using a timing light, I found a value of -3 degrees, but I’m experiencing Lost Sync at intermediate RPMs. Checking with an oscilloscope, the signal looks clean, and there is also no reading fluctuation in TunerStudio. I believe it might be an issue with the decoder settings.
+- Why it matters: Includes hardware-signal evidence, useful for edge and polarity interpretation.
+- Replay-test details: Includes: sync Matched decoder family: 420a Image or capture links: 4 Attachments: 2025-02-05_11.05.39.mlg -> https://speeduino.com/forum/download/file.php?id=13677; 2025-02-06_18.52.31.csv -> https://speeduino.com/forum/download/file.php?id=13678; noovo.csv -> https://speeduino.com/forum/download/file.php?id=13675
+- Matched search terms: 420a Speeduino trigger
+
+#### How to configure Primary Base Teeth and Trigger Angle on the 420A engine?
+- URL: https://speeduino.com/forum/viewtopic.php?p=70745#p70755
+- Date: Sat Feb 08, 2025 3:50 pm
+- Who posted it: PedroV9
+- Evidence type: composite log / scope capture
+- Confidence: medium
+- Summary: [PSIG](./memberlist.php?mode=viewprofile&u=149) wrote: [↑](./viewtopic.php?p=70746#p70746) Sat Feb 08, 2025 12:14 am Are you using any VR or signal conditioner? My first guess is noise. You have 164 sync losses in 23 seconds. My next clue is your run log, which shows rpm spikes when the engine is off and not cranking.
+- Why it matters: Includes hardware-signal evidence, useful for edge and polarity interpretation. Discusses sync-loss conditions that can inform negative test cases.
+- Replay-test details: Includes: change Includes: cam Includes: crank Includes: sync Includes: sync loss Includes: cas Matched decoder family: 420a
+- Matched search terms: 420a Speeduino trigger
+
+#### How to configure Primary Base Teeth and Trigger Angle on the 420A engine?
+- URL: https://speeduino.com/forum/viewtopic.php?p=71670#p70755
+- Date: Sat Feb 08, 2025 3:50 pm
+- Who posted it: PedroV9
+- Evidence type: composite log / scope capture
+- Confidence: medium
+- Summary: [PSIG](./memberlist.php?mode=viewprofile&u=149) wrote: [↑](./viewtopic.php?p=70746#p70746) Sat Feb 08, 2025 12:14 am Are you using any VR or signal conditioner? My first guess is noise. You have 164 sync losses in 23 seconds. My next clue is your run log, which shows rpm spikes when the engine is off and not cranking.
+- Why it matters: Includes hardware-signal evidence, useful for edge and polarity interpretation. Discusses sync-loss conditions that can inform negative test cases.
+- Replay-test details: Includes: change Includes: cam Includes: crank Includes: sync Includes: sync loss Includes: cas Matched decoder family: 420a
+- Matched search terms: 420a Speeduino trigger
+
+#### How to configure Primary Base Teeth and Trigger Angle on the 420A engine?
+- URL: https://speeduino.com/forum/viewtopic.php?p=70745#p70746
+- Date: Sat Feb 08, 2025 12:14 am
+- Who posted it: PSIG
+- Evidence type: composite log / scope capture
+- Confidence: medium
+- Summary: Are you using any VR or signal conditioner? My first guess is noise. You have 164 sync losses in 23 seconds. My next clue is your run log, which shows rpm spikes when the engine is off and not cranking.
+- Why it matters: Includes hardware-signal evidence, useful for edge and polarity interpretation. Discusses sync-loss conditions that can inform negative test cases.
+- Replay-test details: Includes: cam Includes: crank Includes: sync Includes: sync loss Matched decoder family: 420a
+- Matched search terms: 420a Speeduino trigger
+
+#### How to configure Primary Base Teeth and Trigger Angle on the 420A engine?
+- URL: https://speeduino.com/forum/viewtopic.php?p=71670#p70746
+- Date: Sat Feb 08, 2025 12:14 am
+- Who posted it: PSIG
+- Evidence type: composite log / scope capture
+- Confidence: medium
+- Summary: Are you using any VR or signal conditioner? My first guess is noise. You have 164 sync losses in 23 seconds. My next clue is your run log, which shows rpm spikes when the engine is off and not cranking.
+- Why it matters: Includes hardware-signal evidence, useful for edge and polarity interpretation. Discusses sync-loss conditions that can inform negative test cases.
+- Replay-test details: Includes: cam Includes: crank Includes: sync Includes: sync loss Matched decoder family: 420a
+- Matched search terms: 420a Speeduino trigger
+
+#### Ford ST170 Cam trigger pattern - Page 2
+- URL: https://speeduino.com/forum/viewtopic.php?p=48080#p48080
+- Date: Fri Feb 05, 2021 11:47 pm
+- Who posted it: miker
+- Evidence type: wheel description
+- Confidence: medium
+- Summary: Most of the people found actual development hang out on the slack messaging platform. It would be worth you joining. To get this to work you'll need to modify init.ino (file name is from memory, hopefully got it right) to add in the calls. The system works be having default calls that you replace with different decoders.
+- Why it matters: Contains decoder-specific technical details that may support test coverage.
+- Replay-test details: Pattern references: 36-1, 420a Includes: missing tooth Includes: crank
+- Matched search terms: 420a Speeduino trigger
+
+#### Speeduino Lite - Page 4
+- URL: https://speeduino.com/forum/viewtopic.php?p=5434#p5434
+- Date: Wed Jan 27, 2016 10:32 pm
+- Who posted it: edc_atl
+- Evidence type: wheel description
+- Confidence: medium
+- Summary: fixit wrote: any idea when a beta board will be available ? < i don't mind a few cut/rewire traces & would prefer surface mount stuff in place> i am probably a week or so away from being able to wire my motor on an engine stand.. and i'd prefer starting off with SL instead of a megasquirt v2 its a srt4, 2ng neon motor, Use "36-2+2", wasted spark - [http://www.diyautotune.com/tech_article ... n_420a.htm](http://www.diyautotune.com/tech_articles/how_to_megasquirt_your_dodge_neon_420a.htm) i use to be an EE designing switching power supply stuff, now i'm more of a CS guy.
+- Why it matters: Contains decoder-specific technical details that may support test coverage.
+- Replay-test details: Pattern references: 36-2 Includes: cam
+- Matched search terms: 420a cam
+
+#### Speeduino Lite - Page 4
+- URL: https://speeduino.com/forum/viewtopic.php?p=5434#p5425
+- Date: Wed Jan 27, 2016 5:58 pm
+- Who posted it: fixit
+- Evidence type: wheel description
+- Confidence: medium
+- Summary: any idea when a beta board will be available ? < i don't mind a few cut/rewire traces & would prefer surface mount stuff in place> i am probably a week or so away from being able to wire my motor on an engine stand.. and i'd prefer starting off with SL instead of a megasquirt v2 its a srt4, 2ng neon motor, Use "36-2+2", wasted spark - [http://www.diyautotune.com/tech_article ... n_420a.htm](http://www.diyautotune.com/tech_articles/how_to_megasquirt_your_dodge_neon_420a.htm) i use to be an EE designing switching power supply stuff, now i'm more of a CS guy.
+- Why it matters: Contains decoder-specific technical details that may support test coverage.
+- Replay-test details: Pattern references: 36-2 Includes: cam
+- Matched search terms: 420a cam
+
+#### Speeduino Lite - Page 4
+- URL: https://speeduino.com/forum/viewtopic.php?p=5434#p5844
+- Date: Thu Feb 11, 2016 11:45 pm
+- Who posted it: noisymime
+- Evidence type: maintainer explanation
+- Confidence: low
+- Summary: cx500tc wrote: Noisymime has to figure out how to get Speeduino from 360 to 720 and use the cam signal appropriately first. Watch this space...
+- Why it matters: Maintainer explanation increases confidence in expected decoder behavior.
+- Replay-test details: Includes: cam Matched decoder family: 420a
+- Matched search terms: 420a cam
+
+### 6-7
+
+#### Ignition rollback
+- URL: https://speeduino.com/forum/viewtopic.php?p=73245#p73110
+- Date: Thu Sep 11, 2025 11:31 am
+- Who posted it: Philippov Pavel
+- Evidence type: scope capture / tune file / wheel description
+- Confidence: medium
+- Summary: Hello, dear community members, creators of speeduino, this is a wonderful project, I really like it. I have already assembled 3 ECUs based on standard Toyota ECUs and 2560 modules (as a so-called motherboard, using factory power supply circuits, filtering input analog signals, processing rotation sensors and power output circuits for load control. Injectors and so on.) Everything works great except for one annoying nuance - ignition rollbacks. Namely, it looks like this - let's say the ignition advance angle is fixed at 10 degrees before TDC, at idle I see exactly 10 with a stroboscope.
+- Why it matters: Includes hardware-signal evidence, useful for edge and polarity interpretation.
+- Replay-test details: Pattern references: 36-2, 6-7 Includes: cam Includes: crank Includes: sync Includes: cas Image or capture links: 1 Attachments: 1jz-ge_speeduino.msq -> https://speeduino.com/forum/download/file.php?id=14448
+- Matched search terms: 36-2-2-2 Speeduino trigger
+
+### 60-2
+
+#### 60-2 sync issue - Page 3
+- URL: https://speeduino.com/forum/viewtopic.php?p=63179#p63139
+- Date: Mon May 22, 2023 2:21 am
+- Who posted it: I_IQ_I
+- Evidence type: tooth log / scope capture / wheel description
+- Confidence: high
+- Summary: Hi, i have about the same issue with my 60-2 trigger wheel and DSC from WTXtronics my car runs perfectly until i hit 4krpm and then i get that sync loss and the tachometer on TS drops to 0. i dont see any capacitor on the board related to my crank signal that the people on the forums are talking about. back when i had my oem ecu running the engine and the speeduino just reading the inputs on a empty tune and the trigger setup done, i could read the rpm until 7k. i thought it was firmware related so i started to change versions and tunes and Clear the EEPROM but the issue is still not fixed.
+- Why it matters: Provides replay-test-relevant trigger traces. Includes hardware-signal evidence, useful for edge and polarity interpretation. Discusses sync-loss conditions that can inform negative test cases.
+- Replay-test details: Pattern references: 60-2 Includes: rising edge Includes: change Includes: crank Includes: sync Includes: sync loss Image or capture links: 1 Attachments: CONFIG_V5.zip -> https://speeduino.com/forum/download/file.php?id=11525
+- Matched search terms: 36-2-1 tooth logger
+
+#### No RPM reading, all sensors work fine - Page 3
+- URL: https://speeduino.com/forum/viewtopic.php?p=66351#p63300
+- Date: Wed May 31, 2023 8:38 am
+- Who posted it: AL_AOA
+- Evidence type: tooth log / scope capture / wheel description
+- Confidence: high
+- Summary: [PSIG](./memberlist.php?mode=viewprofile&u=149) wrote: [↑](./viewtopic.php?p=63272#p63272) Mon May 29, 2023 5:13 pm [AL_AOA](./memberlist.php?mode=viewprofile&u=7691) wrote: [↑](./viewtopic.php?p=63271#p63271) Mon May 29, 2023 5:01 pm of the VR conditioner output right? And can you elaborate on 2nd rev? Of the crank VR signal. The spikes occur on the 2nd crank rev and after.
+- Why it matters: Provides replay-test-relevant trigger traces. Includes hardware-signal evidence, useful for edge and polarity interpretation.
+- Replay-test details: Pattern references: 60-2 Includes: change Includes: crank Includes: sync Image or capture links: 1 Attachments: vrConditionerPin8Out.txt -> https://speeduino.com/forum/download/file.php?id=11569
+- Matched search terms: 36-2-1 scope
+
+#### VR-polarity and rising/falling edge?
+- URL: https://speeduino.com/forum/viewtopic.php?p=47882#p47810
+- Date: Mon Jan 25, 2021 8:11 am
+- Who posted it: pazi88
+- Evidence type: composite log / scope capture / wheel description
+- Confidence: high
+- Summary: This seems to be constant topic of trouble, so hoping that this post would clear up things related to VR-polarities and rising/falling edge trigger setting. But as for start there is two main types of crank/cam sensors used in engines. VR and hall. There is others too, but lets not go to that rabbit hole now.
+- Why it matters: Provides replay-test-relevant trigger traces. Includes hardware-signal evidence, useful for edge and polarity interpretation. Discusses sync-loss conditions that can inform negative test cases.
+- Replay-test details: Pattern references: 60-2 Includes: missing tooth Includes: rising edge Includes: falling edge Includes: change Includes: cam Includes: crank Includes: sync Includes: sync loss Includes: cas
+- Matched search terms: Subaru 6/7 scope
+
+#### 60-2 sync issue - Page 3
+- URL: https://speeduino.com/forum/viewtopic.php?p=63179#p63179
+- Date: Wed May 24, 2023 6:25 am
+- Who posted it: PSIG
+- Evidence type: tooth log / scope capture / wheel description
+- Confidence: high
+- Summary: [I_IQ_I](./memberlist.php?mode=viewprofile&u=7678) wrote: [↑](./viewtopic.php?p=63173#p63173) Tue May 23, 2023 5:48 pm you can see in the video that the start of the sqare wave is round That is a "normal" signal. Yes, the rounding is mostly caused by the 22nF cap. If you want to test if the cap is the issue, reverse your VR + & - connections, and set Falling edge. Your Trigger Angle will change.
+- Why it matters: Provides replay-test-relevant trigger traces. Includes hardware-signal evidence, useful for edge and polarity interpretation.
+- Replay-test details: Pattern references: 36-1 Includes: missing tooth Includes: change Includes: sync Includes: cas Matched decoder family: 60-2
+- Matched search terms: 36-2-1 tooth logger
+
+#### No RPM reading, all sensors work fine - Page 3
+- URL: https://speeduino.com/forum/viewtopic.php?p=66351#p63374
+- Date: Sun Jun 04, 2023 5:27 pm
+- Who posted it: AL_AOA
+- Evidence type: scope capture / wheel description
+- Confidence: high
+- Summary: [PSIG](./memberlist.php?mode=viewprofile&u=149) wrote: [↑](./viewtopic.php?p=63371#p63371) Sun Jun 04, 2023 3:16 pm +1, and it should sync with anything (with sync loss occasionally), but won't run like that of course. However, this proves the hardware and Speeduino are functional, but confused. So the search now is for what signal the ECM is seeing, compared to what it is expecting. Refer to the previous comments where a 'scope trace should reveal what the signal is at the processor, and if it complies with the pattern selected in TunerStudio.
+- Why it matters: Includes hardware-signal evidence, useful for edge and polarity interpretation. Discusses sync-loss conditions that can inform negative test cases.
+- Replay-test details: Pattern references: 60-2 Includes: crank Includes: sync Includes: sync loss Includes: cas
+- Matched search terms: 36-2-1 scope
+
+#### VR-polarity and rising/falling edge?
+- URL: https://speeduino.com/forum/viewtopic.php?p=47882#p47825
+- Date: Tue Jan 26, 2021 7:12 am
+- Who posted it: pazi88
+- Evidence type: scope capture / wheel description
+- Confidence: medium
+- Summary: I was waiting for PSIG to comment on this . Yes, I have read [this](https://mcs.woodward.com/content/motohawk/Documentation/MotoHawk2015bSP0/HTML/MotoHawk_topics/VRInterfacing.html) multiple times and that caused me to build my own test setup to lab with 60-2 trigger wheel that I could rev high and do experimenting on real HW of these VR-setups. The effect mentioned in that link that the zero crossing from negative to positive side might be adaptive is even shown in max9926 datasheet. But I was having really hard time to see that actually with the scope.
+- Why it matters: Includes hardware-signal evidence, useful for edge and polarity interpretation. Discusses sync-loss conditions that can inform negative test cases.
+- Replay-test details: Pattern references: 0-2, 60-2 Includes: rising edge Includes: falling edge Includes: change Includes: crank Includes: sync Includes: sync loss Includes: cas
+- Matched search terms: Subaru 6/7 scope
+
+#### 60-2 sync issue - Page 3
+- URL: https://speeduino.com/forum/viewtopic.php?p=63179#p63166
+- Date: Tue May 23, 2023 5:33 am
+- Who posted it: PSIG
+- Evidence type: scope capture
+- Confidence: medium
+- Summary: [I_IQ_I](./memberlist.php?mode=viewprofile&u=7678) wrote: [↑](./viewtopic.php?p=63139#p63139) Mon May 22, 2023 2:21 am my car runs perfectly until i hit 4krpm and then i get that sync loss and the tachometer on TS drops to 0. There are several common situations that appear to cause this. The first test is to confirm that rpm (not load) is the primary condition, by revving to the loss point while parked in neutral. If it disappears, it's probably a tuning issue.
+- Why it matters: Includes hardware-signal evidence, useful for edge and polarity interpretation. Discusses sync-loss conditions that can inform negative test cases.
+- Replay-test details: Includes: crank Includes: sync Includes: sync loss Matched decoder family: 60-2
+- Matched search terms: 36-2-1 tooth logger
+
+#### 60-2 sync issue - Page 3
+- URL: https://speeduino.com/forum/viewtopic.php?p=63179#p63173
+- Date: Tue May 23, 2023 5:48 pm
+- Who posted it: I_IQ_I
+- Evidence type: scope capture
+- Confidence: medium
+- Summary: I appreciate the reply i took a video comparing the signal with the ociloscope the CAN-BUS tacho from oem ecu and the high speed logger when i stared and revved my engine [https://youtu.be/qpWSGQ5dKqs](https://youtu.be/qpWSGQ5dKqs) i just noticed i had your MiniMax A2 and i saw 5 cap. you can see in the video that the start of the sqare wave is round but i dont know if its because i have those old digital ociloscope or because a capacitor takes too much time to charge. the signal is 5V Peak to Peak, i was on 1V per square durring the vid i also took a look at my 12V and its clean. its the same one as my oem ecu you will also notice at the end of the video that i zoomed on a terminal.
+- Why it matters: Includes hardware-signal evidence, useful for edge and polarity interpretation. Discusses sync-loss conditions that can inform negative test cases.
+- Replay-test details: Includes: sync Includes: sync loss Matched decoder family: 60-2
+- Matched search terms: 36-2-1 tooth logger
+
+#### Coils getting hot
+- URL: https://speeduino.com/forum/viewtopic.php?p=46665#p35284
+- Date: Sun Jun 02, 2019 8:32 pm
+- Who posted it: Sagal89
+- Evidence type: scope capture / wheel description
+- Confidence: low
+- Summary: [linkus](./memberlist.php?mode=viewprofile&u=1454) wrote: [↑](./viewtopic.php?p=35136#p35136) Mon May 27, 2019 11:31 am [Sagal89](./memberlist.php?mode=viewprofile&u=2579) wrote: [↑](./viewtopic.php?p=35026#p35026) Fri May 24, 2019 6:57 pm Hello guys, im involved in a similar project, f7r 710 renault motor. Im using same coils than you. Signal is 5v or 12v? Im having problems to get spark, i will try changing resistors you say.
+- Why it matters: Includes hardware-signal evidence, useful for edge and polarity interpretation.
+- Replay-test details: Pattern references: 60-2 Includes: change Includes: cam
+- Matched search terms: Honda D17 CAS
+
+### 7-1
+
+#### BMW E36/5 323TI turbo build
+- URL: https://speeduino.com/forum/viewtopic.php?p=69091#p69091
+- Date: Wed Jul 31, 2024 9:22 pm
+- Who posted it: crackedheadtv
+- Evidence type: tune file / wheel description / image attachment
+- Confidence: high
+- Summary: Thanks for your reply. I will try to explain a bit more. paired injectors, wasted spark, no ICV, CCV and charocal can deleted too, I am not using cam sensor too. I am using pazi88 base tune, but configured tune for my set-up also double checked with other guy who has similar set up as I do.
+- Why it matters: Contains decoder-specific technical details that may support test coverage.
+- Replay-test details: Pattern references: 7-1 Includes: missing tooth Includes: cam Includes: crank Includes: sync Image or capture links: 4 Attachments: 2024-07-31_19.53.03.mlg -> https://speeduino.com/forum/download/file.php?id=13227; 2024-07-31_20.54.42.mlg -> https://speeduino.com/forum/download/file.php?id=13228; 2024-07-31_21.41.42.mlg -> https://speeduino.com/forum/download/file.php?id=13229
+- Matched search terms: 36-2-1 sync
+
+### 72-1
+
+#### Sensor for cam wheel
+- URL: https://speeduino.com/forum/viewtopic.php?p=73803#p73803
+- Date: Tue Dec 23, 2025 6:42 pm
+- Who posted it: PSIG
+- Evidence type: wheel description
+- Confidence: low
+- Summary: There are some old OptiSpark threads here for Speeduino background, or a ton of info on the web. The OptiSpark is a version of Mitsubishi-designed ignition, often seen here on Nissans and others. The current decoder is the [Nissan-360](https://wiki.speeduino.com/en/decoders/Nissan_360) , and would need code mods to work directly with OptiSpark. The Opti version has small GM V8 differences that Speeduino needs to 'see' in order to properly decode crank and cam positions.
+- Why it matters: Contains decoder-specific technical details that may support test coverage.
+- Replay-test details: Pattern references: 2-2, 72-1 Includes: cam Includes: crank
+- Matched search terms: 36-2-1 crank
+
+### 8-0
+
+#### 4age 16v smallport - Page 4
+- URL: https://speeduino.com/forum/viewtopic.php?p=67269#p64903
+- Date: Sun Sep 17, 2023 3:03 am
+- Who posted it: CamJam
+- Evidence type: scope capture / wheel description
+- Confidence: medium
+- Summary: So i checked the sparkplug leads and spark plugs. All leads read 2.2kOhms, and all sparkplugs are resistor type and gapped correctly (all around 0.8-0.9mm) So i have narrowed this down to when the car is cranking with compression Current setup is the max9926 has a 10kOhm shunt resistor on VR1 signal. Secondary signal is disconnected at the board) When i crank the car with no accessories and no spark plugs installed. Only thing hooked up is the coil and spark leads, i get a perfect waveform out of the scope and in TS.
+- Why it matters: Includes hardware-signal evidence, useful for edge and polarity interpretation.
+- Replay-test details: Pattern references: 8-0 Includes: change Includes: crank Image or capture links: 1 Attachments: 2023-09-17_13.42.23_WithSparkPLugsIn_2xbat.mlg -> https://speeduino.com/forum/download/file.php?id=12064
+- Matched search terms: Basic distributor sync
+
+### 8-1
+
+#### HONDA TRANSALP XL650V
+- URL: https://speeduino.com/forum/viewtopic.php?p=73068#p73072
+- Date: Sun Sep 07, 2025 8:52 am
+- Who posted it: Tutajjestem
+- Evidence type: tooth log / composite log / scope capture / wheel description
+- Confidence: high
+- Summary: [jonbill](./memberlist.php?mode=viewprofile&u=1981) wrote: [↑](./viewtopic.php?p=73071#p73071) Sun Sep 07, 2025 7:35 am I doubt whether the trigger wheel pattern and its relationship to the firing pattern are the cause of the problems. Sync loss means the pattern read by the sensor is not matching the expected pattern. This can be caused by noise, runout, too much variation in crank speed causing a timeout waiting to read the next tooth etc. Please capture a tooth log and composite log and a the tune and a data log (zip them all together).
+- Why it matters: Includes hardware-signal evidence, useful for edge and polarity interpretation. Discusses sync-loss conditions that can inform negative test cases.
+- Replay-test details: Pattern references: 14-5, 36-1, 8-1 Includes: cam Includes: crank Includes: sync Includes: sync loss
+- Matched search terms: 36-2-1 Speeduino trigger
+
+#### HONDA TRANSALP XL650V
+- URL: https://speeduino.com/forum/viewtopic.php?p=73072#p73072
+- Date: Sun Sep 07, 2025 8:52 am
+- Who posted it: Tutajjestem
+- Evidence type: tooth log / composite log / scope capture / wheel description
+- Confidence: high
+- Summary: [jonbill](./memberlist.php?mode=viewprofile&u=1981) wrote: [↑](./viewtopic.php?p=73071#p73071) Sun Sep 07, 2025 7:35 am I doubt whether the trigger wheel pattern and its relationship to the firing pattern are the cause of the problems. Sync loss means the pattern read by the sensor is not matching the expected pattern. This can be caused by noise, runout, too much variation in crank speed causing a timeout waiting to read the next tooth etc. Please capture a tooth log and composite log and a the tune and a data log (zip them all together).
+- Why it matters: Includes hardware-signal evidence, useful for edge and polarity interpretation. Discusses sync-loss conditions that can inform negative test cases.
+- Replay-test details: Pattern references: 14-5, 36-1, 8-1 Includes: cam Includes: crank Includes: sync Includes: sync loss
+- Matched search terms: 36-2-1 Speeduino trigger
+
+### 8-3
+
+#### 1985 Honda Goldwing Limited Edition FI Model ECU Replacement - Page 67
+- URL: https://speeduino.com/forum/viewtopic.php?p=65044#p59264
+- Date: Tue Nov 01, 2022 5:46 pm
+- Who posted it: Rednaxs60
+- Evidence type: scope capture / wheel description
+- Confidence: medium
+- Summary: PSIG - Thanks for the reply. The reason I have thought about just using a ground and not reassigning any pins is that when I trace out the power distribution on the CFI schematic, there is 12 VDC power supply to relay #5 from the Main Relay #4. Following the schematic wiring to the ECU from the Fuel Pump Relay #5 indicates to me that it is going for an ECU ground, completing the circuit. Not trying to overthink this, fall back is to do a pin reassignment if necessary.
+- Why it matters: Includes hardware-signal evidence, useful for edge and polarity interpretation.
+- Replay-test details: Pattern references: 8-3 Includes: cas
+- Matched search terms: 36-2-1 oscilloscope
+
+### 9-1
+
+#### BMW E36/5 323TI turbo build
+- URL: https://speeduino.com/forum/viewtopic.php?p=69091#p69106
+- Date: Thu Aug 01, 2024 11:42 pm
+- Who posted it: crackedheadtv
+- Evidence type: tooth log / wheel description
+- Confidence: medium
+- Summary: Thanks for your reply and for trying to help this dumb man (me). I've been to a car today and somehow I started it few times. I am attaching log files and I'll try to explain a little what I found and what issues I am experiencing now. FP and FPR.
+- Why it matters: Provides replay-test-relevant trigger traces.
+- Replay-test details: Pattern references: 9-1 Includes: change Includes: cam Includes: crank Image or capture links: 2 Attachments: 07dt.mlg -> https://speeduino.com/forum/download/file.php?id=13230; other hall.mlg -> https://speeduino.com/forum/download/file.php?id=13231
+- Matched search terms: 36-2-1 sync
+
+### Basic distributor
+
+#### 1987 Subaru XT turbo, trouble syncing RPM
+- URL: https://speeduino.com/forum/viewtopic.php?p=30601#p30601
+- Date: Thu Dec 06, 2018 1:03 pm
+- Who posted it: JoostXT
+- Evidence type: scope capture / tune file / wheel description
+- Confidence: high
+- Summary: Hello everyone! I recently decided to replace the aging/failing ECU in my Subaru with something MS. I've used megasquirt based EFI before so it was a easy decision and seeing as speeduino was new and cheap I ordered one online and started soldering. Since I kind of need the car to be reliable and useable throughout the project I decided to reuse all sensors and wiring harnasses and built the speeduino inside a spare ECU housing.
+- Why it matters: Includes hardware-signal evidence, useful for edge and polarity interpretation.
+- Replay-test details: Pattern references: basic distributor Includes: sync Includes: cas Image or capture links: 2 Attachments: CurrentTune.msq -> https://speeduino.com/forum/download/file.php?id=4140; Subaru XT turbo.msq -> https://speeduino.com/forum/download/file.php?id=4160
+- Matched search terms: Basic distributor CAS
+
+#### 1987 Subaru XT turbo, trouble syncing RPM
+- URL: https://speeduino.com/forum/viewtopic.php?p=30655#p30601
+- Date: Thu Dec 06, 2018 1:03 pm
+- Who posted it: JoostXT
+- Evidence type: scope capture / tune file / wheel description
+- Confidence: high
+- Summary: Hello everyone! I recently decided to replace the aging/failing ECU in my Subaru with something MS. I've used megasquirt based EFI before so it was a easy decision and seeing as speeduino was new and cheap I ordered one online and started soldering. Since I kind of need the car to be reliable and useable throughout the project I decided to reuse all sensors and wiring harnasses and built the speeduino inside a spare ECU housing.
+- Why it matters: Includes hardware-signal evidence, useful for edge and polarity interpretation.
+- Replay-test details: Pattern references: basic distributor Includes: sync Includes: cas Image or capture links: 2 Attachments: CurrentTune.msq -> https://speeduino.com/forum/download/file.php?id=4140; Subaru XT turbo.msq -> https://speeduino.com/forum/download/file.php?id=4160
+- Matched search terms: Basic distributor CAS
+
+#### locost roadster 2.3turbo lima - Page 2
+- URL: https://speeduino.com/forum/viewtopic.php?p=24436#p27961
+- Date: Fri Aug 17, 2018 11:01 pm
+- Who posted it: noisymime
+- Evidence type: tune file / wheel description / maintainer explanation / image attachment
+- Confidence: high
+- Summary: OK, I'll walk through this here, just incase anyone else is interested. It's a fairly basic change. I'll also potentially do a 'B' release of the June firmware tonight, depending on how far away I think the next release will be. So, in the June firmware, open the file 'decoders.ino' and go to line 535 ( [https://github.com/noisymime/speeduino/ ...
+- Why it matters: Maintainer explanation increases confidence in expected decoder behavior.
+- Replay-test details: Pattern references: Basic Distributor Includes: change Includes: crank Includes: cas Image or capture links: 4 Attachments: 2019-05-14_20.26.45.msl -> https://speeduino.com/forum/download/file.php?id=5081; 2019-05-15_20.03.04.msl -> https://speeduino.com/forum/download/file.php?id=5086; CurrentTune.msq -> https://speeduino.com/forum/download/file.php?id=5080
+- Matched search terms: Basic distributor tooth logger
+
+#### Fiero 2.5L TBI with DIS Project
+- URL: https://speeduino.com/forum/viewtopic.php?p=64521#p64521
+- Date: Tue Aug 22, 2023 10:52 pm
+- Who posted it: walkertexan
+- Evidence type: scope capture / tune file / wheel description
+- Confidence: high
+- Summary: I'm new to Speeduino but I built and installed a MS Rev 1 into a Porsche 914 back in the late 90s/early 2000s so at least I have some experience with EFI. My current project is to replace the ECM in my Fiero with a more modern system. Once I have that working well I will probably tweak some things to make it run better. The GM factory ECM has always had some quirks and mine is developing some of it's own after 36 years and good ECMs are no longer available or desirable IMHO.
+- Why it matters: Includes hardware-signal evidence, useful for edge and polarity interpretation.
+- Replay-test details: Pattern references: Basic Distributor Includes: change Includes: crank Image or capture links: 1 Attachments: 2023-08-22_17.07.32_RPi4.msq -> https://speeduino.com/forum/download/file.php?id=11921
+- Matched search terms: 36-2-1 scope
+
+#### locost roadster 2.3turbo lima - Page 12
+- URL: https://speeduino.com/forum/viewtopic.php?p=37342#p27961
+- Date: Fri Aug 17, 2018 11:01 pm
+- Who posted it: noisymime
+- Evidence type: tune file / wheel description / maintainer explanation / image attachment
+- Confidence: high
+- Summary: OK, I'll walk through this here, just incase anyone else is interested. It's a fairly basic change. I'll also potentially do a 'B' release of the June firmware tonight, depending on how far away I think the next release will be. So, in the June firmware, open the file 'decoders.ino' and go to line 535 ( [https://github.com/noisymime/speeduino/ ...
+- Why it matters: Maintainer explanation increases confidence in expected decoder behavior.
+- Replay-test details: Pattern references: Basic Distributor Includes: change Includes: crank Includes: cas Image or capture links: 4 Attachments: 2019-05-14_20.26.45.msl -> https://speeduino.com/forum/download/file.php?id=5081; 2019-05-15_20.03.04.msl -> https://speeduino.com/forum/download/file.php?id=5086; CurrentTune.msq -> https://speeduino.com/forum/download/file.php?id=5080
+- Matched search terms: Subaru 6/7 scope
+
+#### locost roadster 2.3turbo lima - Page 2
+- URL: https://speeduino.com/forum/viewtopic.php?p=24436#p27892
+- Date: Thu Aug 16, 2018 2:43 am
+- Who posted it: Dalenutbrown
+- Evidence type: scope capture / tune file
+- Confidence: high
+- Summary: Well I just somehow deleted my entire long post so here goes again, set rpm1 and ign1 to the scope and locked timing spout out and locked in speeduino. All looked in synce It also looked like it was in sync., I then attached spout and sync was lost as far as I could see. I found I could lock to a negative deg number and bring timing below base timing. It seems like the advance asked for is multiplied, minor adjustments = bigger changes.
+- Why it matters: Includes hardware-signal evidence, useful for edge and polarity interpretation.
+- Replay-test details: Includes: change Includes: sync Matched decoder family: Basic distributor Image or capture links: 1 Attachments: 2018-08-15_21.58.48.msq -> https://speeduino.com/forum/download/file.php?id=3637
+- Matched search terms: Basic distributor tooth logger
+
+#### locost roadster 2.3turbo lima - Page 2
+- URL: https://speeduino.com/forum/viewtopic.php?p=24436#p27625
+- Date: Tue Aug 07, 2018 4:50 pm
+- Who posted it: PSIG
+- Evidence type: tooth log / scope capture / tune file
+- Confidence: medium
+- Summary: I would first check your Hall sensor magnet for any metal dust or trash that can upset operation. As TFI runs with all 12V signals, also verify your ignition output jumper is set for 12V. If you have a registered version of TunerStudio, grab a tooth log with and without SPOUT connected for any clues; or use a 'scope to see the same info. TFI background trivia : TFI is a very simple system, surprisingly similar to others such as the GM HEI, and has three differences to "normal" Hall ignition systems that make it a mild stroke of genius.
+- Why it matters: Includes hardware-signal evidence, useful for edge and polarity interpretation.
+- Replay-test details: Includes: change Includes: crank Matched decoder family: Basic distributor Image or capture links: 2 Attachments: 2018-08-06_19.45.57.msl -> https://speeduino.com/forum/download/file.php?id=3577; CurrentTune.msq -> https://speeduino.com/forum/download/file.php?id=3576
+- Matched search terms: Basic distributor tooth logger
+
+#### 1990 Turbo MX-5 on PNP Beta 2
+- URL: https://speeduino.com/forum/viewtopic.php?p=24521#p25056
+- Date: Tue Mar 20, 2018 6:10 pm
+- Who posted it: bond007
+- Evidence type: scope capture
+- Confidence: medium
+- Summary: Not sure if this attachment shows up on Slack as it said that the space is low on storage. Attachment is the trace from the idle valve on the PC Oscilloscope. I'll try to fire the car back up again and look at what the Idle Load parameter in TS realtime view is versus what I see on the scope and what has been input into the table.
+- Why it matters: Includes hardware-signal evidence, useful for edge and polarity interpretation.
+- Replay-test details: Matched decoder family: Basic distributor Image or capture links: 1 Attachments: Idle Valve Trace.pdf -> https://speeduino.com/forum/download/file.php?id=3152
+- Matched search terms: Basic distributor CAS
+
+#### Trigger setup for 1 cylinder engine with just VR on crank shaft
+- URL: https://speeduino.com/forum/viewtopic.php?p=69121#p69226
+- Date: Thu Aug 15, 2024 8:55 am
+- Who posted it: Hich
+- Evidence type: scope capture / tune file
+- Confidence: medium
+- Summary: Thanks for the good input. Actually I haven't looked at the VE / Spark table values yet. (but probably should have). I have changed this to match 100% TPS now.
+- Why it matters: Includes hardware-signal evidence, useful for edge and polarity interpretation.
+- Replay-test details: Includes: change Includes: cam Includes: crank Matched decoder family: Basic distributor Image or capture links: 1 Attachments: 2024-08-15_10.50.00.msq -> https://speeduino.com/forum/download/file.php?id=13275
+- Matched search terms: Basic distributor scope
+
+#### Single tooth on crank?
+- URL: https://speeduino.com/forum/viewtopic.php?p=72880#p72880
+- Date: Mon Aug 18, 2025 7:04 pm
+- Who posted it: turbodog
+- Evidence type: scope capture / wheel description
+- Confidence: medium
+- Summary: Hi. "It doesn't work" means no spark or injector output. The only setup which results in spark and injector output is "Basic Distributor". So, I broke out my oscilloscope and tested "Basic Distributor" on the bench, using a stim board.
+- Why it matters: Includes hardware-signal evidence, useful for edge and polarity interpretation.
+- Replay-test details: Pattern references: Basic Distributor Includes: crank
+- Matched search terms: Basic distributor oscilloscope
+
+#### Tachometer output as Speeduino trigger?
+- URL: https://speeduino.com/forum/viewtopic.php?p=58915#p58915
+- Date: Thu Oct 13, 2022 5:28 am
+- Who posted it: RonS
+- Evidence type: scope capture / wheel description
+- Confidence: medium
+- Summary: Thanks for the reply! “Basic Distributor” is where I started, but I get that crazy high/erratic reading. Which is odd since I would assume that the tach output is sending 1 pulse/rotation, and with TS expecting to see 6 pulses/rotation (v6 - or I guess 3 pulses) I would expect TS to show low RPMs. I thought about piggybacking off the distributor output, but I’m concerned about interference or some sort of bad interaction between the two systems.
+- Why it matters: Includes hardware-signal evidence, useful for edge and polarity interpretation.
+- Replay-test details: Pattern references: Basic Distributor
+- Matched search terms: Basic distributor oscilloscope
+
+#### 1990 Turbo MX-5 on PNP Beta 2
+- URL: https://speeduino.com/forum/viewtopic.php?p=24521#p24607
+- Date: Tue Feb 27, 2018 5:57 am
+- Who posted it: noisymime
+- Evidence type: maintainer explanation
+- Confidence: medium
+- Summary: What method are you using for the fuel pump control? Just the standard one with the ST_SIG fuse pulled? Either way it sounds like it's working given that you're hearing fuel pump priming on startup, but worth double checking. bond007 wrote: It seems to be firing ignition close to 5 degrees BTDC on the timing light, which should get it started This is what is expected with that Fixed cranking timing option on, so no problem there (CAS has a trigger at 5* BTDC that is used when cranking) What pulsewidth are you seeing when cranking?
+- Why it matters: Maintainer explanation increases confidence in expected decoder behavior.
+- Replay-test details: Includes: crank Includes: cas Matched decoder family: Basic distributor
+- Matched search terms: Basic distributor CAS
+
+#### locost roadster 2.3turbo lima - Page 2
+- URL: https://speeduino.com/forum/viewtopic.php?p=24436#p27714
+- Date: Thu Aug 09, 2018 7:56 pm
+- Who posted it: PSIG
+- Evidence type: tooth log / scope capture
+- Confidence: medium
+- Summary: [Dalenutbrown](./memberlist.php?mode=viewprofile&u=1457) wrote: [↑](./viewtopic.php?p=27712#p27712) Thu Aug 09, 2018 7:04 pm Is it possible with tfi to get timing below the setting of 10btdc if the base timing is 10 btdc. No. Minimum timing is whatever the base timing is. [EDIT - I should say, according to the documentation, and with the TFI modules I have used personally.
+- Why it matters: Includes hardware-signal evidence, useful for edge and polarity interpretation.
+- Replay-test details: Includes: crank Matched decoder family: Basic distributor
+- Matched search terms: Basic distributor tooth logger
+
+#### Basic distributor GM HEI
+- URL: https://speeduino.com/forum/viewtopic.php?p=52098#p52098
+- Date: Wed Jul 28, 2021 5:48 am
+- Who posted it: chester240
+- Evidence type: tooth log / scope capture
+- Confidence: medium
+- Summary: Ok what know signal issue? The trigger signal i almost perfect. Its the output ignition signal thats the problem. On tooth logger the Trigger signal is ok with bypass disconected.
+- Why it matters: Provides replay-test-relevant trigger traces. Includes hardware-signal evidence, useful for edge and polarity interpretation.
+- Replay-test details: Matched decoder family: Basic distributor
+- Matched search terms: Basic distributor tooth logger
+
+#### Basic Distributor cranking/filtering issue
+- URL: https://speeduino.com/forum/viewtopic.php?p=50980#p50980
+- Date: Thu Jun 10, 2021 5:35 am
+- Who posted it: PSIG
+- Evidence type: scope capture
+- Confidence: medium
+- Summary: Hey, Sodium (you make whistles?) Without specifics of the circuit, I generally suggest to ground the shielding only at the ECM end, on a power (not sensor) ground. That could help, but keep in-mind, defending from noise is simpler if there is no noise to shield from. This again assumes it is a noise issue. Noise also affects different sensors in different ways.
+- Why it matters: Includes hardware-signal evidence, useful for edge and polarity interpretation.
+- Replay-test details: Matched decoder family: Basic distributor
+- Matched search terms: Basic distributor oscilloscope
+
+#### 58x Gm sensor No RPM value - Page 2
+- URL: https://speeduino.com/forum/viewtopic.php?p=70921#p70921
+- Date: Thu Feb 20, 2025 7:27 pm
+- Who posted it: Built2runmaybe
+- Evidence type: tooth log / wheel description
+- Confidence: medium
+- Summary: No worries PSIG, the information was very helpful. I finally have an RPM signal!!! using the black sensor on 5v, I am able to get readings on both the tooth logger and the Tunerstudio RPM gauge. I have the trigger settings set up on basic distributor, with 24 total teeth (this is because of the generation 3 crank reluctor wheel I am using), and a trigger angle of 15 degrees.
+- Why it matters: Provides replay-test-relevant trigger traces.
+- Replay-test details: Pattern references: basic distributor Includes: crank
+- Matched search terms: Basic distributor tooth logger
+
+#### CHEVY LS USING BASIC DISTRIBUTOR SETTING AND THE CRANK SENSOR ONLY
+- URL: https://speeduino.com/forum/viewtopic.php?p=70922#p70922
+- Date: Thu Feb 20, 2025 7:36 pm
+- Who posted it: Built2runmaybe
+- Evidence type: tooth log / wheel description
+- Confidence: medium
+- Summary: Hello all, working on my LS project and have completed the wiring. Using the black sensor on 5v (it is supposed to run on 12, but it seems to be the only way I can get an RPM reading), I am able to get readings on both the tooth logger and the Tunerstudio RPM gauge. The 5v grey sensor did not produce any results no matter what pull up or pulldown configuration tested. But this is for another topic.
+- Why it matters: Provides replay-test-relevant trigger traces.
+- Replay-test details: Pattern references: basic distributor Includes: crank
+- Matched search terms: Basic distributor tooth logger
+
+#### Trigger setup for 1 cylinder engine with just VR on crank shaft
+- URL: https://speeduino.com/forum/viewtopic.php?p=69121#p69123
+- Date: Mon Aug 05, 2024 9:50 am
+- Who posted it: Hich
+- Evidence type: tooth log / scope capture / tune file
+- Confidence: medium
+- Summary: Hi, please find attached the current tune and a tooth log. Not sure if this is the correct log you need. Only in the first few seconds the starter is cranking the engine. The yellow line is the ignition output from the ECU.
+- Why it matters: Includes hardware-signal evidence, useful for edge and polarity interpretation.
+- Replay-test details: Includes: crank Matched decoder family: Basic distributor Image or capture links: 2 Attachments: 2024-08-04_16.15.56.csv -> https://speeduino.com/forum/download/file.php?id=13239; CurrentTune.msq -> https://speeduino.com/forum/download/file.php?id=13238
+- Matched search terms: Basic distributor scope
+
+#### 4age 16v smallport - Page 4
+- URL: https://speeduino.com/forum/viewtopic.php?p=67269#p64745
+- Date: Mon Sep 04, 2023 8:53 pm
+- Who posted it: PSIG
+- Evidence type: composite log / scope capture / wheel description
+- Confidence: medium
+- Summary: [CamJam](./memberlist.php?mode=viewprofile&u=7865) wrote: [↑](./viewtopic.php?p=64734#p64734) Mon Sep 04, 2023 5:07 am - setup the trigger to be Falling(Crank)-Rising(Cam), retimed the car and it starts and runs but the timing is not that accurate, like oscillates between 0-10degs *video* - Sync loss was gone too Speeduino only reports sync loss if it think it has lost sync. The up-side to this is that the thing screwing with signal is something that Speeduino does not see as an issue - so no loss reported. <hint> Can you get a composite log so we can see what Speeduino thinks it sees? Assuming the probes were correct polarity (+ 'scope probe on VR+), the cam sensor is correct polarity and should use Rising edge.
+- Why it matters: Includes hardware-signal evidence, useful for edge and polarity interpretation. Discusses sync-loss conditions that can inform negative test cases.
+- Replay-test details: Includes: falling edge Includes: cam Includes: crank Includes: sync Includes: sync loss Matched decoder family: Basic distributor
+- Matched search terms: Basic distributor sync
+
+#### 4age 16v smallport - Page 4
+- URL: https://speeduino.com/forum/viewtopic.php?p=67269#p64487
+- Date: Mon Aug 21, 2023 9:11 am
+- Who posted it: CamJam
+- Evidence type: tune file / image attachment
+- Confidence: medium
+- Summary: More updates: - Set the spark settings to 'single channel' - Thanks PSIG - Rechecked the timing and found 12 in the primary was giving me a second trigger 180 out on the crank, so set primary to 24 and now only one trigger at TDC - Set crank and fixed spark timing to 10deg and car started up pretty well, just hunting. I do see lots of sync loss in the short time i ran it. I'm hoping this is normal and just needs tuning?
+- Why it matters: Discusses sync-loss conditions that can inform negative test cases.
+- Replay-test details: Includes: second trigger Includes: crank Includes: sync Includes: sync loss Matched decoder family: Basic distributor Image or capture links: 3 Attachments: 2023-08-20_21.49.50 -Set timing Log.mlg -> https://speeduino.com/forum/download/file.php?id=11911; 2023-08-21_19.12.08 - First Start Log.mlg -> https://speeduino.com/forum/download/file.php?id=11912; CurrentTune.msq -> https://speeduino.com/forum/download/file.php?id=11913
+- Matched search terms: Basic distributor sync
+
+#### Basic Distributor x Sequential injector
+- URL: https://speeduino.com/forum/viewtopic.php?p=65249#p65249
+- Date: Fri Oct 13, 2023 6:44 am
+- Who posted it: PSIG
+- Evidence type: scope capture
+- Confidence: medium
+- Summary: I am not sure what your question is? Yes, you can run timed with a distributor and cycle sensor. There are several ways to do this. Other functions are explainable, such as all modes have adjustable injection end point, so you will always see a Lambda change in any case including batch fire.
+- Why it matters: Includes hardware-signal evidence, useful for edge and polarity interpretation.
+- Replay-test details: Includes: change Includes: sync Includes: cas Matched decoder family: Basic distributor
+- Matched search terms: Basic distributor oscilloscope
+
+#### Basic Distributor x Sequential injector
+- URL: https://speeduino.com/forum/viewtopic.php?p=65253#p65249
+- Date: Fri Oct 13, 2023 6:44 am
+- Who posted it: PSIG
+- Evidence type: scope capture
+- Confidence: medium
+- Summary: I am not sure what your question is? Yes, you can run timed with a distributor and cycle sensor. There are several ways to do this. Other functions are explainable, such as all modes have adjustable injection end point, so you will always see a Lambda change in any case including batch fire.
+- Why it matters: Includes hardware-signal evidence, useful for edge and polarity interpretation.
+- Replay-test details: Includes: change Includes: sync Includes: cas Matched decoder family: Basic distributor
+- Matched search terms: Basic distributor sync
+
+#### Problems with Basic Distributor - Start of injection the solution?
+- URL: https://speeduino.com/forum/viewtopic.php?p=73320#p73320
+- Date: Fri Oct 10, 2025 1:56 pm
+- Who posted it: Jannik Panda 16V
+- Evidence type: scope capture
+- Confidence: medium
+- Summary: Hey! The method with the diode works. But there are some anomalies. When I have a falling edge, the rev counter jerks (rev counter is connected to coil) when the ignition is switched on and the fuel pump is only activated very briefly.
+- Why it matters: Includes hardware-signal evidence, useful for edge and polarity interpretation.
+- Replay-test details: Includes: rising edge Includes: falling edge Includes: change Matched decoder family: Basic distributor
+- Matched search terms: Basic distributor oscilloscope
+
+#### 4 to 6 additional sparks after trigger stops - problem
+- URL: https://speeduino.com/forum/viewtopic.php?p=71050#p71050
+- Date: Sun Mar 02, 2025 3:46 pm
+- Who posted it: yugokoral
+- Evidence type: scope capture / wheel description
+- Confidence: medium
+- Summary: Hi guys. I need some help. I have basic distributor with VR - pickup coil connected to VR conditioner on speeduino. I was doing some tests on a scope and watching ignition coil and trigger signals.
+- Why it matters: Includes hardware-signal evidence, useful for edge and polarity interpretation.
+- Replay-test details: Pattern references: basic distributor Includes: cas
+- Matched search terms: Basic distributor scope
+
+#### 1990 Turbo MX-5 on PNP Beta 2
+- URL: https://speeduino.com/forum/viewtopic.php?p=24521#p24521
+- Date: Fri Feb 23, 2018 7:57 am
+- Who posted it: PSIG
+- Evidence type: technical discussion
+- Confidence: medium
+- Summary: [bond007](./memberlist.php?mode=viewprofile&u=1253) wrote: [↑](./viewtopic.php?p=24520#p24520) Fri Feb 23, 2018 4:37 am Is the prevailing understanding that the base map loaded onto the PNP, if properly wired, will start and run? One would like to think so, but it is far from guaranteed. Some do and some don't. There are so many factors that can change, from model or version, to various production changes, to previous owner adjustments or changes.
+- Why it matters: Contains decoder-specific technical details that may support test coverage.
+- Replay-test details: Includes: change Includes: crank Includes: cas Matched decoder family: Basic distributor
+- Matched search terms: Basic distributor CAS
+
+#### Problems with Basic Distributor - Start of injection the solution?
+- URL: https://speeduino.com/forum/viewtopic.php?p=73297#p73297
+- Date: Tue Oct 07, 2025 8:06 pm
+- Who posted it: Jannik Panda 16V
+- Evidence type: tune file / wheel description / image attachment
+- Confidence: medium
+- Summary: Hey Jonbill, thanks for answer! Yes, here it is! In the Log data you can see, the RPM is sometimes fluctuating. Ignore AFR - there is at moment a narrowband sensor.
+- Why it matters: Contains decoder-specific technical details that may support test coverage.
+- Replay-test details: Pattern references: Basic Distributor Includes: cam Includes: crank Image or capture links: 2 Attachments: 2025-10-05_15.55.06.msl -> https://speeduino.com/forum/download/file.php?id=14474; Tune VW Golf2.msq -> https://speeduino.com/forum/download/file.php?id=14473
+- Matched search terms: Basic distributor trigger wheel
+
+#### Problems with Basic Distributor - Start of injection the solution?
+- URL: https://speeduino.com/forum/viewtopic.php?p=73320#p73297
+- Date: Tue Oct 07, 2025 8:06 pm
+- Who posted it: Jannik Panda 16V
+- Evidence type: tune file / wheel description / image attachment
+- Confidence: medium
+- Summary: Hey Jonbill, thanks for answer! Yes, here it is! In the Log data you can see, the RPM is sometimes fluctuating. Ignore AFR - there is at moment a narrowband sensor.
+- Why it matters: Contains decoder-specific technical details that may support test coverage.
+- Replay-test details: Pattern references: Basic Distributor Includes: cam Includes: crank Image or capture links: 2 Attachments: 2025-10-05_15.55.06.msl -> https://speeduino.com/forum/download/file.php?id=14474; Tune VW Golf2.msq -> https://speeduino.com/forum/download/file.php?id=14473
+- Matched search terms: Basic distributor oscilloscope
+
+#### Trigger setup for 1 cylinder engine with just VR on crank shaft
+- URL: https://speeduino.com/forum/viewtopic.php?p=69121#p69121
+- Date: Mon Aug 05, 2024 12:57 am
+- Who posted it: PSIG
+- Evidence type: scope capture / wheel description
+- Confidence: medium
+- Summary: Thank you, Karsten. Please post your tune, and a log of cranking. The o-scope image is odd, that the MAX inverts the incoming signal on the output. I assume that is what the yellow line is?
+- Why it matters: Includes hardware-signal evidence, useful for edge and polarity interpretation.
+- Replay-test details: Pattern references: Basic Distributor Includes: missing tooth Includes: falling edge Includes: crank
+- Matched search terms: Basic distributor scope
+
+#### 1990 Turbo MX-5 on PNP Beta 2
+- URL: https://speeduino.com/forum/viewtopic.php?p=24521#p25055
+- Date: Tue Mar 20, 2018 12:31 pm
+- Who posted it: noisymime
+- Evidence type: scope capture / maintainer explanation
+- Confidence: high
+- Summary: Just had a play with this hear and everything seems to be working OK. The idle DC I'm seeing matches perfectly what is being requested in TS, and at the correct frequency. Just to check, in TS go to the Tuning Menu->Realtime Display->All Output Channels and then look for the one called Idle Load. Assuming you have open loop PWM as the control method, that value will be the DC that the board is trying to set.
+- Why it matters: Maintainer explanation increases confidence in expected decoder behavior. Includes hardware-signal evidence, useful for edge and polarity interpretation.
+- Replay-test details: Matched decoder family: Basic distributor
+- Matched search terms: Basic distributor CAS
+
+#### Another Honda Build :P - Page 6
+- URL: https://speeduino.com/forum/viewtopic.php?p=42013#p43058
+- Date: Sat May 23, 2020 10:39 pm
+- Who posted it: george-angelosvoudouris
+- Evidence type: scope capture
+- Confidence: medium
+- Summary: It's been a while since I wrote anything so it's time to bring you up to speed..... So far I'm still troubleshooting what is happening with speedy and the crappy Honda sensors that for some reason refuse to touch...... Somebody else in my place would have already replaced the sensors and continue with his life but not me .... not me...So lets cut to the chase...
+- Why it matters: Includes hardware-signal evidence, useful for edge and polarity interpretation.
+- Replay-test details: Includes: cam Matched decoder family: Basic distributor
+- Matched search terms: Basic distributor tooth logger
+
+#### Another Honda Build :P - Page 6
+- URL: https://speeduino.com/forum/viewtopic.php?p=42013#p43702
+- Date: Tue Jun 16, 2020 12:34 pm
+- Who posted it: Matakratzka
+- Evidence type: scope capture
+- Confidence: medium
+- Summary: [george-angelosvoudouris](./memberlist.php?mode=viewprofile&u=362) wrote: [↑](./viewtopic.php?p=43058#p43058) Sat May 23, 2020 10:39 pm It's been a while since I wrote anything so it's time to bring you up to speed..... So far I'm still troubleshooting what is happening with speedy and the crappy Honda sensors that for some reason refuse to touch...... Somebody else in my place would have already replaced the sensors and continue with his life but not me .... not me...So lets cut to the chase...
+- Why it matters: Includes hardware-signal evidence, useful for edge and polarity interpretation.
+- Replay-test details: Includes: cam Matched decoder family: Basic distributor
+- Matched search terms: Basic distributor tooth logger
+
+#### Another Honda Build :P - Page 6
+- URL: https://speeduino.com/forum/viewtopic.php?p=42013#p42013
+- Date: Sun Apr 12, 2020 2:53 am
+- Who posted it: evo_lucian
+- Evidence type: composite log / wheel description
+- Confidence: medium
+- Summary: [george-angelosvoudouris](./memberlist.php?mode=viewprofile&u=362) wrote: [↑](./viewtopic.php?p=42007#p42007) Sat Apr 11, 2020 4:15 pm @evo_lucian oh I forgot about the trigger teeth 24 if the sensor is on crank 12 if on cam correct? Thanks for the tips I'll check them one by one! I decided to check the distributor signals on the bench for the factory distributor! So speedy on the bench a second distributor I had laying around hand drill and off we go!
+- Why it matters: Provides replay-test-relevant trigger traces.
+- Replay-test details: Pattern references: basic distributor Includes: cam Includes: crank
+- Matched search terms: Basic distributor tooth logger
+
+#### CHEVY LS USING BASIC DISTRIBUTOR SETTING AND THE CRANK SENSOR ONLY
+- URL: https://speeduino.com/forum/viewtopic.php?p=71118#p70922
+- Date: Thu Feb 20, 2025 7:36 pm
+- Who posted it: Built2runmaybe
+- Evidence type: tooth log / wheel description
+- Confidence: medium
+- Summary: Hello all, working on my LS project and have completed the wiring. Using the black sensor on 5v (it is supposed to run on 12, but it seems to be the only way I can get an RPM reading), I am able to get readings on both the tooth logger and the Tunerstudio RPM gauge. The 5v grey sensor did not produce any results no matter what pull up or pulldown configuration tested. But this is for another topic.
+- Why it matters: Provides replay-test-relevant trigger traces.
+- Replay-test details: Pattern references: basic distributor Includes: crank
+- Matched search terms: Basic distributor trigger wheel
+
+#### Another Honda Build :P - Page 6
+- URL: https://speeduino.com/forum/viewtopic.php?p=42013#p42007
+- Date: Sat Apr 11, 2020 4:15 pm
+- Who posted it: george-angelosvoudouris
+- Evidence type: composite log
+- Confidence: medium
+- Summary: @evo_lucian oh I forgot about the trigger teeth 24 if the sensor is on crank 12 if on cam correct? Thanks for the tips I'll check them one by one! I decided to check the distributor signals on the bench for the factory distributor! So speedy on the bench a second distributor I had laying around hand drill and off we go!
+- Why it matters: Provides replay-test-relevant trigger traces.
+- Replay-test details: Includes: cam Includes: crank Matched decoder family: Basic distributor Image or capture links: 1 Attachments: Test jig proper signal.csv -> https://speeduino.com/forum/download/file.php?id=6616
+- Matched search terms: Basic distributor tooth logger
+
+#### 1987 Subaru XT turbo, trouble syncing RPM
+- URL: https://speeduino.com/forum/viewtopic.php?p=30601#p30698
+- Date: Wed Dec 12, 2018 9:19 am
+- Who posted it: JoostXT
+- Evidence type: tune file / image attachment
+- Confidence: medium
+- Summary: Thanks for the replies guys! I actually had another go at this whilst waiting for your replies and figured out some stuff already. Apparently the CAS or coil is powered of a relais somewhere, I can hear it clicking whilst cranking and the "sync" light blinks in the same rythym So I powered the CAS directly of the ignition barrel and it now syncs perfectly! Still doesn't start though until the relais decides to stick and actually power the coil, this needs some digging in the wiring.
+- Why it matters: Contains decoder-specific technical details that may support test coverage.
+- Replay-test details: Includes: change Includes: crank Includes: sync Includes: cas Matched decoder family: Basic distributor Image or capture links: 1 Attachments: Subaru XT turbo.msq -> https://speeduino.com/forum/download/file.php?id=4160
+- Matched search terms: Basic distributor CAS
+
+#### 1987 Subaru XT turbo, trouble syncing RPM
+- URL: https://speeduino.com/forum/viewtopic.php?p=30655#p30698
+- Date: Wed Dec 12, 2018 9:19 am
+- Who posted it: JoostXT
+- Evidence type: tune file / image attachment
+- Confidence: medium
+- Summary: Thanks for the replies guys! I actually had another go at this whilst waiting for your replies and figured out some stuff already. Apparently the CAS or coil is powered of a relais somewhere, I can hear it clicking whilst cranking and the "sync" light blinks in the same rythym So I powered the CAS directly of the ignition barrel and it now syncs perfectly! Still doesn't start though until the relais decides to stick and actually power the coil, this needs some digging in the wiring.
+- Why it matters: Contains decoder-specific technical details that may support test coverage.
+- Replay-test details: Includes: change Includes: crank Includes: sync Includes: cas Matched decoder family: Basic distributor Image or capture links: 1 Attachments: Subaru XT turbo.msq -> https://speeduino.com/forum/download/file.php?id=4160
+- Matched search terms: Basic distributor CAS
+
+#### Problems with Basic Distributor - Start of injection the solution?
+- URL: https://speeduino.com/forum/viewtopic.php?p=73297#p73320
+- Date: Fri Oct 10, 2025 1:56 pm
+- Who posted it: Jannik Panda 16V
+- Evidence type: scope capture
+- Confidence: medium
+- Summary: Hey! The method with the diode works. But there are some anomalies. When I have a falling edge, the rev counter jerks (rev counter is connected to coil) when the ignition is switched on and the fuel pump is only activated very briefly.
+- Why it matters: Includes hardware-signal evidence, useful for edge and polarity interpretation.
+- Replay-test details: Includes: rising edge Includes: falling edge Includes: change Matched decoder family: Basic distributor
+- Matched search terms: Basic distributor trigger wheel
+
+#### Erratic engine speed from hall effect crank trigger - Datsun A12
+- URL: https://speeduino.com/forum/viewtopic.php?p=37282#p37248
+- Date: Wed Aug 21, 2019 9:10 am
+- Who posted it: Offthewheel
+- Evidence type: scope capture / wheel description
+- Confidence: medium
+- Summary: Through each iteration of this project (basic distributor with optical isolator then electronic distributor, and now hall effect crank sensor), I have had an unstable rpm that the speeduino interprets from my crank trigger. Each change I have made is in an effort to get a clean reliable engine speed input. In this most recent setup I have recessed three neodymium magnets into the the front flange of the crank pulley at 90, 180, and 270 degrees with - photo attached, with the hall sensor solidly mounted in front of them. I have also attached the 'scope of the incoming signal - there is some noise on the signal but I don't know if that is the cause of the unstable indicated RPM I am getting.
+- Why it matters: Includes hardware-signal evidence, useful for edge and polarity interpretation.
+- Replay-test details: Pattern references: 4-1, basic distributor Includes: missing tooth Includes: change Includes: cam Includes: crank
+- Matched search terms: Basic distributor CAS
+
+#### Sequential injection CAM sensor alternative. - Page 3
+- URL: https://speeduino.com/forum/viewtopic.php?p=67158#p67158
+- Date: Wed Feb 14, 2024 12:08 pm
+- Who posted it: apollard
+- Evidence type: wheel description
+- Confidence: medium
+- Summary: In a perfect world, no need to resync. Engines don’t live in a perfect world, but where voltage spikes and noise, both emf and power supply noise can cause bad signals momentarily. When your systems gets a bad read from the crank wheel, how will it know? You could be out of sync and never know.
+- Why it matters: Discusses sync-loss conditions that can inform negative test cases.
+- Replay-test details: Pattern references: basic distributor Includes: crank Includes: sync Includes: sync loss
+- Matched search terms: Basic distributor sync
+
+#### Question about speeduino ignition control for Chrysler 318 V8
+- URL: https://speeduino.com/forum/viewtopic.php?p=74188#p74192
+- Date: Sun Mar 01, 2026 5:32 pm
+- Who posted it: PSIG
+- Evidence type: wheel description
+- Confidence: medium
+- Summary: Much of the current Wiki version assumes you have some basic understanding of engine components, signals, and required outputs. Our hope is for you to find the answers in the documentation as they are (minimally) all there, although much of the fundamental info is far reduced from previous Wiki versions, such as the difference in analog versus digital distributor signals. More of the basic requirements info is in the archived Wiki [here](https://web.archive.org/web/20161216123200/http://speeduino.com/wiki/index.php/Speeduino) , and you will minimally need to review [Crank Sensors](https://web.archive.org/web/20161204093009/http://speeduino.com/wiki/index.php/Hardware_requirements#Crank_sensor) , [MAP](https://web.archive.org/web/20161204093009/http://speeduino.com/wiki/index.php/Hardware_requirements#MAP_.28Manifold_Pressure.29) , and [Coils](https://web.archive.org/web/20161204093009/http://speeduino.com/wiki/index.php/Hardware_requirements#Coils) output info. The short answer is yes.
+- Why it matters: Contains decoder-specific technical details that may support test coverage.
+- Replay-test details: Pattern references: Basic Distributor Includes: cam Includes: crank
+- Matched search terms: Basic distributor crank
+
+#### Question about speeduino ignition control for Chrysler 318 V8
+- URL: https://speeduino.com/forum/viewtopic.php?p=74192#p74192
+- Date: Sun Mar 01, 2026 5:32 pm
+- Who posted it: PSIG
+- Evidence type: wheel description
+- Confidence: medium
+- Summary: Much of the current Wiki version assumes you have some basic understanding of engine components, signals, and required outputs. Our hope is for you to find the answers in the documentation as they are (minimally) all there, although much of the fundamental info is far reduced from previous Wiki versions, such as the difference in analog versus digital distributor signals. More of the basic requirements info is in the archived Wiki [here](https://web.archive.org/web/20161216123200/http://speeduino.com/wiki/index.php/Speeduino) , and you will minimally need to review [Crank Sensors](https://web.archive.org/web/20161204093009/http://speeduino.com/wiki/index.php/Hardware_requirements#Crank_sensor) , [MAP](https://web.archive.org/web/20161204093009/http://speeduino.com/wiki/index.php/Hardware_requirements#MAP_.28Manifold_Pressure.29) , and [Coils](https://web.archive.org/web/20161204093009/http://speeduino.com/wiki/index.php/Hardware_requirements#Coils) output info. The short answer is yes.
+- Why it matters: Contains decoder-specific technical details that may support test coverage.
+- Replay-test details: Pattern references: Basic Distributor Includes: cam Includes: crank
+- Matched search terms: Basic distributor crank
+
+#### 58x Gm sensor No RPM value - Page 2
+- URL: https://speeduino.com/forum/viewtopic.php?p=70921#p71117
+- Date: Thu Mar 06, 2025 7:33 pm
+- Who posted it: Built2runmaybe
+- Evidence type: tune file / image attachment
+- Confidence: low
+- Summary: After some time I figured it out. Turns out its not just the sensor that varies by the generation of LS engine, but the 3 wire harness plug that also plugs in varies as well. Im not 100% on this theory because my harness is an aftermarket one, but when I tested the signal wire on the cam plug of my harness it had 10k ohms of resistence with nothing plugged in. I tested the generation 4 cam plug harness and it seems that it had 0 ohms resisitence.
+- Why it matters: Contains decoder-specific technical details that may support test coverage.
+- Replay-test details: Includes: cam Includes: crank Matched decoder family: Basic distributor Image or capture links: 1 Attachments: 2025-03-06_14.25.45.msq -> https://speeduino.com/forum/download/file.php?id=13779
+- Matched search terms: Basic distributor tooth logger
+
+#### Problems with Basic Distributor - Start of injection the solution?
+- URL: https://speeduino.com/forum/viewtopic.php?p=73297#p73293
+- Date: Tue Oct 07, 2025 12:53 pm
+- Who posted it: Jannik Panda 16V
+- Evidence type: tune file / wheel description / image attachment
+- Confidence: low
+- Summary: Hello, I'm Jannik from Germany and I'm having trouble controlling an old VW engine. (4 cylinders, 4 injectors, ignition distributor with Hall sensor) While driving, the engine repeatedly has short, minor misfires, which disappear when I set the trigger edge from falling to rising and adjust the offset and EOI so that the start of injection is close to the trigger offset (close to the trigger edge) and switch from semi-injection (1+4 2+3) to simultaneous injection. But as soon as I turn off the car and it stands for a longer period of time, the car does not want to start properly. It does start, but runs very poorly and stalls immediately without throttle.
+- Why it matters: Contains decoder-specific technical details that may support test coverage.
+- Replay-test details: Pattern references: 1-2, 60-2 Includes: rising edge Includes: falling edge Includes: crank Matched decoder family: Basic distributor Image or capture links: 2 Attachments: 2025-10-05_15.55.06.msl -> https://speeduino.com/forum/download/file.php?id=14474; Tune VW Golf2.msq -> https://speeduino.com/forum/download/file.php?id=14473
+- Matched search terms: Basic distributor trigger wheel
+
+#### Problems with Basic Distributor - Start of injection the solution?
+- URL: https://speeduino.com/forum/viewtopic.php?p=73320#p73293
+- Date: Tue Oct 07, 2025 12:53 pm
+- Who posted it: Jannik Panda 16V
+- Evidence type: tune file / wheel description / image attachment
+- Confidence: low
+- Summary: Hello, I'm Jannik from Germany and I'm having trouble controlling an old VW engine. (4 cylinders, 4 injectors, ignition distributor with Hall sensor) While driving, the engine repeatedly has short, minor misfires, which disappear when I set the trigger edge from falling to rising and adjust the offset and EOI so that the start of injection is close to the trigger offset (close to the trigger edge) and switch from semi-injection (1+4 2+3) to simultaneous injection. But as soon as I turn off the car and it stands for a longer period of time, the car does not want to start properly. It does start, but runs very poorly and stalls immediately without throttle.
+- Why it matters: Contains decoder-specific technical details that may support test coverage.
+- Replay-test details: Pattern references: 1-2, 60-2 Includes: rising edge Includes: falling edge Includes: crank Matched decoder family: Basic distributor Image or capture links: 2 Attachments: 2025-10-05_15.55.06.msl -> https://speeduino.com/forum/download/file.php?id=14474; Tune VW Golf2.msq -> https://speeduino.com/forum/download/file.php?id=14473
+- Matched search terms: Basic distributor oscilloscope
+
+#### Trigger setup for 1 cylinder engine with just VR on crank shaft
+- URL: https://speeduino.com/forum/viewtopic.php?p=69121#p69127
+- Date: Mon Aug 05, 2024 6:22 pm
+- Who posted it: Hich
+- Evidence type: scope capture
+- Confidence: low
+- Summary: Ok, I have tapped the MAX pins directly and I think there are two problems: On the scope is blue - VR+ as input to MAX9926 and yellow the output (pin 4). 1.Tunerstudio shows about 2000rpm while it is 1000rpm, so something is definitly wrong defined. V+ (blue), Max9926 output (yellow) @ 1000rpm 20240805_Max9926_In_out_1.JPEG (1.19 MiB) Viewed 9179 times close up, 20240805_Max9926_In_out_2.JPEG (1.03 MiB) Viewed 9179 times 2. When cranking stops there is no real signal (besides noise) on the VR+ pin, but there is still output from Max9926 with ignition coil connected 20240805_Max9926_cranking_with_coil.JPEG (932.94 KiB) Viewed 9179 times If I disconnect the ignition coil, the signal looks clean: ignition coil disconnected 20240805_Max9926_cranking_no_coil.JPEG (1.18 MiB) Viewed 9179 times So obviously the Max9926 is catching some noise due to the induction of the ignition coil.
+- Why it matters: Includes hardware-signal evidence, useful for edge and polarity interpretation.
+- Replay-test details: Includes: crank Matched decoder family: Basic distributor
+- Matched search terms: Basic distributor scope
+
+#### Basic distributor GM HEI
+- URL: https://speeduino.com/forum/viewtopic.php?p=52098#p52081
+- Date: Tue Jul 27, 2021 4:03 pm
+- Who posted it: chester240
+- Evidence type: scope capture
+- Confidence: low
+- Summary: Good day and hello to all. Im new to speeduino but not to other ECM's. I have a problem with the GM HEI setup. The engine starts fine with bypass disconected and the cam signal is clean.
+- Why it matters: Includes hardware-signal evidence, useful for edge and polarity interpretation.
+- Replay-test details: Includes: cam Matched decoder family: Basic distributor Image or capture links: 1
+- Matched search terms: Basic distributor tooth logger
+
+#### Erratic engine speed from hall effect crank trigger - Datsun A12
+- URL: https://speeduino.com/forum/viewtopic.php?p=37282#p37282
+- Date: Thu Aug 22, 2019 10:23 pm
+- Who posted it: Offthewheel
+- Evidence type: wheel description
+- Confidence: low
+- Summary: Thanks for that - I am very tight for space and at the front of the engine and can't mount a trigger wheel on the front of the crankshaft pulley. If I go with an OEM trigger I will have to adapt a CAS to go on the distributor drive. The reason I thought this would work is that the speeduino is set up to run off a basic distributor as a trigger (only 2 signals per crankshaft revolution in that case) I did have the engine running on an old school distributor but had engine speed instability issues, so changed to an electronic distributor thinking it was ignition noise from the points or induction. Had the instability problem again The "weird shit" comment isn't helpful - if I wanted an off the shelf project I wouldn't be using a Speeduino - an EFI conversion of 40 year old A12 needs a bit of creativity.
+- Why it matters: Contains decoder-specific technical details that may support test coverage.
+- Replay-test details: Pattern references: basic distributor Includes: change Includes: crank Includes: cas
+- Matched search terms: Basic distributor CAS
+
+#### Basic Distributor x Sequential injector
+- URL: https://speeduino.com/forum/viewtopic.php?p=65249#p65244
+- Date: Fri Oct 13, 2023 1:33 am
+- Who posted it: marciohiteck
+- Evidence type: wheel description
+- Confidence: low
+- Summary: Hello everybody, How are you. I'm here with some questions, but before I ask them, I have to explain my configuration that I use nowadays, that is, day-to-day.I have a 1983 Beetle with a 16000 air cooled. I use an original Vw manifold for these injected engines, so far with the Speeduino everything works perfectly, but I have to make it clear here that my rotation sensor is my distributor, this is the inductive type. So the configuration is practically this, the other sensors are engine and factory defaults.
+- Why it matters: Contains decoder-specific technical details that may support test coverage.
+- Replay-test details: Pattern references: basic distributor Includes: change Includes: cas
+- Matched search terms: Basic distributor oscilloscope
+
+#### Basic Distributor x Sequential injector
+- URL: https://speeduino.com/forum/viewtopic.php?p=65253#p65244
+- Date: Fri Oct 13, 2023 1:33 am
+- Who posted it: marciohiteck
+- Evidence type: wheel description
+- Confidence: low
+- Summary: Hello everybody, How are you. I'm here with some questions, but before I ask them, I have to explain my configuration that I use nowadays, that is, day-to-day.I have a 1983 Beetle with a 16000 air cooled. I use an original Vw manifold for these injected engines, so far with the Speeduino everything works perfectly, but I have to make it clear here that my rotation sensor is my distributor, this is the inductive type. So the configuration is practically this, the other sensors are engine and factory defaults.
+- Why it matters: Contains decoder-specific technical details that may support test coverage.
+- Replay-test details: Pattern references: basic distributor Includes: change Includes: cas
+- Matched search terms: Basic distributor sync
+
+#### 58x Gm sensor No RPM value - Page 2
+- URL: https://speeduino.com/forum/viewtopic.php?p=70921#p70934
+- Date: Fri Feb 21, 2025 4:53 pm
+- Who posted it: PSIG
+- Evidence type: tooth log / wheel description
+- Confidence: low
+- Summary: Basic Distributor in not acceptable, as it has no idea where cylinder #1 is located. You must have a reference of some kind (missing tooth or cycle/cam signal, etc) for it to "find home". Do this first, as the rest can't happen right without it. Trigger Angle must be set with a timing light.
+- Why it matters: Contains decoder-specific technical details that may support test coverage.
+- Replay-test details: Pattern references: Basic Distributor Includes: missing tooth Includes: cam Includes: crank
+- Matched search terms: Basic distributor tooth logger
+
+#### 1987 Subaru XT turbo, trouble syncing RPM
+- URL: https://speeduino.com/forum/viewtopic.php?p=30601#p30655
+- Date: Sun Dec 09, 2018 5:39 pm
+- Who posted it: Yoosyn
+- Evidence type: wheel description
+- Confidence: low
+- Summary: JoostXT wrote: Since I kind of need the car to be reliable and useable throughout the project I decided to reuse all sensors and wiring harnasses I've done same on my Impreza. Its my daily driver and its happy with Speede JoostXT wrote: - car is running stock distributor with nissan 360 CAS with a unique Subaru pattern - speeduino triggers on the low-res signal in basic distributor mode In trigger settings: Try lowering trigger signal filter. You can also lower "skip revolutions" 4 is quite big number. JoostXT wrote: - low Z injectors with resistorpack You are using low Zs.
+- Why it matters: Contains decoder-specific technical details that may support test coverage.
+- Replay-test details: Pattern references: basic distributor Includes: cas
+- Matched search terms: Basic distributor CAS
+
+#### 1987 Subaru XT turbo, trouble syncing RPM
+- URL: https://speeduino.com/forum/viewtopic.php?p=30655#p30655
+- Date: Sun Dec 09, 2018 5:39 pm
+- Who posted it: Yoosyn
+- Evidence type: wheel description
+- Confidence: low
+- Summary: JoostXT wrote: Since I kind of need the car to be reliable and useable throughout the project I decided to reuse all sensors and wiring harnasses I've done same on my Impreza. Its my daily driver and its happy with Speede JoostXT wrote: - car is running stock distributor with nissan 360 CAS with a unique Subaru pattern - speeduino triggers on the low-res signal in basic distributor mode In trigger settings: Try lowering trigger signal filter. You can also lower "skip revolutions" 4 is quite big number. JoostXT wrote: - low Z injectors with resistorpack You are using low Zs.
+- Why it matters: Contains decoder-specific technical details that may support test coverage.
+- Replay-test details: Pattern references: basic distributor Includes: cas
+- Matched search terms: Basic distributor CAS
+
+### Daihatsu
+
+#### Cylinder 1 on a 3 cylinder engine not firing properly - Page 6
+- URL: https://speeduino.com/forum/viewtopic.php?p=36123#p35891
+- Date: Sun Jun 23, 2019 12:48 pm
+- Who posted it: Xortex
+- Evidence type: scope capture
+- Confidence: medium
+- Summary: [ric355](./memberlist.php?mode=viewprofile&u=1649) wrote: [↑](./viewtopic.php?p=35888#p35888) Sun Jun 23, 2019 12:29 pm Those voltages look like they are offset? I would have thought you should be getting 0-5v square wave out of the VR conditioner rather than -1.8 to +3.6? I've not used one myself so can't speak from experience, but 3.6v is about on the border between high and low for an arduino I think. Do you have good sync on the trigger in the datalog?
+- Why it matters: Includes hardware-signal evidence, useful for edge and polarity interpretation.
+- Replay-test details: Includes: cam Includes: crank Includes: sync Matched decoder family: Daihatsu Image or capture links: 1 Attachments: 2019-06-21_18.08.13.msl -> https://speeduino.com/forum/download/file.php?id=5350
+- Matched search terms: Daihatsu Speeduino trigger
+
+#### Wierd problem with Daihatsu+1 Decoder and Nissan CAS
+- URL: https://speeduino.com/forum/viewtopic.php?p=69411#p69411
+- Date: Fri Sep 06, 2024 10:31 am
+- Who posted it: Pezi
+- Evidence type: wheel description / image attachment
+- Confidence: medium
+- Summary: Hey guys... I have a slightly crazy problem with my EU GA16DE. It has an optical CAS on the camshaft. The trigger pattern is the same as the Daihatsu+1 decoder (4 large slots + 1 smaller one in front of cylinder 1).
+- Why it matters: Contains decoder-specific technical details that may support test coverage.
+- Replay-test details: Pattern references: Daihatsu Includes: cam Includes: sync Includes: cas Image or capture links: 1 Attachments: Tooth log 27102024.csv -> https://speeduino.com/forum/download/file.php?id=13483
+- Matched search terms: Daihatsu sync
+
+#### Wierd problem with Daihatsu+1 Decoder and Nissan CAS
+- URL: https://speeduino.com/forum/viewtopic.php?p=69463#p69411
+- Date: Fri Sep 06, 2024 10:31 am
+- Who posted it: Pezi
+- Evidence type: wheel description / image attachment
+- Confidence: medium
+- Summary: Hey guys... I have a slightly crazy problem with my EU GA16DE. It has an optical CAS on the camshaft. The trigger pattern is the same as the Daihatsu+1 decoder (4 large slots + 1 smaller one in front of cylinder 1).
+- Why it matters: Contains decoder-specific technical details that may support test coverage.
+- Replay-test details: Pattern references: Daihatsu Includes: cam Includes: sync Includes: cas Image or capture links: 1 Attachments: Tooth log 27102024.csv -> https://speeduino.com/forum/download/file.php?id=13483
+- Matched search terms: Daihatsu CAS
+
+#### Wierd problem with Daihatsu+1 Decoder and Nissan CAS
+- URL: https://speeduino.com/forum/viewtopic.php?p=69956#p69411
+- Date: Fri Sep 06, 2024 10:31 am
+- Who posted it: Pezi
+- Evidence type: wheel description / image attachment
+- Confidence: medium
+- Summary: Hey guys... I have a slightly crazy problem with my EU GA16DE. It has an optical CAS on the camshaft. The trigger pattern is the same as the Daihatsu+1 decoder (4 large slots + 1 smaller one in front of cylinder 1).
+- Why it matters: Contains decoder-specific technical details that may support test coverage.
+- Replay-test details: Pattern references: Daihatsu Includes: cam Includes: sync Includes: cas Image or capture links: 1 Attachments: Tooth log 27102024.csv -> https://speeduino.com/forum/download/file.php?id=13483
+- Matched search terms: Daihatsu CAS
+
+#### Cylinder 1 on a 3 cylinder engine not firing properly - Page 6
+- URL: https://speeduino.com/forum/viewtopic.php?p=36123#p36003
+- Date: Sat Jun 29, 2019 11:15 am
+- Who posted it: Xortex
+- Evidence type: scope capture / wheel description
+- Confidence: medium
+- Summary: [PSIG](./memberlist.php?mode=viewprofile&u=149) wrote: [↑](./viewtopic.php?p=35893#p35893) Sun Jun 23, 2019 2:58 pm [Xortex](./memberlist.php?mode=viewprofile&u=2424) wrote: [↑](./viewtopic.php?p=35891#p35891) Sun Jun 23, 2019 12:48 pm Edit: The jumpers are set as follows: JP2: VR JP3: Hall JP4: Off JP5: On Depending on the type of conditioner you have; I would suggest trying both signals through the module, as-in: JP2: VR JP3: VR (simply sends Hall signal through conditioner) JP4: Off JP5: On The VR/Hall setting effectively means "use conditioner" or "bypass conditioner". However, the conditioner may have output to the Mega on the second channel, even if not connected (or because it is not connected). I am not saying this is or will fix your issue, but this setup ensures the module output is not fighting your Hall signal. Also, if your oscilloscope was connected in correct polarity, your VR sensor is connected backwards.
+- Why it matters: Includes hardware-signal evidence, useful for edge and polarity interpretation.
+- Replay-test details: Includes: change Matched decoder family: Daihatsu
+- Matched search terms: Daihatsu Speeduino trigger
+
+#### Progress report - June 2017
+- URL: https://speeduino.com/forum/viewtopic.php?p=19733#p19733
+- Date: Tue Jul 11, 2017 11:32 am
+- Who posted it: noisymime
+- Evidence type: wheel description / maintainer explanation
+- Confidence: medium
+- Summary: Ok, so I fully admit that this is the latest I've gotten a monthly firmware out, but in my defence it's been a huge month of work! Before anyone gets too excited, a lot of the work in the June firmware is 'under the covers' rather than being sexy new features, but personally I consider the changes made this month to be some of the most important I've done in at least the last 12 months. From a reliability and accuracy perspective, there is no question that this firmware is the best since the project started. Firstly, as mentioned last month, I have been working to make the firmware [MISRA compliant](https://en.wikipedia.org/wiki/MISRA_C) .
+- Why it matters: Maintainer explanation increases confidence in expected decoder behavior.
+- Replay-test details: Pattern references: Daihatsu Includes: missing tooth Includes: change Includes: cam Includes: cas
+- Matched search terms: Daihatsu Speeduino trigger
+
+#### Decoders - What do you want to see? - Page 26
+- URL: https://speeduino.com/forum/viewtopic.php?p=52924#p10723
+- Date: Mon Jul 18, 2016 10:38 pm
+- Who posted it: dazq
+- Evidence type: wheel description / maintainer explanation
+- Confidence: medium
+- Summary: Kelvinator wrote: Hey, im still pondering what car to put my Speeduino in but it looks like im fairly set on a Rover V8 now (since the MR2 sold). Looking into it, the car is already EFI, but a very primitive Lucas/Bosch system. Most of the system is straight forward, but im trying to get away with not removing the crank pulley and fitting a trigger wheel. Ultimately im fine with not controlling the spark if i cant, im mainly after fuel control.
+- Why it matters: Maintainer explanation increases confidence in expected decoder behavior.
+- Replay-test details: Includes: crank Includes: cas Matched decoder family: Daihatsu
+- Matched search terms: Daihatsu crank
+
+#### Decoders - What do you want to see? - Page 26
+- URL: https://speeduino.com/forum/viewtopic.php?p=52932#p1325
+- Date: Fri Jul 31, 2015 1:46 am
+- Who posted it: noisymime
+- Evidence type: maintainer explanation
+- Confidence: medium
+- Summary: PSIG wrote: Cool. Probably need a thread just for it, with polarities by year, make, model, etc. Working on the 'official' wiki page now. Plan is each decoder will have a page with all the information around it.
+- Why it matters: Maintainer explanation increases confidence in expected decoder behavior.
+- Replay-test details: Includes: cam Includes: cas Matched decoder family: Daihatsu
+- Matched search terms: Daihatsu cam
+
+#### Decoders - What do you want to see? - Page 26
+- URL: https://speeduino.com/forum/viewtopic.php?p=52932#p6197
+- Date: Wed Feb 24, 2016 11:25 pm
+- Who posted it: evo_lucian
+- Evidence type: scope capture / wheel description
+- Confidence: medium
+- Summary: kimdrummel wrote: noisymime wrote: kimdrummel wrote: Think it would be possible to implement the trigger of an ST162 Toyota Celica with 3S-GE engine? You don't happen to have a picture of it, or even better, a trace diagram would you? I can probably dig something up, but definitely faster if you have something already. Working on it.
+- Why it matters: Includes hardware-signal evidence, useful for edge and polarity interpretation.
+- Replay-test details: Includes: second trigger Includes: cam Matched decoder family: Daihatsu
+- Matched search terms: Daihatsu cam
+
+#### Wierd problem with Daihatsu+1 Decoder and Nissan CAS
+- URL: https://speeduino.com/forum/viewtopic.php?p=69426#p69426
+- Date: Mon Sep 09, 2024 4:22 am
+- Who posted it: PSIG
+- Evidence type: tooth log / scope capture / wheel description
+- Confidence: medium
+- Summary: Please post a tooth log, or an oscilloscope image of your tooth pattern.
+- Why it matters: Includes hardware-signal evidence, useful for edge and polarity interpretation.
+- Replay-test details: Matched decoder family: Daihatsu
+- Matched search terms: Daihatsu oscilloscope
+
+#### Wierd problem with Daihatsu+1 Decoder and Nissan CAS
+- URL: https://speeduino.com/forum/viewtopic.php?p=69455#p69426
+- Date: Mon Sep 09, 2024 4:22 am
+- Who posted it: PSIG
+- Evidence type: tooth log / scope capture / wheel description
+- Confidence: medium
+- Summary: Please post a tooth log, or an oscilloscope image of your tooth pattern.
+- Why it matters: Includes hardware-signal evidence, useful for edge and polarity interpretation.
+- Replay-test details: Matched decoder family: Daihatsu
+- Matched search terms: Daihatsu oscilloscope
+
+#### Wierd problem with Daihatsu+1 Decoder and Nissan CAS
+- URL: https://speeduino.com/forum/viewtopic.php?p=69426#p69411
+- Date: Fri Sep 06, 2024 10:31 am
+- Who posted it: Pezi
+- Evidence type: wheel description / image attachment
+- Confidence: medium
+- Summary: Hey guys... I have a slightly crazy problem with my EU GA16DE. It has an optical CAS on the camshaft. The trigger pattern is the same as the Daihatsu+1 decoder (4 large slots + 1 smaller one in front of cylinder 1).
+- Why it matters: Contains decoder-specific technical details that may support test coverage.
+- Replay-test details: Pattern references: Daihatsu Includes: cam Includes: sync Includes: cas Image or capture links: 1 Attachments: Tooth log 27102024.csv -> https://speeduino.com/forum/download/file.php?id=13483
+- Matched search terms: Daihatsu oscilloscope
+
+#### Wierd problem with Daihatsu+1 Decoder and Nissan CAS
+- URL: https://speeduino.com/forum/viewtopic.php?p=69455#p69411
+- Date: Fri Sep 06, 2024 10:31 am
+- Who posted it: Pezi
+- Evidence type: wheel description / image attachment
+- Confidence: medium
+- Summary: Hey guys... I have a slightly crazy problem with my EU GA16DE. It has an optical CAS on the camshaft. The trigger pattern is the same as the Daihatsu+1 decoder (4 large slots + 1 smaller one in front of cylinder 1).
+- Why it matters: Contains decoder-specific technical details that may support test coverage.
+- Replay-test details: Pattern references: Daihatsu Includes: cam Includes: sync Includes: cas Image or capture links: 1 Attachments: Tooth log 27102024.csv -> https://speeduino.com/forum/download/file.php?id=13483
+- Matched search terms: Daihatsu oscilloscope
+
+#### Wierd problem with Daihatsu+1 Decoder and Nissan CAS
+- URL: https://speeduino.com/forum/viewtopic.php?p=71059#p69411
+- Date: Fri Sep 06, 2024 10:31 am
+- Who posted it: Pezi
+- Evidence type: wheel description / image attachment
+- Confidence: medium
+- Summary: Hey guys... I have a slightly crazy problem with my EU GA16DE. It has an optical CAS on the camshaft. The trigger pattern is the same as the Daihatsu+1 decoder (4 large slots + 1 smaller one in front of cylinder 1).
+- Why it matters: Contains decoder-specific technical details that may support test coverage.
+- Replay-test details: Pattern references: Daihatsu Includes: cam Includes: sync Includes: cas Image or capture links: 1 Attachments: Tooth log 27102024.csv -> https://speeduino.com/forum/download/file.php?id=13483
+- Matched search terms: 36-2-1 CAS
+
+#### New firmware 202103 Trigger 36-2-2-2 not working for Daihatsu after update
+- URL: https://speeduino.com/forum/viewtopic.php?p=48796#p48796
+- Date: Sun Mar 07, 2021 12:07 am
+- Who posted it: theonewithin
+- Evidence type: tooth log
+- Confidence: medium
+- Summary: Do any EEPRM clear and update and load base tune and then enter values manually. Check tooth logger and see what you get there Post both a log and your tune.
+- Why it matters: Provides replay-test-relevant trigger traces.
+- Replay-test details: Matched decoder family: Daihatsu
+- Matched search terms: Daihatsu tooth logger
+
+#### Cylinder 1 on a 3 cylinder engine not firing properly - Page 6
+- URL: https://speeduino.com/forum/viewtopic.php?p=36123#p36006
+- Date: Sat Jun 29, 2019 2:05 pm
+- Who posted it: noisymime
+- Evidence type: scope capture / maintainer explanation
+- Confidence: high
+- Summary: Can you get another scope trace of the square wave output of the VR conditioner after swapping the polarity? The first square wave you posted is not going to work at all, it's simply not a valid missing tooth signal, but I'd be interested to see the change after swapping polarity.
+- Why it matters: Maintainer explanation increases confidence in expected decoder behavior. Includes hardware-signal evidence, useful for edge and polarity interpretation.
+- Replay-test details: Includes: missing tooth Includes: change Matched decoder family: Daihatsu
+- Matched search terms: Daihatsu Speeduino trigger
+
+#### Decoders - What do you want to see? - Page 26
+- URL: https://speeduino.com/forum/viewtopic.php?p=52932#p1327
+- Date: Fri Jul 31, 2015 2:02 pm
+- Who posted it: noisymime
+- Evidence type: maintainer explanation
+- Confidence: medium
+- Summary: noisymime wrote: PSIG wrote: Speaking of requests and CKS/CPS, can we have a 'hardware feature request' sticky as well? I'm thinking we need more options than a 5V Hall and a $50 VR module as generic trigger options. Perhaps a simple Zener, 5V rail clamping, or opto circuit? Example - I'll be using a GM HEI module as VR signal processor simply because they're reliable and $5 each.
+- Why it matters: Maintainer explanation increases confidence in expected decoder behavior.
+- Replay-test details: Includes: cam Includes: cas Matched decoder family: Daihatsu
+- Matched search terms: Daihatsu cam
+
+#### Decoders - What do you want to see? - Page 26
+- URL: https://speeduino.com/forum/viewtopic.php?p=52924#p31948
+- Date: Fri Feb 08, 2019 10:53 pm
+- Who posted it: noisymime
+- Evidence type: wheel description / maintainer explanation
+- Confidence: medium
+- Summary: [Kenai](./memberlist.php?mode=viewprofile&u=1076) wrote: [↑](./viewtopic.php?p=31930#p31930) Fri Feb 08, 2019 6:04 am [noisymime](./memberlist.php?mode=viewprofile&u=48) wrote: [↑](./viewtopic.php?p=31929#p31929) Fri Feb 08, 2019 5:43 am So that picture shows the standard 4g63 trigger wheel on the left and the aftermarket yoshifab high res one on the right. The one on the left absolutely should work. It's identical to the one in all the MX5 / Miata's that are getting about. Ok thats it.
+- Why it matters: Maintainer explanation increases confidence in expected decoder behavior.
+- Replay-test details: Includes: crank Matched decoder family: Daihatsu
+- Matched search terms: Daihatsu crank
+
+#### Decoders - What do you want to see? - Page 26
+- URL: https://speeduino.com/forum/viewtopic.php?p=52924#p19154
+- Date: Tue Jun 13, 2017 1:04 pm
+- Who posted it: noisymime
+- Evidence type: wheel description / maintainer explanation
+- Confidence: medium
+- Summary: [LAN-Opfer](./memberlist.php?mode=viewprofile&u=1158) wrote: [↑](./viewtopic.php?p=19153#p19153) Tue Jun 13, 2017 10:50 am [noisymime](./memberlist.php?mode=viewprofile&u=48) wrote: [↑](./viewtopic.php?p=9440#p9440) Thu Jun 23, 2016 5:42 am That's fine then, there has been an option added recently for fixed cranking timing on decoders such as this, so I can implement that. I'd forgotten that the 2 cylinders aren't 180 degrees apart on these engines, so that should work fine. Is this feature already implemented? Which menu item must be selected?
+- Why it matters: Maintainer explanation increases confidence in expected decoder behavior.
+- Replay-test details: Includes: crank Matched decoder family: Daihatsu
+- Matched search terms: Daihatsu crank
+
+#### Wierd problem with Daihatsu+1 Decoder and Nissan CAS
+- URL: https://speeduino.com/forum/viewtopic.php?p=69426#p69455
+- Date: Thu Sep 12, 2024 10:32 am
+- Who posted it: Pezi
+- Evidence type: scope capture
+- Confidence: medium
+- Summary: I'll try, but I haven't had any problems in the last few days. Or it happens and I don't have my oscilloscope handy at that the moment.
+- Why it matters: Includes hardware-signal evidence, useful for edge and polarity interpretation.
+- Replay-test details: Matched decoder family: Daihatsu
+- Matched search terms: Daihatsu oscilloscope
+
+#### Wierd problem with Daihatsu+1 Decoder and Nissan CAS
+- URL: https://speeduino.com/forum/viewtopic.php?p=69455#p69455
+- Date: Thu Sep 12, 2024 10:32 am
+- Who posted it: Pezi
+- Evidence type: scope capture
+- Confidence: medium
+- Summary: I'll try, but I haven't had any problems in the last few days. Or it happens and I don't have my oscilloscope handy at that the moment.
+- Why it matters: Includes hardware-signal evidence, useful for edge and polarity interpretation.
+- Replay-test details: Matched decoder family: Daihatsu
+- Matched search terms: Daihatsu oscilloscope
+
+#### Daihatsu HD Carb to ITB Speeduino
+- URL: https://speeduino.com/forum/viewtopic.php?p=59945#p59945
+- Date: Mon Dec 12, 2022 6:19 am
+- Who posted it: RedRallyRoza
+- Evidence type: wheel description
+- Confidence: medium
+- Summary: Hi, Been researching how to convert my carburated Daihatsu Feroza for EFI, on and off for the past decade. Originally looked into buying the EFI parts (not worth the effort to get something 30 years old) but now I'm settled on either speeduino or MS. It's a Daihatsu HD-C engine, 1600. I think I've seen a few on the forujm but they seem to all be coming from the factory EFI HD-E or HC-E My current plan, and absolutely feel free to tell me where I'm wrong or making things hard for myself, is to use a 4AGE silvertop ITB, and a trigger wheel replacing the guts of the distributor.
+- Why it matters: Contains decoder-specific technical details that may support test coverage.
+- Replay-test details: Pattern references: 36-1, Daihatsu Includes: change Includes: cam
+- Matched search terms: Daihatsu Speeduino trigger
+
+#### Wierd problem with Daihatsu+1 Decoder and Nissan CAS
+- URL: https://speeduino.com/forum/viewtopic.php?p=69411#p69426
+- Date: Mon Sep 09, 2024 4:22 am
+- Who posted it: PSIG
+- Evidence type: tooth log / scope capture / wheel description
+- Confidence: medium
+- Summary: Please post a tooth log, or an oscilloscope image of your tooth pattern.
+- Why it matters: Includes hardware-signal evidence, useful for edge and polarity interpretation.
+- Replay-test details: Matched decoder family: Daihatsu
+- Matched search terms: Daihatsu sync
+
+#### Wierd problem with Daihatsu+1 Decoder and Nissan CAS
+- URL: https://speeduino.com/forum/viewtopic.php?p=69463#p69426
+- Date: Mon Sep 09, 2024 4:22 am
+- Who posted it: PSIG
+- Evidence type: tooth log / scope capture / wheel description
+- Confidence: medium
+- Summary: Please post a tooth log, or an oscilloscope image of your tooth pattern.
+- Why it matters: Includes hardware-signal evidence, useful for edge and polarity interpretation.
+- Replay-test details: Matched decoder family: Daihatsu
+- Matched search terms: Daihatsu CAS
+
+#### Wierd problem with Daihatsu+1 Decoder and Nissan CAS
+- URL: https://speeduino.com/forum/viewtopic.php?p=69956#p69426
+- Date: Mon Sep 09, 2024 4:22 am
+- Who posted it: PSIG
+- Evidence type: tooth log / scope capture / wheel description
+- Confidence: medium
+- Summary: Please post a tooth log, or an oscilloscope image of your tooth pattern.
+- Why it matters: Includes hardware-signal evidence, useful for edge and polarity interpretation.
+- Replay-test details: Matched decoder family: Daihatsu
+- Matched search terms: Daihatsu CAS
+
+#### Wierd problem with Daihatsu+1 Decoder and Nissan CAS
+- URL: https://speeduino.com/forum/viewtopic.php?p=71059#p69426
+- Date: Mon Sep 09, 2024 4:22 am
+- Who posted it: PSIG
+- Evidence type: tooth log / scope capture / wheel description
+- Confidence: medium
+- Summary: Please post a tooth log, or an oscilloscope image of your tooth pattern.
+- Why it matters: Includes hardware-signal evidence, useful for edge and polarity interpretation.
+- Replay-test details: Matched decoder family: Daihatsu
+- Matched search terms: 36-2-1 CAS
+
+#### Daihatsu K3-VE
+- URL: https://speeduino.com/forum/viewtopic.php?p=18487#p18487
+- Date: Wed May 10, 2017 4:42 am
+- Who posted it: PSIG
+- Evidence type: scope capture
+- Confidence: medium
+- Summary: Indeed it appears the VVT control is PWM at a fixed frequency, using higher duty cycle to advance the cam, and lower DC to retard it. Somewhere in there it has to pass zero. It would be simple enough to use a multimeter or o-scope to check the PWM frequency, and the o-scope would also tell you the DC under various conditions in operation. If I were to tackle this, I'd put a Speeduino together and use it for a data collector to log sensor inputs while also 'scoping the VVT in order to determine when the PWM does what.
+- Why it matters: Includes hardware-signal evidence, useful for edge and polarity interpretation.
+- Replay-test details: Includes: cam Includes: cas Matched decoder family: Daihatsu
+- Matched search terms: Daihatsu scope
+
+#### Daihatsu K3-VE
+- URL: https://speeduino.com/forum/viewtopic.php?p=18734#p18487
+- Date: Wed May 10, 2017 4:42 am
+- Who posted it: PSIG
+- Evidence type: scope capture
+- Confidence: medium
+- Summary: Indeed it appears the VVT control is PWM at a fixed frequency, using higher duty cycle to advance the cam, and lower DC to retard it. Somewhere in there it has to pass zero. It would be simple enough to use a multimeter or o-scope to check the PWM frequency, and the o-scope would also tell you the DC under various conditions in operation. If I were to tackle this, I'd put a Speeduino together and use it for a data collector to log sensor inputs while also 'scoping the VVT in order to determine when the PWM does what.
+- Why it matters: Includes hardware-signal evidence, useful for edge and polarity interpretation.
+- Replay-test details: Includes: cam Includes: cas Matched decoder family: Daihatsu
+- Matched search terms: Daihatsu scope
+
+#### Decoder for Nissan Micra K11 Distributor Disc
+- URL: https://speeduino.com/forum/viewtopic.php?p=66630#p66630
+- Date: Mon Jan 08, 2024 10:28 am
+- Who posted it: baguete
+- Evidence type: wheel description
+- Confidence: medium
+- Summary: Hi guys, new here. I'm getting my 0.4.3d board ready but still getting my head around the decoder needed for my car. It uses an optical sensor like most Nissans but with a different pattern, 4 big slots and 1 small slot for 1st cylinder TDC. This is talked here: [viewtopic.php?p=33047](https://speeduino.com/forum/viewtopic.php?p=33047) but no further discussion was made.
+- Why it matters: Contains decoder-specific technical details that may support test coverage.
+- Replay-test details: Pattern references: Basic Distributor, Daihatsu Includes: sync
+- Matched search terms: Daihatsu sync
+
+#### Decoder for Nissan Micra K11 Distributor Disc
+- URL: https://speeduino.com/forum/viewtopic.php?p=66663#p66630
+- Date: Mon Jan 08, 2024 10:28 am
+- Who posted it: baguete
+- Evidence type: wheel description
+- Confidence: medium
+- Summary: Hi guys, new here. I'm getting my 0.4.3d board ready but still getting my head around the decoder needed for my car. It uses an optical sensor like most Nissans but with a different pattern, 4 big slots and 1 small slot for 1st cylinder TDC. This is talked here: [viewtopic.php?p=33047](https://speeduino.com/forum/viewtopic.php?p=33047) but no further discussion was made.
+- Why it matters: Contains decoder-specific technical details that may support test coverage.
+- Replay-test details: Pattern references: Basic Distributor, Daihatsu Includes: sync
+- Matched search terms: Daihatsu sync
+
+#### Decoder for Nissan Micra K11 Distributor Disc
+- URL: https://speeduino.com/forum/viewtopic.php?p=66681#p66630
+- Date: Mon Jan 08, 2024 10:28 am
+- Who posted it: baguete
+- Evidence type: wheel description
+- Confidence: medium
+- Summary: Hi guys, new here. I'm getting my 0.4.3d board ready but still getting my head around the decoder needed for my car. It uses an optical sensor like most Nissans but with a different pattern, 4 big slots and 1 small slot for 1st cylinder TDC. This is talked here: [viewtopic.php?p=33047](https://speeduino.com/forum/viewtopic.php?p=33047) but no further discussion was made.
+- Why it matters: Contains decoder-specific technical details that may support test coverage.
+- Replay-test details: Pattern references: Basic Distributor, Daihatsu Includes: sync
+- Matched search terms: Daihatsu sync
+
+#### New firmware 202103 Trigger 36-2-2-2 not working for Daihatsu after update
+- URL: https://speeduino.com/forum/viewtopic.php?p=48778#p48796
+- Date: Sun Mar 07, 2021 12:07 am
+- Who posted it: theonewithin
+- Evidence type: tooth log
+- Confidence: medium
+- Summary: Do any EEPRM clear and update and load base tune and then enter values manually. Check tooth logger and see what you get there Post both a log and your tune.
+- Why it matters: Provides replay-test-relevant trigger traces.
+- Replay-test details: Matched decoder family: Daihatsu
+- Matched search terms: Daihatsu sync
+
+#### New firmware 202103 Trigger 36-2-2-2 not working for Daihatsu after update
+- URL: https://speeduino.com/forum/viewtopic.php?p=48878#p48796
+- Date: Sun Mar 07, 2021 12:07 am
+- Who posted it: theonewithin
+- Evidence type: tooth log
+- Confidence: medium
+- Summary: Do any EEPRM clear and update and load base tune and then enter values manually. Check tooth logger and see what you get there Post both a log and your tune.
+- Why it matters: Provides replay-test-relevant trigger traces.
+- Replay-test details: Matched decoder family: Daihatsu
+- Matched search terms: Daihatsu trigger wheel
+
+#### New firmware 202103 Trigger 36-2-2-2 not working for Daihatsu after update
+- URL: https://speeduino.com/forum/viewtopic.php?p=48881#p48796
+- Date: Sun Mar 07, 2021 12:07 am
+- Who posted it: theonewithin
+- Evidence type: tooth log
+- Confidence: medium
+- Summary: Do any EEPRM clear and update and load base tune and then enter values manually. Check tooth logger and see what you get there Post both a log and your tune.
+- Why it matters: Provides replay-test-relevant trigger traces.
+- Replay-test details: Matched decoder family: Daihatsu
+- Matched search terms: Daihatsu trigger wheel
+
+#### Wierd problem with Daihatsu+1 Decoder and Nissan CAS
+- URL: https://speeduino.com/forum/viewtopic.php?p=69411#p69455
+- Date: Thu Sep 12, 2024 10:32 am
+- Who posted it: Pezi
+- Evidence type: scope capture
+- Confidence: low
+- Summary: I'll try, but I haven't had any problems in the last few days. Or it happens and I don't have my oscilloscope handy at that the moment.
+- Why it matters: Includes hardware-signal evidence, useful for edge and polarity interpretation.
+- Replay-test details: Matched decoder family: Daihatsu
+- Matched search terms: Daihatsu sync
+
+#### Wierd problem with Daihatsu+1 Decoder and Nissan CAS
+- URL: https://speeduino.com/forum/viewtopic.php?p=69463#p69455
+- Date: Thu Sep 12, 2024 10:32 am
+- Who posted it: Pezi
+- Evidence type: scope capture
+- Confidence: low
+- Summary: I'll try, but I haven't had any problems in the last few days. Or it happens and I don't have my oscilloscope handy at that the moment.
+- Why it matters: Includes hardware-signal evidence, useful for edge and polarity interpretation.
+- Replay-test details: Matched decoder family: Daihatsu
+- Matched search terms: Daihatsu CAS
+
+#### Wierd problem with Daihatsu+1 Decoder and Nissan CAS
+- URL: https://speeduino.com/forum/viewtopic.php?p=69956#p69455
+- Date: Thu Sep 12, 2024 10:32 am
+- Who posted it: Pezi
+- Evidence type: scope capture
+- Confidence: low
+- Summary: I'll try, but I haven't had any problems in the last few days. Or it happens and I don't have my oscilloscope handy at that the moment.
+- Why it matters: Includes hardware-signal evidence, useful for edge and polarity interpretation.
+- Replay-test details: Matched decoder family: Daihatsu
+- Matched search terms: Daihatsu CAS
+
+#### Wierd problem with Daihatsu+1 Decoder and Nissan CAS
+- URL: https://speeduino.com/forum/viewtopic.php?p=71059#p69455
+- Date: Thu Sep 12, 2024 10:32 am
+- Who posted it: Pezi
+- Evidence type: scope capture
+- Confidence: low
+- Summary: I'll try, but I haven't had any problems in the last few days. Or it happens and I don't have my oscilloscope handy at that the moment.
+- Why it matters: Includes hardware-signal evidence, useful for edge and polarity interpretation.
+- Replay-test details: Matched decoder family: Daihatsu
+- Matched search terms: 36-2-1 CAS
+
+#### Daihatsu K3-VE
+- URL: https://speeduino.com/forum/viewtopic.php?p=18487#p18734
+- Date: Mon May 22, 2017 11:46 am
+- Who posted it: fazren
+- Evidence type: scope capture
+- Confidence: low
+- Summary: [dazq](./memberlist.php?mode=viewprofile&u=186) wrote: [↑](./viewtopic.php?p=18525#p18525) Fri May 12, 2017 1:40 am Your vvt sounds very similar in operation to that on my aj30:Jag v6. The hold or dither position is approx 50% Less DC decreases and more DC increases the timing. The further the DC away from 50% the faster the timing shift. If you keep the valve at a constant DC away from the dither it will advance or retard all the way to its limits.
+- Why it matters: Includes hardware-signal evidence, useful for edge and polarity interpretation.
+- Replay-test details: Includes: cam Includes: crank Matched decoder family: Daihatsu
+- Matched search terms: Daihatsu scope
+
+#### Daihatsu K3-VE
+- URL: https://speeduino.com/forum/viewtopic.php?p=18734#p18734
+- Date: Mon May 22, 2017 11:46 am
+- Who posted it: fazren
+- Evidence type: scope capture
+- Confidence: low
+- Summary: [dazq](./memberlist.php?mode=viewprofile&u=186) wrote: [↑](./viewtopic.php?p=18525#p18525) Fri May 12, 2017 1:40 am Your vvt sounds very similar in operation to that on my aj30:Jag v6. The hold or dither position is approx 50% Less DC decreases and more DC increases the timing. The further the DC away from 50% the faster the timing shift. If you keep the valve at a constant DC away from the dither it will advance or retard all the way to its limits.
+- Why it matters: Includes hardware-signal evidence, useful for edge and polarity interpretation.
+- Replay-test details: Includes: cam Includes: crank Matched decoder family: Daihatsu
+- Matched search terms: Daihatsu scope
+
+#### Daihatsu
+- URL: https://speeduino.com/forum/viewtopic.php?p=18851#p18851
+- Date: Fri May 26, 2017 2:11 pm
+- Who posted it: twobarboost
+- Evidence type: wheel description
+- Confidence: low
+- Summary: Hi there everyone. I was wondering if anyone could give me some advice on Speeduino and it's suitability with regards to my Daihatsu EJ-DE 989cc three cylinder. I'm interested in experimenting with a home built ECU. From the factory the engine uses a 3+1 CAMSHAFT sensor (only) and runs sequential injection and sequential (coil on plug) ignition.
+- Why it matters: Contains decoder-specific technical details that may support test coverage.
+- Replay-test details: Pattern references: Daihatsu Includes: cam Includes: crank
+- Matched search terms: Daihatsu crank
+
+#### Daihatsu
+- URL: https://speeduino.com/forum/viewtopic.php?p=18899#p18851
+- Date: Fri May 26, 2017 2:11 pm
+- Who posted it: twobarboost
+- Evidence type: wheel description
+- Confidence: low
+- Summary: Hi there everyone. I was wondering if anyone could give me some advice on Speeduino and it's suitability with regards to my Daihatsu EJ-DE 989cc three cylinder. I'm interested in experimenting with a home built ECU. From the factory the engine uses a 3+1 CAMSHAFT sensor (only) and runs sequential injection and sequential (coil on plug) ignition.
+- Why it matters: Contains decoder-specific technical details that may support test coverage.
+- Replay-test details: Pattern references: Daihatsu Includes: cam Includes: crank
+- Matched search terms: Daihatsu crank
+
+#### Decoder for Nissan Micra K11 Distributor Disc
+- URL: https://speeduino.com/forum/viewtopic.php?p=66630#p66663
+- Date: Thu Jan 11, 2024 11:57 am
+- Who posted it: baguete
+- Evidence type: wheel description
+- Confidence: low
+- Summary: [Raku](./memberlist.php?mode=viewprofile&u=845) wrote: [↑](./viewtopic.php?p=66631#p66631) Mon Jan 08, 2024 11:23 am just done a k11. daihatsu +1 works fine running fully sequential. It doesn't get sync problems? The decoders.cpp file has this comment: //We need to try and find the extra tooth (#2) which is located 30 degrees after tooth #1 //Aim for tooth times less than about 60 degrees Can this be a problem or the firmware can go to the 80 degrees offset that the Nissan disc has?
+- Why it matters: Contains decoder-specific technical details that may support test coverage.
+- Replay-test details: Pattern references: Daihatsu, daihatsu Includes: falling edge Includes: sync
+- Matched search terms: Daihatsu sync
+
+#### Decoder for Nissan Micra K11 Distributor Disc
+- URL: https://speeduino.com/forum/viewtopic.php?p=66630#p66681
+- Date: Sat Jan 13, 2024 1:34 pm
+- Who posted it: Raku
+- Evidence type: wheel description
+- Confidence: low
+- Summary: [baguete](./memberlist.php?mode=viewprofile&u=8275) wrote: [↑](./viewtopic.php?p=66663#p66663) Thu Jan 11, 2024 11:57 am [Raku](./memberlist.php?mode=viewprofile&u=845) wrote: [↑](./viewtopic.php?p=66631#p66631) Mon Jan 08, 2024 11:23 am just done a k11. daihatsu +1 works fine running fully sequential. It doesn't get sync problems? The decoders.cpp file has this comment: //We need to try and find the extra tooth (#2) which is located 30 degrees after tooth #1 //Aim for tooth times less than about 60 degrees Can this be a problem or the firmware can go to the 80 degrees offset that the Nissan disc has?
+- Why it matters: Contains decoder-specific technical details that may support test coverage.
+- Replay-test details: Pattern references: Daihatsu, daihatsu Includes: falling edge Includes: sync
+- Matched search terms: Daihatsu sync
+
+#### Decoder for Nissan Micra K11 Distributor Disc
+- URL: https://speeduino.com/forum/viewtopic.php?p=66663#p66663
+- Date: Thu Jan 11, 2024 11:57 am
+- Who posted it: baguete
+- Evidence type: wheel description
+- Confidence: low
+- Summary: [Raku](./memberlist.php?mode=viewprofile&u=845) wrote: [↑](./viewtopic.php?p=66631#p66631) Mon Jan 08, 2024 11:23 am just done a k11. daihatsu +1 works fine running fully sequential. It doesn't get sync problems? The decoders.cpp file has this comment: //We need to try and find the extra tooth (#2) which is located 30 degrees after tooth #1 //Aim for tooth times less than about 60 degrees Can this be a problem or the firmware can go to the 80 degrees offset that the Nissan disc has?
+- Why it matters: Contains decoder-specific technical details that may support test coverage.
+- Replay-test details: Pattern references: Daihatsu, daihatsu Includes: falling edge Includes: sync
+- Matched search terms: Daihatsu sync
+
+#### Decoder for Nissan Micra K11 Distributor Disc
+- URL: https://speeduino.com/forum/viewtopic.php?p=66663#p66681
+- Date: Sat Jan 13, 2024 1:34 pm
+- Who posted it: Raku
+- Evidence type: wheel description
+- Confidence: low
+- Summary: [baguete](./memberlist.php?mode=viewprofile&u=8275) wrote: [↑](./viewtopic.php?p=66663#p66663) Thu Jan 11, 2024 11:57 am [Raku](./memberlist.php?mode=viewprofile&u=845) wrote: [↑](./viewtopic.php?p=66631#p66631) Mon Jan 08, 2024 11:23 am just done a k11. daihatsu +1 works fine running fully sequential. It doesn't get sync problems? The decoders.cpp file has this comment: //We need to try and find the extra tooth (#2) which is located 30 degrees after tooth #1 //Aim for tooth times less than about 60 degrees Can this be a problem or the firmware can go to the 80 degrees offset that the Nissan disc has?
+- Why it matters: Contains decoder-specific technical details that may support test coverage.
+- Replay-test details: Pattern references: Daihatsu, daihatsu Includes: falling edge Includes: sync
+- Matched search terms: Daihatsu sync
+
+#### Decoder for Nissan Micra K11 Distributor Disc
+- URL: https://speeduino.com/forum/viewtopic.php?p=66681#p66663
+- Date: Thu Jan 11, 2024 11:57 am
+- Who posted it: baguete
+- Evidence type: wheel description
+- Confidence: low
+- Summary: [Raku](./memberlist.php?mode=viewprofile&u=845) wrote: [↑](./viewtopic.php?p=66631#p66631) Mon Jan 08, 2024 11:23 am just done a k11. daihatsu +1 works fine running fully sequential. It doesn't get sync problems? The decoders.cpp file has this comment: //We need to try and find the extra tooth (#2) which is located 30 degrees after tooth #1 //Aim for tooth times less than about 60 degrees Can this be a problem or the firmware can go to the 80 degrees offset that the Nissan disc has?
+- Why it matters: Contains decoder-specific technical details that may support test coverage.
+- Replay-test details: Pattern references: Daihatsu, daihatsu Includes: falling edge Includes: sync
+- Matched search terms: Daihatsu sync
+
+#### Decoder for Nissan Micra K11 Distributor Disc
+- URL: https://speeduino.com/forum/viewtopic.php?p=66681#p66681
+- Date: Sat Jan 13, 2024 1:34 pm
+- Who posted it: Raku
+- Evidence type: wheel description
+- Confidence: low
+- Summary: [baguete](./memberlist.php?mode=viewprofile&u=8275) wrote: [↑](./viewtopic.php?p=66663#p66663) Thu Jan 11, 2024 11:57 am [Raku](./memberlist.php?mode=viewprofile&u=845) wrote: [↑](./viewtopic.php?p=66631#p66631) Mon Jan 08, 2024 11:23 am just done a k11. daihatsu +1 works fine running fully sequential. It doesn't get sync problems? The decoders.cpp file has this comment: //We need to try and find the extra tooth (#2) which is located 30 degrees after tooth #1 //Aim for tooth times less than about 60 degrees Can this be a problem or the firmware can go to the 80 degrees offset that the Nissan disc has?
+- Why it matters: Contains decoder-specific technical details that may support test coverage.
+- Replay-test details: Pattern references: Daihatsu, daihatsu Includes: falling edge Includes: sync
+- Matched search terms: Daihatsu sync
+
+#### Wierd problem with Daihatsu+1 Decoder and Nissan CAS
+- URL: https://speeduino.com/forum/viewtopic.php?p=69411#p71059
+- Date: Mon Mar 03, 2025 4:24 am
+- Who posted it: echomnalez
+- Evidence type: wheel description
+- Confidence: low
+- Summary: Hey. I had the exact same problem with a daihatsu. I ended up changing the wheel for a 36 - 2 wheel. The engine feel instantly changed.
+- Why it matters: Contains decoder-specific technical details that may support test coverage.
+- Replay-test details: Pattern references: daihatsu Includes: change Includes: crank
+- Matched search terms: Daihatsu sync
+
+#### Wierd problem with Daihatsu+1 Decoder and Nissan CAS
+- URL: https://speeduino.com/forum/viewtopic.php?p=69426#p71059
+- Date: Mon Mar 03, 2025 4:24 am
+- Who posted it: echomnalez
+- Evidence type: wheel description
+- Confidence: low
+- Summary: Hey. I had the exact same problem with a daihatsu. I ended up changing the wheel for a 36 - 2 wheel. The engine feel instantly changed.
+- Why it matters: Contains decoder-specific technical details that may support test coverage.
+- Replay-test details: Pattern references: daihatsu Includes: change Includes: crank
+- Matched search terms: Daihatsu oscilloscope
+
+#### Wierd problem with Daihatsu+1 Decoder and Nissan CAS
+- URL: https://speeduino.com/forum/viewtopic.php?p=69455#p71059
+- Date: Mon Mar 03, 2025 4:24 am
+- Who posted it: echomnalez
+- Evidence type: wheel description
+- Confidence: low
+- Summary: Hey. I had the exact same problem with a daihatsu. I ended up changing the wheel for a 36 - 2 wheel. The engine feel instantly changed.
+- Why it matters: Contains decoder-specific technical details that may support test coverage.
+- Replay-test details: Pattern references: daihatsu Includes: change Includes: crank
+- Matched search terms: Daihatsu oscilloscope
+
+#### Wierd problem with Daihatsu+1 Decoder and Nissan CAS
+- URL: https://speeduino.com/forum/viewtopic.php?p=69463#p71059
+- Date: Mon Mar 03, 2025 4:24 am
+- Who posted it: echomnalez
+- Evidence type: wheel description
+- Confidence: low
+- Summary: Hey. I had the exact same problem with a daihatsu. I ended up changing the wheel for a 36 - 2 wheel. The engine feel instantly changed.
+- Why it matters: Contains decoder-specific technical details that may support test coverage.
+- Replay-test details: Pattern references: daihatsu Includes: change Includes: crank
+- Matched search terms: Daihatsu CAS
+
+#### Wierd problem with Daihatsu+1 Decoder and Nissan CAS
+- URL: https://speeduino.com/forum/viewtopic.php?p=69956#p71059
+- Date: Mon Mar 03, 2025 4:24 am
+- Who posted it: echomnalez
+- Evidence type: wheel description
+- Confidence: low
+- Summary: Hey. I had the exact same problem with a daihatsu. I ended up changing the wheel for a 36 - 2 wheel. The engine feel instantly changed.
+- Why it matters: Contains decoder-specific technical details that may support test coverage.
+- Replay-test details: Pattern references: daihatsu Includes: change Includes: crank
+- Matched search terms: Daihatsu CAS
+
+#### Daihatsu
+- URL: https://speeduino.com/forum/viewtopic.php?p=18851#p18899
+- Date: Sun May 28, 2017 9:04 am
+- Who posted it: twobarboost
+- Evidence type: wheel description
+- Confidence: low
+- Summary: That's the exact trigger wheel. It certainly is low res.... but i'd rather leave the engine as standard as possible so i'll give it a go and see what sort of results I have. If it's absolute garbage, i'll swap to a missing tooth crank sensor I guess.
+- Why it matters: Contains decoder-specific technical details that may support test coverage.
+- Replay-test details: Includes: missing tooth Includes: crank Matched decoder family: Daihatsu
+- Matched search terms: Daihatsu crank
+
+#### Daihatsu
+- URL: https://speeduino.com/forum/viewtopic.php?p=18899#p18899
+- Date: Sun May 28, 2017 9:04 am
+- Who posted it: twobarboost
+- Evidence type: wheel description
+- Confidence: low
+- Summary: That's the exact trigger wheel. It certainly is low res.... but i'd rather leave the engine as standard as possible so i'll give it a go and see what sort of results I have. If it's absolute garbage, i'll swap to a missing tooth crank sensor I guess.
+- Why it matters: Contains decoder-specific technical details that may support test coverage.
+- Replay-test details: Includes: missing tooth Includes: crank Matched decoder family: Daihatsu
+- Matched search terms: Daihatsu crank
+
+#### New firmware 202103 Trigger 36-2-2-2 not working for Daihatsu after update
+- URL: https://speeduino.com/forum/viewtopic.php?p=48878#p48878
+- Date: Tue Mar 09, 2021 8:38 am
+- Who posted it: marcus4
+- Evidence type: wheel description
+- Confidence: low
+- Summary: How many cylinder is selected on your tune file? In the new 03.2021 firmware, a new feature is present to distinguish between Subaru H4 or H6 trigger wheels that are apparently differents even if both are 36-2-2-2. At line 3332 of decoder.ino, there is an "if -- else if" that check the number of cylinders if it is 4 or 6 therefore, this trigger wheel could not work anymore if it is mounted on another engine than 4 or 6 cylinders. From my point of view those two trigger wheels should not be linked each other and should not depend on cylinder number.
+- Why it matters: Contains decoder-specific technical details that may support test coverage.
+- Replay-test details: Pattern references: 36-2-2-2 Matched decoder family: Daihatsu
+- Matched search terms: Daihatsu trigger wheel
+
+#### New firmware 202103 Trigger 36-2-2-2 not working for Daihatsu after update
+- URL: https://speeduino.com/forum/viewtopic.php?p=48878#p48881
+- Date: Tue Mar 09, 2021 11:32 am
+- Who posted it: theonewithin
+- Evidence type: wheel description
+- Confidence: low
+- Summary: [marcus4](./memberlist.php?mode=viewprofile&u=205) wrote: [↑](./viewtopic.php?p=48878#p48878) Tue Mar 09, 2021 8:38 am How many cylinder is selected on your tune file? In the new 03.2021 firmware, a new feature is present to distinguish between Subaru H4 or H6 trigger wheels that are apparently differents even if both are 36-2-2-2. At line 3332 of decoder.ino, there is an "if -- else if" that check the number of cylinders if it is 4 or 6 therefore, this trigger wheel could not work anymore if it is mounted on another engine than 4 or 6 cylinders. From my point of view those two trigger wheels should not be linked each other and should not depend on cylinder number.
+- Why it matters: Contains decoder-specific technical details that may support test coverage.
+- Replay-test details: Pattern references: 36-2-2-2 Matched decoder family: Daihatsu
+- Matched search terms: Daihatsu trigger wheel
+
+#### New firmware 202103 Trigger 36-2-2-2 not working for Daihatsu after update
+- URL: https://speeduino.com/forum/viewtopic.php?p=48881#p48878
+- Date: Tue Mar 09, 2021 8:38 am
+- Who posted it: marcus4
+- Evidence type: wheel description
+- Confidence: low
+- Summary: How many cylinder is selected on your tune file? In the new 03.2021 firmware, a new feature is present to distinguish between Subaru H4 or H6 trigger wheels that are apparently differents even if both are 36-2-2-2. At line 3332 of decoder.ino, there is an "if -- else if" that check the number of cylinders if it is 4 or 6 therefore, this trigger wheel could not work anymore if it is mounted on another engine than 4 or 6 cylinders. From my point of view those two trigger wheels should not be linked each other and should not depend on cylinder number.
+- Why it matters: Contains decoder-specific technical details that may support test coverage.
+- Replay-test details: Pattern references: 36-2-2-2 Matched decoder family: Daihatsu
+- Matched search terms: Daihatsu trigger wheel
+
+#### New firmware 202103 Trigger 36-2-2-2 not working for Daihatsu after update
+- URL: https://speeduino.com/forum/viewtopic.php?p=48881#p48881
+- Date: Tue Mar 09, 2021 11:32 am
+- Who posted it: theonewithin
+- Evidence type: wheel description
+- Confidence: low
+- Summary: [marcus4](./memberlist.php?mode=viewprofile&u=205) wrote: [↑](./viewtopic.php?p=48878#p48878) Tue Mar 09, 2021 8:38 am How many cylinder is selected on your tune file? In the new 03.2021 firmware, a new feature is present to distinguish between Subaru H4 or H6 trigger wheels that are apparently differents even if both are 36-2-2-2. At line 3332 of decoder.ino, there is an "if -- else if" that check the number of cylinders if it is 4 or 6 therefore, this trigger wheel could not work anymore if it is mounted on another engine than 4 or 6 cylinders. From my point of view those two trigger wheels should not be linked each other and should not depend on cylinder number.
+- Why it matters: Contains decoder-specific technical details that may support test coverage.
+- Replay-test details: Pattern references: 36-2-2-2 Matched decoder family: Daihatsu
+- Matched search terms: Daihatsu trigger wheel
+
+### Harley
+
+#### What else do I need? Nub question.
+- URL: https://speeduino.com/forum/viewtopic.php?p=28017#p28017
+- Date: Wed Aug 22, 2018 11:37 am
+- Who posted it: doleckijohn
+- Evidence type: scope capture / wheel description
+- Confidence: medium
+- Summary: I have to split the cases anyway to machine some parts for the blower drive. So I can see the crank then an how its machined for the crank sensor. Or I'll just put the scope on the sensor before i split the cases. Also if I jut mount and aftermarket trigger wheel to the engine is the Speeduino capable of using it to run the odd firing order of a harley?
+- Why it matters: Includes hardware-signal evidence, useful for edge and polarity interpretation.
+- Replay-test details: Pattern references: harley Includes: crank Includes: cas
+- Matched search terms: Harley scope
+
+#### A cobbled together oddfire (Harley)
+- URL: https://speeduino.com/forum/viewtopic.php?p=16578#p17301
+- Date: Sat Mar 18, 2017 1:10 pm
+- Who posted it: Jcwood3
+- Evidence type: scope capture / wheel description
+- Confidence: medium
+- Summary: Had a little more success with the setup. I was having trouble with ardustim so I wrote a simple program that maps a pot output to time delay on a square wave, effectively giving me rpm control. Works great and I'm getting sync, though there is no missing tooth on the signal, so I'm not sure what that's about. Assembled my 14point7 wide band controller and had everything working great until I fiddled with the capacitor that bumps the display and now the display doesn't read.
+- Why it matters: Includes hardware-signal evidence, useful for edge and polarity interpretation.
+- Replay-test details: Pattern references: 32-2 Includes: missing tooth Includes: sync Matched decoder family: Harley
+- Matched search terms: Harley sync
+
+#### A cobbled together oddfire (Harley)
+- URL: https://speeduino.com/forum/viewtopic.php?p=17301#p17301
+- Date: Sat Mar 18, 2017 1:10 pm
+- Who posted it: Jcwood3
+- Evidence type: scope capture / wheel description
+- Confidence: medium
+- Summary: Had a little more success with the setup. I was having trouble with ardustim so I wrote a simple program that maps a pot output to time delay on a square wave, effectively giving me rpm control. Works great and I'm getting sync, though there is no missing tooth on the signal, so I'm not sure what that's about. Assembled my 14point7 wide band controller and had everything working great until I fiddled with the capacitor that bumps the display and now the display doesn't read.
+- Why it matters: Includes hardware-signal evidence, useful for edge and polarity interpretation.
+- Replay-test details: Pattern references: 32-2 Includes: missing tooth Includes: sync Matched decoder family: Harley
+- Matched search terms: Harley sync
+
+#### A cobbled together oddfire (Harley)
+- URL: https://speeduino.com/forum/viewtopic.php?p=17310#p17301
+- Date: Sat Mar 18, 2017 1:10 pm
+- Who posted it: Jcwood3
+- Evidence type: scope capture / wheel description
+- Confidence: medium
+- Summary: Had a little more success with the setup. I was having trouble with ardustim so I wrote a simple program that maps a pot output to time delay on a square wave, effectively giving me rpm control. Works great and I'm getting sync, though there is no missing tooth on the signal, so I'm not sure what that's about. Assembled my 14point7 wide band controller and had everything working great until I fiddled with the capacitor that bumps the display and now the display doesn't read.
+- Why it matters: Includes hardware-signal evidence, useful for edge and polarity interpretation.
+- Replay-test details: Pattern references: 32-2 Includes: missing tooth Includes: sync Matched decoder family: Harley
+- Matched search terms: Harley sync
+
+#### Single tooth trigger pattern for Ignition only
+- URL: https://speeduino.com/forum/viewtopic.php?p=22343#p22216
+- Date: Wed Nov 08, 2017 9:59 pm
+- Who posted it: PSIG
+- Evidence type: scope capture
+- Confidence: medium
+- Summary: I would first explore the signals the current box receives and sends. Unless you can find very specific data it would require an oscilloscope. That will tell you what input you need, and the parameters of the outputs, such as each signal's voltage range, coil dwell if IDI, trigger polarity if CDI, leading or trailing action, etc. Is it CDI or IDI?
+- Why it matters: Includes hardware-signal evidence, useful for edge and polarity interpretation.
+- Replay-test details: Matched decoder family: Harley
+- Matched search terms: Harley scope
+
+#### Single tooth trigger pattern for Ignition only
+- URL: https://speeduino.com/forum/viewtopic.php?p=22343#p22230
+- Date: Thu Nov 09, 2017 2:01 pm
+- Who posted it: Bleeker
+- Evidence type: scope capture
+- Confidence: medium
+- Summary: The system is IDI and has an inductive Pick-Up which I have already used for testing with speeduino and it worked well. Unfortunatelly I do not have an oscilloscope. I could use the wiring and coil driver which I have built for my Ducati for testing and drive the BMW coils with it.
+- Why it matters: Includes hardware-signal evidence, useful for edge and polarity interpretation.
+- Replay-test details: Matched decoder family: Harley
+- Matched search terms: Harley scope
+
+#### A cobbled together oddfire (Harley)
+- URL: https://speeduino.com/forum/viewtopic.php?p=17344#p17362
+- Date: Mon Mar 20, 2017 8:43 pm
+- Who posted it: PSIG
+- Evidence type: scope capture / wheel description
+- Confidence: medium
+- Summary: Random spewing among your quotes for simplicity: [Jcwood3](./memberlist.php?mode=viewprofile&u=940) wrote: [↑](./viewtopic.php?p=17344#p17344) Mon Mar 20, 2017 1:47 am ... A couple of differences I think I'll use will be the use of only one O2 sensor and no security system (not shown). Also the "active intake" is not used - pretty sure that was an emissions/noise thing used outside the US and is not installed. No cats?
+- Why it matters: Includes hardware-signal evidence, useful for edge and polarity interpretation.
+- Replay-test details: Pattern references: 4-6 Includes: cam Includes: crank Matched decoder family: Harley
+- Matched search terms: Harley cam
+
+#### A cobbled together oddfire (Harley) - Page 2
+- URL: https://speeduino.com/forum/viewtopic.php?p=17362#p17362
+- Date: Mon Mar 20, 2017 8:43 pm
+- Who posted it: PSIG
+- Evidence type: scope capture / wheel description
+- Confidence: medium
+- Summary: Random spewing among your quotes for simplicity: [Jcwood3](./memberlist.php?mode=viewprofile&u=940) wrote: [↑](./viewtopic.php?p=17344#p17344) Mon Mar 20, 2017 1:47 am ... A couple of differences I think I'll use will be the use of only one O2 sensor and no security system (not shown). Also the "active intake" is not used - pretty sure that was an emissions/noise thing used outside the US and is not installed. No cats?
+- Why it matters: Includes hardware-signal evidence, useful for edge and polarity interpretation.
+- Replay-test details: Pattern references: 4-6 Includes: cam Includes: crank Matched decoder family: Harley
+- Matched search terms: Harley scope
+
+#### Single tooth trigger pattern for Ignition only
+- URL: https://speeduino.com/forum/viewtopic.php?p=22343#p22343
+- Date: Wed Nov 15, 2017 6:06 am
+- Who posted it: ecumania
+- Evidence type: scope capture / wheel description
+- Confidence: medium
+- Summary: On my Harley it's two noches on one crank. Still not very accuarte but they used that type of pickup for many years. You could just add an second magnet. A single will work too but may stray at low RPM.
+- Why it matters: Includes hardware-signal evidence, useful for edge and polarity interpretation.
+- Replay-test details: Pattern references: Harley Includes: crank
+- Matched search terms: Harley scope
+
+#### A cobbled together oddfire (Harley)
+- URL: https://speeduino.com/forum/viewtopic.php?p=17344#p17301
+- Date: Sat Mar 18, 2017 1:10 pm
+- Who posted it: Jcwood3
+- Evidence type: scope capture / wheel description
+- Confidence: medium
+- Summary: Had a little more success with the setup. I was having trouble with ardustim so I wrote a simple program that maps a pot output to time delay on a square wave, effectively giving me rpm control. Works great and I'm getting sync, though there is no missing tooth on the signal, so I'm not sure what that's about. Assembled my 14point7 wide band controller and had everything working great until I fiddled with the capacitor that bumps the display and now the display doesn't read.
+- Why it matters: Includes hardware-signal evidence, useful for edge and polarity interpretation.
+- Replay-test details: Pattern references: 32-2 Includes: missing tooth Includes: sync Matched decoder family: Harley
+- Matched search terms: Harley cam
+
+#### A cobbled together oddfire (Harley)
+- URL: https://speeduino.com/forum/viewtopic.php?p=17344#p16446
+- Date: Sun Feb 05, 2017 7:12 pm
+- Who posted it: Jcwood3
+- Evidence type: tune file / wheel description
+- Confidence: low
+- Summary: So here's where I'm at and still working, of course. I'll edit this post to maintain a running log or what I know/don't know, done/haven't done. I look forward to many, many hours of hair-pulling frustration punctuated by moments of jumping for joy. There's a number of questions below - please don't think I'm trolling for input.
+- Why it matters: Contains decoder-specific technical details that may support test coverage.
+- Replay-test details: Pattern references: 32-2 Includes: missing tooth Includes: cam Includes: crank Matched decoder family: Harley
+- Matched search terms: Harley cam
+
+#### Trying to build a trigger for uneven flywheel.
+- URL: https://speeduino.com/forum/viewtopic.php?p=53326#p53326
+- Date: Wed Sep 29, 2021 6:29 pm
+- Who posted it: RempageR1
+- Evidence type: wheel description
+- Confidence: low
+- Summary: I`ve written a working trigger that can sync on the width of a tooth. It`s been validated and works like a charm including the trigger filter . Sharing here so hopefully it can benefit someone else. Code: [Select all](#) ``` /** Rewritten Harley code to use on the Vmax.
+- Why it matters: Contains decoder-specific technical details that may support test coverage.
+- Replay-test details: Pattern references: 36-1, Harley, Vmax Includes: change Includes: crank Includes: sync Includes: cas
+- Matched search terms: Harley Speeduino trigger
+
+#### A cobbled together oddfire (Harley)
+- URL: https://speeduino.com/forum/viewtopic.php?p=16578#p16576
+- Date: Thu Feb 09, 2017 1:38 pm
+- Who posted it: Jcwood3
+- Evidence type: wheel description
+- Confidence: low
+- Summary: I've been thinking through this "map" for engine management - attached graphic - to help me understand what's going on. Here's what I'm not sure of. [2003 Harley - Engine Management Map.pdf](./download/file.php?id=1657) (101.87 KiB) Downloaded 335 times Ignition - besides whether or not the Harley coil uses a 12v or 5v signal, I believe it is initiated by a voltage drop to 0v. From what I've read, the primary coil charges under 12v while a transistor receives voltage (5v or 12v) through another circuit.
+- Why it matters: Contains decoder-specific technical details that may support test coverage.
+- Replay-test details: Pattern references: 32-2, Harley Includes: missing tooth Includes: cam Includes: crank Includes: sync Includes: cas
+- Matched search terms: Harley sync
+
+#### A cobbled together oddfire (Harley)
+- URL: https://speeduino.com/forum/viewtopic.php?p=16578#p16578
+- Date: Thu Feb 09, 2017 3:18 pm
+- Who posted it: klotzy_550
+- Evidence type: wheel description
+- Confidence: low
+- Summary: Jcwood3 wrote: I've been thinking through this "map" for engine management - attached graphic - to help me understand what's going on. Here's what I'm not sure of. 2003 Harley - Engine Management Map.pdf Ignition - besides whether or not the Harley coil uses a 12v or 5v signal, I believe it is initiated by a voltage drop to 0v. From what I've read, the primary coil charges under 12v while a transistor receives voltage (5v or 12v) through another circuit.
+- Why it matters: Contains decoder-specific technical details that may support test coverage.
+- Replay-test details: Pattern references: 32-2, Harley Includes: missing tooth Includes: falling edge Includes: cam Includes: crank Includes: sync Includes: cas
+- Matched search terms: Harley sync
+
+#### A cobbled together oddfire (Harley)
+- URL: https://speeduino.com/forum/viewtopic.php?p=17301#p16576
+- Date: Thu Feb 09, 2017 1:38 pm
+- Who posted it: Jcwood3
+- Evidence type: wheel description
+- Confidence: low
+- Summary: I've been thinking through this "map" for engine management - attached graphic - to help me understand what's going on. Here's what I'm not sure of. [2003 Harley - Engine Management Map.pdf](./download/file.php?id=1657) (101.87 KiB) Downloaded 335 times Ignition - besides whether or not the Harley coil uses a 12v or 5v signal, I believe it is initiated by a voltage drop to 0v. From what I've read, the primary coil charges under 12v while a transistor receives voltage (5v or 12v) through another circuit.
+- Why it matters: Contains decoder-specific technical details that may support test coverage.
+- Replay-test details: Pattern references: 32-2, Harley Includes: missing tooth Includes: cam Includes: crank Includes: sync Includes: cas
+- Matched search terms: Harley sync
+
+#### A cobbled together oddfire (Harley)
+- URL: https://speeduino.com/forum/viewtopic.php?p=17301#p16578
+- Date: Thu Feb 09, 2017 3:18 pm
+- Who posted it: klotzy_550
+- Evidence type: wheel description
+- Confidence: low
+- Summary: Jcwood3 wrote: I've been thinking through this "map" for engine management - attached graphic - to help me understand what's going on. Here's what I'm not sure of. 2003 Harley - Engine Management Map.pdf Ignition - besides whether or not the Harley coil uses a 12v or 5v signal, I believe it is initiated by a voltage drop to 0v. From what I've read, the primary coil charges under 12v while a transistor receives voltage (5v or 12v) through another circuit.
+- Why it matters: Contains decoder-specific technical details that may support test coverage.
+- Replay-test details: Pattern references: 32-2, Harley Includes: missing tooth Includes: falling edge Includes: cam Includes: crank Includes: sync Includes: cas
+- Matched search terms: Harley sync
+
+#### A cobbled together oddfire (Harley)
+- URL: https://speeduino.com/forum/viewtopic.php?p=17310#p16576
+- Date: Thu Feb 09, 2017 1:38 pm
+- Who posted it: Jcwood3
+- Evidence type: wheel description
+- Confidence: low
+- Summary: I've been thinking through this "map" for engine management - attached graphic - to help me understand what's going on. Here's what I'm not sure of. [2003 Harley - Engine Management Map.pdf](./download/file.php?id=1657) (101.87 KiB) Downloaded 335 times Ignition - besides whether or not the Harley coil uses a 12v or 5v signal, I believe it is initiated by a voltage drop to 0v. From what I've read, the primary coil charges under 12v while a transistor receives voltage (5v or 12v) through another circuit.
+- Why it matters: Contains decoder-specific technical details that may support test coverage.
+- Replay-test details: Pattern references: 32-2, Harley Includes: missing tooth Includes: cam Includes: crank Includes: sync Includes: cas
+- Matched search terms: Harley sync
+
+#### A cobbled together oddfire (Harley)
+- URL: https://speeduino.com/forum/viewtopic.php?p=17310#p16578
+- Date: Thu Feb 09, 2017 3:18 pm
+- Who posted it: klotzy_550
+- Evidence type: wheel description
+- Confidence: low
+- Summary: Jcwood3 wrote: I've been thinking through this "map" for engine management - attached graphic - to help me understand what's going on. Here's what I'm not sure of. 2003 Harley - Engine Management Map.pdf Ignition - besides whether or not the Harley coil uses a 12v or 5v signal, I believe it is initiated by a voltage drop to 0v. From what I've read, the primary coil charges under 12v while a transistor receives voltage (5v or 12v) through another circuit.
+- Why it matters: Contains decoder-specific technical details that may support test coverage.
+- Replay-test details: Pattern references: 32-2, Harley Includes: missing tooth Includes: falling edge Includes: cam Includes: crank Includes: sync Includes: cas
+- Matched search terms: Harley sync
+
+#### Speeduino engine management to Harley Davidson Evo big twin
+- URL: https://speeduino.com/forum/viewtopic.php?p=58131#p58131
+- Date: Mon Aug 15, 2022 12:53 pm
+- Who posted it: JarnoPettersson
+- Evidence type: wheel description
+- Confidence: low
+- Summary: Hi, I am a newbie in this field, but tinkering has always been my choise poison. I have been riding my 1999 HD Heritage Softail for years and 2 years ago I swapped the cam from stock to S&S502 and the CV Keihin carb has been adjusted in dyne, but it was tricky and we had to use lower setting instead of full power for it to be usable on the street. Now my goal is to install Speeduino engine management and dash with Raspberry Pi with 10 inch resistive touchscreen. I don´t know if I am just pushing my luck, but I am searching for knowledge for this build.
+- Why it matters: Contains decoder-specific technical details that may support test coverage.
+- Replay-test details: Pattern references: harley Includes: cam
+- Matched search terms: Harley cam
+
+#### Non fuel injected VW project
+- URL: https://speeduino.com/forum/viewtopic.php?p=62157#p62157
+- Date: Wed Mar 29, 2023 9:42 pm
+- Who posted it: PSIG
+- Evidence type: wheel description
+- Confidence: low
+- Summary: Tell us what parts you want to use, and we can tell you how to set it up. If there are any concerns or conflicts, we will let you know. Use what others doing VWs have used if you like, or from a Harley, or a Kia, or whatever you have around you, as anything from almost any other engine would work for yours. Yes, that was my point.
+- Why it matters: Contains decoder-specific technical details that may support test coverage.
+- Replay-test details: Pattern references: Harley Includes: crank
+- Matched search terms: Harley crank
+
+#### Sync with dual inductive pick-up coils on single trigger wheel
+- URL: https://speeduino.com/forum/viewtopic.php?p=49796#p49796
+- Date: Sat Apr 24, 2021 7:22 pm
+- Who posted it: iiminov
+- Evidence type: wheel description
+- Confidence: low
+- Summary: Just wanted to confirm if speeduino is capable of syncing from dual inductive pick-up coil setups that come out from the factory. To provide a bit of perspective I am working with Honda NT650 V-Twin 4 stroke engine. The trigger wheel and pickup coils should look like the image I found in the Honda Hawk manual. source: http://hawkworks.net/manual/images/7/7-10-img03.jpg NT650_Pulse_Generators_2.png (65.11 KiB) Viewed 5049 times It's an 8-1 trigger wheel but with two pick-up coils spaced apart 130 or 230 degrees depending on how you measure.
+- Why it matters: Contains decoder-specific technical details that may support test coverage.
+- Replay-test details: Pattern references: 8-1, Harley Includes: missing tooth Includes: sync
+- Matched search terms: Harley Speeduino trigger
+
+#### What else do I need? Nub question.
+- URL: https://speeduino.com/forum/viewtopic.php?p=28017#p28025
+- Date: Thu Aug 23, 2018 9:16 am
+- Who posted it: PSIG
+- Evidence type: wheel description
+- Confidence: low
+- Summary: [doleckijohn](./memberlist.php?mode=viewprofile&u=2003) wrote: [↑](./viewtopic.php?p=28017#p28017) Wed Aug 22, 2018 11:37 am Also if I jut mount and aftermarket trigger wheel to the engine is the Speeduino capable of using it to run the odd firing order of a harley? Hey John — Twin Cam? I think that's a 32-2 trigger on the crank, right? Speeduino can do odd-tooth wheels like that (see ["Non-360" decoder](https://speeduino.com/wiki/index.php/Non-360) ), and yes, it can do odd-fire cylinder spacing like your Harley.
+- Why it matters: Contains decoder-specific technical details that may support test coverage.
+- Replay-test details: Pattern references: 32-2, Harley, harley Includes: cam Includes: crank
+- Matched search terms: Harley scope
+
+#### What else do I need? Nub question. - Page 2
+- URL: https://speeduino.com/forum/viewtopic.php?p=28025#p28025
+- Date: Thu Aug 23, 2018 9:16 am
+- Who posted it: PSIG
+- Evidence type: wheel description
+- Confidence: low
+- Summary: [doleckijohn](./memberlist.php?mode=viewprofile&u=2003) wrote: [↑](./viewtopic.php?p=28017#p28017) Wed Aug 22, 2018 11:37 am Also if I jut mount and aftermarket trigger wheel to the engine is the Speeduino capable of using it to run the odd firing order of a harley? Hey John — Twin Cam? I think that's a 32-2 trigger on the crank, right? Speeduino can do odd-tooth wheels like that (see ["Non-360" decoder](https://speeduino.com/wiki/index.php/Non-360) ), and yes, it can do odd-fire cylinder spacing like your Harley.
+- Why it matters: Contains decoder-specific technical details that may support test coverage.
+- Replay-test details: Pattern references: 32-2, Harley, harley Includes: cam Includes: crank
+- Matched search terms: Harley Speeduino trigger
+
+#### Early Harley Davidson trigger cup.
+- URL: https://speeduino.com/forum/viewtopic.php?p=57445#p57445
+- Date: Sat Jun 18, 2022 5:02 pm
+- Who posted it: jdolecki
+- Evidence type: wheel description
+- Confidence: low
+- Summary: I see that the listed Harley trigger patterns works off the later crank sensor sensor. I want to add fi to the early engine. My earlier harley has the timing rotor in the cone. I previously read that the two slot rotor does not work well.
+- Why it matters: Contains decoder-specific technical details that may support test coverage.
+- Replay-test details: Pattern references: Harley, harley Includes: crank
+- Matched search terms: Harley crank
+
+#### Predator 670 parts list
+- URL: https://speeduino.com/forum/viewtopic.php?p=73845#p73845
+- Date: Fri Jan 02, 2026 12:12 pm
+- Who posted it: Claycity
+- Evidence type: wheel description
+- Confidence: low
+- Summary: ok so im deployed and ordering part for my return. so far I have ECU wide band o2 stepper motor controler trigger wheel, sensor, pigtail coils, and pigtails Deutsch kits rolled of wire different colors fuse relay box 2015 harley sportster throttle body. it has the TPS, IAT, IAC, injector (ill be moving them closer to the head) all in one housing.
+- Why it matters: Contains decoder-specific technical details that may support test coverage.
+- Replay-test details: Pattern references: harley
+- Matched search terms: Harley trigger wheel
+
+### Honda D17
+
+#### Dual Wheel Questions
+- URL: https://speeduino.com/forum/viewtopic.php?p=56548#p56548
+- Date: Mon Apr 18, 2022 2:34 am
+- Who posted it: AllmotorD16
+- Evidence type: composite log / tune file / wheel description
+- Confidence: high
+- Summary: Hello all, I am working on a Honda D16 engine with a 4.3 board. It has a unique trigger wheel set up. It's a sohc engine with a camshaft gear that has 12 evenly spaced north pole magnets to act as the crank trigger and one south pole magnet to act as the cam trigger. It's using a nifty dual pole hall effect sensor.
+- Why it matters: Provides replay-test-relevant trigger traces.
+- Replay-test details: Includes: cam Includes: crank Matched decoder family: Honda D17 Image or capture links: 1 Attachments: CurrentTune.msq -> https://speeduino.com/forum/download/file.php?id=9617
+- Matched search terms: Honda D17 composite logger
+
+#### Secondary Edge Changing itself from falling to rising (Dual Wheel Trigger)
+- URL: https://speeduino.com/forum/viewtopic.php?p=56690#p56690
+- Date: Thu Apr 28, 2022 2:11 am
+- Who posted it: Wfulk25
+- Evidence type: tune file / wheel description / image attachment
+- Confidence: medium
+- Summary: Hi all! New to the forum, so apologies if this has been discussed/answered already. I'm running a speeduino v4.3 on my Honda D17 engine with modified trigger wheels, so it has a crank trigger with 12 evenly spaced teeth and a cam wheel with one tooth on it running the dual wheel trigger pattern. I have been daily driving the car like this for about 5 months now and it has been running really good (And getting better gas mileage than it did before), although I am a tuning novice so still a work in progress all the time.
+- Why it matters: Contains decoder-specific technical details that may support test coverage.
+- Replay-test details: Pattern references: Honda D17 Includes: rising edge Includes: falling edge Includes: change Includes: cam Includes: crank Includes: sync Image or capture links: 1 Attachments: Honda D17 Tune.msq -> https://speeduino.com/forum/download/file.php?id=9656
+- Matched search terms: Honda D17 sync
+
+#### Help With Honda D17A1 Project
+- URL: https://speeduino.com/forum/viewtopic.php?p=46940#p46940
+- Date: Mon Dec 07, 2020 5:03 am
+- Who posted it: Stars
+- Evidence type: tune file / wheel description
+- Confidence: medium
+- Summary: Okay, so it has been quite a while since I have initially posted this tread. I have made quite a bit of progress, even getting the first """start.""" Although there are a bunch of confusions I am having with getting this to work, and will be going over all of them in this post! For reference, I have been following this thread, also using the basemap from it: [viewtopic.php?f=18&t=1323&p=20375](https://speeduino.com/forum/viewtopic.php?f=18&t=1323&p=20375) Again, this is the D17A1, but it is basically the same as the JDM D17 model besides a few small differences. And without the VTEC .
+- Why it matters: Contains decoder-specific technical details that may support test coverage.
+- Replay-test details: Pattern references: Honda D17 Includes: change Includes: crank Includes: sync
+- Matched search terms: Honda D17 sync
+
+#### Honda K20 trigger pattern
+- URL: https://speeduino.com/forum/viewtopic.php?p=73812#p73689
+- Date: Sun Nov 30, 2025 9:16 pm
+- Who posted it: Michal327
+- Evidence type: wheel description
+- Confidence: medium
+- Summary: Hi folks, I've created a new thread about k20 trigger because two years ago @miker wrote that the new pattern was ready but untested. To avoid deeming my project a failure, I really need any code or files you have for this engine so it can run in full sequential mode on Speeduino v0.4.3d. I'm trying to write my own custom decoder, but it's not working. Please help me, I'm out of ideas.
+- Why it matters: Contains decoder-specific technical details that may support test coverage.
+- Replay-test details: Pattern references: 36-1, Honda D17 Includes: change Includes: cam Includes: crank Includes: sync
+- Matched search terms: Honda D17 sync
+
+#### Honda K20 trigger pattern
+- URL: https://speeduino.com/forum/viewtopic.php?p=73812#p73812
+- Date: Wed Dec 24, 2025 1:04 pm
+- Who posted it: Michal327
+- Evidence type: wheel description
+- Confidence: medium
+- Summary: Sorry for not responding @delion This is crank and cam trigger pattern which I followed when creating the decoder: Honda D17 crank trigger wheel: 12+1 Honda K20 crank trigger wheel: 12+1 Honda K20 cam trigger wheel: 4+1 The D17 decoder is semi-sequential (wasted spark) and there is no script written for triggerSec_HondaD17 (for reading cam). Just to be clear, the principle of operation of the cam trigger is almost the same as the crank trigger ( it remembers the last tooth gap and checks if it is half the current gap, because it has +1 extra tooth in between ). I made sure that sync is triggered correctly in my code. It seems like it should work, but it doesn't.
+- Why it matters: Contains decoder-specific technical details that may support test coverage.
+- Replay-test details: Pattern references: Honda D17 Includes: cam Includes: crank Includes: sync
+- Matched search terms: Honda D17 sync
+
+#### Wheel Decoder and VVT coder for Honda K series - Page 2
+- URL: https://speeduino.com/forum/viewtopic.php?p=73651#p73651
+- Date: Tue Nov 25, 2025 8:29 pm
+- Who posted it: Michal327
+- Evidence type: wheel description
+- Confidence: medium
+- Summary: Hi folks, @miker if you already have a sequential decoder, could you please upload it to github? I'm trying to write my own custom decoder, but it's not working. Please help me, I'm out of ideas. Tell me what to change.
+- Why it matters: Contains decoder-specific technical details that may support test coverage.
+- Replay-test details: Pattern references: 36-1, Honda D17 Includes: change Includes: cam Includes: crank Includes: sync
+- Matched search terms: Honda D17 sync
+
+#### Help With Honda D17A1 Project
+- URL: https://speeduino.com/forum/viewtopic.php?p=46940#p46096
+- Date: Thu Oct 29, 2020 11:57 pm
+- Who posted it: Stars
+- Evidence type: tune file / image attachment
+- Confidence: low
+- Summary: Hello all! I am excited for my PCB and the kit to arrive.. I am going to be putting this in my 2002 Honda Civic to increase it's horsepower a bit, and hopefully make it more fuel efficient. The idea is that I want to have a open source computer on my car so I can have complete control over what my vehicle does.
+- Why it matters: Contains decoder-specific technical details that may support test coverage.
+- Replay-test details: Includes: crank Matched decoder family: Honda D17 Image or capture links: 1 Attachments: CurrentTune.msq -> https://speeduino.com/forum/download/file.php?id=7679
+- Matched search terms: Honda D17 sync
+
+#### Honda K20 trigger pattern
+- URL: https://speeduino.com/forum/viewtopic.php?p=73689#p73689
+- Date: Sun Nov 30, 2025 9:16 pm
+- Who posted it: Michal327
+- Evidence type: wheel description
+- Confidence: low
+- Summary: Hi folks, I've created a new thread about k20 trigger because two years ago @miker wrote that the new pattern was ready but untested. To avoid deeming my project a failure, I really need any code or files you have for this engine so it can run in full sequential mode on Speeduino v0.4.3d. I'm trying to write my own custom decoder, but it's not working. Please help me, I'm out of ideas.
+- Why it matters: Contains decoder-specific technical details that may support test coverage.
+- Replay-test details: Pattern references: 36-1, Honda D17 Includes: change Includes: cam Includes: crank Includes: sync
+- Matched search terms: Honda D17 Speeduino trigger
+
+#### Honda K20 trigger pattern
+- URL: https://speeduino.com/forum/viewtopic.php?p=73689#p73812
+- Date: Wed Dec 24, 2025 1:04 pm
+- Who posted it: Michal327
+- Evidence type: wheel description
+- Confidence: low
+- Summary: Sorry for not responding @delion This is crank and cam trigger pattern which I followed when creating the decoder: Honda D17 crank trigger wheel: 12+1 Honda K20 crank trigger wheel: 12+1 Honda K20 cam trigger wheel: 4+1 The D17 decoder is semi-sequential (wasted spark) and there is no script written for triggerSec_HondaD17 (for reading cam). Just to be clear, the principle of operation of the cam trigger is almost the same as the crank trigger ( it remembers the last tooth gap and checks if it is half the current gap, because it has +1 extra tooth in between ). I made sure that sync is triggered correctly in my code. It seems like it should work, but it doesn't.
+- Why it matters: Contains decoder-specific technical details that may support test coverage.
+- Replay-test details: Pattern references: Honda D17 Includes: cam Includes: crank Includes: sync
+- Matched search terms: Honda D17 Speeduino trigger
+
+#### Coils getting hot
+- URL: https://speeduino.com/forum/viewtopic.php?p=46665#p35136
+- Date: Mon May 27, 2019 11:31 am
+- Who posted it: linkus
+- Evidence type: scope capture
+- Confidence: low
+- Summary: [Sagal89](./memberlist.php?mode=viewprofile&u=2579) wrote: [↑](./viewtopic.php?p=35026#p35026) Fri May 24, 2019 6:57 pm Hello guys, im involved in a similar project, f7r 710 renault motor. Im using same coils than you. Signal is 5v or 12v? Im having problems to get spark, i will try changing resistors you say.
+- Why it matters: Includes hardware-signal evidence, useful for edge and polarity interpretation.
+- Replay-test details: Matched decoder family: Honda D17 Image or capture links: 3
+- Matched search terms: Honda D17 CAS
+
+#### Dual Wheel Questions
+- URL: https://speeduino.com/forum/viewtopic.php?p=56548#p56592
+- Date: Wed Apr 20, 2022 1:18 pm
+- Who posted it: AllmotorD16
+- Evidence type: tooth log / wheel description
+- Confidence: low
+- Summary: [jonbill](./memberlist.php?mode=viewprofile&u=1981) wrote: [↑](./viewtopic.php?p=56564#p56564) Tue Apr 19, 2022 7:21 am The tooth log pattern looks fine I think. Can you maybe do a sketch or photo of the trigger teeth and sensors (with engine at TDC), so we can check the estimate angle? Some of the tune settings aren't great - 1) injector priming delay: try setting it to near the end of the fuel pump priming duration, e.g. 2.5 seconds 2) your WUE table needs starting again with the one from the base tune.
+- Why it matters: Contains decoder-specific technical details that may support test coverage.
+- Replay-test details: Includes: cam Matched decoder family: Honda D17
+- Matched search terms: Honda D17 composite logger
+
+#### Dual Wheel Questions
+- URL: https://speeduino.com/forum/viewtopic.php?p=56548#p56562
+- Date: Tue Apr 19, 2022 2:07 am
+- Who posted it: AllmotorD16
+- Evidence type: composite log
+- Confidence: low
+- Summary: -168 was wayyy less farty but still didn't allow the engine to run. I tried to datalog and save but the file appears to be empty each time I open it. Attached is screen shot of the composite logger, hopefully that'll show something I am not seeing. Video is being uploaded to youtube.
+- Why it matters: Provides replay-test-relevant trigger traces.
+- Replay-test details: Matched decoder family: Honda D17
+- Matched search terms: Honda D17 composite logger
+
+#### Coils getting hot
+- URL: https://speeduino.com/forum/viewtopic.php?p=46665#p46665
+- Date: Tue Nov 24, 2020 4:41 pm
+- Who posted it: civic_duty
+- Evidence type: wheel description
+- Confidence: low
+- Summary: so i have a speeduino installed on my Toyota 4age 20v, 0.4.3 board retrofitted a Mitsubishi 1g cas sensor for crank/cam signal. it running sequential fuel and spark. board is setup for hall sensor input (no VR conditioner), JP1 i set to 5v . Tunerstudio software spark settings set to going low and sequential, cranking dwell 6ms and running is 4ms, spark duration 1ms.
+- Why it matters: Contains decoder-specific technical details that may support test coverage.
+- Replay-test details: Pattern references: honda D17 Includes: cam Includes: crank Includes: cas
+- Matched search terms: Honda D17 CAS
+
+#### Any idea?
+- URL: https://speeduino.com/forum/viewtopic.php?p=70506#p70506
+- Date: Fri Jan 17, 2025 7:13 am
+- Who posted it: Thencerest1947
+- Evidence type: wheel description
+- Confidence: low
+- Summary: Have an pevision to add the decoder for 4+1 cam pulley to run up full sequential injection? Product: Honda D17 Cam sensor
+- Why it matters: Contains decoder-specific technical details that may support test coverage.
+- Replay-test details: Pattern references: Honda D17 Includes: cam
+- Matched search terms: Honda D17 cam
+
+#### Any idea?
+- URL: https://speeduino.com/forum/viewtopic.php?p=70506#p70514
+- Date: Fri Jan 17, 2025 2:54 pm
+- Who posted it: digmorepaka
+- Evidence type: wheel description
+- Confidence: low
+- Summary: [Thencerest1947](./memberlist.php?mode=viewprofile&u=9316) wrote: [↑](./viewtopic.php?p=70506#p70506) Fri Jan 17, 2025 7:13 am Have an pevision to add the decoder for 4+1 cam pulley to run up full sequential injection? Product: Honda D17 Cam sensor You need to add more information and a little more cohesively.
+- Why it matters: Contains decoder-specific technical details that may support test coverage.
+- Replay-test details: Pattern references: Honda D17 Includes: cam
+- Matched search terms: Honda D17 cam
+
+#### Any idea?
+- URL: https://speeduino.com/forum/viewtopic.php?p=70514#p70506
+- Date: Fri Jan 17, 2025 7:13 am
+- Who posted it: Thencerest1947
+- Evidence type: wheel description
+- Confidence: low
+- Summary: Have an pevision to add the decoder for 4+1 cam pulley to run up full sequential injection? Product: Honda D17 Cam sensor
+- Why it matters: Contains decoder-specific technical details that may support test coverage.
+- Replay-test details: Pattern references: Honda D17 Includes: cam
+- Matched search terms: Honda D17 cam
+
+#### Any idea?
+- URL: https://speeduino.com/forum/viewtopic.php?p=70514#p70514
+- Date: Fri Jan 17, 2025 2:54 pm
+- Who posted it: digmorepaka
+- Evidence type: wheel description
+- Confidence: low
+- Summary: [Thencerest1947](./memberlist.php?mode=viewprofile&u=9316) wrote: [↑](./viewtopic.php?p=70506#p70506) Fri Jan 17, 2025 7:13 am Have an pevision to add the decoder for 4+1 cam pulley to run up full sequential injection? Product: Honda D17 Cam sensor You need to add more information and a little more cohesively.
+- Why it matters: Contains decoder-specific technical details that may support test coverage.
+- Replay-test details: Pattern references: Honda D17 Includes: cam
+- Matched search terms: Honda D17 cam
+
+#### Dual Wheel Questions
+- URL: https://speeduino.com/forum/viewtopic.php?p=56548#p56564
+- Date: Tue Apr 19, 2022 7:21 am
+- Who posted it: jonbill
+- Evidence type: tooth log / wheel description
+- Confidence: low
+- Summary: The tooth log pattern looks fine I think. Can you maybe do a sketch or photo of the trigger teeth and sensors (with engine at TDC), so we can check the estimate angle? Some of the tune settings aren't great - 1) injector priming delay: try setting it to near the end of the fuel pump priming duration, e.g. 2.5 seconds 2) your WUE table needs starting again with the one from the base tune.
+- Why it matters: Contains decoder-specific technical details that may support test coverage.
+- Replay-test details: Matched decoder family: Honda D17
+- Matched search terms: Honda D17 composite logger
+
+### Rover MEMS
+
+#### rover MEMs decoder - Page 10
+- URL: https://speeduino.com/forum/viewtopic.php?p=51543#p51307
+- Date: Wed Jun 23, 2021 1:34 am
+- Who posted it: Trevor Getty
+- Evidence type: tooth log / composite log / scope capture
+- Confidence: high
+- Summary: Hi mike good and bad news. so new vr now has crank and cam showing in composite logger see attached pics and logger output. now for some reason it logs and saves fine but i can not reopen without failure , see attached pic. finally i am getting wasted spark fine but no inj due to high sync loss i think.
+- Why it matters: Provides replay-test-relevant trigger traces. Includes hardware-signal evidence, useful for edge and polarity interpretation. Discusses sync-loss conditions that can inform negative test cases.
+- Replay-test details: Includes: cam Includes: crank Includes: sync Includes: sync loss Matched decoder family: Rover MEMS Image or capture links: 1 Attachments: T16-RoverMemsTesting.rar -> https://speeduino.com/forum/download/file.php?id=8530
+- Matched search terms: Rover MEMS cam
+
+#### rover MEMs decoder - Page 10
+- URL: https://speeduino.com/forum/viewtopic.php?p=51553#p51307
+- Date: Wed Jun 23, 2021 1:34 am
+- Who posted it: Trevor Getty
+- Evidence type: tooth log / composite log / scope capture
+- Confidence: high
+- Summary: Hi mike good and bad news. so new vr now has crank and cam showing in composite logger see attached pics and logger output. now for some reason it logs and saves fine but i can not reopen without failure , see attached pic. finally i am getting wasted spark fine but no inj due to high sync loss i think.
+- Why it matters: Provides replay-test-relevant trigger traces. Includes hardware-signal evidence, useful for edge and polarity interpretation. Discusses sync-loss conditions that can inform negative test cases.
+- Replay-test details: Includes: cam Includes: crank Includes: sync Includes: sync loss Matched decoder family: Rover MEMS Image or capture links: 1 Attachments: T16-RoverMemsTesting.rar -> https://speeduino.com/forum/download/file.php?id=8530
+- Matched search terms: Rover MEMS crank
+
+#### rover MEMs decoder - Page 10
+- URL: https://speeduino.com/forum/viewtopic.php?p=51554#p51307
+- Date: Wed Jun 23, 2021 1:34 am
+- Who posted it: Trevor Getty
+- Evidence type: tooth log / composite log / scope capture
+- Confidence: high
+- Summary: Hi mike good and bad news. so new vr now has crank and cam showing in composite logger see attached pics and logger output. now for some reason it logs and saves fine but i can not reopen without failure , see attached pic. finally i am getting wasted spark fine but no inj due to high sync loss i think.
+- Why it matters: Provides replay-test-relevant trigger traces. Includes hardware-signal evidence, useful for edge and polarity interpretation. Discusses sync-loss conditions that can inform negative test cases.
+- Replay-test details: Includes: cam Includes: crank Includes: sync Includes: sync loss Matched decoder family: Rover MEMS Image or capture links: 1 Attachments: T16-RoverMemsTesting.rar -> https://speeduino.com/forum/download/file.php?id=8530
+- Matched search terms: Rover MEMS crank
+
+#### rover MEMs decoder - Page 10
+- URL: https://speeduino.com/forum/viewtopic.php?p=53142#p51307
+- Date: Wed Jun 23, 2021 1:34 am
+- Who posted it: Trevor Getty
+- Evidence type: tooth log / composite log / scope capture
+- Confidence: high
+- Summary: Hi mike good and bad news. so new vr now has crank and cam showing in composite logger see attached pics and logger output. now for some reason it logs and saves fine but i can not reopen without failure , see attached pic. finally i am getting wasted spark fine but no inj due to high sync loss i think.
+- Why it matters: Provides replay-test-relevant trigger traces. Includes hardware-signal evidence, useful for edge and polarity interpretation. Discusses sync-loss conditions that can inform negative test cases.
+- Replay-test details: Includes: cam Includes: crank Includes: sync Includes: sync loss Matched decoder family: Rover MEMS Image or capture links: 1 Attachments: T16-RoverMemsTesting.rar -> https://speeduino.com/forum/download/file.php?id=8530
+- Matched search terms: Rover MEMS cam
+
+#### rover MEMs decoder - Page 10
+- URL: https://speeduino.com/forum/viewtopic.php?p=53170#p51307
+- Date: Wed Jun 23, 2021 1:34 am
+- Who posted it: Trevor Getty
+- Evidence type: tooth log / composite log / scope capture
+- Confidence: high
+- Summary: Hi mike good and bad news. so new vr now has crank and cam showing in composite logger see attached pics and logger output. now for some reason it logs and saves fine but i can not reopen without failure , see attached pic. finally i am getting wasted spark fine but no inj due to high sync loss i think.
+- Why it matters: Provides replay-test-relevant trigger traces. Includes hardware-signal evidence, useful for edge and polarity interpretation. Discusses sync-loss conditions that can inform negative test cases.
+- Replay-test details: Includes: cam Includes: crank Includes: sync Includes: sync loss Matched decoder family: Rover MEMS Image or capture links: 1 Attachments: T16-RoverMemsTesting.rar -> https://speeduino.com/forum/download/file.php?id=8530
+- Matched search terms: Rover MEMS cam
+
+#### rover MEMs decoder - Page 7
+- URL: https://speeduino.com/forum/viewtopic.php?p=51307#p51307
+- Date: Wed Jun 23, 2021 1:34 am
+- Who posted it: Trevor Getty
+- Evidence type: tooth log / composite log / scope capture
+- Confidence: high
+- Summary: Hi mike good and bad news. so new vr now has crank and cam showing in composite logger see attached pics and logger output. now for some reason it logs and saves fine but i can not reopen without failure , see attached pic. finally i am getting wasted spark fine but no inj due to high sync loss i think.
+- Why it matters: Provides replay-test-relevant trigger traces. Includes hardware-signal evidence, useful for edge and polarity interpretation. Discusses sync-loss conditions that can inform negative test cases.
+- Replay-test details: Includes: cam Includes: crank Includes: sync Includes: sync loss Matched decoder family: Rover MEMS Image or capture links: 1 Attachments: T16-RoverMemsTesting.rar -> https://speeduino.com/forum/download/file.php?id=8530
+- Matched search terms: Rover MEMS tooth logger
+
+#### rover MEMs decoder - Page 7
+- URL: https://speeduino.com/forum/viewtopic.php?p=51340#p51307
+- Date: Wed Jun 23, 2021 1:34 am
+- Who posted it: Trevor Getty
+- Evidence type: tooth log / composite log / scope capture
+- Confidence: high
+- Summary: Hi mike good and bad news. so new vr now has crank and cam showing in composite logger see attached pics and logger output. now for some reason it logs and saves fine but i can not reopen without failure , see attached pic. finally i am getting wasted spark fine but no inj due to high sync loss i think.
+- Why it matters: Provides replay-test-relevant trigger traces. Includes hardware-signal evidence, useful for edge and polarity interpretation. Discusses sync-loss conditions that can inform negative test cases.
+- Replay-test details: Includes: cam Includes: crank Includes: sync Includes: sync loss Matched decoder family: Rover MEMS Image or capture links: 1 Attachments: T16-RoverMemsTesting.rar -> https://speeduino.com/forum/download/file.php?id=8530
+- Matched search terms: Rover MEMS tooth logger
+
+#### rover MEMs decoder - Page 7
+- URL: https://speeduino.com/forum/viewtopic.php?p=51343#p51307
+- Date: Wed Jun 23, 2021 1:34 am
+- Who posted it: Trevor Getty
+- Evidence type: tooth log / composite log / scope capture
+- Confidence: high
+- Summary: Hi mike good and bad news. so new vr now has crank and cam showing in composite logger see attached pics and logger output. now for some reason it logs and saves fine but i can not reopen without failure , see attached pic. finally i am getting wasted spark fine but no inj due to high sync loss i think.
+- Why it matters: Provides replay-test-relevant trigger traces. Includes hardware-signal evidence, useful for edge and polarity interpretation. Discusses sync-loss conditions that can inform negative test cases.
+- Replay-test details: Includes: cam Includes: crank Includes: sync Includes: sync loss Matched decoder family: Rover MEMS Image or capture links: 1 Attachments: T16-RoverMemsTesting.rar -> https://speeduino.com/forum/download/file.php?id=8530
+- Matched search terms: Rover MEMS tooth logger
+
+#### rover MEMs decoder - Page 8
+- URL: https://speeduino.com/forum/viewtopic.php?p=51354#p51307
+- Date: Wed Jun 23, 2021 1:34 am
+- Who posted it: Trevor Getty
+- Evidence type: tooth log / composite log / scope capture
+- Confidence: high
+- Summary: Hi mike good and bad news. so new vr now has crank and cam showing in composite logger see attached pics and logger output. now for some reason it logs and saves fine but i can not reopen without failure , see attached pic. finally i am getting wasted spark fine but no inj due to high sync loss i think.
+- Why it matters: Provides replay-test-relevant trigger traces. Includes hardware-signal evidence, useful for edge and polarity interpretation. Discusses sync-loss conditions that can inform negative test cases.
+- Replay-test details: Includes: cam Includes: crank Includes: sync Includes: sync loss Matched decoder family: Rover MEMS Image or capture links: 1 Attachments: T16-RoverMemsTesting.rar -> https://speeduino.com/forum/download/file.php?id=8530
+- Matched search terms: Rover MEMS sync
+
+#### rover MEMs decoder - Page 8
+- URL: https://speeduino.com/forum/viewtopic.php?p=51358#p51307
+- Date: Wed Jun 23, 2021 1:34 am
+- Who posted it: Trevor Getty
+- Evidence type: tooth log / composite log / scope capture
+- Confidence: high
+- Summary: Hi mike good and bad news. so new vr now has crank and cam showing in composite logger see attached pics and logger output. now for some reason it logs and saves fine but i can not reopen without failure , see attached pic. finally i am getting wasted spark fine but no inj due to high sync loss i think.
+- Why it matters: Provides replay-test-relevant trigger traces. Includes hardware-signal evidence, useful for edge and polarity interpretation. Discusses sync-loss conditions that can inform negative test cases.
+- Replay-test details: Includes: cam Includes: crank Includes: sync Includes: sync loss Matched decoder family: Rover MEMS Image or capture links: 1 Attachments: T16-RoverMemsTesting.rar -> https://speeduino.com/forum/download/file.php?id=8530
+- Matched search terms: Rover MEMS scope
+
+#### rover MEMs decoder - Page 8
+- URL: https://speeduino.com/forum/viewtopic.php?p=51384#p51307
+- Date: Wed Jun 23, 2021 1:34 am
+- Who posted it: Trevor Getty
+- Evidence type: tooth log / composite log / scope capture
+- Confidence: high
+- Summary: Hi mike good and bad news. so new vr now has crank and cam showing in composite logger see attached pics and logger output. now for some reason it logs and saves fine but i can not reopen without failure , see attached pic. finally i am getting wasted spark fine but no inj due to high sync loss i think.
+- Why it matters: Provides replay-test-relevant trigger traces. Includes hardware-signal evidence, useful for edge and polarity interpretation. Discusses sync-loss conditions that can inform negative test cases.
+- Replay-test details: Includes: cam Includes: crank Includes: sync Includes: sync loss Matched decoder family: Rover MEMS Image or capture links: 1 Attachments: T16-RoverMemsTesting.rar -> https://speeduino.com/forum/download/file.php?id=8530
+- Matched search terms: Rover MEMS scope
+
+#### rover MEMs decoder - Page 8
+- URL: https://speeduino.com/forum/viewtopic.php?p=51394#p51307
+- Date: Wed Jun 23, 2021 1:34 am
+- Who posted it: Trevor Getty
+- Evidence type: tooth log / composite log / scope capture
+- Confidence: high
+- Summary: Hi mike good and bad news. so new vr now has crank and cam showing in composite logger see attached pics and logger output. now for some reason it logs and saves fine but i can not reopen without failure , see attached pic. finally i am getting wasted spark fine but no inj due to high sync loss i think.
+- Why it matters: Provides replay-test-relevant trigger traces. Includes hardware-signal evidence, useful for edge and polarity interpretation. Discusses sync-loss conditions that can inform negative test cases.
+- Replay-test details: Includes: cam Includes: crank Includes: sync Includes: sync loss Matched decoder family: Rover MEMS Image or capture links: 1 Attachments: T16-RoverMemsTesting.rar -> https://speeduino.com/forum/download/file.php?id=8530
+- Matched search terms: Rover MEMS tooth logger
+
+#### rover MEMs decoder - Page 8
+- URL: https://speeduino.com/forum/viewtopic.php?p=51395#p51307
+- Date: Wed Jun 23, 2021 1:34 am
+- Who posted it: Trevor Getty
+- Evidence type: tooth log / composite log / scope capture
+- Confidence: high
+- Summary: Hi mike good and bad news. so new vr now has crank and cam showing in composite logger see attached pics and logger output. now for some reason it logs and saves fine but i can not reopen without failure , see attached pic. finally i am getting wasted spark fine but no inj due to high sync loss i think.
+- Why it matters: Provides replay-test-relevant trigger traces. Includes hardware-signal evidence, useful for edge and polarity interpretation. Discusses sync-loss conditions that can inform negative test cases.
+- Replay-test details: Includes: cam Includes: crank Includes: sync Includes: sync loss Matched decoder family: Rover MEMS Image or capture links: 1 Attachments: T16-RoverMemsTesting.rar -> https://speeduino.com/forum/download/file.php?id=8530
+- Matched search terms: Rover MEMS tooth logger
+
+#### rover MEMs decoder - Page 8
+- URL: https://speeduino.com/forum/viewtopic.php?p=51410#p51307
+- Date: Wed Jun 23, 2021 1:34 am
+- Who posted it: Trevor Getty
+- Evidence type: tooth log / composite log / scope capture
+- Confidence: high
+- Summary: Hi mike good and bad news. so new vr now has crank and cam showing in composite logger see attached pics and logger output. now for some reason it logs and saves fine but i can not reopen without failure , see attached pic. finally i am getting wasted spark fine but no inj due to high sync loss i think.
+- Why it matters: Provides replay-test-relevant trigger traces. Includes hardware-signal evidence, useful for edge and polarity interpretation. Discusses sync-loss conditions that can inform negative test cases.
+- Replay-test details: Includes: cam Includes: crank Includes: sync Includes: sync loss Matched decoder family: Rover MEMS Image or capture links: 1 Attachments: T16-RoverMemsTesting.rar -> https://speeduino.com/forum/download/file.php?id=8530
+- Matched search terms: Rover MEMS sync
+
+#### rover MEMs decoder - Page 9
+- URL: https://speeduino.com/forum/viewtopic.php?p=51428#p51307
+- Date: Wed Jun 23, 2021 1:34 am
+- Who posted it: Trevor Getty
+- Evidence type: tooth log / composite log / scope capture
+- Confidence: high
+- Summary: Hi mike good and bad news. so new vr now has crank and cam showing in composite logger see attached pics and logger output. now for some reason it logs and saves fine but i can not reopen without failure , see attached pic. finally i am getting wasted spark fine but no inj due to high sync loss i think.
+- Why it matters: Provides replay-test-relevant trigger traces. Includes hardware-signal evidence, useful for edge and polarity interpretation. Discusses sync-loss conditions that can inform negative test cases.
+- Replay-test details: Includes: cam Includes: crank Includes: sync Includes: sync loss Matched decoder family: Rover MEMS Image or capture links: 1 Attachments: T16-RoverMemsTesting.rar -> https://speeduino.com/forum/download/file.php?id=8530
+- Matched search terms: Rover MEMS sync
+
+#### rover MEMs decoder - Page 9
+- URL: https://speeduino.com/forum/viewtopic.php?p=51434#p51307
+- Date: Wed Jun 23, 2021 1:34 am
+- Who posted it: Trevor Getty
+- Evidence type: tooth log / composite log / scope capture
+- Confidence: high
+- Summary: Hi mike good and bad news. so new vr now has crank and cam showing in composite logger see attached pics and logger output. now for some reason it logs and saves fine but i can not reopen without failure , see attached pic. finally i am getting wasted spark fine but no inj due to high sync loss i think.
+- Why it matters: Provides replay-test-relevant trigger traces. Includes hardware-signal evidence, useful for edge and polarity interpretation. Discusses sync-loss conditions that can inform negative test cases.
+- Replay-test details: Includes: cam Includes: crank Includes: sync Includes: sync loss Matched decoder family: Rover MEMS Image or capture links: 1 Attachments: T16-RoverMemsTesting.rar -> https://speeduino.com/forum/download/file.php?id=8530
+- Matched search terms: Rover MEMS sync
+
+#### rover MEMs decoder - Page 11
+- URL: https://speeduino.com/forum/viewtopic.php?p=66738#p51307
+- Date: Wed Jun 23, 2021 1:34 am
+- Who posted it: Trevor Getty
+- Evidence type: tooth log / composite log / scope capture
+- Confidence: high
+- Summary: Hi mike good and bad news. so new vr now has crank and cam showing in composite logger see attached pics and logger output. now for some reason it logs and saves fine but i can not reopen without failure , see attached pic. finally i am getting wasted spark fine but no inj due to high sync loss i think.
+- Why it matters: Provides replay-test-relevant trigger traces. Includes hardware-signal evidence, useful for edge and polarity interpretation. Discusses sync-loss conditions that can inform negative test cases.
+- Replay-test details: Includes: cam Includes: crank Includes: sync Includes: sync loss Matched decoder family: Rover MEMS Image or capture links: 1 Attachments: T16-RoverMemsTesting.rar -> https://speeduino.com/forum/download/file.php?id=8530
+- Matched search terms: Rover MEMS Speeduino trigger
+
+#### rover MEMs decoder - Page 11
+- URL: https://speeduino.com/forum/viewtopic.php?p=66740#p51307
+- Date: Wed Jun 23, 2021 1:34 am
+- Who posted it: Trevor Getty
+- Evidence type: tooth log / composite log / scope capture
+- Confidence: high
+- Summary: Hi mike good and bad news. so new vr now has crank and cam showing in composite logger see attached pics and logger output. now for some reason it logs and saves fine but i can not reopen without failure , see attached pic. finally i am getting wasted spark fine but no inj due to high sync loss i think.
+- Why it matters: Provides replay-test-relevant trigger traces. Includes hardware-signal evidence, useful for edge and polarity interpretation. Discusses sync-loss conditions that can inform negative test cases.
+- Replay-test details: Includes: cam Includes: crank Includes: sync Includes: sync loss Matched decoder family: Rover MEMS Image or capture links: 1 Attachments: T16-RoverMemsTesting.rar -> https://speeduino.com/forum/download/file.php?id=8530
+- Matched search terms: Rover MEMS Speeduino trigger
+
+#### rover MEMs decoder - Page 12
+- URL: https://speeduino.com/forum/viewtopic.php?p=66743#p51307
+- Date: Wed Jun 23, 2021 1:34 am
+- Who posted it: Trevor Getty
+- Evidence type: tooth log / composite log / scope capture
+- Confidence: high
+- Summary: Hi mike good and bad news. so new vr now has crank and cam showing in composite logger see attached pics and logger output. now for some reason it logs and saves fine but i can not reopen without failure , see attached pic. finally i am getting wasted spark fine but no inj due to high sync loss i think.
+- Why it matters: Provides replay-test-relevant trigger traces. Includes hardware-signal evidence, useful for edge and polarity interpretation. Discusses sync-loss conditions that can inform negative test cases.
+- Replay-test details: Includes: cam Includes: crank Includes: sync Includes: sync loss Matched decoder family: Rover MEMS Image or capture links: 1 Attachments: T16-RoverMemsTesting.rar -> https://speeduino.com/forum/download/file.php?id=8530
+- Matched search terms: Rover MEMS Speeduino trigger
+
+#### rover MEMs decoder - Page 4
+- URL: https://speeduino.com/forum/viewtopic.php?p=50630#p51307
+- Date: Wed Jun 23, 2021 1:34 am
+- Who posted it: Trevor Getty
+- Evidence type: tooth log / composite log / scope capture
+- Confidence: high
+- Summary: Hi mike good and bad news. so new vr now has crank and cam showing in composite logger see attached pics and logger output. now for some reason it logs and saves fine but i can not reopen without failure , see attached pic. finally i am getting wasted spark fine but no inj due to high sync loss i think.
+- Why it matters: Provides replay-test-relevant trigger traces. Includes hardware-signal evidence, useful for edge and polarity interpretation. Discusses sync-loss conditions that can inform negative test cases.
+- Replay-test details: Includes: cam Includes: crank Includes: sync Includes: sync loss Matched decoder family: Rover MEMS Image or capture links: 1 Attachments: T16-RoverMemsTesting.rar -> https://speeduino.com/forum/download/file.php?id=8530
+- Matched search terms: Rover MEMS trigger wheel
+
+#### rover MEMs decoder - Page 9
+- URL: https://speeduino.com/forum/viewtopic.php?p=51489#p51307
+- Date: Wed Jun 23, 2021 1:34 am
+- Who posted it: Trevor Getty
+- Evidence type: tooth log / composite log / scope capture
+- Confidence: high
+- Summary: Hi mike good and bad news. so new vr now has crank and cam showing in composite logger see attached pics and logger output. now for some reason it logs and saves fine but i can not reopen without failure , see attached pic. finally i am getting wasted spark fine but no inj due to high sync loss i think.
+- Why it matters: Provides replay-test-relevant trigger traces. Includes hardware-signal evidence, useful for edge and polarity interpretation. Discusses sync-loss conditions that can inform negative test cases.
+- Replay-test details: Includes: cam Includes: crank Includes: sync Includes: sync loss Matched decoder family: Rover MEMS Image or capture links: 1 Attachments: T16-RoverMemsTesting.rar -> https://speeduino.com/forum/download/file.php?id=8530
+- Matched search terms: Rover MEMS trigger wheel
+
+#### rover MEMs decoder - Page 10
+- URL: https://speeduino.com/forum/viewtopic.php?p=51543#p51340
+- Date: Wed Jun 23, 2021 5:05 pm
+- Who posted it: Trevor Getty
+- Evidence type: composite log / scope capture / wheel description
+- Confidence: high
+- Summary: Regarding posts above: Without things connected run hardware test and check lights light up. (With connected you risk injectors filling your cylinders with fuel) I have done this and the injectors turn on fine - leds fire and I can see output no probs. Code: [Select all](#) ``` Will look later, until then done standard questions, when cranking generating the logs did you have the spark plugs out? Are the cables shielded cables?
+- Why it matters: Provides replay-test-relevant trigger traces. Includes hardware-signal evidence, useful for edge and polarity interpretation. Discusses sync-loss conditions that can inform negative test cases.
+- Replay-test details: Includes: rising edge Includes: cam Includes: crank Includes: sync Includes: sync loss Matched decoder family: Rover MEMS
+- Matched search terms: Rover MEMS cam
+
+#### rover MEMs decoder - Page 10
+- URL: https://speeduino.com/forum/viewtopic.php?p=51553#p51340
+- Date: Wed Jun 23, 2021 5:05 pm
+- Who posted it: Trevor Getty
+- Evidence type: composite log / scope capture / wheel description
+- Confidence: high
+- Summary: Regarding posts above: Without things connected run hardware test and check lights light up. (With connected you risk injectors filling your cylinders with fuel) I have done this and the injectors turn on fine - leds fire and I can see output no probs. Code: [Select all](#) ``` Will look later, until then done standard questions, when cranking generating the logs did you have the spark plugs out? Are the cables shielded cables?
+- Why it matters: Provides replay-test-relevant trigger traces. Includes hardware-signal evidence, useful for edge and polarity interpretation. Discusses sync-loss conditions that can inform negative test cases.
+- Replay-test details: Includes: rising edge Includes: cam Includes: crank Includes: sync Includes: sync loss Matched decoder family: Rover MEMS
+- Matched search terms: Rover MEMS crank
+
+#### rover MEMs decoder - Page 10
+- URL: https://speeduino.com/forum/viewtopic.php?p=51554#p51340
+- Date: Wed Jun 23, 2021 5:05 pm
+- Who posted it: Trevor Getty
+- Evidence type: composite log / scope capture / wheel description
+- Confidence: high
+- Summary: Regarding posts above: Without things connected run hardware test and check lights light up. (With connected you risk injectors filling your cylinders with fuel) I have done this and the injectors turn on fine - leds fire and I can see output no probs. Code: [Select all](#) ``` Will look later, until then done standard questions, when cranking generating the logs did you have the spark plugs out? Are the cables shielded cables?
+- Why it matters: Provides replay-test-relevant trigger traces. Includes hardware-signal evidence, useful for edge and polarity interpretation. Discusses sync-loss conditions that can inform negative test cases.
+- Replay-test details: Includes: rising edge Includes: cam Includes: crank Includes: sync Includes: sync loss Matched decoder family: Rover MEMS
+- Matched search terms: Rover MEMS crank
+
+#### rover MEMs decoder - Page 10
+- URL: https://speeduino.com/forum/viewtopic.php?p=53142#p51340
+- Date: Wed Jun 23, 2021 5:05 pm
+- Who posted it: Trevor Getty
+- Evidence type: composite log / scope capture / wheel description
+- Confidence: high
+- Summary: Regarding posts above: Without things connected run hardware test and check lights light up. (With connected you risk injectors filling your cylinders with fuel) I have done this and the injectors turn on fine - leds fire and I can see output no probs. Code: [Select all](#) ``` Will look later, until then done standard questions, when cranking generating the logs did you have the spark plugs out? Are the cables shielded cables?
+- Why it matters: Provides replay-test-relevant trigger traces. Includes hardware-signal evidence, useful for edge and polarity interpretation. Discusses sync-loss conditions that can inform negative test cases.
+- Replay-test details: Includes: rising edge Includes: cam Includes: crank Includes: sync Includes: sync loss Matched decoder family: Rover MEMS
+- Matched search terms: Rover MEMS cam
+
+#### rover MEMs decoder - Page 10
+- URL: https://speeduino.com/forum/viewtopic.php?p=53170#p51340
+- Date: Wed Jun 23, 2021 5:05 pm
+- Who posted it: Trevor Getty
+- Evidence type: composite log / scope capture / wheel description
+- Confidence: high
+- Summary: Regarding posts above: Without things connected run hardware test and check lights light up. (With connected you risk injectors filling your cylinders with fuel) I have done this and the injectors turn on fine - leds fire and I can see output no probs. Code: [Select all](#) ``` Will look later, until then done standard questions, when cranking generating the logs did you have the spark plugs out? Are the cables shielded cables?
+- Why it matters: Provides replay-test-relevant trigger traces. Includes hardware-signal evidence, useful for edge and polarity interpretation. Discusses sync-loss conditions that can inform negative test cases.
+- Replay-test details: Includes: rising edge Includes: cam Includes: crank Includes: sync Includes: sync loss Matched decoder family: Rover MEMS
+- Matched search terms: Rover MEMS cam
+
+#### rover MEMs decoder - Page 8
+- URL: https://speeduino.com/forum/viewtopic.php?p=51354#p51340
+- Date: Wed Jun 23, 2021 5:05 pm
+- Who posted it: Trevor Getty
+- Evidence type: composite log / scope capture / wheel description
+- Confidence: high
+- Summary: Regarding posts above: Without things connected run hardware test and check lights light up. (With connected you risk injectors filling your cylinders with fuel) I have done this and the injectors turn on fine - leds fire and I can see output no probs. Code: [Select all](#) ``` Will look later, until then done standard questions, when cranking generating the logs did you have the spark plugs out? Are the cables shielded cables?
+- Why it matters: Provides replay-test-relevant trigger traces. Includes hardware-signal evidence, useful for edge and polarity interpretation. Discusses sync-loss conditions that can inform negative test cases.
+- Replay-test details: Includes: rising edge Includes: cam Includes: crank Includes: sync Includes: sync loss Matched decoder family: Rover MEMS
+- Matched search terms: Rover MEMS sync
+
+#### rover MEMs decoder - Page 8
+- URL: https://speeduino.com/forum/viewtopic.php?p=51358#p51340
+- Date: Wed Jun 23, 2021 5:05 pm
+- Who posted it: Trevor Getty
+- Evidence type: composite log / scope capture / wheel description
+- Confidence: high
+- Summary: Regarding posts above: Without things connected run hardware test and check lights light up. (With connected you risk injectors filling your cylinders with fuel) I have done this and the injectors turn on fine - leds fire and I can see output no probs. Code: [Select all](#) ``` Will look later, until then done standard questions, when cranking generating the logs did you have the spark plugs out? Are the cables shielded cables?
+- Why it matters: Provides replay-test-relevant trigger traces. Includes hardware-signal evidence, useful for edge and polarity interpretation. Discusses sync-loss conditions that can inform negative test cases.
+- Replay-test details: Includes: rising edge Includes: cam Includes: crank Includes: sync Includes: sync loss Matched decoder family: Rover MEMS
+- Matched search terms: Rover MEMS scope
+
+#### rover MEMs decoder - Page 8
+- URL: https://speeduino.com/forum/viewtopic.php?p=51384#p51340
+- Date: Wed Jun 23, 2021 5:05 pm
+- Who posted it: Trevor Getty
+- Evidence type: composite log / scope capture / wheel description
+- Confidence: high
+- Summary: Regarding posts above: Without things connected run hardware test and check lights light up. (With connected you risk injectors filling your cylinders with fuel) I have done this and the injectors turn on fine - leds fire and I can see output no probs. Code: [Select all](#) ``` Will look later, until then done standard questions, when cranking generating the logs did you have the spark plugs out? Are the cables shielded cables?
+- Why it matters: Provides replay-test-relevant trigger traces. Includes hardware-signal evidence, useful for edge and polarity interpretation. Discusses sync-loss conditions that can inform negative test cases.
+- Replay-test details: Includes: rising edge Includes: cam Includes: crank Includes: sync Includes: sync loss Matched decoder family: Rover MEMS
+- Matched search terms: Rover MEMS scope
+
+#### rover MEMs decoder - Page 8
+- URL: https://speeduino.com/forum/viewtopic.php?p=51410#p51340
+- Date: Wed Jun 23, 2021 5:05 pm
+- Who posted it: Trevor Getty
+- Evidence type: composite log / scope capture / wheel description
+- Confidence: high
+- Summary: Regarding posts above: Without things connected run hardware test and check lights light up. (With connected you risk injectors filling your cylinders with fuel) I have done this and the injectors turn on fine - leds fire and I can see output no probs. Code: [Select all](#) ``` Will look later, until then done standard questions, when cranking generating the logs did you have the spark plugs out? Are the cables shielded cables?
+- Why it matters: Provides replay-test-relevant trigger traces. Includes hardware-signal evidence, useful for edge and polarity interpretation. Discusses sync-loss conditions that can inform negative test cases.
+- Replay-test details: Includes: rising edge Includes: cam Includes: crank Includes: sync Includes: sync loss Matched decoder family: Rover MEMS
+- Matched search terms: Rover MEMS sync
+
+#### rover MEMs decoder - Page 9
+- URL: https://speeduino.com/forum/viewtopic.php?p=51428#p51340
+- Date: Wed Jun 23, 2021 5:05 pm
+- Who posted it: Trevor Getty
+- Evidence type: composite log / scope capture / wheel description
+- Confidence: high
+- Summary: Regarding posts above: Without things connected run hardware test and check lights light up. (With connected you risk injectors filling your cylinders with fuel) I have done this and the injectors turn on fine - leds fire and I can see output no probs. Code: [Select all](#) ``` Will look later, until then done standard questions, when cranking generating the logs did you have the spark plugs out? Are the cables shielded cables?
+- Why it matters: Provides replay-test-relevant trigger traces. Includes hardware-signal evidence, useful for edge and polarity interpretation. Discusses sync-loss conditions that can inform negative test cases.
+- Replay-test details: Includes: rising edge Includes: cam Includes: crank Includes: sync Includes: sync loss Matched decoder family: Rover MEMS
+- Matched search terms: Rover MEMS sync
+
+#### rover MEMs decoder - Page 9
+- URL: https://speeduino.com/forum/viewtopic.php?p=51434#p51340
+- Date: Wed Jun 23, 2021 5:05 pm
+- Who posted it: Trevor Getty
+- Evidence type: composite log / scope capture / wheel description
+- Confidence: high
+- Summary: Regarding posts above: Without things connected run hardware test and check lights light up. (With connected you risk injectors filling your cylinders with fuel) I have done this and the injectors turn on fine - leds fire and I can see output no probs. Code: [Select all](#) ``` Will look later, until then done standard questions, when cranking generating the logs did you have the spark plugs out? Are the cables shielded cables?
+- Why it matters: Provides replay-test-relevant trigger traces. Includes hardware-signal evidence, useful for edge and polarity interpretation. Discusses sync-loss conditions that can inform negative test cases.
+- Replay-test details: Includes: rising edge Includes: cam Includes: crank Includes: sync Includes: sync loss Matched decoder family: Rover MEMS
+- Matched search terms: Rover MEMS sync
+
+#### rover MEMs decoder - Page 10
+- URL: https://speeduino.com/forum/viewtopic.php?p=51543#p51343
+- Date: Wed Jun 23, 2021 5:28 pm
+- Who posted it: Trevor Getty
+- Evidence type: tooth log / scope capture
+- Confidence: high
+- Summary: Quick PS note. I have looked at my scope picture, and I am going to make sure the VR+ and VR- aren't mixed up. I see that as the VR approaches voltage should increase and as it leaves it should decrease - we see this for the crank signal. On cam it seems inverted - going down then up per tooth logger - so I will quickly confirm which is going into speedy.
+- Why it matters: Provides replay-test-relevant trigger traces. Includes hardware-signal evidence, useful for edge and polarity interpretation.
+- Replay-test details: Includes: cam Includes: crank Matched decoder family: Rover MEMS
+- Matched search terms: Rover MEMS cam
+
+#### rover MEMs decoder - Page 10
+- URL: https://speeduino.com/forum/viewtopic.php?p=51553#p51343
+- Date: Wed Jun 23, 2021 5:28 pm
+- Who posted it: Trevor Getty
+- Evidence type: tooth log / scope capture
+- Confidence: high
+- Summary: Quick PS note. I have looked at my scope picture, and I am going to make sure the VR+ and VR- aren't mixed up. I see that as the VR approaches voltage should increase and as it leaves it should decrease - we see this for the crank signal. On cam it seems inverted - going down then up per tooth logger - so I will quickly confirm which is going into speedy.
+- Why it matters: Provides replay-test-relevant trigger traces. Includes hardware-signal evidence, useful for edge and polarity interpretation.
+- Replay-test details: Includes: cam Includes: crank Matched decoder family: Rover MEMS
+- Matched search terms: Rover MEMS crank
+
+#### rover MEMs decoder - Page 10
+- URL: https://speeduino.com/forum/viewtopic.php?p=51554#p51343
+- Date: Wed Jun 23, 2021 5:28 pm
+- Who posted it: Trevor Getty
+- Evidence type: tooth log / scope capture
+- Confidence: high
+- Summary: Quick PS note. I have looked at my scope picture, and I am going to make sure the VR+ and VR- aren't mixed up. I see that as the VR approaches voltage should increase and as it leaves it should decrease - we see this for the crank signal. On cam it seems inverted - going down then up per tooth logger - so I will quickly confirm which is going into speedy.
+- Why it matters: Provides replay-test-relevant trigger traces. Includes hardware-signal evidence, useful for edge and polarity interpretation.
+- Replay-test details: Includes: cam Includes: crank Matched decoder family: Rover MEMS
+- Matched search terms: Rover MEMS crank
+
+#### rover MEMs decoder - Page 10
+- URL: https://speeduino.com/forum/viewtopic.php?p=53142#p51343
+- Date: Wed Jun 23, 2021 5:28 pm
+- Who posted it: Trevor Getty
+- Evidence type: tooth log / scope capture
+- Confidence: high
+- Summary: Quick PS note. I have looked at my scope picture, and I am going to make sure the VR+ and VR- aren't mixed up. I see that as the VR approaches voltage should increase and as it leaves it should decrease - we see this for the crank signal. On cam it seems inverted - going down then up per tooth logger - so I will quickly confirm which is going into speedy.
+- Why it matters: Provides replay-test-relevant trigger traces. Includes hardware-signal evidence, useful for edge and polarity interpretation.
+- Replay-test details: Includes: cam Includes: crank Matched decoder family: Rover MEMS
+- Matched search terms: Rover MEMS cam
+
+#### rover MEMs decoder - Page 10
+- URL: https://speeduino.com/forum/viewtopic.php?p=53170#p51343
+- Date: Wed Jun 23, 2021 5:28 pm
+- Who posted it: Trevor Getty
+- Evidence type: tooth log / scope capture
+- Confidence: high
+- Summary: Quick PS note. I have looked at my scope picture, and I am going to make sure the VR+ and VR- aren't mixed up. I see that as the VR approaches voltage should increase and as it leaves it should decrease - we see this for the crank signal. On cam it seems inverted - going down then up per tooth logger - so I will quickly confirm which is going into speedy.
+- Why it matters: Provides replay-test-relevant trigger traces. Includes hardware-signal evidence, useful for edge and polarity interpretation.
+- Replay-test details: Includes: cam Includes: crank Matched decoder family: Rover MEMS
+- Matched search terms: Rover MEMS cam
+
+#### rover MEMs decoder - Page 7
+- URL: https://speeduino.com/forum/viewtopic.php?p=51307#p51343
+- Date: Wed Jun 23, 2021 5:28 pm
+- Who posted it: Trevor Getty
+- Evidence type: tooth log / scope capture
+- Confidence: high
+- Summary: Quick PS note. I have looked at my scope picture, and I am going to make sure the VR+ and VR- aren't mixed up. I see that as the VR approaches voltage should increase and as it leaves it should decrease - we see this for the crank signal. On cam it seems inverted - going down then up per tooth logger - so I will quickly confirm which is going into speedy.
+- Why it matters: Provides replay-test-relevant trigger traces. Includes hardware-signal evidence, useful for edge and polarity interpretation.
+- Replay-test details: Includes: cam Includes: crank Matched decoder family: Rover MEMS
+- Matched search terms: Rover MEMS tooth logger
+
+#### rover MEMs decoder - Page 7
+- URL: https://speeduino.com/forum/viewtopic.php?p=51340#p51343
+- Date: Wed Jun 23, 2021 5:28 pm
+- Who posted it: Trevor Getty
+- Evidence type: tooth log / scope capture
+- Confidence: high
+- Summary: Quick PS note. I have looked at my scope picture, and I am going to make sure the VR+ and VR- aren't mixed up. I see that as the VR approaches voltage should increase and as it leaves it should decrease - we see this for the crank signal. On cam it seems inverted - going down then up per tooth logger - so I will quickly confirm which is going into speedy.
+- Why it matters: Provides replay-test-relevant trigger traces. Includes hardware-signal evidence, useful for edge and polarity interpretation.
+- Replay-test details: Includes: cam Includes: crank Matched decoder family: Rover MEMS
+- Matched search terms: Rover MEMS tooth logger
+
+#### rover MEMs decoder - Page 7
+- URL: https://speeduino.com/forum/viewtopic.php?p=51343#p51343
+- Date: Wed Jun 23, 2021 5:28 pm
+- Who posted it: Trevor Getty
+- Evidence type: tooth log / scope capture
+- Confidence: high
+- Summary: Quick PS note. I have looked at my scope picture, and I am going to make sure the VR+ and VR- aren't mixed up. I see that as the VR approaches voltage should increase and as it leaves it should decrease - we see this for the crank signal. On cam it seems inverted - going down then up per tooth logger - so I will quickly confirm which is going into speedy.
+- Why it matters: Provides replay-test-relevant trigger traces. Includes hardware-signal evidence, useful for edge and polarity interpretation.
+- Replay-test details: Includes: cam Includes: crank Matched decoder family: Rover MEMS
+- Matched search terms: Rover MEMS tooth logger
+
+#### rover MEMs decoder - Page 8
+- URL: https://speeduino.com/forum/viewtopic.php?p=51358#p51343
+- Date: Wed Jun 23, 2021 5:28 pm
+- Who posted it: Trevor Getty
+- Evidence type: tooth log / scope capture
+- Confidence: high
+- Summary: Quick PS note. I have looked at my scope picture, and I am going to make sure the VR+ and VR- aren't mixed up. I see that as the VR approaches voltage should increase and as it leaves it should decrease - we see this for the crank signal. On cam it seems inverted - going down then up per tooth logger - so I will quickly confirm which is going into speedy.
+- Why it matters: Provides replay-test-relevant trigger traces. Includes hardware-signal evidence, useful for edge and polarity interpretation.
+- Replay-test details: Includes: cam Includes: crank Matched decoder family: Rover MEMS
+- Matched search terms: Rover MEMS scope
+
+#### rover MEMs decoder - Page 8
+- URL: https://speeduino.com/forum/viewtopic.php?p=51384#p51343
+- Date: Wed Jun 23, 2021 5:28 pm
+- Who posted it: Trevor Getty
+- Evidence type: tooth log / scope capture
+- Confidence: high
+- Summary: Quick PS note. I have looked at my scope picture, and I am going to make sure the VR+ and VR- aren't mixed up. I see that as the VR approaches voltage should increase and as it leaves it should decrease - we see this for the crank signal. On cam it seems inverted - going down then up per tooth logger - so I will quickly confirm which is going into speedy.
+- Why it matters: Provides replay-test-relevant trigger traces. Includes hardware-signal evidence, useful for edge and polarity interpretation.
+- Replay-test details: Includes: cam Includes: crank Matched decoder family: Rover MEMS
+- Matched search terms: Rover MEMS scope
+
+#### rover MEMs decoder - Page 8
+- URL: https://speeduino.com/forum/viewtopic.php?p=51394#p51343
+- Date: Wed Jun 23, 2021 5:28 pm
+- Who posted it: Trevor Getty
+- Evidence type: tooth log / scope capture
+- Confidence: high
+- Summary: Quick PS note. I have looked at my scope picture, and I am going to make sure the VR+ and VR- aren't mixed up. I see that as the VR approaches voltage should increase and as it leaves it should decrease - we see this for the crank signal. On cam it seems inverted - going down then up per tooth logger - so I will quickly confirm which is going into speedy.
+- Why it matters: Provides replay-test-relevant trigger traces. Includes hardware-signal evidence, useful for edge and polarity interpretation.
+- Replay-test details: Includes: cam Includes: crank Matched decoder family: Rover MEMS
+- Matched search terms: Rover MEMS tooth logger
+
+#### rover MEMs decoder - Page 8
+- URL: https://speeduino.com/forum/viewtopic.php?p=51395#p51343
+- Date: Wed Jun 23, 2021 5:28 pm
+- Who posted it: Trevor Getty
+- Evidence type: tooth log / scope capture
+- Confidence: high
+- Summary: Quick PS note. I have looked at my scope picture, and I am going to make sure the VR+ and VR- aren't mixed up. I see that as the VR approaches voltage should increase and as it leaves it should decrease - we see this for the crank signal. On cam it seems inverted - going down then up per tooth logger - so I will quickly confirm which is going into speedy.
+- Why it matters: Provides replay-test-relevant trigger traces. Includes hardware-signal evidence, useful for edge and polarity interpretation.
+- Replay-test details: Includes: cam Includes: crank Matched decoder family: Rover MEMS
+- Matched search terms: Rover MEMS tooth logger
+
+#### rover MEMs decoder - Page 10
+- URL: https://speeduino.com/forum/viewtopic.php?p=51543#p51394
+- Date: Fri Jun 25, 2021 3:36 am
+- Who posted it: Trevor Getty
+- Evidence type: tooth log / scope capture
+- Confidence: high
+- Summary: Timing is based on IGN not INJ. Confirm using actual spark output from a coil. All my scoped images, and logs have been taken using an HT capacitive pick up probe on Spark plug 1. I see where the incorrect assumption came in my comment above where I mention INJ1 incorrectly.
+- Why it matters: Provides replay-test-relevant trigger traces. Includes hardware-signal evidence, useful for edge and polarity interpretation.
+- Replay-test details: Includes: cam Includes: crank Includes: sync Matched decoder family: Rover MEMS
+- Matched search terms: Rover MEMS cam
+
+#### rover MEMs decoder - Page 10
+- URL: https://speeduino.com/forum/viewtopic.php?p=51553#p51394
+- Date: Fri Jun 25, 2021 3:36 am
+- Who posted it: Trevor Getty
+- Evidence type: tooth log / scope capture
+- Confidence: high
+- Summary: Timing is based on IGN not INJ. Confirm using actual spark output from a coil. All my scoped images, and logs have been taken using an HT capacitive pick up probe on Spark plug 1. I see where the incorrect assumption came in my comment above where I mention INJ1 incorrectly.
+- Why it matters: Provides replay-test-relevant trigger traces. Includes hardware-signal evidence, useful for edge and polarity interpretation.
+- Replay-test details: Includes: cam Includes: crank Includes: sync Matched decoder family: Rover MEMS
+- Matched search terms: Rover MEMS crank
+
+#### rover MEMs decoder - Page 10
+- URL: https://speeduino.com/forum/viewtopic.php?p=51554#p51394
+- Date: Fri Jun 25, 2021 3:36 am
+- Who posted it: Trevor Getty
+- Evidence type: tooth log / scope capture
+- Confidence: high
+- Summary: Timing is based on IGN not INJ. Confirm using actual spark output from a coil. All my scoped images, and logs have been taken using an HT capacitive pick up probe on Spark plug 1. I see where the incorrect assumption came in my comment above where I mention INJ1 incorrectly.
+- Why it matters: Provides replay-test-relevant trigger traces. Includes hardware-signal evidence, useful for edge and polarity interpretation.
+- Replay-test details: Includes: cam Includes: crank Includes: sync Matched decoder family: Rover MEMS
+- Matched search terms: Rover MEMS crank
+
+#### rover MEMs decoder - Page 10
+- URL: https://speeduino.com/forum/viewtopic.php?p=53142#p51394
+- Date: Fri Jun 25, 2021 3:36 am
+- Who posted it: Trevor Getty
+- Evidence type: tooth log / scope capture
+- Confidence: high
+- Summary: Timing is based on IGN not INJ. Confirm using actual spark output from a coil. All my scoped images, and logs have been taken using an HT capacitive pick up probe on Spark plug 1. I see where the incorrect assumption came in my comment above where I mention INJ1 incorrectly.
+- Why it matters: Provides replay-test-relevant trigger traces. Includes hardware-signal evidence, useful for edge and polarity interpretation.
+- Replay-test details: Includes: cam Includes: crank Includes: sync Matched decoder family: Rover MEMS
+- Matched search terms: Rover MEMS cam
+
+#### rover MEMs decoder - Page 10
+- URL: https://speeduino.com/forum/viewtopic.php?p=53170#p51394
+- Date: Fri Jun 25, 2021 3:36 am
+- Who posted it: Trevor Getty
+- Evidence type: tooth log / scope capture
+- Confidence: high
+- Summary: Timing is based on IGN not INJ. Confirm using actual spark output from a coil. All my scoped images, and logs have been taken using an HT capacitive pick up probe on Spark plug 1. I see where the incorrect assumption came in my comment above where I mention INJ1 incorrectly.
+- Why it matters: Provides replay-test-relevant trigger traces. Includes hardware-signal evidence, useful for edge and polarity interpretation.
+- Replay-test details: Includes: cam Includes: crank Includes: sync Matched decoder family: Rover MEMS
+- Matched search terms: Rover MEMS cam
+
+#### rover MEMs decoder - Page 7
+- URL: https://speeduino.com/forum/viewtopic.php?p=51307#p51394
+- Date: Fri Jun 25, 2021 3:36 am
+- Who posted it: Trevor Getty
+- Evidence type: tooth log / scope capture
+- Confidence: high
+- Summary: Timing is based on IGN not INJ. Confirm using actual spark output from a coil. All my scoped images, and logs have been taken using an HT capacitive pick up probe on Spark plug 1. I see where the incorrect assumption came in my comment above where I mention INJ1 incorrectly.
+- Why it matters: Provides replay-test-relevant trigger traces. Includes hardware-signal evidence, useful for edge and polarity interpretation.
+- Replay-test details: Includes: cam Includes: crank Includes: sync Matched decoder family: Rover MEMS
+- Matched search terms: Rover MEMS tooth logger
+
+#### rover MEMs decoder - Page 7
+- URL: https://speeduino.com/forum/viewtopic.php?p=51340#p51394
+- Date: Fri Jun 25, 2021 3:36 am
+- Who posted it: Trevor Getty
+- Evidence type: tooth log / scope capture
+- Confidence: high
+- Summary: Timing is based on IGN not INJ. Confirm using actual spark output from a coil. All my scoped images, and logs have been taken using an HT capacitive pick up probe on Spark plug 1. I see where the incorrect assumption came in my comment above where I mention INJ1 incorrectly.
+- Why it matters: Provides replay-test-relevant trigger traces. Includes hardware-signal evidence, useful for edge and polarity interpretation.
+- Replay-test details: Includes: cam Includes: crank Includes: sync Matched decoder family: Rover MEMS
+- Matched search terms: Rover MEMS tooth logger
+
+#### rover MEMs decoder - Page 7
+- URL: https://speeduino.com/forum/viewtopic.php?p=51343#p51394
+- Date: Fri Jun 25, 2021 3:36 am
+- Who posted it: Trevor Getty
+- Evidence type: tooth log / scope capture
+- Confidence: high
+- Summary: Timing is based on IGN not INJ. Confirm using actual spark output from a coil. All my scoped images, and logs have been taken using an HT capacitive pick up probe on Spark plug 1. I see where the incorrect assumption came in my comment above where I mention INJ1 incorrectly.
+- Why it matters: Provides replay-test-relevant trigger traces. Includes hardware-signal evidence, useful for edge and polarity interpretation.
+- Replay-test details: Includes: cam Includes: crank Includes: sync Matched decoder family: Rover MEMS
+- Matched search terms: Rover MEMS tooth logger
+
+#### rover MEMs decoder - Page 8
+- URL: https://speeduino.com/forum/viewtopic.php?p=51354#p51394
+- Date: Fri Jun 25, 2021 3:36 am
+- Who posted it: Trevor Getty
+- Evidence type: tooth log / scope capture
+- Confidence: high
+- Summary: Timing is based on IGN not INJ. Confirm using actual spark output from a coil. All my scoped images, and logs have been taken using an HT capacitive pick up probe on Spark plug 1. I see where the incorrect assumption came in my comment above where I mention INJ1 incorrectly.
+- Why it matters: Provides replay-test-relevant trigger traces. Includes hardware-signal evidence, useful for edge and polarity interpretation.
+- Replay-test details: Includes: cam Includes: crank Includes: sync Matched decoder family: Rover MEMS
+- Matched search terms: Rover MEMS sync
+
+#### rover MEMs decoder - Page 8
+- URL: https://speeduino.com/forum/viewtopic.php?p=51358#p51394
+- Date: Fri Jun 25, 2021 3:36 am
+- Who posted it: Trevor Getty
+- Evidence type: tooth log / scope capture
+- Confidence: high
+- Summary: Timing is based on IGN not INJ. Confirm using actual spark output from a coil. All my scoped images, and logs have been taken using an HT capacitive pick up probe on Spark plug 1. I see where the incorrect assumption came in my comment above where I mention INJ1 incorrectly.
+- Why it matters: Provides replay-test-relevant trigger traces. Includes hardware-signal evidence, useful for edge and polarity interpretation.
+- Replay-test details: Includes: cam Includes: crank Includes: sync Matched decoder family: Rover MEMS
+- Matched search terms: Rover MEMS scope
+
+#### rover MEMs decoder - Page 8
+- URL: https://speeduino.com/forum/viewtopic.php?p=51384#p51394
+- Date: Fri Jun 25, 2021 3:36 am
+- Who posted it: Trevor Getty
+- Evidence type: tooth log / scope capture
+- Confidence: high
+- Summary: Timing is based on IGN not INJ. Confirm using actual spark output from a coil. All my scoped images, and logs have been taken using an HT capacitive pick up probe on Spark plug 1. I see where the incorrect assumption came in my comment above where I mention INJ1 incorrectly.
+- Why it matters: Provides replay-test-relevant trigger traces. Includes hardware-signal evidence, useful for edge and polarity interpretation.
+- Replay-test details: Includes: cam Includes: crank Includes: sync Matched decoder family: Rover MEMS
+- Matched search terms: Rover MEMS scope
+
+#### rover MEMs decoder - Page 8
+- URL: https://speeduino.com/forum/viewtopic.php?p=51394#p51394
+- Date: Fri Jun 25, 2021 3:36 am
+- Who posted it: Trevor Getty
+- Evidence type: tooth log / scope capture
+- Confidence: high
+- Summary: Timing is based on IGN not INJ. Confirm using actual spark output from a coil. All my scoped images, and logs have been taken using an HT capacitive pick up probe on Spark plug 1. I see where the incorrect assumption came in my comment above where I mention INJ1 incorrectly.
+- Why it matters: Provides replay-test-relevant trigger traces. Includes hardware-signal evidence, useful for edge and polarity interpretation.
+- Replay-test details: Includes: cam Includes: crank Includes: sync Matched decoder family: Rover MEMS
+- Matched search terms: Rover MEMS tooth logger
+
+#### rover MEMs decoder - Page 8
+- URL: https://speeduino.com/forum/viewtopic.php?p=51395#p51394
+- Date: Fri Jun 25, 2021 3:36 am
+- Who posted it: Trevor Getty
+- Evidence type: tooth log / scope capture
+- Confidence: high
+- Summary: Timing is based on IGN not INJ. Confirm using actual spark output from a coil. All my scoped images, and logs have been taken using an HT capacitive pick up probe on Spark plug 1. I see where the incorrect assumption came in my comment above where I mention INJ1 incorrectly.
+- Why it matters: Provides replay-test-relevant trigger traces. Includes hardware-signal evidence, useful for edge and polarity interpretation.
+- Replay-test details: Includes: cam Includes: crank Includes: sync Matched decoder family: Rover MEMS
+- Matched search terms: Rover MEMS tooth logger
+
+#### rover MEMs decoder - Page 8
+- URL: https://speeduino.com/forum/viewtopic.php?p=51410#p51394
+- Date: Fri Jun 25, 2021 3:36 am
+- Who posted it: Trevor Getty
+- Evidence type: tooth log / scope capture
+- Confidence: high
+- Summary: Timing is based on IGN not INJ. Confirm using actual spark output from a coil. All my scoped images, and logs have been taken using an HT capacitive pick up probe on Spark plug 1. I see where the incorrect assumption came in my comment above where I mention INJ1 incorrectly.
+- Why it matters: Provides replay-test-relevant trigger traces. Includes hardware-signal evidence, useful for edge and polarity interpretation.
+- Replay-test details: Includes: cam Includes: crank Includes: sync Matched decoder family: Rover MEMS
+- Matched search terms: Rover MEMS sync
+
+#### rover MEMs decoder - Page 9
+- URL: https://speeduino.com/forum/viewtopic.php?p=51428#p51394
+- Date: Fri Jun 25, 2021 3:36 am
+- Who posted it: Trevor Getty
+- Evidence type: tooth log / scope capture
+- Confidence: high
+- Summary: Timing is based on IGN not INJ. Confirm using actual spark output from a coil. All my scoped images, and logs have been taken using an HT capacitive pick up probe on Spark plug 1. I see where the incorrect assumption came in my comment above where I mention INJ1 incorrectly.
+- Why it matters: Provides replay-test-relevant trigger traces. Includes hardware-signal evidence, useful for edge and polarity interpretation.
+- Replay-test details: Includes: cam Includes: crank Includes: sync Matched decoder family: Rover MEMS
+- Matched search terms: Rover MEMS sync
+
+#### rover MEMs decoder - Page 9
+- URL: https://speeduino.com/forum/viewtopic.php?p=51434#p51394
+- Date: Fri Jun 25, 2021 3:36 am
+- Who posted it: Trevor Getty
+- Evidence type: tooth log / scope capture
+- Confidence: high
+- Summary: Timing is based on IGN not INJ. Confirm using actual spark output from a coil. All my scoped images, and logs have been taken using an HT capacitive pick up probe on Spark plug 1. I see where the incorrect assumption came in my comment above where I mention INJ1 incorrectly.
+- Why it matters: Provides replay-test-relevant trigger traces. Includes hardware-signal evidence, useful for edge and polarity interpretation.
+- Replay-test details: Includes: cam Includes: crank Includes: sync Matched decoder family: Rover MEMS
+- Matched search terms: Rover MEMS sync
+
+#### rover MEMs decoder - Page 11
+- URL: https://speeduino.com/forum/viewtopic.php?p=66738#p51340
+- Date: Wed Jun 23, 2021 5:05 pm
+- Who posted it: Trevor Getty
+- Evidence type: composite log / scope capture / wheel description
+- Confidence: medium
+- Summary: Regarding posts above: Without things connected run hardware test and check lights light up. (With connected you risk injectors filling your cylinders with fuel) I have done this and the injectors turn on fine - leds fire and I can see output no probs. Code: [Select all](#) ``` Will look later, until then done standard questions, when cranking generating the logs did you have the spark plugs out? Are the cables shielded cables?
+- Why it matters: Provides replay-test-relevant trigger traces. Includes hardware-signal evidence, useful for edge and polarity interpretation. Discusses sync-loss conditions that can inform negative test cases.
+- Replay-test details: Includes: rising edge Includes: cam Includes: crank Includes: sync Includes: sync loss Matched decoder family: Rover MEMS
+- Matched search terms: Rover MEMS Speeduino trigger
+
+#### rover MEMs decoder - Page 11
+- URL: https://speeduino.com/forum/viewtopic.php?p=66740#p51340
+- Date: Wed Jun 23, 2021 5:05 pm
+- Who posted it: Trevor Getty
+- Evidence type: composite log / scope capture / wheel description
+- Confidence: medium
+- Summary: Regarding posts above: Without things connected run hardware test and check lights light up. (With connected you risk injectors filling your cylinders with fuel) I have done this and the injectors turn on fine - leds fire and I can see output no probs. Code: [Select all](#) ``` Will look later, until then done standard questions, when cranking generating the logs did you have the spark plugs out? Are the cables shielded cables?
+- Why it matters: Provides replay-test-relevant trigger traces. Includes hardware-signal evidence, useful for edge and polarity interpretation. Discusses sync-loss conditions that can inform negative test cases.
+- Replay-test details: Includes: rising edge Includes: cam Includes: crank Includes: sync Includes: sync loss Matched decoder family: Rover MEMS
+- Matched search terms: Rover MEMS Speeduino trigger
+
+#### rover MEMs decoder - Page 12
+- URL: https://speeduino.com/forum/viewtopic.php?p=66743#p51340
+- Date: Wed Jun 23, 2021 5:05 pm
+- Who posted it: Trevor Getty
+- Evidence type: composite log / scope capture / wheel description
+- Confidence: medium
+- Summary: Regarding posts above: Without things connected run hardware test and check lights light up. (With connected you risk injectors filling your cylinders with fuel) I have done this and the injectors turn on fine - leds fire and I can see output no probs. Code: [Select all](#) ``` Will look later, until then done standard questions, when cranking generating the logs did you have the spark plugs out? Are the cables shielded cables?
+- Why it matters: Provides replay-test-relevant trigger traces. Includes hardware-signal evidence, useful for edge and polarity interpretation. Discusses sync-loss conditions that can inform negative test cases.
+- Replay-test details: Includes: rising edge Includes: cam Includes: crank Includes: sync Includes: sync loss Matched decoder family: Rover MEMS
+- Matched search terms: Rover MEMS Speeduino trigger
+
+#### rover MEMs decoder - Page 4
+- URL: https://speeduino.com/forum/viewtopic.php?p=50630#p51340
+- Date: Wed Jun 23, 2021 5:05 pm
+- Who posted it: Trevor Getty
+- Evidence type: composite log / scope capture / wheel description
+- Confidence: medium
+- Summary: Regarding posts above: Without things connected run hardware test and check lights light up. (With connected you risk injectors filling your cylinders with fuel) I have done this and the injectors turn on fine - leds fire and I can see output no probs. Code: [Select all](#) ``` Will look later, until then done standard questions, when cranking generating the logs did you have the spark plugs out? Are the cables shielded cables?
+- Why it matters: Provides replay-test-relevant trigger traces. Includes hardware-signal evidence, useful for edge and polarity interpretation. Discusses sync-loss conditions that can inform negative test cases.
+- Replay-test details: Includes: rising edge Includes: cam Includes: crank Includes: sync Includes: sync loss Matched decoder family: Rover MEMS
+- Matched search terms: Rover MEMS trigger wheel
+
+#### rover MEMs decoder - Page 7
+- URL: https://speeduino.com/forum/viewtopic.php?p=51307#p51340
+- Date: Wed Jun 23, 2021 5:05 pm
+- Who posted it: Trevor Getty
+- Evidence type: composite log / scope capture / wheel description
+- Confidence: medium
+- Summary: Regarding posts above: Without things connected run hardware test and check lights light up. (With connected you risk injectors filling your cylinders with fuel) I have done this and the injectors turn on fine - leds fire and I can see output no probs. Code: [Select all](#) ``` Will look later, until then done standard questions, when cranking generating the logs did you have the spark plugs out? Are the cables shielded cables?
+- Why it matters: Provides replay-test-relevant trigger traces. Includes hardware-signal evidence, useful for edge and polarity interpretation. Discusses sync-loss conditions that can inform negative test cases.
+- Replay-test details: Includes: rising edge Includes: cam Includes: crank Includes: sync Includes: sync loss Matched decoder family: Rover MEMS
+- Matched search terms: Rover MEMS tooth logger
+
+#### rover MEMs decoder - Page 7
+- URL: https://speeduino.com/forum/viewtopic.php?p=51340#p51340
+- Date: Wed Jun 23, 2021 5:05 pm
+- Who posted it: Trevor Getty
+- Evidence type: composite log / scope capture / wheel description
+- Confidence: medium
+- Summary: Regarding posts above: Without things connected run hardware test and check lights light up. (With connected you risk injectors filling your cylinders with fuel) I have done this and the injectors turn on fine - leds fire and I can see output no probs. Code: [Select all](#) ``` Will look later, until then done standard questions, when cranking generating the logs did you have the spark plugs out? Are the cables shielded cables?
+- Why it matters: Provides replay-test-relevant trigger traces. Includes hardware-signal evidence, useful for edge and polarity interpretation. Discusses sync-loss conditions that can inform negative test cases.
+- Replay-test details: Includes: rising edge Includes: cam Includes: crank Includes: sync Includes: sync loss Matched decoder family: Rover MEMS
+- Matched search terms: Rover MEMS tooth logger
+
+#### rover MEMs decoder - Page 7
+- URL: https://speeduino.com/forum/viewtopic.php?p=51343#p51340
+- Date: Wed Jun 23, 2021 5:05 pm
+- Who posted it: Trevor Getty
+- Evidence type: composite log / scope capture / wheel description
+- Confidence: medium
+- Summary: Regarding posts above: Without things connected run hardware test and check lights light up. (With connected you risk injectors filling your cylinders with fuel) I have done this and the injectors turn on fine - leds fire and I can see output no probs. Code: [Select all](#) ``` Will look later, until then done standard questions, when cranking generating the logs did you have the spark plugs out? Are the cables shielded cables?
+- Why it matters: Provides replay-test-relevant trigger traces. Includes hardware-signal evidence, useful for edge and polarity interpretation. Discusses sync-loss conditions that can inform negative test cases.
+- Replay-test details: Includes: rising edge Includes: cam Includes: crank Includes: sync Includes: sync loss Matched decoder family: Rover MEMS
+- Matched search terms: Rover MEMS tooth logger
+
+#### rover MEMs decoder - Page 8
+- URL: https://speeduino.com/forum/viewtopic.php?p=51394#p51340
+- Date: Wed Jun 23, 2021 5:05 pm
+- Who posted it: Trevor Getty
+- Evidence type: composite log / scope capture / wheel description
+- Confidence: medium
+- Summary: Regarding posts above: Without things connected run hardware test and check lights light up. (With connected you risk injectors filling your cylinders with fuel) I have done this and the injectors turn on fine - leds fire and I can see output no probs. Code: [Select all](#) ``` Will look later, until then done standard questions, when cranking generating the logs did you have the spark plugs out? Are the cables shielded cables?
+- Why it matters: Provides replay-test-relevant trigger traces. Includes hardware-signal evidence, useful for edge and polarity interpretation. Discusses sync-loss conditions that can inform negative test cases.
+- Replay-test details: Includes: rising edge Includes: cam Includes: crank Includes: sync Includes: sync loss Matched decoder family: Rover MEMS
+- Matched search terms: Rover MEMS tooth logger
+
+#### rover MEMs decoder - Page 8
+- URL: https://speeduino.com/forum/viewtopic.php?p=51395#p51340
+- Date: Wed Jun 23, 2021 5:05 pm
+- Who posted it: Trevor Getty
+- Evidence type: composite log / scope capture / wheel description
+- Confidence: medium
+- Summary: Regarding posts above: Without things connected run hardware test and check lights light up. (With connected you risk injectors filling your cylinders with fuel) I have done this and the injectors turn on fine - leds fire and I can see output no probs. Code: [Select all](#) ``` Will look later, until then done standard questions, when cranking generating the logs did you have the spark plugs out? Are the cables shielded cables?
+- Why it matters: Provides replay-test-relevant trigger traces. Includes hardware-signal evidence, useful for edge and polarity interpretation. Discusses sync-loss conditions that can inform negative test cases.
+- Replay-test details: Includes: rising edge Includes: cam Includes: crank Includes: sync Includes: sync loss Matched decoder family: Rover MEMS
+- Matched search terms: Rover MEMS tooth logger
+
+#### rover MEMs decoder - Page 9
+- URL: https://speeduino.com/forum/viewtopic.php?p=51489#p51340
+- Date: Wed Jun 23, 2021 5:05 pm
+- Who posted it: Trevor Getty
+- Evidence type: composite log / scope capture / wheel description
+- Confidence: medium
+- Summary: Regarding posts above: Without things connected run hardware test and check lights light up. (With connected you risk injectors filling your cylinders with fuel) I have done this and the injectors turn on fine - leds fire and I can see output no probs. Code: [Select all](#) ``` Will look later, until then done standard questions, when cranking generating the logs did you have the spark plugs out? Are the cables shielded cables?
+- Why it matters: Provides replay-test-relevant trigger traces. Includes hardware-signal evidence, useful for edge and polarity interpretation. Discusses sync-loss conditions that can inform negative test cases.
+- Replay-test details: Includes: rising edge Includes: cam Includes: crank Includes: sync Includes: sync loss Matched decoder family: Rover MEMS
+- Matched search terms: Rover MEMS trigger wheel
+
+#### Classic Mini SPI Automtic
+- URL: https://speeduino.com/forum/viewtopic.php?p=52360#p52362
+- Date: Sat Aug 07, 2021 5:56 am
+- Who posted it: dazq
+- Evidence type: wheel description / maintainer explanation
+- Confidence: medium
+- Summary: Have a search on here there is a thread running for the testing of the rover mems trigger patterns. It is not yet included in the release download but there are links there to the test release. Yes this will mean you could use the OEM trigger wheel and not need a replacement 36-1. [minitw](./memberlist.php?mode=viewprofile&u=5145) wrote: [↑](./viewtopic.php?p=52360#p52360) Sat Aug 07, 2021 1:23 am Hi dazq, could you point where I can find the trigger for rover?
+- Why it matters: Maintainer explanation increases confidence in expected decoder behavior.
+- Replay-test details: Pattern references: 36-1, rover mems Includes: crank
+- Matched search terms: Rover MEMS crank
+
+#### rover MEMs decoder - Page 11
+- URL: https://speeduino.com/forum/viewtopic.php?p=66738#p51343
+- Date: Wed Jun 23, 2021 5:28 pm
+- Who posted it: Trevor Getty
+- Evidence type: tooth log / scope capture
+- Confidence: medium
+- Summary: Quick PS note. I have looked at my scope picture, and I am going to make sure the VR+ and VR- aren't mixed up. I see that as the VR approaches voltage should increase and as it leaves it should decrease - we see this for the crank signal. On cam it seems inverted - going down then up per tooth logger - so I will quickly confirm which is going into speedy.
+- Why it matters: Provides replay-test-relevant trigger traces. Includes hardware-signal evidence, useful for edge and polarity interpretation.
+- Replay-test details: Includes: cam Includes: crank Matched decoder family: Rover MEMS
+- Matched search terms: Rover MEMS Speeduino trigger
+
+#### rover MEMs decoder - Page 11
+- URL: https://speeduino.com/forum/viewtopic.php?p=66740#p51343
+- Date: Wed Jun 23, 2021 5:28 pm
+- Who posted it: Trevor Getty
+- Evidence type: tooth log / scope capture
+- Confidence: medium
+- Summary: Quick PS note. I have looked at my scope picture, and I am going to make sure the VR+ and VR- aren't mixed up. I see that as the VR approaches voltage should increase and as it leaves it should decrease - we see this for the crank signal. On cam it seems inverted - going down then up per tooth logger - so I will quickly confirm which is going into speedy.
+- Why it matters: Provides replay-test-relevant trigger traces. Includes hardware-signal evidence, useful for edge and polarity interpretation.
+- Replay-test details: Includes: cam Includes: crank Matched decoder family: Rover MEMS
+- Matched search terms: Rover MEMS Speeduino trigger
+
+#### rover MEMs decoder - Page 12
+- URL: https://speeduino.com/forum/viewtopic.php?p=66743#p51343
+- Date: Wed Jun 23, 2021 5:28 pm
+- Who posted it: Trevor Getty
+- Evidence type: tooth log / scope capture
+- Confidence: medium
+- Summary: Quick PS note. I have looked at my scope picture, and I am going to make sure the VR+ and VR- aren't mixed up. I see that as the VR approaches voltage should increase and as it leaves it should decrease - we see this for the crank signal. On cam it seems inverted - going down then up per tooth logger - so I will quickly confirm which is going into speedy.
+- Why it matters: Provides replay-test-relevant trigger traces. Includes hardware-signal evidence, useful for edge and polarity interpretation.
+- Replay-test details: Includes: cam Includes: crank Matched decoder family: Rover MEMS
+- Matched search terms: Rover MEMS Speeduino trigger
+
+#### rover MEMs decoder - Page 4
+- URL: https://speeduino.com/forum/viewtopic.php?p=50630#p51343
+- Date: Wed Jun 23, 2021 5:28 pm
+- Who posted it: Trevor Getty
+- Evidence type: tooth log / scope capture
+- Confidence: medium
+- Summary: Quick PS note. I have looked at my scope picture, and I am going to make sure the VR+ and VR- aren't mixed up. I see that as the VR approaches voltage should increase and as it leaves it should decrease - we see this for the crank signal. On cam it seems inverted - going down then up per tooth logger - so I will quickly confirm which is going into speedy.
+- Why it matters: Provides replay-test-relevant trigger traces. Includes hardware-signal evidence, useful for edge and polarity interpretation.
+- Replay-test details: Includes: cam Includes: crank Matched decoder family: Rover MEMS
+- Matched search terms: Rover MEMS trigger wheel
+
+#### rover MEMs decoder - Page 8
+- URL: https://speeduino.com/forum/viewtopic.php?p=51354#p51343
+- Date: Wed Jun 23, 2021 5:28 pm
+- Who posted it: Trevor Getty
+- Evidence type: tooth log / scope capture
+- Confidence: medium
+- Summary: Quick PS note. I have looked at my scope picture, and I am going to make sure the VR+ and VR- aren't mixed up. I see that as the VR approaches voltage should increase and as it leaves it should decrease - we see this for the crank signal. On cam it seems inverted - going down then up per tooth logger - so I will quickly confirm which is going into speedy.
+- Why it matters: Provides replay-test-relevant trigger traces. Includes hardware-signal evidence, useful for edge and polarity interpretation.
+- Replay-test details: Includes: cam Includes: crank Matched decoder family: Rover MEMS
+- Matched search terms: Rover MEMS sync
+
+#### rover MEMs decoder - Page 8
+- URL: https://speeduino.com/forum/viewtopic.php?p=51410#p51343
+- Date: Wed Jun 23, 2021 5:28 pm
+- Who posted it: Trevor Getty
+- Evidence type: tooth log / scope capture
+- Confidence: medium
+- Summary: Quick PS note. I have looked at my scope picture, and I am going to make sure the VR+ and VR- aren't mixed up. I see that as the VR approaches voltage should increase and as it leaves it should decrease - we see this for the crank signal. On cam it seems inverted - going down then up per tooth logger - so I will quickly confirm which is going into speedy.
+- Why it matters: Provides replay-test-relevant trigger traces. Includes hardware-signal evidence, useful for edge and polarity interpretation.
+- Replay-test details: Includes: cam Includes: crank Matched decoder family: Rover MEMS
+- Matched search terms: Rover MEMS sync
+
+#### rover MEMs decoder - Page 9
+- URL: https://speeduino.com/forum/viewtopic.php?p=51428#p51343
+- Date: Wed Jun 23, 2021 5:28 pm
+- Who posted it: Trevor Getty
+- Evidence type: tooth log / scope capture
+- Confidence: medium
+- Summary: Quick PS note. I have looked at my scope picture, and I am going to make sure the VR+ and VR- aren't mixed up. I see that as the VR approaches voltage should increase and as it leaves it should decrease - we see this for the crank signal. On cam it seems inverted - going down then up per tooth logger - so I will quickly confirm which is going into speedy.
+- Why it matters: Provides replay-test-relevant trigger traces. Includes hardware-signal evidence, useful for edge and polarity interpretation.
+- Replay-test details: Includes: cam Includes: crank Matched decoder family: Rover MEMS
+- Matched search terms: Rover MEMS sync
+
+#### rover MEMs decoder - Page 9
+- URL: https://speeduino.com/forum/viewtopic.php?p=51434#p51343
+- Date: Wed Jun 23, 2021 5:28 pm
+- Who posted it: Trevor Getty
+- Evidence type: tooth log / scope capture
+- Confidence: medium
+- Summary: Quick PS note. I have looked at my scope picture, and I am going to make sure the VR+ and VR- aren't mixed up. I see that as the VR approaches voltage should increase and as it leaves it should decrease - we see this for the crank signal. On cam it seems inverted - going down then up per tooth logger - so I will quickly confirm which is going into speedy.
+- Why it matters: Provides replay-test-relevant trigger traces. Includes hardware-signal evidence, useful for edge and polarity interpretation.
+- Replay-test details: Includes: cam Includes: crank Matched decoder family: Rover MEMS
+- Matched search terms: Rover MEMS sync
+
+#### rover MEMs decoder - Page 9
+- URL: https://speeduino.com/forum/viewtopic.php?p=51489#p51343
+- Date: Wed Jun 23, 2021 5:28 pm
+- Who posted it: Trevor Getty
+- Evidence type: tooth log / scope capture
+- Confidence: medium
+- Summary: Quick PS note. I have looked at my scope picture, and I am going to make sure the VR+ and VR- aren't mixed up. I see that as the VR approaches voltage should increase and as it leaves it should decrease - we see this for the crank signal. On cam it seems inverted - going down then up per tooth logger - so I will quickly confirm which is going into speedy.
+- Why it matters: Provides replay-test-relevant trigger traces. Includes hardware-signal evidence, useful for edge and polarity interpretation.
+- Replay-test details: Includes: cam Includes: crank Matched decoder family: Rover MEMS
+- Matched search terms: Rover MEMS trigger wheel
+
+#### rover MEMs decoder - Page 11
+- URL: https://speeduino.com/forum/viewtopic.php?p=66738#p51394
+- Date: Fri Jun 25, 2021 3:36 am
+- Who posted it: Trevor Getty
+- Evidence type: tooth log / scope capture
+- Confidence: medium
+- Summary: Timing is based on IGN not INJ. Confirm using actual spark output from a coil. All my scoped images, and logs have been taken using an HT capacitive pick up probe on Spark plug 1. I see where the incorrect assumption came in my comment above where I mention INJ1 incorrectly.
+- Why it matters: Provides replay-test-relevant trigger traces. Includes hardware-signal evidence, useful for edge and polarity interpretation.
+- Replay-test details: Includes: cam Includes: crank Includes: sync Matched decoder family: Rover MEMS
+- Matched search terms: Rover MEMS Speeduino trigger
+
+#### rover MEMs decoder - Page 11
+- URL: https://speeduino.com/forum/viewtopic.php?p=66740#p51394
+- Date: Fri Jun 25, 2021 3:36 am
+- Who posted it: Trevor Getty
+- Evidence type: tooth log / scope capture
+- Confidence: medium
+- Summary: Timing is based on IGN not INJ. Confirm using actual spark output from a coil. All my scoped images, and logs have been taken using an HT capacitive pick up probe on Spark plug 1. I see where the incorrect assumption came in my comment above where I mention INJ1 incorrectly.
+- Why it matters: Provides replay-test-relevant trigger traces. Includes hardware-signal evidence, useful for edge and polarity interpretation.
+- Replay-test details: Includes: cam Includes: crank Includes: sync Matched decoder family: Rover MEMS
+- Matched search terms: Rover MEMS Speeduino trigger
+
+#### rover MEMs decoder - Page 12
+- URL: https://speeduino.com/forum/viewtopic.php?p=66743#p51394
+- Date: Fri Jun 25, 2021 3:36 am
+- Who posted it: Trevor Getty
+- Evidence type: tooth log / scope capture
+- Confidence: medium
+- Summary: Timing is based on IGN not INJ. Confirm using actual spark output from a coil. All my scoped images, and logs have been taken using an HT capacitive pick up probe on Spark plug 1. I see where the incorrect assumption came in my comment above where I mention INJ1 incorrectly.
+- Why it matters: Provides replay-test-relevant trigger traces. Includes hardware-signal evidence, useful for edge and polarity interpretation.
+- Replay-test details: Includes: cam Includes: crank Includes: sync Matched decoder family: Rover MEMS
+- Matched search terms: Rover MEMS Speeduino trigger
+
+#### rover MEMs decoder - Page 4
+- URL: https://speeduino.com/forum/viewtopic.php?p=50630#p51394
+- Date: Fri Jun 25, 2021 3:36 am
+- Who posted it: Trevor Getty
+- Evidence type: tooth log / scope capture
+- Confidence: medium
+- Summary: Timing is based on IGN not INJ. Confirm using actual spark output from a coil. All my scoped images, and logs have been taken using an HT capacitive pick up probe on Spark plug 1. I see where the incorrect assumption came in my comment above where I mention INJ1 incorrectly.
+- Why it matters: Provides replay-test-relevant trigger traces. Includes hardware-signal evidence, useful for edge and polarity interpretation.
+- Replay-test details: Includes: cam Includes: crank Includes: sync Matched decoder family: Rover MEMS
+- Matched search terms: Rover MEMS trigger wheel
+
+#### rover MEMs decoder - Page 9
+- URL: https://speeduino.com/forum/viewtopic.php?p=51489#p51394
+- Date: Fri Jun 25, 2021 3:36 am
+- Who posted it: Trevor Getty
+- Evidence type: tooth log / scope capture
+- Confidence: medium
+- Summary: Timing is based on IGN not INJ. Confirm using actual spark output from a coil. All my scoped images, and logs have been taken using an HT capacitive pick up probe on Spark plug 1. I see where the incorrect assumption came in my comment above where I mention INJ1 incorrectly.
+- Why it matters: Provides replay-test-relevant trigger traces. Includes hardware-signal evidence, useful for edge and polarity interpretation.
+- Replay-test details: Includes: cam Includes: crank Includes: sync Matched decoder family: Rover MEMS
+- Matched search terms: Rover MEMS trigger wheel
+
+#### Classic Mini SPI Automtic
+- URL: https://speeduino.com/forum/viewtopic.php?p=52362#p52362
+- Date: Sat Aug 07, 2021 5:56 am
+- Who posted it: dazq
+- Evidence type: wheel description / maintainer explanation
+- Confidence: medium
+- Summary: Have a search on here there is a thread running for the testing of the rover mems trigger patterns. It is not yet included in the release download but there are links there to the test release. Yes this will mean you could use the OEM trigger wheel and not need a replacement 36-1. [minitw](./memberlist.php?mode=viewprofile&u=5145) wrote: [↑](./viewtopic.php?p=52360#p52360) Sat Aug 07, 2021 1:23 am Hi dazq, could you point where I can find the trigger for rover?
+- Why it matters: Maintainer explanation increases confidence in expected decoder behavior.
+- Replay-test details: Pattern references: 36-1, rover mems Includes: crank
+- Matched search terms: Rover MEMS Speeduino trigger
+
+#### Classic Mini SPI Automtic
+- URL: https://speeduino.com/forum/viewtopic.php?p=52360#p51599
+- Date: Sun Jul 04, 2021 7:54 am
+- Who posted it: dazq
+- Evidence type: wheel description / maintainer explanation
+- Confidence: medium
+- Summary: [Mightyminimods](./memberlist.php?mode=viewprofile&u=4810) wrote: [↑](./viewtopic.php?p=51582#p51582) Sat Jul 03, 2021 10:05 am Hi Folks, I am trying to find out if it is possible to: 1. Is it possible to use a Speeduino ECU with a single point injection classic mini? 2. Is it possible to use a Speeduino ECU with a Rover Mini SPI with an automatic gearbox (Ap2 transmission)?
+- Why it matters: Maintainer explanation increases confidence in expected decoder behavior.
+- Replay-test details: Pattern references: rover mems
+- Matched search terms: Rover MEMS crank
+
+#### Classic Mini SPI Automtic
+- URL: https://speeduino.com/forum/viewtopic.php?p=52362#p51599
+- Date: Sun Jul 04, 2021 7:54 am
+- Who posted it: dazq
+- Evidence type: wheel description / maintainer explanation
+- Confidence: medium
+- Summary: [Mightyminimods](./memberlist.php?mode=viewprofile&u=4810) wrote: [↑](./viewtopic.php?p=51582#p51582) Sat Jul 03, 2021 10:05 am Hi Folks, I am trying to find out if it is possible to: 1. Is it possible to use a Speeduino ECU with a single point injection classic mini? 2. Is it possible to use a Speeduino ECU with a Rover Mini SPI with an automatic gearbox (Ap2 transmission)?
+- Why it matters: Maintainer explanation increases confidence in expected decoder behavior.
+- Replay-test details: Pattern references: rover mems
+- Matched search terms: Rover MEMS Speeduino trigger
+
+#### Rover MGF K series MEMs 1.9 trigger pattern decoder
+- URL: https://speeduino.com/forum/viewtopic.php?p=51548#p51548
+- Date: Thu Jul 01, 2021 1:19 pm
+- Who posted it: Trevor Getty
+- Evidence type: scope capture / wheel description
+- Confidence: medium
+- Summary: Thanks very much Mike for raising this feature and testing branch. I've hopefully got each of the 4 patterns in various cars in my collection, but time maybe a different story So I'll defo test this for you as soon as my t16 has finished its speedy tuning. Should be within the next week. For anyone that is interested this decoder combination is for a dizzy based k series which will cover a lot of the early k series models that had mems1.9 ecus which are the type with the vacuum line coming out of them and pg1 gearbox and crank sensor only.
+- Why it matters: Includes hardware-signal evidence, useful for edge and polarity interpretation.
+- Replay-test details: Includes: crank Matched decoder family: Rover MEMS
+- Matched search terms: Rover MEMS scope
+
+#### Rover MGF K series MEMs 1.9 trigger pattern decoder
+- URL: https://speeduino.com/forum/viewtopic.php?p=51547#p51547
+- Date: Thu Jul 01, 2021 8:01 am
+- Who posted it: miker
+- Evidence type: wheel description
+- Confidence: low
+- Summary: So hopefully enough key words in the title for people to find in a search. The rover MEMS decoder routine should decode all 4 of the rover MEMS crank and cam patterns. This thread is to discuss / test the 1.9 version. Other threads will be created for other patterns as we get round to testing them.
+- Why it matters: Contains decoder-specific technical details that may support test coverage.
+- Replay-test details: Pattern references: RoverMEMS, rover MEMS Includes: cam Includes: crank
+- Matched search terms: Rover MEMS cam
+
+#### Rover MGF K series MEMs 1.9 trigger pattern decoder
+- URL: https://speeduino.com/forum/viewtopic.php?p=51547#p51548
+- Date: Thu Jul 01, 2021 1:19 pm
+- Who posted it: Trevor Getty
+- Evidence type: scope capture / wheel description
+- Confidence: low
+- Summary: Thanks very much Mike for raising this feature and testing branch. I've hopefully got each of the 4 patterns in various cars in my collection, but time maybe a different story So I'll defo test this for you as soon as my t16 has finished its speedy tuning. Should be within the next week. For anyone that is interested this decoder combination is for a dizzy based k series which will cover a lot of the early k series models that had mems1.9 ecus which are the type with the vacuum line coming out of them and pg1 gearbox and crank sensor only.
+- Why it matters: Includes hardware-signal evidence, useful for edge and polarity interpretation.
+- Replay-test details: Includes: crank Matched decoder family: Rover MEMS
+- Matched search terms: Rover MEMS cam
+
+#### Classic Mini SPI Automtic
+- URL: https://speeduino.com/forum/viewtopic.php?p=52360#p52360
+- Date: Sat Aug 07, 2021 1:23 am
+- Who posted it: minitw
+- Evidence type: wheel description
+- Confidence: low
+- Summary: Hi dazq, could you point where I can find the trigger for rover? Does it mean I could use the facotry crank sesnor without adding the 36-1 wheel? Thanks! dazq wrote: [Mightyminimods](./memberlist.php?mode=viewprofile&u=4810) wrote: [↑](./viewtopic.php?p=51582#p51582) Sat Jul 03, 2021 10:05 am Hi Folks, I am trying to find out if it is possible to: 1.
+- Why it matters: Contains decoder-specific technical details that may support test coverage.
+- Replay-test details: Pattern references: 36-1, rover mems Includes: crank
+- Matched search terms: Rover MEMS crank
+
+### Subaru 6/7
+
+#### Messing with Subaru 6/7 trigger - Page 2
+- URL: https://speeduino.com/forum/viewtopic.php?p=47863#p72272
+- Date: Sat Jun 28, 2025 10:08 pm
+- Who posted it: ImprezaRSC
+- Evidence type: tooth log / composite log / scope capture
+- Confidence: high
+- Summary: Hi, guys. I'll be noodling with this. I have the full version of TunerStudio and a pocket oscilloscope. A timing light will be ordered soon.
+- Why it matters: Provides replay-test-relevant trigger traces. Includes hardware-signal evidence, useful for edge and polarity interpretation.
+- Replay-test details: Includes: change Includes: crank Includes: sync Matched decoder family: Subaru 6/7
+- Matched search terms: Subaru 6/7 oscilloscope
+
+#### Messing with Subaru 6/7 trigger - Page 2
+- URL: https://speeduino.com/forum/viewtopic.php?p=48503#p72272
+- Date: Sat Jun 28, 2025 10:08 pm
+- Who posted it: ImprezaRSC
+- Evidence type: tooth log / composite log / scope capture
+- Confidence: high
+- Summary: Hi, guys. I'll be noodling with this. I have the full version of TunerStudio and a pocket oscilloscope. A timing light will be ordered soon.
+- Why it matters: Provides replay-test-relevant trigger traces. Includes hardware-signal evidence, useful for edge and polarity interpretation.
+- Replay-test details: Includes: change Includes: crank Includes: sync Matched decoder family: Subaru 6/7
+- Matched search terms: 36-2-1 tooth logger
+
+#### Messing with Subaru 6/7 trigger - Page 3
+- URL: https://speeduino.com/forum/viewtopic.php?p=49245#p72272
+- Date: Sat Jun 28, 2025 10:08 pm
+- Who posted it: ImprezaRSC
+- Evidence type: tooth log / composite log / scope capture
+- Confidence: high
+- Summary: Hi, guys. I'll be noodling with this. I have the full version of TunerStudio and a pocket oscilloscope. A timing light will be ordered soon.
+- Why it matters: Provides replay-test-relevant trigger traces. Includes hardware-signal evidence, useful for edge and polarity interpretation.
+- Replay-test details: Includes: change Includes: crank Includes: sync Matched decoder family: Subaru 6/7
+- Matched search terms: Subaru 6/7 tooth logger
+
+#### Messing with Subaru 6/7 trigger - Page 4
+- URL: https://speeduino.com/forum/viewtopic.php?p=52658#p72272
+- Date: Sat Jun 28, 2025 10:08 pm
+- Who posted it: ImprezaRSC
+- Evidence type: tooth log / composite log / scope capture
+- Confidence: high
+- Summary: Hi, guys. I'll be noodling with this. I have the full version of TunerStudio and a pocket oscilloscope. A timing light will be ordered soon.
+- Why it matters: Provides replay-test-relevant trigger traces. Includes hardware-signal evidence, useful for edge and polarity interpretation.
+- Replay-test details: Includes: change Includes: crank Includes: sync Matched decoder family: Subaru 6/7
+- Matched search terms: Subaru 6/7 scope
+
+#### Messing with Subaru 6/7 trigger - Page 4
+- URL: https://speeduino.com/forum/viewtopic.php?p=53341#p72272
+- Date: Sat Jun 28, 2025 10:08 pm
+- Who posted it: ImprezaRSC
+- Evidence type: tooth log / composite log / scope capture
+- Confidence: high
+- Summary: Hi, guys. I'll be noodling with this. I have the full version of TunerStudio and a pocket oscilloscope. A timing light will be ordered soon.
+- Why it matters: Provides replay-test-relevant trigger traces. Includes hardware-signal evidence, useful for edge and polarity interpretation.
+- Replay-test details: Includes: change Includes: crank Includes: sync Matched decoder family: Subaru 6/7
+- Matched search terms: Subaru 6/7 scope
+
+#### Messing with Subaru 6/7 trigger - Page 4
+- URL: https://speeduino.com/forum/viewtopic.php?p=55533#p72272
+- Date: Sat Jun 28, 2025 10:08 pm
+- Who posted it: ImprezaRSC
+- Evidence type: tooth log / composite log / scope capture
+- Confidence: high
+- Summary: Hi, guys. I'll be noodling with this. I have the full version of TunerStudio and a pocket oscilloscope. A timing light will be ordered soon.
+- Why it matters: Provides replay-test-relevant trigger traces. Includes hardware-signal evidence, useful for edge and polarity interpretation.
+- Replay-test details: Includes: change Includes: crank Includes: sync Matched decoder family: Subaru 6/7
+- Matched search terms: Subaru 6/7 sync
+
+#### VR-polarity and rising/falling edge?
+- URL: https://speeduino.com/forum/viewtopic.php?p=47882#p47882
+- Date: Fri Jan 29, 2021 10:43 am
+- Who posted it: pazi88
+- Evidence type: composite log / scope capture / wheel description
+- Confidence: high
+- Summary: [Yoosyn](./memberlist.php?mode=viewprofile&u=1591) wrote: [↑](./viewtopic.php?p=47878#p47878) Thu Jan 28, 2021 10:21 pm Subaru 6/7 with two VRs. Both VR- are by OEM tied together to the ground. Currently it is working with RISING edge (MAX conditioner) and timing is spot on, but there is about 4degree drift at 4-5k rpm. When I change to FALLING timing is 10-12 degree off.
+- Why it matters: Provides replay-test-relevant trigger traces. Includes hardware-signal evidence, useful for edge and polarity interpretation. Discusses sync-loss conditions that can inform negative test cases.
+- Replay-test details: Pattern references: Subaru 6/7 Includes: rising edge Includes: change Includes: sync Includes: sync loss
+- Matched search terms: Subaru 6/7 scope
+
+#### Messing with Subaru 6/7 trigger - Page 3
+- URL: https://speeduino.com/forum/viewtopic.php?p=49274#p72272
+- Date: Sat Jun 28, 2025 10:08 pm
+- Who posted it: ImprezaRSC
+- Evidence type: tooth log / composite log / scope capture
+- Confidence: high
+- Summary: Hi, guys. I'll be noodling with this. I have the full version of TunerStudio and a pocket oscilloscope. A timing light will be ordered soon.
+- Why it matters: Provides replay-test-relevant trigger traces. Includes hardware-signal evidence, useful for edge and polarity interpretation.
+- Replay-test details: Includes: change Includes: crank Includes: sync Matched decoder family: Subaru 6/7
+- Matched search terms: Subaru 6/7 trigger wheel
+
+#### Messing with Subaru 6/7 trigger - Page 4
+- URL: https://speeduino.com/forum/viewtopic.php?p=55418#p72272
+- Date: Sat Jun 28, 2025 10:08 pm
+- Who posted it: ImprezaRSC
+- Evidence type: tooth log / composite log / scope capture
+- Confidence: high
+- Summary: Hi, guys. I'll be noodling with this. I have the full version of TunerStudio and a pocket oscilloscope. A timing light will be ordered soon.
+- Why it matters: Provides replay-test-relevant trigger traces. Includes hardware-signal evidence, useful for edge and polarity interpretation.
+- Replay-test details: Includes: change Includes: crank Includes: sync Matched decoder family: Subaru 6/7
+- Matched search terms: Subaru 6/7 Speeduino trigger
+
+#### Messing with Subaru 6/7 trigger - Page 4
+- URL: https://speeduino.com/forum/viewtopic.php?p=56026#p72272
+- Date: Sat Jun 28, 2025 10:08 pm
+- Who posted it: ImprezaRSC
+- Evidence type: tooth log / composite log / scope capture
+- Confidence: high
+- Summary: Hi, guys. I'll be noodling with this. I have the full version of TunerStudio and a pocket oscilloscope. A timing light will be ordered soon.
+- Why it matters: Provides replay-test-relevant trigger traces. Includes hardware-signal evidence, useful for edge and polarity interpretation.
+- Replay-test details: Includes: change Includes: crank Includes: sync Matched decoder family: Subaru 6/7
+- Matched search terms: Subaru 6/7 Speeduino trigger
+
+#### Messing with Subaru 6/7 trigger - Page 5
+- URL: https://speeduino.com/forum/viewtopic.php?p=72272#p72272
+- Date: Sat Jun 28, 2025 10:08 pm
+- Who posted it: ImprezaRSC
+- Evidence type: tooth log / composite log / scope capture
+- Confidence: high
+- Summary: Hi, guys. I'll be noodling with this. I have the full version of TunerStudio and a pocket oscilloscope. A timing light will be ordered soon.
+- Why it matters: Provides replay-test-relevant trigger traces. Includes hardware-signal evidence, useful for edge and polarity interpretation.
+- Replay-test details: Includes: change Includes: crank Includes: sync Matched decoder family: Subaru 6/7
+- Matched search terms: Subaru 6/7 Speeduino trigger
+
+#### First time setup no crank signal
+- URL: https://speeduino.com/forum/viewtopic.php?p=55387#p55387
+- Date: Fri Feb 18, 2022 5:43 am
+- Who posted it: mattt_damon
+- Evidence type: composite log / tune file / wheel description
+- Confidence: high
+- Summary: [PSIG](./memberlist.php?mode=viewprofile&u=149) wrote: [↑](./viewtopic.php?p=55376#p55376) Thu Feb 17, 2022 5:25 pm [jonbill](./memberlist.php?mode=viewprofile&u=1981) wrote: [↑](./viewtopic.php?p=55254#p55254) Thu Feb 10, 2022 8:02 am please post a log of your tune and a log. Please do this. It is looking a bit like you have some bad connections, incorrect settings, or your tune is corrupted. Please post the requested info, and then while you are waiting, I would [do this](https://speeduino.com/forum/viewtopic.php?f=19&t=5082&p=54821#p54821) .
+- Why it matters: Provides replay-test-relevant trigger traces.
+- Replay-test details: Pattern references: Subaru 6/7 Includes: rising edge Includes: cam Includes: crank Image or capture links: 2 Attachments: 2022-02-18_05.06.28.msq -> https://speeduino.com/forum/download/file.php?id=9358; 2022-02-18_05.32.14.csv -> https://speeduino.com/forum/download/file.php?id=9357
+- Matched search terms: Subaru 6/7 composite logger
+
+#### locost roadster 2.3turbo lima - Page 12
+- URL: https://speeduino.com/forum/viewtopic.php?p=37342#p27892
+- Date: Thu Aug 16, 2018 2:43 am
+- Who posted it: Dalenutbrown
+- Evidence type: scope capture / tune file
+- Confidence: high
+- Summary: Well I just somehow deleted my entire long post so here goes again, set rpm1 and ign1 to the scope and locked timing spout out and locked in speeduino. All looked in synce It also looked like it was in sync., I then attached spout and sync was lost as far as I could see. I found I could lock to a negative deg number and bring timing below base timing. It seems like the advance asked for is multiplied, minor adjustments = bigger changes.
+- Why it matters: Includes hardware-signal evidence, useful for edge and polarity interpretation.
+- Replay-test details: Includes: change Includes: sync Matched decoder family: Subaru 6/7 Image or capture links: 1 Attachments: 2018-08-15_21.58.48.msq -> https://speeduino.com/forum/download/file.php?id=3637
+- Matched search terms: Subaru 6/7 scope
+
+#### locost roadster 2.3turbo lima - Page 12
+- URL: https://speeduino.com/forum/viewtopic.php?p=37342#p27625
+- Date: Tue Aug 07, 2018 4:50 pm
+- Who posted it: PSIG
+- Evidence type: tooth log / scope capture / tune file
+- Confidence: high
+- Summary: I would first check your Hall sensor magnet for any metal dust or trash that can upset operation. As TFI runs with all 12V signals, also verify your ignition output jumper is set for 12V. If you have a registered version of TunerStudio, grab a tooth log with and without SPOUT connected for any clues; or use a 'scope to see the same info. TFI background trivia : TFI is a very simple system, surprisingly similar to others such as the GM HEI, and has three differences to "normal" Hall ignition systems that make it a mild stroke of genius.
+- Why it matters: Includes hardware-signal evidence, useful for edge and polarity interpretation.
+- Replay-test details: Includes: change Includes: crank Matched decoder family: Subaru 6/7 Image or capture links: 2 Attachments: 2018-08-06_19.45.57.msl -> https://speeduino.com/forum/download/file.php?id=3577; CurrentTune.msq -> https://speeduino.com/forum/download/file.php?id=3576
+- Matched search terms: Subaru 6/7 scope
+
+#### locost roadster 2.3turbo lima - Page 12
+- URL: https://speeduino.com/forum/viewtopic.php?p=37342#p27714
+- Date: Thu Aug 09, 2018 7:56 pm
+- Who posted it: PSIG
+- Evidence type: tooth log / scope capture
+- Confidence: high
+- Summary: [Dalenutbrown](./memberlist.php?mode=viewprofile&u=1457) wrote: [↑](./viewtopic.php?p=27712#p27712) Thu Aug 09, 2018 7:04 pm Is it possible with tfi to get timing below the setting of 10btdc if the base timing is 10 btdc. No. Minimum timing is whatever the base timing is. [EDIT - I should say, according to the documentation, and with the TFI modules I have used personally.
+- Why it matters: Includes hardware-signal evidence, useful for edge and polarity interpretation.
+- Replay-test details: Includes: crank Matched decoder family: Subaru 6/7
+- Matched search terms: Subaru 6/7 scope
+
+#### Subaru EJ20G do not start
+- URL: https://speeduino.com/forum/viewtopic.php?p=62555#p62555
+- Date: Thu Apr 20, 2023 3:59 pm
+- Who posted it: cyrille
+- Evidence type: composite log / tune file / wheel description
+- Confidence: high
+- Summary: Good morning, Above all, excuse me for the faults, I am French and a bit lazy with languages. My name is Cyrille, I live in the south of France. I have a 1998 Subaru WRX which drive perfectly with an Apexi Power FC, but I would like to try the Speeduino for the challenge. I have been registered on the forum for some time, I bought a Speeduino v0.4.4c some time ago with a max conditioner.
+- Why it matters: Provides replay-test-relevant trigger traces.
+- Replay-test details: Pattern references: Subaru 6/7 Image or capture links: 4 Attachments: 1997 ej20k jdm ecu wiring ver3-4.pdf -> https://speeduino.com/forum/download/file.php?id=11357; 2023-04-20_15.12.25.csv -> https://speeduino.com/forum/download/file.php?id=11356; 2023-04-21_08.16.46.csv -> https://speeduino.com/forum/download/file.php?id=11360
+- Matched search terms: Subaru 6/7 composite logger
+
+#### Fresh build, no sync. Subaru EJ20.
+- URL: https://speeduino.com/forum/viewtopic.php?p=64751#p64768
+- Date: Wed Sep 06, 2023 3:03 am
+- Who posted it: rozap
+- Evidence type: composite log / scope capture / wheel description
+- Confidence: high
+- Summary: PSIG wrote: Polarity is important. Your 'scope traces appear to be tested in correct polarity. If connected in same polarity to Speeduino, the Trigger Edge settings with inverting MAX conditioners is Rising , and with non-inverting conditioners such as the DSC is Falling . These combinations are required for the decoder to read the signals and gaps correctly.
+- Why it matters: Provides replay-test-relevant trigger traces. Includes hardware-signal evidence, useful for edge and polarity interpretation.
+- Replay-test details: Pattern references: subaru 6/7 Includes: crank
+- Matched search terms: 36-2-2-2 scope
+
+#### Fresh build, no sync. Subaru EJ20.
+- URL: https://speeduino.com/forum/viewtopic.php?p=64768#p64768
+- Date: Wed Sep 06, 2023 3:03 am
+- Who posted it: rozap
+- Evidence type: composite log / scope capture / wheel description
+- Confidence: high
+- Summary: PSIG wrote: Polarity is important. Your 'scope traces appear to be tested in correct polarity. If connected in same polarity to Speeduino, the Trigger Edge settings with inverting MAX conditioners is Rising , and with non-inverting conditioners such as the DSC is Falling . These combinations are required for the decoder to read the signals and gaps correctly.
+- Why it matters: Provides replay-test-relevant trigger traces. Includes hardware-signal evidence, useful for edge and polarity interpretation.
+- Replay-test details: Pattern references: subaru 6/7 Includes: crank
+- Matched search terms: Subaru 6/7 Speeduino trigger
+
+#### Messing with Subaru 6/7 trigger - Page 2
+- URL: https://speeduino.com/forum/viewtopic.php?p=47863#p47872
+- Date: Thu Jan 28, 2021 5:44 pm
+- Who posted it: Yoosyn
+- Evidence type: scope capture / wheel description
+- Confidence: medium
+- Summary: jonathanlawley wrote: thats strange that its no different. Ive just ordered an oscilloscope to see if I can make a different type of filter with the code. In the mean time I made this little loop that should (hopefully) find the correct filter value for you. I will try it on saturday Declaration int filt = 10; should go to the up declaration lines of decoders.ino?
+- Why it matters: Includes hardware-signal evidence, useful for edge and polarity interpretation.
+- Replay-test details: Includes: rising edge Includes: change Includes: crank Includes: cas Matched decoder family: Subaru 6/7
+- Matched search terms: Subaru 6/7 oscilloscope
+
+#### Messing with Subaru 6/7 trigger - Page 3
+- URL: https://speeduino.com/forum/viewtopic.php?p=49274#p47872
+- Date: Thu Jan 28, 2021 5:44 pm
+- Who posted it: Yoosyn
+- Evidence type: scope capture / wheel description
+- Confidence: medium
+- Summary: jonathanlawley wrote: thats strange that its no different. Ive just ordered an oscilloscope to see if I can make a different type of filter with the code. In the mean time I made this little loop that should (hopefully) find the correct filter value for you. I will try it on saturday Declaration int filt = 10; should go to the up declaration lines of decoders.ino?
+- Why it matters: Includes hardware-signal evidence, useful for edge and polarity interpretation.
+- Replay-test details: Includes: rising edge Includes: change Includes: crank Includes: cas Matched decoder family: Subaru 6/7
+- Matched search terms: Subaru 6/7 trigger wheel
+
+#### Messing with Subaru 6/7 trigger - Page 4
+- URL: https://speeduino.com/forum/viewtopic.php?p=52658#p47872
+- Date: Thu Jan 28, 2021 5:44 pm
+- Who posted it: Yoosyn
+- Evidence type: scope capture / wheel description
+- Confidence: medium
+- Summary: jonathanlawley wrote: thats strange that its no different. Ive just ordered an oscilloscope to see if I can make a different type of filter with the code. In the mean time I made this little loop that should (hopefully) find the correct filter value for you. I will try it on saturday Declaration int filt = 10; should go to the up declaration lines of decoders.ino?
+- Why it matters: Includes hardware-signal evidence, useful for edge and polarity interpretation.
+- Replay-test details: Includes: rising edge Includes: change Includes: crank Includes: cas Matched decoder family: Subaru 6/7
+- Matched search terms: Subaru 6/7 scope
+
+#### Messing with Subaru 6/7 trigger - Page 4
+- URL: https://speeduino.com/forum/viewtopic.php?p=53341#p47872
+- Date: Thu Jan 28, 2021 5:44 pm
+- Who posted it: Yoosyn
+- Evidence type: scope capture / wheel description
+- Confidence: medium
+- Summary: jonathanlawley wrote: thats strange that its no different. Ive just ordered an oscilloscope to see if I can make a different type of filter with the code. In the mean time I made this little loop that should (hopefully) find the correct filter value for you. I will try it on saturday Declaration int filt = 10; should go to the up declaration lines of decoders.ino?
+- Why it matters: Includes hardware-signal evidence, useful for edge and polarity interpretation.
+- Replay-test details: Includes: rising edge Includes: change Includes: crank Includes: cas Matched decoder family: Subaru 6/7
+- Matched search terms: Subaru 6/7 scope
+
+#### Subaru EJ20G do not start
+- URL: https://speeduino.com/forum/viewtopic.php?p=62555#p62556
+- Date: Thu Apr 20, 2023 5:59 pm
+- Who posted it: miker
+- Evidence type: tooth log / composite log
+- Confidence: medium
+- Summary: You may have a problem with noise. The very small teeth in the log file could be electrical noise. You may need better shielded cable between the sensor and Speeduino. Remember to only ground the shielding at the Speeduino ground.
+- Why it matters: Provides replay-test-relevant trigger traces.
+- Replay-test details: Matched decoder family: Subaru 6/7
+- Matched search terms: Subaru 6/7 composite logger
+
+#### Subaru EJ20G do not start
+- URL: https://speeduino.com/forum/viewtopic.php?p=62555#p62560
+- Date: Thu Apr 20, 2023 7:08 pm
+- Who posted it: cyrille
+- Evidence type: tooth log / composite log
+- Confidence: medium
+- Summary: [miker](./memberlist.php?mode=viewprofile&u=2011) wrote: [↑](./viewtopic.php?p=62556#p62556) Thu Apr 20, 2023 5:59 pm You may have a problem with noise. The very small teeth in the log file could be electrical noise. You may need better shielded cable between the sensor and Speeduino. Remember to only ground the shielding at the Speeduino ground.
+- Why it matters: Provides replay-test-relevant trigger traces.
+- Replay-test details: Matched decoder family: Subaru 6/7
+- Matched search terms: Subaru 6/7 composite logger
+
+#### First time setup no crank signal
+- URL: https://speeduino.com/forum/viewtopic.php?p=55387#p55250
+- Date: Thu Feb 10, 2022 6:32 am
+- Who posted it: mattt_damon
+- Evidence type: tooth log / tune file
+- Confidence: medium
+- Summary: Hey guys, I bought an assembled speeduino 0.4 from speeduino.com, and this VR conditioner diy-efi.co.uk/product/vr_conditioner I'm trying to get the minimum wiring working to read the crank sensor, but in TunerStudio it records nothing in the tooth logger, and on the Gauge Cluster view it reads 'not cranking'. I've attached a photo of my setup. Any ideas what I could be doing wrong? Photo explanation: - Red and black wires supply the green terminal 12v - The blue wire supplies 5 volts (regulated down from the 12v) - The green wire connected to ground - Brown wire is connected to Crank sensor + (verified with multimeter on actual sensor plug) - White wire is connected to Crank sensor - (verified with multimeter on actual sensor plug) - I've set JP2 to TSC - Tried rising and falling edge input - Checked VR sensor with multimeter and the soldered pins have continuity to the 5v, Ground, Crank positive and Crank negative - Car is a 2004 au/nz market impreza, and the manual says the crank sensor voltage goes from +6v to -6v
+- Why it matters: Provides replay-test-relevant trigger traces.
+- Replay-test details: Includes: falling edge Includes: crank Matched decoder family: Subaru 6/7 Image or capture links: 4 Attachments: 2022-02-11_06.17.32.txt -> https://speeduino.com/forum/download/file.php?id=9345; 2022-02-11_06.23.04.msq -> https://speeduino.com/forum/download/file.php?id=9344; 2022-02-18_05.06.28.msq -> https://speeduino.com/forum/download/file.php?id=9358
+- Matched search terms: Subaru 6/7 composite logger
+
+#### Subaru EJ20G do not start - Page 4
+- URL: https://speeduino.com/forum/viewtopic.php?p=62621#p62621
+- Date: Sun Apr 23, 2023 9:04 pm
+- Who posted it: miker
+- Evidence type: image attachment
+- Confidence: medium
+- Summary: updated code here -> [https://github.com/mike501/speeduino/tree/Subaru67Fixes](https://github.com/mike501/speeduino/tree/Subaru67Fixes) Instructions attached (to use this you'll have to download a compile and compile the firmware) This fixes/changes - resync (the code always does a resync now) adds error checking / reporting errors (sync loss counter) tries to recover syncloss on nearly every occurance - should within half a revolution get sync back adds noise filtering for every tooth - due to different tooth gaps, this isn't a brilliant implementation but its better than nothing. It may need more work depending how much the rpm changes per 180 degrees. no promises it will work on a real engine, but it works against the ardustim development version of the 6/7 decoder. Please make backups of your current tune before starting.
+- Why it matters: Discusses sync-loss conditions that can inform negative test cases.
+- Replay-test details: Includes: change Includes: sync Includes: sync loss Matched decoder family: Subaru 6/7 Image or capture links: 1 Attachments: Speeduino Installing custom firmware.docx -> https://speeduino.com/forum/download/file.php?id=11374
+- Matched search terms: Subaru 6/7 sync
+
+#### Messing with Subaru 6/7 trigger - Page 2
+- URL: https://speeduino.com/forum/viewtopic.php?p=48503#p47872
+- Date: Thu Jan 28, 2021 5:44 pm
+- Who posted it: Yoosyn
+- Evidence type: scope capture / wheel description
+- Confidence: medium
+- Summary: jonathanlawley wrote: thats strange that its no different. Ive just ordered an oscilloscope to see if I can make a different type of filter with the code. In the mean time I made this little loop that should (hopefully) find the correct filter value for you. I will try it on saturday Declaration int filt = 10; should go to the up declaration lines of decoders.ino?
+- Why it matters: Includes hardware-signal evidence, useful for edge and polarity interpretation.
+- Replay-test details: Includes: rising edge Includes: change Includes: crank Includes: cas Matched decoder family: Subaru 6/7
+- Matched search terms: 36-2-1 tooth logger
+
+#### Messing with Subaru 6/7 trigger - Page 3
+- URL: https://speeduino.com/forum/viewtopic.php?p=49245#p47872
+- Date: Thu Jan 28, 2021 5:44 pm
+- Who posted it: Yoosyn
+- Evidence type: scope capture / wheel description
+- Confidence: medium
+- Summary: jonathanlawley wrote: thats strange that its no different. Ive just ordered an oscilloscope to see if I can make a different type of filter with the code. In the mean time I made this little loop that should (hopefully) find the correct filter value for you. I will try it on saturday Declaration int filt = 10; should go to the up declaration lines of decoders.ino?
+- Why it matters: Includes hardware-signal evidence, useful for edge and polarity interpretation.
+- Replay-test details: Includes: rising edge Includes: change Includes: crank Includes: cas Matched decoder family: Subaru 6/7
+- Matched search terms: Subaru 6/7 tooth logger
+
+#### Messing with Subaru 6/7 trigger - Page 4
+- URL: https://speeduino.com/forum/viewtopic.php?p=55418#p47872
+- Date: Thu Jan 28, 2021 5:44 pm
+- Who posted it: Yoosyn
+- Evidence type: scope capture / wheel description
+- Confidence: medium
+- Summary: jonathanlawley wrote: thats strange that its no different. Ive just ordered an oscilloscope to see if I can make a different type of filter with the code. In the mean time I made this little loop that should (hopefully) find the correct filter value for you. I will try it on saturday Declaration int filt = 10; should go to the up declaration lines of decoders.ino?
+- Why it matters: Includes hardware-signal evidence, useful for edge and polarity interpretation.
+- Replay-test details: Includes: rising edge Includes: change Includes: crank Includes: cas Matched decoder family: Subaru 6/7
+- Matched search terms: Subaru 6/7 Speeduino trigger
+
+#### Messing with Subaru 6/7 trigger - Page 4
+- URL: https://speeduino.com/forum/viewtopic.php?p=55533#p47872
+- Date: Thu Jan 28, 2021 5:44 pm
+- Who posted it: Yoosyn
+- Evidence type: scope capture / wheel description
+- Confidence: medium
+- Summary: jonathanlawley wrote: thats strange that its no different. Ive just ordered an oscilloscope to see if I can make a different type of filter with the code. In the mean time I made this little loop that should (hopefully) find the correct filter value for you. I will try it on saturday Declaration int filt = 10; should go to the up declaration lines of decoders.ino?
+- Why it matters: Includes hardware-signal evidence, useful for edge and polarity interpretation.
+- Replay-test details: Includes: rising edge Includes: change Includes: crank Includes: cas Matched decoder family: Subaru 6/7
+- Matched search terms: Subaru 6/7 sync
+
+#### Messing with Subaru 6/7 trigger - Page 4
+- URL: https://speeduino.com/forum/viewtopic.php?p=56026#p47872
+- Date: Thu Jan 28, 2021 5:44 pm
+- Who posted it: Yoosyn
+- Evidence type: scope capture / wheel description
+- Confidence: medium
+- Summary: jonathanlawley wrote: thats strange that its no different. Ive just ordered an oscilloscope to see if I can make a different type of filter with the code. In the mean time I made this little loop that should (hopefully) find the correct filter value for you. I will try it on saturday Declaration int filt = 10; should go to the up declaration lines of decoders.ino?
+- Why it matters: Includes hardware-signal evidence, useful for edge and polarity interpretation.
+- Replay-test details: Includes: rising edge Includes: change Includes: crank Includes: cas Matched decoder family: Subaru 6/7
+- Matched search terms: Subaru 6/7 Speeduino trigger
+
+#### Messing with Subaru 6/7 trigger - Page 5
+- URL: https://speeduino.com/forum/viewtopic.php?p=72272#p47872
+- Date: Thu Jan 28, 2021 5:44 pm
+- Who posted it: Yoosyn
+- Evidence type: scope capture / wheel description
+- Confidence: medium
+- Summary: jonathanlawley wrote: thats strange that its no different. Ive just ordered an oscilloscope to see if I can make a different type of filter with the code. In the mean time I made this little loop that should (hopefully) find the correct filter value for you. I will try it on saturday Declaration int filt = 10; should go to the up declaration lines of decoders.ino?
+- Why it matters: Includes hardware-signal evidence, useful for edge and polarity interpretation.
+- Replay-test details: Includes: rising edge Includes: change Includes: crank Includes: cas Matched decoder family: Subaru 6/7
+- Matched search terms: Subaru 6/7 Speeduino trigger
+
+#### Messing with Subaru 6/7 trigger - Page 2
+- URL: https://speeduino.com/forum/viewtopic.php?p=47863#p47863
+- Date: Thu Jan 28, 2021 1:07 am
+- Who posted it: jonathanlawley
+- Evidence type: scope capture
+- Confidence: medium
+- Summary: thats strange that its no different. Ive just ordered an oscilloscope to see if I can make a different type of filter with the code. In the mean time I made this little loop that should (hopefully) find the correct filter value for you. Code: [Select all](#) ``` if(secondaryToothCount > 1) { triggerSecFilterTime = curGap2 >> filt; if(filt > 1 ){ filt--; } } ``` the only thing extra you have to do is just declare 'filt' at the top of the code like Code: [Select all](#) ``` int filt = 10; ``` thanks for taking the videos it has been too wet to go outside here so I haven't tested it my self
+- Why it matters: Includes hardware-signal evidence, useful for edge and polarity interpretation.
+- Replay-test details: Matched decoder family: Subaru 6/7
+- Matched search terms: Subaru 6/7 oscilloscope
+
+#### Messing with Subaru 6/7 trigger - Page 4
+- URL: https://speeduino.com/forum/viewtopic.php?p=52658#p47863
+- Date: Thu Jan 28, 2021 1:07 am
+- Who posted it: jonathanlawley
+- Evidence type: scope capture
+- Confidence: medium
+- Summary: thats strange that its no different. Ive just ordered an oscilloscope to see if I can make a different type of filter with the code. In the mean time I made this little loop that should (hopefully) find the correct filter value for you. Code: [Select all](#) ``` if(secondaryToothCount > 1) { triggerSecFilterTime = curGap2 >> filt; if(filt > 1 ){ filt--; } } ``` the only thing extra you have to do is just declare 'filt' at the top of the code like Code: [Select all](#) ``` int filt = 10; ``` thanks for taking the videos it has been too wet to go outside here so I haven't tested it my self
+- Why it matters: Includes hardware-signal evidence, useful for edge and polarity interpretation.
+- Replay-test details: Matched decoder family: Subaru 6/7
+- Matched search terms: Subaru 6/7 scope
+
+#### Messing with Subaru 6/7 trigger - Page 4
+- URL: https://speeduino.com/forum/viewtopic.php?p=53341#p47863
+- Date: Thu Jan 28, 2021 1:07 am
+- Who posted it: jonathanlawley
+- Evidence type: scope capture
+- Confidence: medium
+- Summary: thats strange that its no different. Ive just ordered an oscilloscope to see if I can make a different type of filter with the code. In the mean time I made this little loop that should (hopefully) find the correct filter value for you. Code: [Select all](#) ``` if(secondaryToothCount > 1) { triggerSecFilterTime = curGap2 >> filt; if(filt > 1 ){ filt--; } } ``` the only thing extra you have to do is just declare 'filt' at the top of the code like Code: [Select all](#) ``` int filt = 10; ``` thanks for taking the videos it has been too wet to go outside here so I haven't tested it my self
+- Why it matters: Includes hardware-signal evidence, useful for edge and polarity interpretation.
+- Replay-test details: Matched decoder family: Subaru 6/7
+- Matched search terms: Subaru 6/7 scope
+
+#### Subaru EJ20G do not start - Page 4
+- URL: https://speeduino.com/forum/viewtopic.php?p=62621#p62880
+- Date: Sat May 06, 2023 4:32 pm
+- Who posted it: cyrille
+- Evidence type: image attachment
+- Confidence: medium
+- Summary: Hello everyone. I spent some time on the speeduino today. What I did was put the VR1+ and VR1-, VR2+ and VR2- cables back in the place they should be according to the diagram on board v04. I finally managed to compile your code (miker) The car starts better, I put two logs in attachment.
+- Why it matters: Discusses sync-loss conditions that can inform negative test cases.
+- Replay-test details: Includes: sync Includes: sync loss Matched decoder family: Subaru 6/7 Image or capture links: 2 Attachments: 2023-05-06_16.24.05.zip -> https://speeduino.com/forum/download/file.php?id=11444; 2023-05-06_16.25.10.zip -> https://speeduino.com/forum/download/file.php?id=11443
+- Matched search terms: Subaru 6/7 sync
+
+#### Subaru EJ20G do not start - Page 4
+- URL: https://speeduino.com/forum/viewtopic.php?p=62621#p62888
+- Date: Sat May 06, 2023 9:31 pm
+- Who posted it: miker
+- Evidence type: composite log / tune file / wheel description
+- Confidence: medium
+- Summary: Great to hear its working. Could you please do a high speed logger and select composite log, then save the output. I can use that to prove the pattern I used to write /test the software is correct. I want to understand the sync loss.
+- Why it matters: Discusses sync-loss conditions that can inform negative test cases.
+- Replay-test details: Includes: sync Includes: sync loss Matched decoder family: Subaru 6/7 Image or capture links: 4 Attachments: 2023-05-08_10.52.05.zip -> https://speeduino.com/forum/download/file.php?id=11462; 2023-05-08_10.53.22.zip -> https://speeduino.com/forum/download/file.php?id=11463; CurrentTune.msq -> https://speeduino.com/forum/download/file.php?id=11464
+- Matched search terms: Subaru 6/7 sync
+
+#### Fresh build, no sync. Subaru EJ20.
+- URL: https://speeduino.com/forum/viewtopic.php?p=64768#p64770
+- Date: Wed Sep 06, 2023 5:55 am
+- Who posted it: rozap
+- Evidence type: composite log / scope capture
+- Confidence: medium
+- Summary: Digging into the code a bit, would I be right in thinking that this line sets the flag that the composite logger ultimately uses to display the blue square wave? Code: [Select all](#) ``` BIT_SET(decoderState, BIT_DECODER_VALID_TRIGGER); ``` [https://github.com/noisymime/speeduino/ ... .ino#L3587](https://github.com/noisymime/speeduino/blob/master/speeduino/decoders.ino#L3587) If so, then that'd narrow things down a bit since I know at this point that there are trigger pulses but we never enter a statement where hasSync is set to true. According to the scope, it's doing one rotation every (approx) 300ms, so about 200 RPM.
+- Why it matters: Provides replay-test-relevant trigger traces. Includes hardware-signal evidence, useful for edge and polarity interpretation.
+- Replay-test details: Includes: sync Matched decoder family: Subaru 6/7
+- Matched search terms: Subaru 6/7 Speeduino trigger
+
+#### VR-polarity and rising/falling edge?
+- URL: https://speeduino.com/forum/viewtopic.php?p=47882#p47822
+- Date: Mon Jan 25, 2021 10:51 pm
+- Who posted it: PSIG
+- Evidence type: scope capture / wheel description
+- Confidence: medium
+- Summary: Thanks for the description, and may I suggest in looking for simple clarity for new users; but it may be confusing to readers with unclear images to see the relationships? For examples, the first image of VR polarity (pos and neg) does not clearly show the correct one to use (modified example below), and the 'scope image shows both reverse polarity (not desired) and non-inverted conditioner output (not MAX type, if that was your intent). Synopsis - we want to read the physical falling edge of the teeth for proper pattern timing. With correct VR polarity, the VR signal should also be falling voltage with the falling tooth edge.
+- Why it matters: Includes hardware-signal evidence, useful for edge and polarity interpretation.
+- Replay-test details: Includes: rising edge Includes: falling edge Includes: sync Includes: cas Matched decoder family: Subaru 6/7
+- Matched search terms: Subaru 6/7 scope
+
+#### Messing with Subaru 6/7 trigger - Page 3
+- URL: https://speeduino.com/forum/viewtopic.php?p=49274#p48503
+- Date: Sat Feb 20, 2021 11:18 pm
+- Who posted it: miker
+- Evidence type: composite log / wheel description
+- Confidence: medium
+- Summary: Just seen this thread and wondered if i could help - i'm absolutely not an expert but have been playing with trigger patterns recently and fancy looking at something different. Having read through this thread without any other background a few things spring to mind, you're playing with rising / falling. I was going to mention the page pazi88 has done but i've seen you've recently linked to that. As I understand it the high speed logger / composite logger should help identify what settings you should use and would be keen to see the output.
+- Why it matters: Provides replay-test-relevant trigger traces.
+- Replay-test details: Pattern references: 36-1, 60-2 Includes: change Matched decoder family: Subaru 6/7
+- Matched search terms: Subaru 6/7 trigger wheel
+
+#### Subaru EJ20G do not start
+- URL: https://speeduino.com/forum/viewtopic.php?p=62555#p62621
+- Date: Sun Apr 23, 2023 9:04 pm
+- Who posted it: miker
+- Evidence type: image attachment
+- Confidence: medium
+- Summary: updated code here -> [https://github.com/mike501/speeduino/tree/Subaru67Fixes](https://github.com/mike501/speeduino/tree/Subaru67Fixes) Instructions attached (to use this you'll have to download a compile and compile the firmware) This fixes/changes - resync (the code always does a resync now) adds error checking / reporting errors (sync loss counter) tries to recover syncloss on nearly every occurance - should within half a revolution get sync back adds noise filtering for every tooth - due to different tooth gaps, this isn't a brilliant implementation but its better than nothing. It may need more work depending how much the rpm changes per 180 degrees. no promises it will work on a real engine, but it works against the ardustim development version of the 6/7 decoder. Please make backups of your current tune before starting.
+- Why it matters: Discusses sync-loss conditions that can inform negative test cases.
+- Replay-test details: Includes: change Includes: sync Includes: sync loss Matched decoder family: Subaru 6/7 Image or capture links: 1 Attachments: Speeduino Installing custom firmware.docx -> https://speeduino.com/forum/download/file.php?id=11374
+- Matched search terms: Subaru 6/7 composite logger
+
+#### Subaru EJ20G do not start - Page 7
+- URL: https://speeduino.com/forum/viewtopic.php?p=63170#p62621
+- Date: Sun Apr 23, 2023 9:04 pm
+- Who posted it: miker
+- Evidence type: image attachment
+- Confidence: medium
+- Summary: updated code here -> [https://github.com/mike501/speeduino/tree/Subaru67Fixes](https://github.com/mike501/speeduino/tree/Subaru67Fixes) Instructions attached (to use this you'll have to download a compile and compile the firmware) This fixes/changes - resync (the code always does a resync now) adds error checking / reporting errors (sync loss counter) tries to recover syncloss on nearly every occurance - should within half a revolution get sync back adds noise filtering for every tooth - due to different tooth gaps, this isn't a brilliant implementation but its better than nothing. It may need more work depending how much the rpm changes per 180 degrees. no promises it will work on a real engine, but it works against the ardustim development version of the 6/7 decoder. Please make backups of your current tune before starting.
+- Why it matters: Discusses sync-loss conditions that can inform negative test cases.
+- Replay-test details: Includes: change Includes: sync Includes: sync loss Matched decoder family: Subaru 6/7 Image or capture links: 1 Attachments: Speeduino Installing custom firmware.docx -> https://speeduino.com/forum/download/file.php?id=11374
+- Matched search terms: Subaru 6/7 Speeduino trigger
+
+#### Subaru EJ20G do not start - Page 7
+- URL: https://speeduino.com/forum/viewtopic.php?p=63170#p62941
+- Date: Mon May 08, 2023 10:04 pm
+- Who posted it: miker
+- Evidence type: wheel description / image attachment
+- Confidence: medium
+- Summary: [PSIG](./memberlist.php?mode=viewprofile&u=149) wrote: [↑](./viewtopic.php?p=62938#p62938) Mon May 08, 2023 9:17 pm [miker](./memberlist.php?mode=viewprofile&u=2011) wrote: [↑](./viewtopic.php?p=62936#p62936) Mon May 08, 2023 8:10 pm This is based off the latest development release so will use a different ini file to what you're used to / the current firmware release. … @Both - if required i can create a special version based off the current release (so the ini file is the same for PSIG) that you can use for testing. I am using the 202210-dev INI file to view the tune and logs. Is that not correct?
+- Why it matters: Contains decoder-specific technical details that may support test coverage.
+- Replay-test details: Includes: change Includes: cam Matched decoder family: Subaru 6/7 Image or capture links: 1 Attachments: speeduino.ini -> https://speeduino.com/forum/download/file.php?id=11465
+- Matched search terms: Subaru 6/7 Speeduino trigger
+
+#### Spark only Subaru Project EJ22
+- URL: https://speeduino.com/forum/viewtopic.php?p=72364#p72364
+- Date: Mon Jul 07, 2025 4:16 pm
+- Who posted it: Donald G
+- Evidence type: tune file / image attachment
+- Confidence: medium
+- Summary: Hello to all here, I am trying to use a v0.4.3d controller with an Arduino MEGA 2560 to control spark only on a Subaru Ej22. It uses a 6/7 crank cam trigger. I also have VR Conditioner to convert the cam and crank signals to DC out. I have Bosch dual coils from a Mercedes to run sequential ignition.
+- Why it matters: Contains decoder-specific technical details that may support test coverage.
+- Replay-test details: Includes: cam Includes: crank Matched decoder family: Subaru 6/7 Image or capture links: 1 Attachments: 2025-07-07_16.27.02.msq -> https://speeduino.com/forum/download/file.php?id=14145
+- Matched search terms: Subaru 6/7 crank
+
+#### First tooth logs
+- URL: https://speeduino.com/forum/viewtopic.php?p=72253#p72253
+- Date: Sat Jun 28, 2025 4:32 am
+- Who posted it: ImprezaRSC
+- Evidence type: tooth log / wheel description
+- Confidence: medium
+- Summary: I think I finally have what looks to be my first tooth logs. The crank was spun by hand and I see what looks like a tooth pattern. Playback leaves a little to be desired, but maybe it's just Linux. It's a stock 2000 Subaru ECU harness with a SpeedyEFI UA4C VB3 Sea Fox.
+- Why it matters: Contains decoder-specific technical details that may support test coverage.
+- Replay-test details: Includes: crank Matched decoder family: Subaru 6/7 Image or capture links: 1 Attachments: Compositelogger2025-06-27_22.26.31.csv -> https://speeduino.com/forum/download/file.php?id=14109
+- Matched search terms: Subaru 6/7 crank
+
+#### First time setup no crank signal
+- URL: https://speeduino.com/forum/viewtopic.php?p=55387#p55278
+- Date: Fri Feb 11, 2022 6:40 am
+- Who posted it: mattt_damon
+- Evidence type: tune file / image attachment
+- Confidence: medium
+- Summary: [jonbill](./memberlist.php?mode=viewprofile&u=1981) wrote: [↑](./viewtopic.php?p=55254#p55254) Thu Feb 10, 2022 8:02 am do all of blue, green, brown white wires go to the crank sensor? please post a log of your tune and a log. Nope only brown to crank AC positive side, white to crank AC negative. As mentioned blue goes to 5v, green to a common ground.
+- Why it matters: Contains decoder-specific technical details that may support test coverage.
+- Replay-test details: Includes: crank Matched decoder family: Subaru 6/7 Image or capture links: 2 Attachments: 2022-02-11_06.17.32.txt -> https://speeduino.com/forum/download/file.php?id=9345; 2022-02-11_06.23.04.msq -> https://speeduino.com/forum/download/file.php?id=9344
+- Matched search terms: Subaru 6/7 composite logger
+
+#### Messing with Subaru 6/7 trigger - Page 2
+- URL: https://speeduino.com/forum/viewtopic.php?p=48503#p47863
+- Date: Thu Jan 28, 2021 1:07 am
+- Who posted it: jonathanlawley
+- Evidence type: scope capture
+- Confidence: medium
+- Summary: thats strange that its no different. Ive just ordered an oscilloscope to see if I can make a different type of filter with the code. In the mean time I made this little loop that should (hopefully) find the correct filter value for you. Code: [Select all](#) ``` if(secondaryToothCount > 1) { triggerSecFilterTime = curGap2 >> filt; if(filt > 1 ){ filt--; } } ``` the only thing extra you have to do is just declare 'filt' at the top of the code like Code: [Select all](#) ``` int filt = 10; ``` thanks for taking the videos it has been too wet to go outside here so I haven't tested it my self
+- Why it matters: Includes hardware-signal evidence, useful for edge and polarity interpretation.
+- Replay-test details: Matched decoder family: Subaru 6/7
+- Matched search terms: 36-2-1 tooth logger
+
+#### Messing with Subaru 6/7 trigger - Page 3
+- URL: https://speeduino.com/forum/viewtopic.php?p=49245#p47863
+- Date: Thu Jan 28, 2021 1:07 am
+- Who posted it: jonathanlawley
+- Evidence type: scope capture
+- Confidence: medium
+- Summary: thats strange that its no different. Ive just ordered an oscilloscope to see if I can make a different type of filter with the code. In the mean time I made this little loop that should (hopefully) find the correct filter value for you. Code: [Select all](#) ``` if(secondaryToothCount > 1) { triggerSecFilterTime = curGap2 >> filt; if(filt > 1 ){ filt--; } } ``` the only thing extra you have to do is just declare 'filt' at the top of the code like Code: [Select all](#) ``` int filt = 10; ``` thanks for taking the videos it has been too wet to go outside here so I haven't tested it my self
+- Why it matters: Includes hardware-signal evidence, useful for edge and polarity interpretation.
+- Replay-test details: Matched decoder family: Subaru 6/7
+- Matched search terms: Subaru 6/7 tooth logger
+
+#### Messing with Subaru 6/7 trigger - Page 3
+- URL: https://speeduino.com/forum/viewtopic.php?p=49274#p47863
+- Date: Thu Jan 28, 2021 1:07 am
+- Who posted it: jonathanlawley
+- Evidence type: scope capture
+- Confidence: medium
+- Summary: thats strange that its no different. Ive just ordered an oscilloscope to see if I can make a different type of filter with the code. In the mean time I made this little loop that should (hopefully) find the correct filter value for you. Code: [Select all](#) ``` if(secondaryToothCount > 1) { triggerSecFilterTime = curGap2 >> filt; if(filt > 1 ){ filt--; } } ``` the only thing extra you have to do is just declare 'filt' at the top of the code like Code: [Select all](#) ``` int filt = 10; ``` thanks for taking the videos it has been too wet to go outside here so I haven't tested it my self
+- Why it matters: Includes hardware-signal evidence, useful for edge and polarity interpretation.
+- Replay-test details: Matched decoder family: Subaru 6/7
+- Matched search terms: Subaru 6/7 trigger wheel
+
+#### Messing with Subaru 6/7 trigger - Page 4
+- URL: https://speeduino.com/forum/viewtopic.php?p=55418#p47863
+- Date: Thu Jan 28, 2021 1:07 am
+- Who posted it: jonathanlawley
+- Evidence type: scope capture
+- Confidence: medium
+- Summary: thats strange that its no different. Ive just ordered an oscilloscope to see if I can make a different type of filter with the code. In the mean time I made this little loop that should (hopefully) find the correct filter value for you. Code: [Select all](#) ``` if(secondaryToothCount > 1) { triggerSecFilterTime = curGap2 >> filt; if(filt > 1 ){ filt--; } } ``` the only thing extra you have to do is just declare 'filt' at the top of the code like Code: [Select all](#) ``` int filt = 10; ``` thanks for taking the videos it has been too wet to go outside here so I haven't tested it my self
+- Why it matters: Includes hardware-signal evidence, useful for edge and polarity interpretation.
+- Replay-test details: Matched decoder family: Subaru 6/7
+- Matched search terms: Subaru 6/7 Speeduino trigger
+
+#### Messing with Subaru 6/7 trigger - Page 4
+- URL: https://speeduino.com/forum/viewtopic.php?p=55533#p47863
+- Date: Thu Jan 28, 2021 1:07 am
+- Who posted it: jonathanlawley
+- Evidence type: scope capture
+- Confidence: medium
+- Summary: thats strange that its no different. Ive just ordered an oscilloscope to see if I can make a different type of filter with the code. In the mean time I made this little loop that should (hopefully) find the correct filter value for you. Code: [Select all](#) ``` if(secondaryToothCount > 1) { triggerSecFilterTime = curGap2 >> filt; if(filt > 1 ){ filt--; } } ``` the only thing extra you have to do is just declare 'filt' at the top of the code like Code: [Select all](#) ``` int filt = 10; ``` thanks for taking the videos it has been too wet to go outside here so I haven't tested it my self
+- Why it matters: Includes hardware-signal evidence, useful for edge and polarity interpretation.
+- Replay-test details: Matched decoder family: Subaru 6/7
+- Matched search terms: Subaru 6/7 sync
+
+#### Messing with Subaru 6/7 trigger - Page 4
+- URL: https://speeduino.com/forum/viewtopic.php?p=56026#p47863
+- Date: Thu Jan 28, 2021 1:07 am
+- Who posted it: jonathanlawley
+- Evidence type: scope capture
+- Confidence: medium
+- Summary: thats strange that its no different. Ive just ordered an oscilloscope to see if I can make a different type of filter with the code. In the mean time I made this little loop that should (hopefully) find the correct filter value for you. Code: [Select all](#) ``` if(secondaryToothCount > 1) { triggerSecFilterTime = curGap2 >> filt; if(filt > 1 ){ filt--; } } ``` the only thing extra you have to do is just declare 'filt' at the top of the code like Code: [Select all](#) ``` int filt = 10; ``` thanks for taking the videos it has been too wet to go outside here so I haven't tested it my self
+- Why it matters: Includes hardware-signal evidence, useful for edge and polarity interpretation.
+- Replay-test details: Matched decoder family: Subaru 6/7
+- Matched search terms: Subaru 6/7 Speeduino trigger
+
+#### Messing with Subaru 6/7 trigger - Page 5
+- URL: https://speeduino.com/forum/viewtopic.php?p=72272#p47863
+- Date: Thu Jan 28, 2021 1:07 am
+- Who posted it: jonathanlawley
+- Evidence type: scope capture
+- Confidence: medium
+- Summary: thats strange that its no different. Ive just ordered an oscilloscope to see if I can make a different type of filter with the code. In the mean time I made this little loop that should (hopefully) find the correct filter value for you. Code: [Select all](#) ``` if(secondaryToothCount > 1) { triggerSecFilterTime = curGap2 >> filt; if(filt > 1 ){ filt--; } } ``` the only thing extra you have to do is just declare 'filt' at the top of the code like Code: [Select all](#) ``` int filt = 10; ``` thanks for taking the videos it has been too wet to go outside here so I haven't tested it my self
+- Why it matters: Includes hardware-signal evidence, useful for edge and polarity interpretation.
+- Replay-test details: Matched decoder family: Subaru 6/7
+- Matched search terms: Subaru 6/7 Speeduino trigger
+
+#### Subaru EJ20G do not start - Page 7
+- URL: https://speeduino.com/forum/viewtopic.php?p=63170#p62880
+- Date: Sat May 06, 2023 4:32 pm
+- Who posted it: cyrille
+- Evidence type: image attachment
+- Confidence: medium
+- Summary: Hello everyone. I spent some time on the speeduino today. What I did was put the VR1+ and VR1-, VR2+ and VR2- cables back in the place they should be according to the diagram on board v04. I finally managed to compile your code (miker) The car starts better, I put two logs in attachment.
+- Why it matters: Discusses sync-loss conditions that can inform negative test cases.
+- Replay-test details: Includes: sync Includes: sync loss Matched decoder family: Subaru 6/7 Image or capture links: 2 Attachments: 2023-05-06_16.24.05.zip -> https://speeduino.com/forum/download/file.php?id=11444; 2023-05-06_16.25.10.zip -> https://speeduino.com/forum/download/file.php?id=11443
+- Matched search terms: Subaru 6/7 Speeduino trigger
+
+#### First time setup no crank signal - Page 2
+- URL: https://speeduino.com/forum/viewtopic.php?p=55401#p56966
+- Date: Sun May 15, 2022 10:28 pm
+- Who posted it: mattt_damon
+- Evidence type: tooth log / tune file
+- Confidence: medium
+- Summary: [PSIG](./memberlist.php?mode=viewprofile&u=149) wrote: [↑](./viewtopic.php?p=55667#p55667) Fri Mar 04, 2022 4:16 am The MAX992x chips use both zero-crossing reset and threshold triggering. What this means is that it uses a negative voltage (below zero-crossing) to "reset" and assume the next positive voltage is a real trigger pulse. The issue created is out-of-sync + or - "ghost" signals changing the shape or detection of one pulse or the other. This is what you see in the tooth logs.
+- Why it matters: Contains decoder-specific technical details that may support test coverage.
+- Replay-test details: Includes: crank Includes: sync Includes: cas Matched decoder family: Subaru 6/7 Image or capture links: 3 Attachments: 2022-04-24_11.18.33.csv -> https://speeduino.com/forum/download/file.php?id=9726; 2022-04-24_11.19.33_separate.csv -> https://speeduino.com/forum/download/file.php?id=9727; 2022-05-16_10.14.36.msq -> https://speeduino.com/forum/download/file.php?id=9728
+- Matched search terms: Subaru 6/7 tooth logger
+
+#### Messing with Subaru 6/7 trigger - Page 2
+- URL: https://speeduino.com/forum/viewtopic.php?p=47863#p48503
+- Date: Sat Feb 20, 2021 11:18 pm
+- Who posted it: miker
+- Evidence type: composite log / wheel description
+- Confidence: medium
+- Summary: Just seen this thread and wondered if i could help - i'm absolutely not an expert but have been playing with trigger patterns recently and fancy looking at something different. Having read through this thread without any other background a few things spring to mind, you're playing with rising / falling. I was going to mention the page pazi88 has done but i've seen you've recently linked to that. As I understand it the high speed logger / composite logger should help identify what settings you should use and would be keen to see the output.
+- Why it matters: Provides replay-test-relevant trigger traces.
+- Replay-test details: Pattern references: 36-1, 60-2 Includes: change Matched decoder family: Subaru 6/7
+- Matched search terms: Subaru 6/7 oscilloscope
+
+#### Messing with Subaru 6/7 trigger - Page 2
+- URL: https://speeduino.com/forum/viewtopic.php?p=48503#p48503
+- Date: Sat Feb 20, 2021 11:18 pm
+- Who posted it: miker
+- Evidence type: composite log / wheel description
+- Confidence: medium
+- Summary: Just seen this thread and wondered if i could help - i'm absolutely not an expert but have been playing with trigger patterns recently and fancy looking at something different. Having read through this thread without any other background a few things spring to mind, you're playing with rising / falling. I was going to mention the page pazi88 has done but i've seen you've recently linked to that. As I understand it the high speed logger / composite logger should help identify what settings you should use and would be keen to see the output.
+- Why it matters: Provides replay-test-relevant trigger traces.
+- Replay-test details: Pattern references: 36-1, 60-2 Includes: change Matched decoder family: Subaru 6/7
+- Matched search terms: 36-2-1 tooth logger
+
+#### Messing with Subaru 6/7 trigger - Page 3
+- URL: https://speeduino.com/forum/viewtopic.php?p=49245#p48503
+- Date: Sat Feb 20, 2021 11:18 pm
+- Who posted it: miker
+- Evidence type: composite log / wheel description
+- Confidence: medium
+- Summary: Just seen this thread and wondered if i could help - i'm absolutely not an expert but have been playing with trigger patterns recently and fancy looking at something different. Having read through this thread without any other background a few things spring to mind, you're playing with rising / falling. I was going to mention the page pazi88 has done but i've seen you've recently linked to that. As I understand it the high speed logger / composite logger should help identify what settings you should use and would be keen to see the output.
+- Why it matters: Provides replay-test-relevant trigger traces.
+- Replay-test details: Pattern references: 36-1, 60-2 Includes: change Matched decoder family: Subaru 6/7
+- Matched search terms: Subaru 6/7 tooth logger
+
+#### Messing with Subaru 6/7 trigger - Page 4
+- URL: https://speeduino.com/forum/viewtopic.php?p=52658#p48503
+- Date: Sat Feb 20, 2021 11:18 pm
+- Who posted it: miker
+- Evidence type: composite log / wheel description
+- Confidence: medium
+- Summary: Just seen this thread and wondered if i could help - i'm absolutely not an expert but have been playing with trigger patterns recently and fancy looking at something different. Having read through this thread without any other background a few things spring to mind, you're playing with rising / falling. I was going to mention the page pazi88 has done but i've seen you've recently linked to that. As I understand it the high speed logger / composite logger should help identify what settings you should use and would be keen to see the output.
+- Why it matters: Provides replay-test-relevant trigger traces.
+- Replay-test details: Pattern references: 36-1, 60-2 Includes: change Matched decoder family: Subaru 6/7
+- Matched search terms: Subaru 6/7 scope
+
+#### Messing with Subaru 6/7 trigger - Page 4
+- URL: https://speeduino.com/forum/viewtopic.php?p=53341#p48503
+- Date: Sat Feb 20, 2021 11:18 pm
+- Who posted it: miker
+- Evidence type: composite log / wheel description
+- Confidence: medium
+- Summary: Just seen this thread and wondered if i could help - i'm absolutely not an expert but have been playing with trigger patterns recently and fancy looking at something different. Having read through this thread without any other background a few things spring to mind, you're playing with rising / falling. I was going to mention the page pazi88 has done but i've seen you've recently linked to that. As I understand it the high speed logger / composite logger should help identify what settings you should use and would be keen to see the output.
+- Why it matters: Provides replay-test-relevant trigger traces.
+- Replay-test details: Pattern references: 36-1, 60-2 Includes: change Matched decoder family: Subaru 6/7
+- Matched search terms: Subaru 6/7 scope
+
+#### Messing with Subaru 6/7 trigger - Page 4
+- URL: https://speeduino.com/forum/viewtopic.php?p=55418#p48503
+- Date: Sat Feb 20, 2021 11:18 pm
+- Who posted it: miker
+- Evidence type: composite log / wheel description
+- Confidence: medium
+- Summary: Just seen this thread and wondered if i could help - i'm absolutely not an expert but have been playing with trigger patterns recently and fancy looking at something different. Having read through this thread without any other background a few things spring to mind, you're playing with rising / falling. I was going to mention the page pazi88 has done but i've seen you've recently linked to that. As I understand it the high speed logger / composite logger should help identify what settings you should use and would be keen to see the output.
+- Why it matters: Provides replay-test-relevant trigger traces.
+- Replay-test details: Pattern references: 36-1, 60-2 Includes: change Matched decoder family: Subaru 6/7
+- Matched search terms: Subaru 6/7 Speeduino trigger
+
+#### Messing with Subaru 6/7 trigger - Page 4
+- URL: https://speeduino.com/forum/viewtopic.php?p=55533#p48503
+- Date: Sat Feb 20, 2021 11:18 pm
+- Who posted it: miker
+- Evidence type: composite log / wheel description
+- Confidence: medium
+- Summary: Just seen this thread and wondered if i could help - i'm absolutely not an expert but have been playing with trigger patterns recently and fancy looking at something different. Having read through this thread without any other background a few things spring to mind, you're playing with rising / falling. I was going to mention the page pazi88 has done but i've seen you've recently linked to that. As I understand it the high speed logger / composite logger should help identify what settings you should use and would be keen to see the output.
+- Why it matters: Provides replay-test-relevant trigger traces.
+- Replay-test details: Pattern references: 36-1, 60-2 Includes: change Matched decoder family: Subaru 6/7
+- Matched search terms: Subaru 6/7 sync
+
+#### Messing with Subaru 6/7 trigger - Page 4
+- URL: https://speeduino.com/forum/viewtopic.php?p=56026#p48503
+- Date: Sat Feb 20, 2021 11:18 pm
+- Who posted it: miker
+- Evidence type: composite log / wheel description
+- Confidence: medium
+- Summary: Just seen this thread and wondered if i could help - i'm absolutely not an expert but have been playing with trigger patterns recently and fancy looking at something different. Having read through this thread without any other background a few things spring to mind, you're playing with rising / falling. I was going to mention the page pazi88 has done but i've seen you've recently linked to that. As I understand it the high speed logger / composite logger should help identify what settings you should use and would be keen to see the output.
+- Why it matters: Provides replay-test-relevant trigger traces.
+- Replay-test details: Pattern references: 36-1, 60-2 Includes: change Matched decoder family: Subaru 6/7
+- Matched search terms: Subaru 6/7 Speeduino trigger
+
+#### Messing with Subaru 6/7 trigger - Page 5
+- URL: https://speeduino.com/forum/viewtopic.php?p=72272#p48503
+- Date: Sat Feb 20, 2021 11:18 pm
+- Who posted it: miker
+- Evidence type: composite log / wheel description
+- Confidence: medium
+- Summary: Just seen this thread and wondered if i could help - i'm absolutely not an expert but have been playing with trigger patterns recently and fancy looking at something different. Having read through this thread without any other background a few things spring to mind, you're playing with rising / falling. I was going to mention the page pazi88 has done but i've seen you've recently linked to that. As I understand it the high speed logger / composite logger should help identify what settings you should use and would be keen to see the output.
+- Why it matters: Provides replay-test-relevant trigger traces.
+- Replay-test details: Pattern references: 36-1, 60-2 Includes: change Matched decoder family: Subaru 6/7
+- Matched search terms: Subaru 6/7 Speeduino trigger
+
+#### First time setup no crank signal - Page 2
+- URL: https://speeduino.com/forum/viewtopic.php?p=55401#p55620
+- Date: Wed Mar 02, 2022 7:28 pm
+- Who posted it: mattt_damon
+- Evidence type: composite log
+- Confidence: low
+- Summary: Thanks jonbill and pazi88. I've attached composite logs of: - Cam sensor only - Crank sensor only - Both sensors plugged into speeduino It appears cam signal interferes with crank signal and vice versa when both sensors are plugged in! Cam only and crank only seperately seem fine. So I bench tested the VR conditioner (with arduino ide digitalRead, serial plotter, monitor etc) and it appears to be the culprit.
+- Why it matters: Contains decoder-specific technical details that may support test coverage.
+- Replay-test details: Includes: cam Includes: crank Matched decoder family: Subaru 6/7 Image or capture links: 3 Attachments: both.csv -> https://speeduino.com/forum/download/file.php?id=9395; camOnly.csv -> https://speeduino.com/forum/download/file.php?id=9394; crankOnly.csv -> https://speeduino.com/forum/download/file.php?id=9393
+- Matched search terms: Subaru 6/7 tooth logger
+
+#### UA4C extra pinout configuration
+- URL: https://speeduino.com/forum/viewtopic.php?p=57674#p57674
+- Date: Sat Jul 09, 2022 9:42 am
+- Who posted it: Kalns
+- Evidence type: wheel description
+- Confidence: low
+- Summary: The project car has slow progress.. Now I`m nearly ready to fire it up. Today was first attempt - unsuccessful - no spark I was wondering about trigger pattern. I know for sure that it has subaru 6/7 crank wheel with 6 tooth, as far as I have found, its JDM version EJ20, with this pattern the trigger angle(deg) should be 0 ?
+- Why it matters: Contains decoder-specific technical details that may support test coverage.
+- Replay-test details: Pattern references: subaru 6/7 Includes: crank
+- Matched search terms: Subaru 6/7 crank
+
+### Vmax
+
+#### Vr Conditioner Noise when cranking - Page 2
+- URL: https://speeduino.com/forum/viewtopic.php?p=67581#p67632
+- Date: Sun Mar 24, 2024 11:39 pm
+- Who posted it: PSIG
+- Evidence type: tooth log / composite log
+- Confidence: medium
+- Summary: [Jason Rouillard](./memberlist.php?mode=viewprofile&u=8424) wrote: [↑](./viewtopic.php?p=67624#p67624) Sun Mar 24, 2024 5:50 pm I tried without sensor, with filter, with rising/falling and with a signal from my ICM and i has all of time same thing. Exactly. Keep in-mind, the Tooth Logger and the Composite Logger give different info. The Tooth Logger only shows time in any condition , high or low.
+- Why it matters: Provides replay-test-relevant trigger traces.
+- Replay-test details: Matched decoder family: Vmax
+- Matched search terms: Vmax crank
+
+#### Vr Conditioner Noise when cranking - Page 2
+- URL: https://speeduino.com/forum/viewtopic.php?p=67581#p67644
+- Date: Tue Mar 26, 2024 12:35 am
+- Who posted it: Jason Rouillard
+- Evidence type: tooth log / composite log
+- Confidence: medium
+- Summary: [PSIG](./memberlist.php?mode=viewprofile&u=149) wrote: [↑](./viewtopic.php?p=67632#p67632) Sun Mar 24, 2024 11:39 pm [Jason Rouillard](./memberlist.php?mode=viewprofile&u=8424) wrote: [↑](./viewtopic.php?p=67624#p67624) Sun Mar 24, 2024 5:50 pm I tried without sensor, with filter, with rising/falling and with a signal from my ICM and i has all of time same thing. Exactly. Keep in-mind, the Tooth Logger and the Composite Logger give different info. The Tooth Logger only shows time in any condition , high or low.
+- Why it matters: Provides replay-test-relevant trigger traces.
+- Replay-test details: Includes: rising edge Matched decoder family: Vmax
+- Matched search terms: Vmax crank
+
+#### simulator board - Page 12
+- URL: https://speeduino.com/forum/viewtopic.php?p=11180#p11197
+- Date: Wed Aug 03, 2016 5:23 pm
+- Who posted it: cx500tc
+- Evidence type: scope capture / wheel description
+- Confidence: medium
+- Summary: Old Grey wrote: It's showing 2.4Vmax, -0.9Vmin, 3.3Vpp and 1.77Vrms on the scope - on a multi it's 1.7V on AC -. I read that it has to be a 5V sq wave, so is that just the positive component, Vmax or the full wave, Vpp. The caps came off the LM7805 datasheet, should I change them. Well, I feel somewhat vindicated since you are getting a voltage reading on the AC scale.
+- Why it matters: Includes hardware-signal evidence, useful for edge and polarity interpretation.
+- Replay-test details: Pattern references: Vmax Includes: change Includes: cam Includes: cas
+- Matched search terms: Vmax scope
+
+#### simulator board - Page 12
+- URL: https://speeduino.com/forum/viewtopic.php?p=11197#p11197
+- Date: Wed Aug 03, 2016 5:23 pm
+- Who posted it: cx500tc
+- Evidence type: scope capture / wheel description
+- Confidence: medium
+- Summary: Old Grey wrote: It's showing 2.4Vmax, -0.9Vmin, 3.3Vpp and 1.77Vrms on the scope - on a multi it's 1.7V on AC -. I read that it has to be a 5V sq wave, so is that just the positive component, Vmax or the full wave, Vpp. The caps came off the LM7805 datasheet, should I change them. Well, I feel somewhat vindicated since you are getting a voltage reading on the AC scale.
+- Why it matters: Includes hardware-signal evidence, useful for edge and polarity interpretation.
+- Replay-test details: Pattern references: Vmax Includes: change Includes: cam Includes: cas
+- Matched search terms: Vmax scope
+
+#### simulator board - Page 13
+- URL: https://speeduino.com/forum/viewtopic.php?p=11217#p11197
+- Date: Wed Aug 03, 2016 5:23 pm
+- Who posted it: cx500tc
+- Evidence type: scope capture / wheel description
+- Confidence: medium
+- Summary: Old Grey wrote: It's showing 2.4Vmax, -0.9Vmin, 3.3Vpp and 1.77Vrms on the scope - on a multi it's 1.7V on AC -. I read that it has to be a 5V sq wave, so is that just the positive component, Vmax or the full wave, Vpp. The caps came off the LM7805 datasheet, should I change them. Well, I feel somewhat vindicated since you are getting a voltage reading on the AC scale.
+- Why it matters: Includes hardware-signal evidence, useful for edge and polarity interpretation.
+- Replay-test details: Pattern references: Vmax Includes: change Includes: cam Includes: cas
+- Matched search terms: Vmax scope
+
+#### Vr Conditioner Noise when cranking - Page 2
+- URL: https://speeduino.com/forum/viewtopic.php?p=67581#p67608
+- Date: Sat Mar 23, 2024 7:36 pm
+- Who posted it: Jason Rouillard
+- Evidence type: image attachment
+- Confidence: medium
+- Summary: PSIG wrote: That's fine. Each power ground wire should be run separately from the ECM to the star ground on the block and not spliced before. The chosen ECM sensor ground terminal does not go to the block. Ensure the chassis and any other grounding point for devices other than the engine block (instrument panel, transmission, etc) have good ground straps to each other and the block to carry ground current, so ground does not try to go through the ECM to get to the device.
+- Why it matters: Contains decoder-specific technical details that may support test coverage.
+- Replay-test details: Includes: change Includes: crank Matched decoder family: Vmax Image or capture links: 1 Attachments: engine run 2024-03-23.csv -> https://speeduino.com/forum/download/file.php?id=12795
+- Matched search terms: Vmax crank
+
+#### simulator board - Page 12
+- URL: https://speeduino.com/forum/viewtopic.php?p=11180#p11217
+- Date: Thu Aug 04, 2016 5:53 am
+- Who posted it: Old Grey
+- Evidence type: scope capture / wheel description
+- Confidence: medium
+- Summary: I have 4 different circuits, all with different components, separately working, and they all have a neg component. I tried with PS, PS with reg + & - caps, and even battery power. Unless it's the scope, the only commonalty, I don't know what's up with the wave. They're all basically the same as the pic at the top of the page, but with different values.
+- Why it matters: Includes hardware-signal evidence, useful for edge and polarity interpretation.
+- Replay-test details: Pattern references: Vmax
+- Matched search terms: Vmax scope
+
+#### simulator board - Page 12
+- URL: https://speeduino.com/forum/viewtopic.php?p=11197#p11217
+- Date: Thu Aug 04, 2016 5:53 am
+- Who posted it: Old Grey
+- Evidence type: scope capture / wheel description
+- Confidence: medium
+- Summary: I have 4 different circuits, all with different components, separately working, and they all have a neg component. I tried with PS, PS with reg + & - caps, and even battery power. Unless it's the scope, the only commonalty, I don't know what's up with the wave. They're all basically the same as the pic at the top of the page, but with different values.
+- Why it matters: Includes hardware-signal evidence, useful for edge and polarity interpretation.
+- Replay-test details: Pattern references: Vmax
+- Matched search terms: Vmax scope
+
+#### simulator board - Page 13
+- URL: https://speeduino.com/forum/viewtopic.php?p=11217#p11217
+- Date: Thu Aug 04, 2016 5:53 am
+- Who posted it: Old Grey
+- Evidence type: scope capture / wheel description
+- Confidence: medium
+- Summary: I have 4 different circuits, all with different components, separately working, and they all have a neg component. I tried with PS, PS with reg + & - caps, and even battery power. Unless it's the scope, the only commonalty, I don't know what's up with the wave. They're all basically the same as the pic at the top of the page, but with different values.
+- Why it matters: Includes hardware-signal evidence, useful for edge and polarity interpretation.
+- Replay-test details: Pattern references: Vmax
+- Matched search terms: Vmax scope
+
+#### simulator board - Page 12
+- URL: https://speeduino.com/forum/viewtopic.php?p=11180#p10904
+- Date: Mon Jul 25, 2016 4:33 pm
+- Who posted it: PSIG
+- Evidence type: scope capture
+- Confidence: medium
+- Summary: Old Grey wrote: That sounds like an idea but there are a few problems with those eBay oscillator boards. With the smaller 555 one I built the circuit, and it seams to put out a triangle wave. You will also have to remove the trimpot because it's hard to adjust and get a 1M for the board. The other comes in 555 or 358 and has 2 trims.
+- Why it matters: Includes hardware-signal evidence, useful for edge and polarity interpretation.
+- Replay-test details: Includes: cas Matched decoder family: Vmax
+- Matched search terms: Vmax scope
+
+#### simulator board - Page 12
+- URL: https://speeduino.com/forum/viewtopic.php?p=11180#p10907
+- Date: Mon Jul 25, 2016 6:12 pm
+- Who posted it: cx500tc
+- Evidence type: scope capture
+- Confidence: medium
+- Summary: PSIG wrote: Old Grey wrote: That sounds like an idea but there are a few problems with those eBay oscillator boards. With the smaller 555 one I built the circuit, and it seams to put out a triangle wave. You will also have to remove the trimpot because it's hard to adjust and get a 1M for the board. The other comes in 555 or 358 and has 2 trims.
+- Why it matters: Includes hardware-signal evidence, useful for edge and polarity interpretation.
+- Replay-test details: Includes: cas Matched decoder family: Vmax
+- Matched search terms: Vmax scope
+
+#### simulator board - Page 12
+- URL: https://speeduino.com/forum/viewtopic.php?p=11197#p10904
+- Date: Mon Jul 25, 2016 4:33 pm
+- Who posted it: PSIG
+- Evidence type: scope capture
+- Confidence: medium
+- Summary: Old Grey wrote: That sounds like an idea but there are a few problems with those eBay oscillator boards. With the smaller 555 one I built the circuit, and it seams to put out a triangle wave. You will also have to remove the trimpot because it's hard to adjust and get a 1M for the board. The other comes in 555 or 358 and has 2 trims.
+- Why it matters: Includes hardware-signal evidence, useful for edge and polarity interpretation.
+- Replay-test details: Includes: cas Matched decoder family: Vmax
+- Matched search terms: Vmax scope
+
+#### simulator board - Page 12
+- URL: https://speeduino.com/forum/viewtopic.php?p=11197#p10907
+- Date: Mon Jul 25, 2016 6:12 pm
+- Who posted it: cx500tc
+- Evidence type: scope capture
+- Confidence: medium
+- Summary: PSIG wrote: Old Grey wrote: That sounds like an idea but there are a few problems with those eBay oscillator boards. With the smaller 555 one I built the circuit, and it seams to put out a triangle wave. You will also have to remove the trimpot because it's hard to adjust and get a 1M for the board. The other comes in 555 or 358 and has 2 trims.
+- Why it matters: Includes hardware-signal evidence, useful for edge and polarity interpretation.
+- Replay-test details: Includes: cas Matched decoder family: Vmax
+- Matched search terms: Vmax scope
+
+#### simulator board - Page 13
+- URL: https://speeduino.com/forum/viewtopic.php?p=11217#p10904
+- Date: Mon Jul 25, 2016 4:33 pm
+- Who posted it: PSIG
+- Evidence type: scope capture
+- Confidence: medium
+- Summary: Old Grey wrote: That sounds like an idea but there are a few problems with those eBay oscillator boards. With the smaller 555 one I built the circuit, and it seams to put out a triangle wave. You will also have to remove the trimpot because it's hard to adjust and get a 1M for the board. The other comes in 555 or 358 and has 2 trims.
+- Why it matters: Includes hardware-signal evidence, useful for edge and polarity interpretation.
+- Replay-test details: Includes: cas Matched decoder family: Vmax
+- Matched search terms: Vmax scope
+
+#### simulator board - Page 13
+- URL: https://speeduino.com/forum/viewtopic.php?p=11217#p10907
+- Date: Mon Jul 25, 2016 6:12 pm
+- Who posted it: cx500tc
+- Evidence type: scope capture
+- Confidence: medium
+- Summary: PSIG wrote: Old Grey wrote: That sounds like an idea but there are a few problems with those eBay oscillator boards. With the smaller 555 one I built the circuit, and it seams to put out a triangle wave. You will also have to remove the trimpot because it's hard to adjust and get a 1M for the board. The other comes in 555 or 358 and has 2 trims.
+- Why it matters: Includes hardware-signal evidence, useful for edge and polarity interpretation.
+- Replay-test details: Includes: cas Matched decoder family: Vmax
+- Matched search terms: Vmax scope
+
+#### Vr Conditioner Noise when cranking - Page 2
+- URL: https://speeduino.com/forum/viewtopic.php?p=67581#p67581
+- Date: Thu Mar 21, 2024 8:38 pm
+- Who posted it: AlainNotHere
+- Evidence type: wheel description
+- Confidence: medium
+- Summary: [Jason Rouillard](./memberlist.php?mode=viewprofile&u=8424) wrote: [↑](./viewtopic.php?p=67580#p67580) Thu Mar 21, 2024 8:02 pm My both wires are connected to board and i already checked if they weren't reversed. My shield is directly grounded to the battery. There is something on the design of the board, I didn't read it explicitly but one day looking at the board I notice There are 2 ground systems let's call them, there is the ground provided by the battery chassis, which you use as well as the 12v to power the speeduino and the other one is the one supplied on the sensor side of the board, and I was like... why there is a sensor negative?
+- Why it matters: Contains decoder-specific technical details that may support test coverage.
+- Replay-test details: Pattern references: vmax Includes: cam Includes: crank
+- Matched search terms: Vmax crank
+
+#### Ardustim decoder help
+- URL: https://speeduino.com/forum/viewtopic.php?p=61149#p61149
+- Date: Thu Feb 09, 2023 8:51 pm
+- Who posted it: chris900f
+- Evidence type: wheel description
+- Confidence: low
+- Summary: Thanks for the link. I've been looking at the wheels.def in Speeduino with VS Studio. I'm intrigued by the VMAX pattern that identifies the widest tooth on the rotor for sync,( and doesn't need a cam signal). One thing I can't figure out is how they set-up to read both the rising and falling edges on the same wheel.
+- Why it matters: Contains decoder-specific technical details that may support test coverage.
+- Replay-test details: Pattern references: VMAX Includes: rising edge Includes: falling edge Includes: cam Includes: sync
+- Matched search terms: Vmax sync
+
+## Strongest evidence by decoder
+
+- **1-1**: [Subaru EJ20G do not start - Page 4](https://speeduino.com/forum/viewtopic.php?p=62621#p62771) — PSIG, Mon May 01, 2023 4:19 pm, confidence medium.
+- **1-2**: [DIYautotune Nissan optical trigger wheel - Page 2](https://speeduino.com/forum/viewtopic.php?p=34587#p34587) — JoostXT, Fri May 10, 2019 8:26 am, confidence high.
+- **1-3-4-2**: [Issues trying to start an EJ16 with Speeduino v0.4](https://speeduino.com/forum/viewtopic.php?p=71709#p71697) — George Tsotsos, Fri Apr 25, 2025 4:22 pm, confidence medium.
+- **12-3**: [Trigger wheel missing tooth](https://speeduino.com/forum/viewtopic.php?p=71921#p71975) — imoze, Wed Jun 11, 2025 9:40 am, confidence low.
+- **14-5**: [HONDA TRANSALP XL650V](https://speeduino.com/forum/viewtopic.php?p=73068#p73068) — Tutajjestem, Sat Sep 06, 2025 5:49 pm, confidence high.
+- **2-3**: [1985 Honda Goldwing Limited Edition FI Model ECU Replacement - Page 67](https://speeduino.com/forum/viewtopic.php?p=65044#p59227) — Rednaxs60, Mon Oct 31, 2022 3:45 pm, confidence medium.
+- **24-1**: [Using distributor to obtain engine phase signal](https://speeduino.com/forum/viewtopic.php?p=66027#p66054) — dazq, Wed Nov 29, 2023 5:41 pm, confidence medium.
+- **26-8**: [Just another Speedy ECU](https://speeduino.com/forum/viewtopic.php?p=74049#p74068) — Black Knight, Sat Feb 07, 2026 3:16 am, confidence medium.
+- **3-4**: [4age 16v smallport - Page 4](https://speeduino.com/forum/viewtopic.php?p=67269#p64671) — CamJam, Wed Aug 30, 2023 12:16 pm, confidence medium.
+- **3-5**: [Ignition rollback](https://speeduino.com/forum/viewtopic.php?p=73245#p73243) — Philippov Pavel, Sun Sep 28, 2025 9:15 am, confidence low.
+- **36-1**: [1985 Honda Goldwing Limited Edition FI Model ECU Replacement - Page 67](https://speeduino.com/forum/viewtopic.php?p=65044#p65044) — Rednaxs60, Wed Sep 27, 2023 11:54 pm, confidence high.
+- **36-2**: [Toyota Starlet 4E-FTE](https://speeduino.com/forum/viewtopic.php?p=38283#p38283) — Experion, Sat Oct 05, 2019 8:24 pm, confidence medium.
+- **36-2-1**: [Just another Speedy ECU - Page 3](https://speeduino.com/forum/viewtopic.php?p=74109#p74172) — Black Knight, Sat Feb 28, 2026 1:05 am, confidence high.
+- **36-2-2-2**: [Fresh build, no sync. Subaru EJ20.](https://speeduino.com/forum/viewtopic.php?p=64751#p64751) — rozap, Tue Sep 05, 2023 1:23 am, confidence high.
+- **4-1**: [Ford ST170 Cam trigger pattern - Page 2](https://speeduino.com/forum/viewtopic.php?p=48080#p47573) — Jama, Thu Jan 14, 2021 1:53 pm, confidence medium.
+- **420a**: [How to configure Primary Base Teeth and Trigger Angle on the 420A engine?](https://speeduino.com/forum/viewtopic.php?p=70720#p70720) — PedroV9, Wed Feb 05, 2025 10:36 pm, confidence high.
+- **6-7**: [Ignition rollback](https://speeduino.com/forum/viewtopic.php?p=73245#p73110) — Philippov Pavel, Thu Sep 11, 2025 11:31 am, confidence medium.
+- **60-2**: [60-2 sync issue - Page 3](https://speeduino.com/forum/viewtopic.php?p=63179#p63139) — I_IQ_I, Mon May 22, 2023 2:21 am, confidence high.
+- **7-1**: [BMW E36/5 323TI turbo build](https://speeduino.com/forum/viewtopic.php?p=69091#p69091) — crackedheadtv, Wed Jul 31, 2024 9:22 pm, confidence high.
+- **72-1**: [Sensor for cam wheel](https://speeduino.com/forum/viewtopic.php?p=73803#p73803) — PSIG, Tue Dec 23, 2025 6:42 pm, confidence low.
+- **8-0**: [4age 16v smallport - Page 4](https://speeduino.com/forum/viewtopic.php?p=67269#p64903) — CamJam, Sun Sep 17, 2023 3:03 am, confidence medium.
+- **8-1**: [HONDA TRANSALP XL650V](https://speeduino.com/forum/viewtopic.php?p=73068#p73072) — Tutajjestem, Sun Sep 07, 2025 8:52 am, confidence high.
+- **8-3**: [1985 Honda Goldwing Limited Edition FI Model ECU Replacement - Page 67](https://speeduino.com/forum/viewtopic.php?p=65044#p59264) — Rednaxs60, Tue Nov 01, 2022 5:46 pm, confidence medium.
+- **9-1**: [BMW E36/5 323TI turbo build](https://speeduino.com/forum/viewtopic.php?p=69091#p69106) — crackedheadtv, Thu Aug 01, 2024 11:42 pm, confidence medium.
+- **Basic distributor**: [1987 Subaru XT turbo, trouble syncing RPM](https://speeduino.com/forum/viewtopic.php?p=30601#p30601) — JoostXT, Thu Dec 06, 2018 1:03 pm, confidence high.
+- **Daihatsu**: [Cylinder 1 on a 3 cylinder engine not firing properly - Page 6](https://speeduino.com/forum/viewtopic.php?p=36123#p35891) — Xortex, Sun Jun 23, 2019 12:48 pm, confidence medium.
+- **Harley**: [What else do I need? Nub question.](https://speeduino.com/forum/viewtopic.php?p=28017#p28017) — doleckijohn, Wed Aug 22, 2018 11:37 am, confidence medium.
+- **Honda D17**: [Dual Wheel Questions](https://speeduino.com/forum/viewtopic.php?p=56548#p56548) — AllmotorD16, Mon Apr 18, 2022 2:34 am, confidence high.
+- **Rover MEMS**: [rover MEMs decoder - Page 10](https://speeduino.com/forum/viewtopic.php?p=51543#p51307) — Trevor Getty, Wed Jun 23, 2021 1:34 am, confidence high.
+- **Subaru 6/7**: [Messing with Subaru 6/7 trigger - Page 2](https://speeduino.com/forum/viewtopic.php?p=47863#p72272) — ImprezaRSC, Sat Jun 28, 2025 10:08 pm, confidence high.
+- **Vmax**: [Vr Conditioner Noise when cranking - Page 2](https://speeduino.com/forum/viewtopic.php?p=67581#p67632) — PSIG, Sun Mar 24, 2024 11:39 pm, confidence medium.
+
+## Decoders with enough information to build replay tests safely
+
+- 1-2
+- 14-5
+- 36-1
+- 36-2-2-2
+- 420a
+- 60-2
+- 7-1
+- 8-1
+- Basic distributor
+- Honda D17
+- Rover MEMS
+- Subaru 6/7
+
+## Decoders still blocked by missing real trace evidence
+
+- 1-1
+- 1-3-4-2
+- 12-3
+- 2-3
+- 24-1
+- 26-8
+- 3-4
+- 3-5
+- 36-2
+- 36-2-1
+- 4-1
+- 6-7
+- 72-1
+- 8-0
+- 8-3
+- 9-1
+- Daihatsu
+- Harley
+- Vmax
+
+## Suggested next priorities for test coverage
+
+- 1-1: still needs stronger real-trace evidence before high-confidence replay coverage.
+- 1-2: add edge and polarity-focused tests derived from scope evidence.
+- 1-3-4-2: still needs stronger real-trace evidence before high-confidence replay coverage.
+- 12-3: add edge and polarity-focused tests derived from scope evidence.
+- 14-5: add edge and polarity-focused tests derived from scope evidence.
+- 2-3: add edge and polarity-focused tests derived from scope evidence.
+- 24-1: still needs stronger real-trace evidence before high-confidence replay coverage.
+- 26-8: add edge and polarity-focused tests derived from scope evidence.
+- 3-4: still needs stronger real-trace evidence before high-confidence replay coverage.
+- 3-5: still needs stronger real-trace evidence before high-confidence replay coverage.
+- 36-1: convert existing trace-backed maintainer guidance into replay tests first.
+- 36-2: still needs stronger real-trace evidence before high-confidence replay coverage.
 
 ## JSON export
 
