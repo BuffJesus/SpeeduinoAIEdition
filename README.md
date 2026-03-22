@@ -132,6 +132,7 @@ Recent work as of `2026-03-21`:
 - Added a host-side stock-base-tune compatibility audit for [Resources/Speeduino base tune.msq](Resources/Speeduino%20base%20tune.msq) against [speeduino.ini](speeduino.ini), now covering the full round-trippable constant surface plus selected fork-critical default values
 - Added a fork-owned compatible base tune at [Resources/Speeduino AI base tune.msq](Resources/Speeduino%20AI%20base%20tune.msq) that closes the current stock-tune drift
 - Tightened the forum evidence collector so it uses canonical topic URLs, explicit decoder-family matching, and bounded thread crawling instead of raw noisy search-result dumps
+- Added project-doc evidence from the official wiki, especially the DropBear board page, to support future board-profile and packaged-tune decisions with primary Speeduino documentation
 - Verified `test_decoders`: `194/194`
 - Verified `test_updates`: `38/38`
 - Verified `test_updates_tail`: `5/5`
@@ -145,6 +146,7 @@ Latest handoff references:
 - [SESSION_HANDOFF_2026-03-21_FORK_BASE_TUNE.md](speeduino/SESSION_HANDOFF_2026-03-21_FORK_BASE_TUNE.md)
 - [SESSION_HANDOFF_2026-03-21_TUNE_DEFAULT_VALUES.md](speeduino/SESSION_HANDOFF_2026-03-21_TUNE_DEFAULT_VALUES.md)
 - [SESSION_HANDOFF_2026-03-21_FORUM_EVIDENCE_CURATION.md](speeduino/SESSION_HANDOFF_2026-03-21_FORUM_EVIDENCE_CURATION.md)
+- [SESSION_HANDOFF_2026-03-21_WIKI_BOARD_DOCS.md](speeduino/SESSION_HANDOFF_2026-03-21_WIKI_BOARD_DOCS.md)
 - [SESSION_HANDOFF_2026-03-21_SUBARU67_REPLAY.md](speeduino/SESSION_HANDOFF_2026-03-21_SUBARU67_REPLAY.md)
 - [SESSION_HANDOFF_2026-03-21_BASIC_DISTRIBUTOR.md](speeduino/SESSION_HANDOFF_2026-03-21_BASIC_DISTRIBUTOR.md)
 - [SESSION_HANDOFF_2026-03-21_HONDAD17.md](speeduino/SESSION_HANDOFF_2026-03-21_HONDAD17.md)
@@ -283,6 +285,7 @@ python Resources/speeduino_evidence_collector_stable.py --mode decoder --search-
 - The repo now machine-checks that exact classification baseline, so future work must either preserve it or update the expected policy map deliberately
 - A policy-evidence report now ties the one active conflict plus all contextual exemptions to the concrete project source that justifies them: manual pages, INI help text, and runtime code paths
 - The audit now also distinguishes packaged hardware-profile overrides from generic defaults; today that set is just `knock_pin`, where the generic INI default intentionally avoids DropBear-sensitive pins while the packaged DropBear tunes intentionally ship `A8`
+- Official project wiki pages are now treated as a primary evidence source alongside the bundled manual and forum threads; the current highest-value board doc is [Dropbear | Speeduino Manual](https://wiki.speeduino.com/en/boards/Dropbear), which documents board pin roles for `Boost`, `Idle`, `VVT`, `VSS` / `Idle Up`, MAP source selection, and crank hardware filtering
 - Other unit-test suites remain in regular use for regression checking
 
 Note: local Windows `pio test` invocations in this workspace can still hit wrapper/file-lock issues intermittently even when the produced simulator binary itself runs cleanly.

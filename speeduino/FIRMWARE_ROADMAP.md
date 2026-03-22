@@ -48,6 +48,10 @@ Current phase 1 work started in:
 - Deprecate or clearly mark partial legacy telemetry paths.
 - Continue extracting testable helpers for legacy packet/framing paths before replacing more placeholder fields, so future cleanup stays evidence-based instead of ad hoc.
 - Add explicit board capability declarations for features like onboard knock hardware, trigger channels, CAN variants, and logging support so the firmware and tuning surface can hide unsupported options instead of exposing unsafe generic defaults.
+- Use official board docs such as [wiki.speeduino.com/en/boards/Dropbear](https://wiki.speeduino.com/en/boards/Dropbear) as a primary source when extracting board-scoped defaults and capabilities:
+  - DropBear docs explicitly document board pin roles for `Boost`, `Idle`, `VVT`, and spare digital inputs usable for `VSS` / `Idle Up`
+  - the same page documents board-specific crank hardware filtering guidance and MAP-source switching
+  - future packaged-tune and board-profile work should prefer these board docs over generic INI assumptions wherever they disagree
 
 ## Phase 5: Configuration And Observability
 
