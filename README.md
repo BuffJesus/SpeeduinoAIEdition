@@ -134,6 +134,8 @@ Recent work as of `2026-03-21`:
 - Tightened the forum evidence collector so it uses canonical topic URLs, explicit decoder-family matching, and bounded thread crawling instead of raw noisy search-result dumps
 - Added project-doc evidence from the official wiki, especially the DropBear board page, to support future board-profile and packaged-tune decisions with primary Speeduino documentation
 - Added an external decoder research baseline from local rusEFI and MS3 source trees, narrowing the next blocked decoder research priorities to `Rover MEMS` first and `Honda J32` second, with `36-2-1` now explicitly treated as a real-capture-first problem
+- Added a Rover-specific decoder note that aligns the current Speeduino Rover MEMS implementation with the surviving forum evidence and the MS3/rusEFI references, and narrows the next safe Rover step to attachment extraction rather than new synthetic traces
+- Downloaded and staged the Rover MEMS forum attachments locally, confirming the archived Rover test project used `Crank Speed` with `5-3-2 cam`, `Wasted Spark`, and `Sequential` injection, while narrowing the remaining Rover blocker to composite-log CSV channel mapping and PDF wheel rendering
 - Verified `test_decoders`: `194/194`
 - Verified `test_updates`: `38/38`
 - Verified `test_updates_tail`: `5/5`
@@ -149,6 +151,7 @@ Latest handoff references:
 - [SESSION_HANDOFF_2026-03-21_FORUM_EVIDENCE_CURATION.md](speeduino/SESSION_HANDOFF_2026-03-21_FORUM_EVIDENCE_CURATION.md)
 - [SESSION_HANDOFF_2026-03-21_WIKI_BOARD_DOCS.md](speeduino/SESSION_HANDOFF_2026-03-21_WIKI_BOARD_DOCS.md)
 - [SESSION_HANDOFF_2026-03-21_EXTERNAL_DECODER_RESEARCH.md](speeduino/SESSION_HANDOFF_2026-03-21_EXTERNAL_DECODER_RESEARCH.md)
+- [SESSION_HANDOFF_2026-03-21_ROVER_MEMS_NOTE.md](speeduino/SESSION_HANDOFF_2026-03-21_ROVER_MEMS_NOTE.md)
 - [SESSION_HANDOFF_2026-03-21_SUBARU67_REPLAY.md](speeduino/SESSION_HANDOFF_2026-03-21_SUBARU67_REPLAY.md)
 - [SESSION_HANDOFF_2026-03-21_BASIC_DISTRIBUTOR.md](speeduino/SESSION_HANDOFF_2026-03-21_BASIC_DISTRIBUTOR.md)
 - [SESSION_HANDOFF_2026-03-21_HONDAD17.md](speeduino/SESSION_HANDOFF_2026-03-21_HONDAD17.md)
@@ -267,6 +270,9 @@ python Resources/speeduino_evidence_collector_stable.py --mode decoder --search-
 
 # Review the current external decoder-research baseline before synthesizing new replay traces
 # See speeduino/SESSION_HANDOFF_2026-03-21_EXTERNAL_DECODER_RESEARCH.md
+
+# Review the Rover-specific note before any new Rover MEMS replay work
+# See speeduino/SESSION_HANDOFF_2026-03-21_ROVER_MEMS_NOTE.md
 ```
 
 ### Current Test Status
@@ -292,6 +298,7 @@ python Resources/speeduino_evidence_collector_stable.py --mode decoder --search-
 - The audit now also distinguishes packaged hardware-profile overrides from generic defaults; today that set is just `knock_pin`, where the generic INI default intentionally avoids DropBear-sensitive pins while the packaged DropBear tunes intentionally ship `A8`
 - Official project wiki pages are now treated as a primary evidence source alongside the bundled manual and forum threads; the current highest-value board doc is [Dropbear | Speeduino Manual](https://wiki.speeduino.com/en/boards/Dropbear), which documents board pin roles for `Boost`, `Idle`, `VVT`, `VSS` / `Idle Up`, MAP source selection, and crank hardware filtering
 - External decoder references from the bundled rusEFI and MS3 source trees are now part of the documented research baseline; current highest-value references are rusEFI's real `36-2-1` test in [test_real_4b11.cpp](Resources/rusefi-2026-03-17/unit_tests/tests/trigger/test_real_4b11.cpp), rusEFI's [trigger_honda.cpp](Resources/rusefi-2026-03-17/firmware/controllers/trigger/decoders/trigger_honda.cpp), rusEFI's [trigger_rover.cpp](Resources/rusefi-2026-03-17/firmware/controllers/trigger/decoders/trigger_rover.cpp), and MS3's Rover notes in [core.ini](Resources/ms3-source-master/ms3/core.ini)
+- Rover MEMS now has a dedicated evidence note tying together the current Speeduino decoder, the maintainer-provided `32 poles / 4 missing` forum description, the real composite-log thread, the extracted Rover test project, and MS3's `poll_level_tooth` guidance; the remaining blocker is now specifically CSV channel mapping and PDF wheel rendering, not general topology or missing source files
 - Other unit-test suites remain in regular use for regression checking
 
 Note: local Windows `pio test` invocations in this workspace can still hit wrapper/file-lock issues intermittently even when the produced simulator binary itself runs cleanly.

@@ -1,0 +1,203 @@
+# Session Handoff: Rover MEMS Decoder Note
+
+Date: 2026-03-21
+Focus: Evidence-backed Rover MEMS decoder note before any new replay traces
+
+## Why This Exists
+
+Previous Rover replay attempts were backed out because the synthetic `17-17` traces did not match live decoder state under `simavr`.
+
+This note is the safe intermediate step the roadmap now calls for:
+
+1. gather the surviving Speeduino forum evidence
+2. align it with the current Speeduino decoder logic
+3. compare it with MS3 and rusEFI external references
+4. write down only the parts that are supported strongly enough to guide the next implementation step
+
+## Current Speeduino Decoder Contract
+
+The Rover MEMS decoder is implemented in [decoders.cpp](C:/Users/Cornelio/Desktop/speeduino-202501.6/speeduino/decoders.cpp) and explicitly supports these primary-wheel gap layouts:
+
+- `3-14-2-13`
+- `11-5-12-4`
+- `2-14-3-13`
+- `17-17`
+- `9-7-10-6`
+
+The relevant code is in:
+
+- [triggerSetup_RoverMEMS()](C:/Users/Cornelio/Desktop/speeduino-202501.6/speeduino/decoders.cpp#L5342)
+- [triggerPri_RoverMEMS()](C:/Users/Cornelio/Desktop/speeduino-202501.6/speeduino/decoders.cpp#L5366)
+- [triggerRoverMEMSCommon()](C:/Users/Cornelio/Desktop/speeduino-202501.6/speeduino/decoders.cpp#L5498)
+- [triggerSec_RoverMEMS()](C:/Users/Cornelio/Desktop/speeduino-202501.6/speeduino/decoders.cpp#L5558)
+
+Important current behavior:
+
+- The primary wheel is treated as a theoretical `36` tooth wheel at `10` crank degrees per tooth.
+- The decoder identifies which Rover pattern is present by shifting a bit-pattern in `roverMEMSTeethSeen` and matching one of the five hard-coded binary layouts.
+- Pattern `17-17` is special because it is not unique without phase information.
+- Without cam sync, the code can only establish half-sync for that layout until enough information is available.
+- Secondary trigger support covers:
+  - no cam
+  - single-tooth or half-moon cam
+  - `5-3-2` multi-tooth cam
+
+## High-Confidence Speeduino Forum Evidence
+
+The strongest thread is [rover MEMs decoder](https://speeduino.com/forum/viewtopic.php?t=1427).
+
+High-value posts already captured in [speeduino_forum_evidence.md](C:/Users/Cornelio/Desktop/speeduino-202501.6/Resources/speeduino_forum_evidence.md):
+
+- [p21484](https://speeduino.com/forum/viewtopic.php?t=1427#p21484) by `dazq`
+  - maintainer explanation
+  - says the MEMS pattern from manual is `32 poles spaced at 10 degree intervals, with 4 missing poles, at 30, 60, 210 and 250 degrees`
+  - includes attached PDFs:
+    - `mems 2 crank nn cam.pdf`
+    - `mems1.9 trigger description.pdf`
+    - `mems3 crank and cam.pdf`
+- [p51307](https://speeduino.com/forum/viewtopic.php?t=1427#p51307) by `Trevor Getty`
+  - says new VR setup shows both crank and cam in composite logger
+  - says wasted spark works but injection is blocked by high sync loss
+  - includes attached archive:
+    - `T16-RoverMemsTesting.rar`
+- [p51340](https://speeduino.com/forum/viewtopic.php?t=1427#p51340)
+  - confirms the thread contains real composite/scope evidence and sync-loss behavior worth using for negative cases
+- [p51343](https://speeduino.com/forum/viewtopic.php?t=1427#p51343)
+  - explicitly raises VR polarity concerns, especially cam inversion versus crank
+
+## Extracted Attachment Evidence
+
+The forum attachments were downloaded into [Resources/rover_mems_evidence](C:/Users/Cornelio/Desktop/speeduino-202501.6/Resources/rover_mems_evidence) and the Rover test archive was extracted under [Resources/rover_mems_evidence/extracted/T16-RoverMemsTesting](C:/Users/Cornelio/Desktop/speeduino-202501.6/Resources/rover_mems_evidence/extracted/T16-RoverMemsTesting).
+
+### What Was Recovered
+
+- PDFs:
+  - [mems_2_crank_n_cam.pdf](C:/Users/Cornelio/Desktop/speeduino-202501.6/Resources/rover_mems_evidence/mems_2_crank_n_cam.pdf)
+  - [mems19_trigger_description.pdf](C:/Users/Cornelio/Desktop/speeduino-202501.6/Resources/rover_mems_evidence/mems19_trigger_description.pdf)
+  - [mems3_crank_and_cam.pdf](C:/Users/Cornelio/Desktop/speeduino-202501.6/Resources/rover_mems_evidence/mems3_crank_and_cam.pdf)
+- Test archive:
+  - [T16-RoverMemsTesting.rar](C:/Users/Cornelio/Desktop/speeduino-202501.6/Resources/rover_mems_evidence/T16-RoverMemsTesting.rar)
+
+### What The Extracted Rover Project Confirms
+
+The recovered tune file [CurrentTune.msq](C:/Users/Cornelio/Desktop/speeduino-202501.6/Resources/rover_mems_evidence/extracted/T16-RoverMemsTesting/CurrentTune.msq) confirms this was not just a generic Rover setup:
+
+- firmware: `Speeduino+2021.04-dev`
+- cylinders: `4`
+- ignition load algorithm: `MAP`
+- trigger speed: `Crank Speed`
+- secondary trigger pattern: `5-3-2 cam`
+- spark mode: `Wasted Spark`
+- injection layout: `Sequential`
+
+That matters because it narrows the relevant Rover path inside the current decoder:
+
+- primary wheel handling in `triggerPri_RoverMEMS()`
+- secondary `5-3-2` logic in `triggerSec_RoverMEMS()`
+- half-sync to full-sync transitions for crank-speed primary plus cam-derived phase
+
+### What The Extracted CSV Logs Confirm
+
+The extracted Rover project includes raw CSV logs in [DataLogs](C:/Users/Cornelio/Desktop/speeduino-202501.6/Resources/rover_mems_evidence/extracted/T16-RoverMemsTesting/DataLogs), including:
+
+- [2021-06-23_01.12.43-cranking_risingoncam_crank.csv](C:/Users/Cornelio/Desktop/speeduino-202501.6/Resources/rover_mems_evidence/extracted/T16-RoverMemsTesting/DataLogs/2021-06-23_01.12.43-cranking_risingoncam_crank.csv)
+- [2021-06-23_01.48.40_again.csv](C:/Users/Cornelio/Desktop/speeduino-202501.6/Resources/rover_mems_evidence/extracted/T16-RoverMemsTesting/DataLogs/2021-06-23_01.48.40_again.csv)
+- [2021-06-23_01.59.58_rising_ne.csv](C:/Users/Cornelio/Desktop/speeduino-202501.6/Resources/rover_mems_evidence/extracted/T16-RoverMemsTesting/DataLogs/2021-06-23_01.59.58_rising_ne.csv)
+
+Safe conclusions from those CSVs:
+
+- they preserve raw edge-state rows, not only a screenshot or summary
+- the three key CSVs each contain `127` parsed edge rows
+- each log includes repeated long-gap events consistent with a missing-tooth style primary pattern
+- the extracted long-gap counts were stable across the three sampled logs at `19`
+- the logs are therefore strong enough to support future replay construction if the column-to-channel mapping is decoded correctly
+
+What they do not yet safely tell us:
+
+- which CSV columns correspond to crank rising, crank falling, cam rising, and cam falling
+- exact tooth numbers for each logged edge without first decoding the TunerStudio composite-log export format
+
+## What The Forum Evidence Safely Tells Us
+
+These points are strong enough to treat as working assumptions:
+
+- Rover MEMS is not just one wheel; the current Speeduino decoder is intentionally multi-pattern.
+- The `32 poles / 4 missing` description is consistent with Speeduino's use of a theoretical `36` tooth base and pattern identification by missing-tooth placement.
+- Cam polarity and real signal conditioning matter materially for Rover sync behavior.
+- The thread contains real captures, not just verbal descriptions, and those captures are the right next input for replay work.
+- The extracted Rover project confirms the relevant live configuration path is `Crank Speed` plus `5-3-2 cam`, not a no-cam or single-tooth-cam variant.
+
+These points are not yet strong enough to encode as replay traces:
+
+- exact edge order and timing for the `17-17` layout under the current decoder
+- exact relationship between the composite logs and `toothCurrentCount` transitions
+- exact secondary event timing needed to move from half-sync to full sync for the single-tooth or half-moon case
+- exact channel mapping inside the recovered Rover CSV exports
+
+## External Cross-Checks
+
+### MS3
+
+MS3 is currently the strongest external clue for Rover phase behavior.
+
+Useful references:
+
+- [core.ini](C:/Users/Cornelio/Desktop/speeduino-202501.6/Resources/ms3-source-master/ms3/core.ini)
+  - documents `Rover#1`, `Rover#2`, and `Rover#3`
+  - documents `poll_level_tooth`
+  - help text says: `Rover 4.6 try 17`
+- [ms3_ign_in.c](C:/Users/Cornelio/Desktop/speeduino-202501.6/Resources/ms3-source-master/ms3/ms3_ign_in.c)
+  - contains dedicated Rover modes:
+    - `Rover 36-1-1 mode`
+    - `Rover 36-1-1-1-1 mode2 (EU3)`
+    - `Rover 36-1-1-1-1 mode3`
+- [ms3_ign_wheel.c](C:/Users/Cornelio/Desktop/speeduino-202501.6/Resources/ms3-source-master/ms3/ms3_ign_wheel.c)
+  - contains corresponding Rover wheel setup code
+
+Practical meaning:
+
+- MS3 reinforces that Rover phase detection is not just a missing-tooth problem; poll-point choice can materially affect phase.
+- The `try 17` note is consistent with Speeduino's own special treatment of the `17-17` layout.
+
+### rusEFI
+
+Useful reference:
+
+- [trigger_rover.cpp](C:/Users/Cornelio/Desktop/speeduino-202501.6/Resources/rusefi-2026-03-17/firmware/controllers/trigger/decoders/trigger_rover.cpp)
+
+Practical meaning:
+
+- rusEFI's `Rover K` decoder confirms that Rover-family support exists elsewhere and can be used as topology evidence.
+- It is less directly useful than MS3 for phase/poll behavior, but still useful as a cross-check that Rover support is not a one-off Speeduino invention.
+
+## Current Best Hypothesis
+
+Safe hypothesis:
+
+- The existing Speeduino Rover decoder is conceptually correct in treating the family as a `36` slot wheel with different missing-tooth layouts and optional phase information from cam.
+- The `17-17` variant likely needs phase interpretation that is sensitive to where the cycle is sampled, which is why MS3 exposes `poll_level_tooth` and explicitly calls out `17`.
+- The missing piece for replay is not general wheel topology anymore. It is exact event sequencing from the attached Rover captures.
+
+## Next Safe Step
+
+Before any new `test_decoders` replay work for Rover MEMS:
+
+1. Decode the TunerStudio composite-log CSV column mapping used in the recovered Rover project.
+2. Inspect the image-only Rover PDFs manually or via a rendering path so their wheel drawings can be compared with the current decoder's five hard-coded layouts.
+3. Convert one chosen Rover pattern into a short explicit note:
+   - tooth order
+   - missing-gap placement
+   - expected cam relationship
+   - expected half-sync and full-sync transitions
+4. Only then build replay traces for one pattern at a time.
+
+## Not Safe Yet
+
+It is still unsafe to:
+
+- reintroduce the earlier guessed `17-17` replay traces
+- assume the current forum summaries are enough to define exact timestamps
+- assume a single Rover trace will validate all five supported layouts
+- assume the recovered CSV columns are already mapped to the right crank/cam edges
+
+The blocker is now narrow and explicit: the attachment-level Rover captures are staged locally, but their CSV column mapping and PDF wheel drawings have not yet been converted into a precise replay spec.
