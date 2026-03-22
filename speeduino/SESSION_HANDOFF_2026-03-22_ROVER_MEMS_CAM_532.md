@@ -1,0 +1,105 @@
+# Session Handoff: Rover MEMS 5-3-2 Cam Phase
+
+Date: 2026-03-22
+Focus: Encode the Rover `5-3-2` cam ISR semantics and check whether the archived composite logs are precise enough for safe full-sync replay
+
+## What Changed
+
+- Added [tools/analyze_rover_mems_cam_532.py](C:/Users/Cornelio/Desktop/speeduino-202501.6/tools/analyze_rover_mems_cam_532.py)
+- Added [tools/tests/test_analyze_rover_mems_cam_532.py](C:/Users/Cornelio/Desktop/speeduino-202501.6/tools/tests/test_analyze_rover_mems_cam_532.py)
+
+The tool has two jobs:
+
+1. encode the exact `triggerSec_RoverMEMS()` gap-handling rules for `SEC_TRIGGER_5_3_2`
+2. summarize secondary transitions in the recovered Rover composite CSVs without pretending they already give exact tooth identity
+
+## Exact `5-3-2` Cam Rules From `triggerSec_RoverMEMS()`
+
+The Rover cam ISR only does phase work when it sees a secondary gap larger than the running `1.5x` threshold. At that point it interprets the tooth after the gap using `secondaryToothCount`:
+
+- `secondaryToothCount == 6`
+  - gap after `5` teeth
+  - cycle `360-720`
+  - tooth window `18-36`
+  - `revolutionOne = false`
+  - if `toothCurrentCount < 19`, add `18`
+- `secondaryToothCount == 4`
+  - gap after `3` teeth
+  - cycle `0-360`
+  - tooth window `1-18`
+  - `revolutionOne = true`
+  - if `toothCurrentCount > 17`, subtract `18`
+- `secondaryToothCount == 3`
+  - gap after `2` teeth
+  - cycle `0-360`
+  - tooth window `18-36`
+  - `revolutionOne = true`
+  - if `toothCurrentCount < 19`, add `18`
+
+After any such gap, the ISR resets `secondaryToothCount = 1`, because the current tooth becomes the first tooth after the gap.
+
+Safe conclusion:
+
+- the decoder's `5-3-2` logic is not ambiguous in code anymore
+- the remaining uncertainty is not the ISR semantics
+- the remaining uncertainty is which logged secondary transitions correspond to those gap teeth in the archived composite export
+
+## What The Archived Rover CSVs Show
+
+The new tool was run against:
+
+- [2021-06-23_01.12.43-cranking_risingoncam_crank.csv](C:/Users/Cornelio/Desktop/speeduino-202501.6/Resources/rover_mems_evidence/extracted/T16-RoverMemsTesting/DataLogs/2021-06-23_01.12.43-cranking_risingoncam_crank.csv)
+- [2021-06-23_01.59.58_rising_ne.csv](C:/Users/Cornelio/Desktop/speeduino-202501.6/Resources/rover_mems_evidence/extracted/T16-RoverMemsTesting/DataLogs/2021-06-23_01.59.58_rising_ne.csv)
+
+Post-sync secondary-transition primary-toggle bins:
+
+### `2021-06-23_01.12.43-cranking_risingoncam_crank.csv`
+
+- `{2: 1, 4: 3, 5: 4, 12: 1, 22: 1}`
+
+### `2021-06-23_01.59.58_rising_ne.csv`
+
+- `{2: 1, 4: 4, 5: 5, 10: 1, 11: 1, 23: 1}`
+
+Practical meaning:
+
+- once sync is up, the dominant observed secondary spacing bins are `4`, `5`, and `2` primary toggles between secondary state transitions
+- that is qualitatively compatible with a `5-3-2` family signal being exported as level transitions rather than already-decoded tooth groups
+- but the exported composite rows still do not safely tell us which specific transition is the tooth-after-gap event that the ISR keys off
+
+## Why Full-Sync Replay Is Still Not Safe
+
+The current blocker is now precise:
+
+- the primary-wheel model is solved and replay-backed
+- the `5-3-2` cam ISR semantics are solved and encoded in a tool
+- the archived CSVs do show structured post-sync secondary spacing
+
+But the composite export still leaves at least one unsafe ambiguity:
+
+- `secLevel` records state changes, not the decoder's internal `secondaryToothCount`
+- `trigger` changes alongside both primary and secondary activity, so it is not yet a clean cam-gap marker
+- the logs do not directly identify which secondary transition is the tooth after the `5`, `3`, or `2` gap
+
+An additional local-evidence check was also completed on the extracted Rover project:
+
+- [TuneView_000.tuneView](C:/Users/Cornelio/Desktop/speeduino-202501.6/Resources/rover_mems_evidence/extracted/T16-RoverMemsTesting/TuneView/TuneView_000.tuneView) contains no `composite`, `priLevel`, `secLevel`, or trigger-channel bindings
+- the extracted dashboard files under [dashboard](C:/Users/Cornelio/Desktop/speeduino-202501.6/Resources/rover_mems_evidence/extracted/T16-RoverMemsTesting/dashboard) expose generic `sync` / `syncLossCounter` gauges, but no composite logger widget or direct crank/cam edge visualization
+
+Safe conclusion:
+
+- there is no surviving local project artifact in the extracted Rover archive that disambiguates the composite logger's secondary edge polarity or identifies the tooth-after-gap transition directly
+
+Therefore it is still unsafe to add a full Rover `Crank Speed + 5-3-2 cam` replay trace that claims exact phase correctness.
+
+## Safe Next Step
+
+The next safe Rover step is one of:
+
+1. derive the secondary ISR edge polarity and gap-to-transition mapping from stronger evidence than the current composite export
+2. find a surviving capture or scope view that shows which `secLevel` transition corresponds to the actual decoder interrupt edge
+3. only then align one of the now-proven primary layouts with the `5-3-2` gap cases above and add a full-sync replay trace
+
+## Verification
+
+- `python -m unittest tools.tests.test_analyze_rover_mems_cam_532 tools.tests.test_derive_rover_mems_windows tools.tests.test_render_pdf_pages tools.tests.test_inspect_pdf_evidence tools.tests.test_index_pdf_images tools.tests.test_extract_pdf_images tools.tests.test_parse_speeduino_composite_csv`
