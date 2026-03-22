@@ -88,6 +88,35 @@ Safe conclusion:
 
 - even knowing the tune used `TrigEdgeSec = RISING`, the composite export still does not map cleanly onto the decoder's internal `5-3-2` tooth-group state without another unstated assumption about how `secLevel` and `priLevel` are sampled
 
+## Additional External Forum Evidence
+
+The original Speeduino Rover thread adds two concrete details that were not recoverable from the extracted local archive alone:
+
+- In [post `#51343`](https://speeduino.com/forum/viewtopic.php?t=1427&start=60#p51343), Trevor Getty explicitly reviewed the scope trace and wrote that the blue cam signal cycles as:
+  - `3 gap 2 gap gap 5 gap gap`
+  - and that the section he was concerned about was the middle of the `5` tooth sequence
+- In [post `#51394`](https://speeduino.com/forum/viewtopic.php?t=1427&start=70#p51394), Trevor then reported that the cam input polarity had in fact been wrong:
+  - the cam sensor inputs were inverted
+  - after swapping the cam leads into the correct `VR+ / VR-` orientation, the tooth logger started working
+  - with that correction, the setup reached sync and injector dwell started appearing
+
+The earlier context around that same phase problem is also useful:
+
+- In [post `#51340`](https://speeduino.com/forum/viewtopic.php?t=1427&start=60#p51340), Trevor says the composite logger shows crank and cam pulses, but he cannot see the expected `5/3/2` cam signals and suspects the decoder is not seeing cam sync correctly.
+- In [post `#51348`](https://speeduino.com/forum/viewtopic.php?t=1427&start=70#p51348), `theonewithin` reminds him that some conditioners invert the signal.
+- In [post `#51354`](https://speeduino.com/forum/viewtopic.php?t=1427&start=70#p51354), `miker` says the data file does not show the same cam behavior seen in the images and calls out the MAX VR conditioner as a likely trigger-offset variable.
+
+Safe conclusion from the external evidence:
+
+- the live 2021 Rover test work did hit a real cam-polarity problem
+- once the cam VR polarity was corrected, the Rover setup progressed from high sync loss / no injector activity to working tooth logging and sync
+- the forum does support treating cam polarity as a first-order issue rather than a side note
+
+What it still does not safely provide:
+
+- an exact mapping from a logged `secLevel` transition in the TunerStudio composite export to the decoder's internal "tooth after 5 / 3 / 2 gap" event
+- a tooth-numbered crank/cam alignment precise enough to land a full-sync replay trace without another assumption
+
 ## Why Full-Sync Replay Is Still Not Safe
 
 The current blocker is now precise:

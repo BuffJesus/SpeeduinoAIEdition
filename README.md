@@ -78,7 +78,7 @@ Upstream references:
   - `mapSwitchPoint` boundary transitions and EMAP-disabled sentinel preservation
   - MAP / EMAP / baro calibration helper coverage for clamping and enabled/disabled source behavior
 
-**Current decoder replay/runtime coverage** (`196/196` decoder tests passing):
+**Current decoder replay/runtime coverage** (`197/197` decoder tests passing):
 
 - Basic Distributor
 - Dual-Wheel
@@ -144,7 +144,8 @@ Recent work as of `2026-03-21`:
 - Installed a user-scope Poppler renderer, added [tools/render_pdf_pages.py](tools/render_pdf_pages.py), and rendered the full Rover manual pages into [Resources/rover_mems_evidence/rendered_pages](Resources/rover_mems_evidence/rendered_pages), which let the repo map OEM Rover wheel descriptions onto Speeduino's `11-5-12-4` and `2-14-3-13` patterns even though a first naive replay encoding still had to be backed out
 - Added [tools/derive_rover_mems_windows.py](tools/derive_rover_mems_windows.py) to derive the Rover MEMS rolling `32`-bit decoder window from the documented `36`-slot wheels, plus focused tool tests that lock the helper to all five hard-coded Rover patterns
 - Added narrow Rover MEMS primary-only replay coverage for the two OEM-backed layouts, proving the current decoder recognizes `2-14-3-13` and `11-5-12-4` and lands in half-sync without speculative timing assumptions
-- Verified `test_decoders`: `196/196`
+- Added [tools/analyze_rover_mems_tooth_log.py](tools/analyze_rover_mems_tooth_log.py) and used the June 25 post-fix forum tooth logger to prove that the captured setup reaches Rover pattern `#1` (`17-17`) in the decoder's rolling primary window, while keeping replay coverage limited to the already-safe OEM-backed layouts
+- Verified `test_decoders`: `197/197`
 - Verified `test_updates`: `38/38`
 - Verified `test_updates_tail`: `5/5`
 - Verified `test_ign`: `146/146`
@@ -161,6 +162,8 @@ Latest handoff references:
 - [SESSION_HANDOFF_2026-03-21_EXTERNAL_DECODER_RESEARCH.md](speeduino/SESSION_HANDOFF_2026-03-21_EXTERNAL_DECODER_RESEARCH.md)
 - [SESSION_HANDOFF_2026-03-21_ROVER_MEMS_NOTE.md](speeduino/SESSION_HANDOFF_2026-03-21_ROVER_MEMS_NOTE.md)
 - [SESSION_HANDOFF_2026-03-22_ROVER_MEMS_BIT_WINDOW.md](speeduino/SESSION_HANDOFF_2026-03-22_ROVER_MEMS_BIT_WINDOW.md)
+- [SESSION_HANDOFF_2026-03-22_ROVER_MEMS_CAM_532.md](speeduino/SESSION_HANDOFF_2026-03-22_ROVER_MEMS_CAM_532.md)
+- [SESSION_HANDOFF_2026-03-22_ROVER_MEMS_TOOTH_LOG.md](speeduino/SESSION_HANDOFF_2026-03-22_ROVER_MEMS_TOOTH_LOG.md)
 - [SESSION_HANDOFF_2026-03-21_SUBARU67_REPLAY.md](speeduino/SESSION_HANDOFF_2026-03-21_SUBARU67_REPLAY.md)
 - [SESSION_HANDOFF_2026-03-21_BASIC_DISTRIBUTOR.md](speeduino/SESSION_HANDOFF_2026-03-21_BASIC_DISTRIBUTOR.md)
 - [SESSION_HANDOFF_2026-03-21_HONDAD17.md](speeduino/SESSION_HANDOFF_2026-03-21_HONDAD17.md)
