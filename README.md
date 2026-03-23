@@ -151,6 +151,7 @@ Recent work as of `2026-03-22`:
 - Added a narrow AVR-side `36-2-2-2` H4 state suite that locks the current decoder's two sync-entry paths (`tooth 19` via consecutive long gaps and `tooth 35` via long-gap then normal tooth) plus synced wrap behavior without claiming real-capture tooth numbering
 - Added a narrow AVR-side `Daihatsu +1` suite that locks the current `3`- and `4`-cylinder extra-tooth sync and wrap paths without claiming external waveform truth
 - Formalized the existing `Ford ST170` AVR-side state slice with an explicit short-cam-noise assertion, locking the current primary-only half-sync, cam-before-gap full sync, short-secondary filtering, and sixth-tooth regroup behavior alongside the replay-backed traces
+- Formalized the existing `Missing-Tooth 36-1` AVR-side state slice around the already-verified clean gap sync, primary-only sequential half-sync retention, sequential cam promotion, noisy gap retention, and early-gap sync-loss behavior alongside the replay-backed traces
 - Formalized the existing `NGC4` AVR-side state slice around the already-verified primary-only half-sync and seeded cam-phase full-sync behavior alongside the replay-backed traces
 - Formalized the existing `Nissan360` AVR-side state slice around the already-verified supported window mappings, invalid-window rejection, synced wrap, and kept positive `useResync` realignment behavior alongside the replay-backed traces
 - Formalized the existing `Renix` AVR-side state slice around the already-verified current virtual-tooth advancement and isolated short-gap filtering behavior alongside the replay-backed traces
@@ -209,6 +210,7 @@ Latest handoff references:
 - [SESSION_HANDOFF_2026-03-22_JEEP2000_STATE.md](speeduino/SESSION_HANDOFF_2026-03-22_JEEP2000_STATE.md)
 - [SESSION_HANDOFF_2026-03-22_MAZDAAU.md](speeduino/SESSION_HANDOFF_2026-03-22_MAZDAAU.md)
 - [SESSION_HANDOFF_2026-03-23_MIATA9905_STATE.md](speeduino/SESSION_HANDOFF_2026-03-23_MIATA9905_STATE.md)
+- [SESSION_HANDOFF_2026-03-23_MISSINGTOOTH36_1_STATE.md](speeduino/SESSION_HANDOFF_2026-03-23_MISSINGTOOTH36_1_STATE.md)
 - [SESSION_HANDOFF_2026-03-23_NGC4_STATE.md](speeduino/SESSION_HANDOFF_2026-03-23_NGC4_STATE.md)
 - [SESSION_HANDOFF_2026-03-23_NISSAN360_STATE.md](speeduino/SESSION_HANDOFF_2026-03-23_NISSAN360_STATE.md)
 - [SESSION_HANDOFF_2026-03-23_RENIX_STATE.md](speeduino/SESSION_HANDOFF_2026-03-23_RENIX_STATE.md)
@@ -351,7 +353,7 @@ python tools/derive_rover_mems_windows.py 2-14-3-13 11-5-12-4
 
 ### Current Test Status
 
-- `254/254` decoder tests passing
+- `255/255` decoder tests passing
 - `38/38` config migration tests passing
 - `5/5` migration tail tests passing
 - `146/146` ignition/protection tests passing
