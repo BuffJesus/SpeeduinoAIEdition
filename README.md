@@ -159,6 +159,7 @@ Recent work as of `2026-03-22`:
 - Formalized the existing `Renix` AVR-side state slice around the already-verified current virtual-tooth advancement and isolated short-gap filtering behavior alongside the replay-backed traces
 - Formalized the existing `Suzuki K6A` AVR-side state slice around the already-verified descending-gap sync, synced wrap, post-sync short-gap filtering, and noisy primary-only sync retention alongside the replay-backed traces
 - Formalized the existing `Honda J32` AVR-side state slice around the already-verified primary-only `15 teeth -> gap -> 7 teeth -> gap` sync, short-group rejection, and maintained wrap behavior, while keeping the older forum-evidence note as the topology source
+- Formalized the existing `36-2-1` AVR-side state slice around the already-verified current-code single-gap sync, double-gap resync, and intervening tooth progression, while keeping the older 4B11 evidence note as the physical topology source
 - Added a narrow AVR-side `Audi 135` suite that locks current cam-established sync, every-third-tooth decimation, effective-tooth `45` wrap, and `useResync` behavior alongside the existing replay-backed traces
 - Added a narrow AVR-side `Basic Distributor` suite that locks current stroke-dependent tooth-angle setup, first-pulse sync, four-cylinder wrap, and post-sync lite-filter behavior alongside the existing replay-backed traces
 - Added a narrow AVR-side `420a` suite that locks the current secondary-falling sync entry points on tooth `13` and tooth `5`, synced realignment, and `16`-tooth wrap behavior without changing production decoder logic
@@ -201,6 +202,7 @@ Latest handoff references:
 - [SESSION_HANDOFF_2026-03-22_ROVER_MEMS_TOOTH_LOG.md](speeduino/SESSION_HANDOFF_2026-03-22_ROVER_MEMS_TOOTH_LOG.md)
 - [SESSION_HANDOFF_2026-03-22_HONDAJ32.md](speeduino/SESSION_HANDOFF_2026-03-22_HONDAJ32.md)
 - [SESSION_HANDOFF_2026-03-23_420A_STATE.md](speeduino/SESSION_HANDOFF_2026-03-23_420A_STATE.md)
+- [SESSION_HANDOFF_2026-03-23_36-2-1_STATE.md](speeduino/SESSION_HANDOFF_2026-03-23_36-2-1_STATE.md)
 - [SESSION_HANDOFF_2026-03-22_36-2-1.md](speeduino/SESSION_HANDOFF_2026-03-22_36-2-1.md)
 - [SESSION_HANDOFF_2026-03-22_36-2-2-2.md](speeduino/SESSION_HANDOFF_2026-03-22_36-2-2-2.md)
 - [SESSION_HANDOFF_2026-03-22_DAIHATSU.md](speeduino/SESSION_HANDOFF_2026-03-22_DAIHATSU.md)
