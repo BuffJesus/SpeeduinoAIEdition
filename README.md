@@ -78,7 +78,7 @@ Upstream references:
   - `mapSwitchPoint` boundary transitions and EMAP-disabled sentinel preservation
   - MAP / EMAP / baro calibration helper coverage for clamping and enabled/disabled source behavior
 
-**Current decoder replay/runtime coverage** (`241/241` decoder tests passing):
+**Current decoder replay/runtime coverage** (`245/245` decoder tests passing):
 
 - Basic Distributor
 - Dual-Wheel
@@ -153,6 +153,7 @@ Recent work as of `2026-03-22`:
 - Added a narrow AVR-side `GM 24X` suite that locks the startup sentinel, cam-reset sync, early lookup-table stepping, and mid-run sequence restart alongside the existing replay-backed traces
 - Added a narrow AVR-side `GM 7X` suite that locks current `60` degree setup, short-gap sync onto logical tooth `3`, uniform-gap no-sync behavior, and tooth-`7` wrap alongside the existing replay-backed traces
 - Added a narrow AVR-side `Harley` suite that locks the current startup filter seed, high-state long-gap sync onto tooth `1`, short-gap tooth-`2` classification, and low-state sync-drop behavior alongside the existing replay-backed traces
+- Added a narrow AVR-side `Honda D17` suite that locks the current `30` degree setup, short-gap `13th`-tooth sync, uniform-gap no-sync behavior, and synced wrap onto the next revolution alongside the existing replay-backed traces
 - Added a narrow AVR-side `Jeep 2000` suite that locks the startup sentinel, cam-reset sync, grouped `20 / 20 / 60` primary spacing, and next-revolution restart behavior alongside the existing replay-backed traces
 - Added a narrow AVR-side `Mazda AU` suite that locks the current third-cam-tooth sync path, the unsynced short-gap cam-counter quirk, and the synced `4`-edge primary wrap path without claiming physical wheel truth
 - Added a narrow AVR-side `Miata 99-05` suite that locks the current unsynced sentinel, two-edge cam sync onto tooth `6`, noisy extra-edge sync deferral, and synced `8`-edge wrap alongside the existing replay-backed traces
@@ -166,7 +167,7 @@ Recent work as of `2026-03-22`:
 - Added [tools/derive_rover_mems_windows.py](tools/derive_rover_mems_windows.py) to derive the Rover MEMS rolling `32`-bit decoder window from the documented `36`-slot wheels, plus focused tool tests that lock the helper to all five hard-coded Rover patterns
 - Added narrow Rover MEMS primary-only replay coverage for the two OEM-backed layouts, proving the current decoder recognizes `2-14-3-13` and `11-5-12-4` and lands in half-sync without speculative timing assumptions
 - Added [tools/analyze_rover_mems_tooth_log.py](tools/analyze_rover_mems_tooth_log.py) and used the June 25 post-fix forum tooth logger to prove that the captured setup reaches Rover pattern `#1` (`17-17`) in the decoder's rolling primary window, while keeping replay coverage limited to the already-safe OEM-backed layouts
-- Verified `test_decoders`: `241/241`
+- Verified `test_decoders`: `245/245`
 - Verified `test_updates`: `38/38`
 - Verified `test_updates_tail`: `5/5`
 - Verified `test_ign`: `146/146`
@@ -194,6 +195,7 @@ Latest handoff references:
 - [SESSION_HANDOFF_2026-03-22_GM24X_STATE.md](speeduino/SESSION_HANDOFF_2026-03-22_GM24X_STATE.md)
 - [SESSION_HANDOFF_2026-03-23_GM7X_STATE.md](speeduino/SESSION_HANDOFF_2026-03-23_GM7X_STATE.md)
 - [SESSION_HANDOFF_2026-03-23_HARLEY_STATE.md](speeduino/SESSION_HANDOFF_2026-03-23_HARLEY_STATE.md)
+- [SESSION_HANDOFF_2026-03-23_HONDAD17_STATE.md](speeduino/SESSION_HANDOFF_2026-03-23_HONDAD17_STATE.md)
 - [SESSION_HANDOFF_2026-03-22_JEEP2000_STATE.md](speeduino/SESSION_HANDOFF_2026-03-22_JEEP2000_STATE.md)
 - [SESSION_HANDOFF_2026-03-22_MAZDAAU.md](speeduino/SESSION_HANDOFF_2026-03-22_MAZDAAU.md)
 - [SESSION_HANDOFF_2026-03-23_MIATA9905_STATE.md](speeduino/SESSION_HANDOFF_2026-03-23_MIATA9905_STATE.md)
@@ -335,7 +337,7 @@ python tools/derive_rover_mems_windows.py 2-14-3-13 11-5-12-4
 
 ### Current Test Status
 
-- `241/241` decoder tests passing
+- `245/245` decoder tests passing
 - `38/38` config migration tests passing
 - `5/5` migration tail tests passing
 - `146/146` ignition/protection tests passing

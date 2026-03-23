@@ -19,6 +19,7 @@
 #include "MazdaAU/MazdaAU.h"
 #include "Miata9905/Miata9905.h"
 #include "HondaJ32/HondaJ32.h"
+#include "HondaD17/HondaD17.h"
 #include "Subaru67/Subaru67.h"
 #include "ThirtySixMinus222/ThirtySixMinus222.h"
 #include "ThirtySixMinus21/ThirtySixMinus21.h"
@@ -55,6 +56,7 @@ void setup()
     testJeep2000();
     testMazdaAU();
     testMiata9905();
+    testHondaD17();
     testHondaJ32();
     testSubaru67();
     testThirtySixMinus222();
