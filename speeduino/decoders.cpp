@@ -548,6 +548,11 @@ unsigned int testGetSecondaryToothCount(void)
 {
   return secondaryToothCount;
 }
+
+void testSetLastSecondaryToothTime(unsigned long timeUs)
+{
+  toothLastSecToothTime = timeUs;
+}
 #endif
 
 /**

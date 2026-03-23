@@ -98,6 +98,7 @@ int testCrankingGetRPM(byte totalTeeth, bool isCamTeeth);
 void testSetFilter(unsigned long curGap);
 void testSetSecondaryToothCount(unsigned int count);
 unsigned int testGetSecondaryToothCount(void);
+void testSetLastSecondaryToothTime(unsigned long timeUs);
 void testSetPrimaryTriggerState(bool state);
 void testSetSecondaryTriggerState(bool state);
 void testSetThirdTriggerState(bool state);

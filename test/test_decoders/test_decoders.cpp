@@ -11,6 +11,7 @@
 #include "FordST170/FordST170.h"
 #include "Audi135/Audi135.h"
 #include "Daihatsu/Daihatsu.h"
+#include "MazdaAU/MazdaAU.h"
 #include "HondaJ32/HondaJ32.h"
 #include "ThirtySixMinus222/ThirtySixMinus222.h"
 #include "ThirtySixMinus21/ThirtySixMinus21.h"
@@ -40,6 +41,7 @@ void setup()
     testFordST170();
     testAudi135();
     testDaihatsu();
+    testMazdaAU();
     testHondaJ32();
     testThirtySixMinus222();
     testNGC();

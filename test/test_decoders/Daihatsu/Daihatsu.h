@@ -1,0 +1,6 @@
+#ifndef TEST_DECODERS_DAIHATSU_DAIHATSU_H
+#define TEST_DECODERS_DAIHATSU_DAIHATSU_H
+
+void testDaihatsu();
+
+#endif
