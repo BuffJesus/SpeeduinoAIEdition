@@ -9,6 +9,7 @@
 #include "renix/renix.h"
 #include "Nissan360/Nissan360.h"
 #include "FordST170/FordST170.h"
+#include "BasicDistributor/BasicDistributor.h"
 #include "Audi135/Audi135.h"
 #include "Daihatsu/Daihatsu.h"
 #include "Gm24X/Gm24X.h"
@@ -41,6 +42,7 @@ void setup()
     testRenix();
     testNissan360();
     testFordST170();
+    testBasicDistributor();
     testAudi135();
     testDaihatsu();
     testGm24X();
