@@ -24,6 +24,7 @@
 #include "Subaru67/Subaru67.h"
 #include "ThirtySixMinus222/ThirtySixMinus222.h"
 #include "ThirtySixMinus21/ThirtySixMinus21.h"
+#include "Vmax/Vmax.h"
 #include "NGC/test_ngc.h"
 #include "SuzukiK6A/SuzukiK6A.h"
 
@@ -62,6 +63,7 @@ void setup()
     testHondaJ32();
     testSubaru67();
     testThirtySixMinus222();
+    testVmax();
     testNGC();
     testSuzukiK6A_setEndTeeth();
     testSuzukiK6A_getCrankAngle();

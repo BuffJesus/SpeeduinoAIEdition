@@ -78,7 +78,7 @@ Upstream references:
   - `mapSwitchPoint` boundary transitions and EMAP-disabled sentinel preservation
   - MAP / EMAP / baro calibration helper coverage for clamping and enabled/disabled source behavior
 
-**Current decoder replay/runtime coverage** (`250/250` decoder tests passing):
+**Current decoder replay/runtime coverage** (`254/254` decoder tests passing):
 
 - Basic Distributor
 - 420a
@@ -90,6 +90,7 @@ Upstream references:
 - Jeep 2000
 - Mazda AU
 - Suzuki K6A
+- Vmax
 - Missing-Tooth 36-1
 - NGC4
 - Nissan360
@@ -160,6 +161,7 @@ Recent work as of `2026-03-22`:
 - Added a narrow AVR-side `Mazda AU` suite that locks the current third-cam-tooth sync path, the unsynced short-gap cam-counter quirk, and the synced `4`-edge primary wrap path without claiming physical wheel truth
 - Added a narrow AVR-side `Miata 99-05` suite that locks the current unsynced sentinel, two-edge cam sync onto tooth `6`, noisy extra-edge sync deferral, and synced `8`-edge wrap alongside the existing replay-backed traces
 - Added a narrow AVR-side `Subaru 6/7` suite that locks the current setup state, three-cam-pulse sync onto tooth `2`, single-cam misalignment realignment to tooth `5`, and synced `12`-tooth wrap alongside the existing replay-backed traces
+- Added a narrow AVR-side `Vmax` suite that locks the current wide-lobe tooth-`1` sync, small-lobe tooth-`2` advance, and tooth-`6` wide-lobe wrap behavior without changing production decoder logic
 - Downloaded and staged the Rover MEMS forum attachments locally, confirming the archived Rover test project used `Crank Speed` with `5-3-2 cam`, `Wasted Spark`, and `Sequential` injection, while narrowing the remaining Rover blocker to composite-log CSV channel mapping and PDF wheel rendering
 - Added a host-side composite-log parser at [tools/parse_speeduino_composite_csv.py](tools/parse_speeduino_composite_csv.py) and used it to resolve the Rover CSV channel names from the archived project INI, narrowing the remaining Rover blocker again to PDF wheel interpretation and exact signal-to-tooth alignment
 - Added a host-side PDF image extractor at [tools/extract_pdf_images.py](tools/extract_pdf_images.py) and used it to pull `65` embedded images out of the Rover MEMS PDFs into [Resources/rover_mems_evidence/pdf_images](Resources/rover_mems_evidence/pdf_images), so the remaining Rover blocker is now selecting the right wheel drawings and aligning them to the parsed signal streams
@@ -169,7 +171,7 @@ Recent work as of `2026-03-22`:
 - Added [tools/derive_rover_mems_windows.py](tools/derive_rover_mems_windows.py) to derive the Rover MEMS rolling `32`-bit decoder window from the documented `36`-slot wheels, plus focused tool tests that lock the helper to all five hard-coded Rover patterns
 - Added narrow Rover MEMS primary-only replay coverage for the two OEM-backed layouts, proving the current decoder recognizes `2-14-3-13` and `11-5-12-4` and lands in half-sync without speculative timing assumptions
 - Added [tools/analyze_rover_mems_tooth_log.py](tools/analyze_rover_mems_tooth_log.py) and used the June 25 post-fix forum tooth logger to prove that the captured setup reaches Rover pattern `#1` (`17-17`) in the decoder's rolling primary window, while keeping replay coverage limited to the already-safe OEM-backed layouts
-- Verified `test_decoders`: `250/250`
+- Verified `test_decoders`: `254/254`
 - Verified `test_updates`: `38/38`
 - Verified `test_updates_tail`: `5/5`
 - Verified `test_ign`: `146/146`
@@ -203,6 +205,7 @@ Latest handoff references:
 - [SESSION_HANDOFF_2026-03-22_MAZDAAU.md](speeduino/SESSION_HANDOFF_2026-03-22_MAZDAAU.md)
 - [SESSION_HANDOFF_2026-03-23_MIATA9905_STATE.md](speeduino/SESSION_HANDOFF_2026-03-23_MIATA9905_STATE.md)
 - [SESSION_HANDOFF_2026-03-23_SUBARU67_STATE.md](speeduino/SESSION_HANDOFF_2026-03-23_SUBARU67_STATE.md)
+- [SESSION_HANDOFF_2026-03-23_VMAX_STATE.md](speeduino/SESSION_HANDOFF_2026-03-23_VMAX_STATE.md)
 - [SESSION_HANDOFF_2026-03-21_SUBARU67_REPLAY.md](speeduino/SESSION_HANDOFF_2026-03-21_SUBARU67_REPLAY.md)
 - [SESSION_HANDOFF_2026-03-21_BASIC_DISTRIBUTOR.md](speeduino/SESSION_HANDOFF_2026-03-21_BASIC_DISTRIBUTOR.md)
 - [SESSION_HANDOFF_2026-03-21_HONDAD17.md](speeduino/SESSION_HANDOFF_2026-03-21_HONDAD17.md)
@@ -340,7 +343,7 @@ python tools/derive_rover_mems_windows.py 2-14-3-13 11-5-12-4
 
 ### Current Test Status
 
-- `250/250` decoder tests passing
+- `254/254` decoder tests passing
 - `38/38` config migration tests passing
 - `5/5` migration tail tests passing
 - `146/146` ignition/protection tests passing
