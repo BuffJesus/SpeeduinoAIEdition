@@ -151,6 +151,7 @@ Recent work as of `2026-03-22`:
 - Added a narrow AVR-side `Audi 135` suite that locks current cam-established sync, every-third-tooth decimation, effective-tooth `45` wrap, and `useResync` behavior alongside the existing replay-backed traces
 - Added a narrow AVR-side `Basic Distributor` suite that locks current stroke-dependent tooth-angle setup, first-pulse sync, four-cylinder wrap, and post-sync lite-filter behavior alongside the existing replay-backed traces
 - Added a narrow AVR-side `GM 24X` suite that locks the startup sentinel, cam-reset sync, early lookup-table stepping, and mid-run sequence restart alongside the existing replay-backed traces
+- Added a narrow AVR-side `GM 7X` suite that locks current `60` degree setup, short-gap sync onto logical tooth `3`, uniform-gap no-sync behavior, and tooth-`7` wrap alongside the existing replay-backed traces
 - Added a narrow AVR-side `Jeep 2000` suite that locks the startup sentinel, cam-reset sync, grouped `20 / 20 / 60` primary spacing, and next-revolution restart behavior alongside the existing replay-backed traces
 - Added a narrow AVR-side `Mazda AU` suite that locks the current third-cam-tooth sync path, the unsynced short-gap cam-counter quirk, and the synced `4`-edge primary wrap path without claiming physical wheel truth
 - Downloaded and staged the Rover MEMS forum attachments locally, confirming the archived Rover test project used `Crank Speed` with `5-3-2 cam`, `Wasted Spark`, and `Sequential` injection, while narrowing the remaining Rover blocker to composite-log CSV channel mapping and PDF wheel rendering
@@ -188,6 +189,7 @@ Latest handoff references:
 - [SESSION_HANDOFF_2026-03-22_AUDI135.md](speeduino/SESSION_HANDOFF_2026-03-22_AUDI135.md)
 - [SESSION_HANDOFF_2026-03-23_BASIC_DISTRIBUTOR_STATE.md](speeduino/SESSION_HANDOFF_2026-03-23_BASIC_DISTRIBUTOR_STATE.md)
 - [SESSION_HANDOFF_2026-03-22_GM24X_STATE.md](speeduino/SESSION_HANDOFF_2026-03-22_GM24X_STATE.md)
+- [SESSION_HANDOFF_2026-03-23_GM7X_STATE.md](speeduino/SESSION_HANDOFF_2026-03-23_GM7X_STATE.md)
 - [SESSION_HANDOFF_2026-03-22_JEEP2000_STATE.md](speeduino/SESSION_HANDOFF_2026-03-22_JEEP2000_STATE.md)
 - [SESSION_HANDOFF_2026-03-22_MAZDAAU.md](speeduino/SESSION_HANDOFF_2026-03-22_MAZDAAU.md)
 - [SESSION_HANDOFF_2026-03-21_SUBARU67_REPLAY.md](speeduino/SESSION_HANDOFF_2026-03-21_SUBARU67_REPLAY.md)
@@ -327,7 +329,7 @@ python tools/derive_rover_mems_windows.py 2-14-3-13 11-5-12-4
 
 ### Current Test Status
 
-- `225/225` decoder tests passing
+- `229/229` decoder tests passing
 - `38/38` config migration tests passing
 - `5/5` migration tail tests passing
 - `146/146` ignition/protection tests passing
