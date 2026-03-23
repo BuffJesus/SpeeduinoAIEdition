@@ -83,29 +83,28 @@ Upstream references:
 - Basic Distributor
 - 420a
 - Dual-Wheel
+- 4G63
+- 36-2-1
+- 36-2-2-2
 - Ford ST170
 - Audi 135
 - Daihatsu +1
 - GM 24X
+- GM 7X
+- Honda D17
+- Honda J32
+- Harley
 - Jeep 2000
 - Mazda AU
-- Suzuki K6A
-- Vmax
 - Missing-Tooth 36-1
+- Miata 99-05
 - NGC4
 - Nissan360
 - Renix
-- Miata 99-05
-- Jeep 2000
-- Audi 135
-- GM 24X
-- 4G63
-- GM 7X
-- Honda D17
-- Harley
-- 36-2-2-2
 - Rover MEMS
 - Subaru 6/7
+- Suzuki K6A
+- Vmax
 
 Highlighted behaviors now covered include:
 
@@ -116,6 +115,8 @@ Highlighted behaviors now covered include:
 - no-cam / no-sync rejection
 - mixed secondary-edge behavior
 - Miata cam-edge noise deferral without false sync
+
+Most common trigger shapes in the repo are already represented by this maintained baseline. Lower-priority remaining decoder-specific work is now explicitly pushed to the end of the roadmap in [FIRMWARE_ROADMAP.md](speeduino/FIRMWARE_ROADMAP.md).
 
 ### Phase 3-6: Planned
 

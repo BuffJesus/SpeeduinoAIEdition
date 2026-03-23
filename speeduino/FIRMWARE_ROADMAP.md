@@ -153,3 +153,29 @@ Current phase 1 work started in:
 - harness rule for these blocked slices:
   - prefer the last verified green decoder baseline over landing a brittle regression
   - if a candidate slice only passes in isolation but perturbs the full decoder entrypoint, back it out and record the interaction here before moving on
+
+## Lower-Priority Remaining Decoder Surface
+
+- The repo's most common decoder families are already represented in the maintained Phase 2 baseline:
+  - missing-tooth
+  - dual-wheel / Weber-style secondary sync
+  - basic distributor
+  - GM (`24X`, `7X`)
+  - Honda (`D17`, `J32`)
+  - Mazda / Miata
+  - Nissan360
+  - Subaru `6/7`
+  - Ford ST170
+  - Harley
+  - Daihatsu +1
+  - Suzuki K6A
+  - Rover MEMS primary-only identification
+- Remaining lower-priority or narrower decoder-specific work should stay at the end of the queue unless new evidence says otherwise:
+  - `DECODER_NON360`
+  - `DECODER_DRZ400`
+  - `DECODER_WEBER` as a named alias path over the already-covered dual-wheel behavior
+  - broader variant expansion inside already-covered families, such as additional `60-2` or cylinder-count permutations that do not add a new state-machine shape
+- Blocked-but-important work still stays ahead of these lower-priority items only when the blocker itself becomes actionable:
+  - `Rover MEMS` full `Crank Speed + 5-3-2 cam` replay
+  - `4G63` direct AVR state isolation under the current harness
+  - the backed-out extra `Nissan360` `useResync == false` assertion once the Harley interaction is understood
