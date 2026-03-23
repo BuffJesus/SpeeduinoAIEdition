@@ -14,6 +14,7 @@
 #include "Daihatsu/Daihatsu.h"
 #include "Gm24X/Gm24X.h"
 #include "Gm7X/Gm7X.h"
+#include "Harley/Harley.h"
 #include "Jeep2000/Jeep2000.h"
 #include "MazdaAU/MazdaAU.h"
 #include "HondaJ32/HondaJ32.h"
@@ -48,6 +49,7 @@ void setup()
     testDaihatsu();
     testGm24X();
     testGm7X();
+    testHarley();
     testJeep2000();
     testMazdaAU();
     testHondaJ32();
