@@ -131,4 +131,19 @@ Current phase 1 work started in:
   - [SESSION_HANDOFF_2026-03-22_ROVER_MEMS_BIT_WINDOW.md](C:/Users/Cornelio/Desktop/speeduino-202501.6/speeduino/SESSION_HANDOFF_2026-03-22_ROVER_MEMS_BIT_WINDOW.md)
   - [SESSION_HANDOFF_2026-03-22_ROVER_MEMS_CAM_532.md](C:/Users/Cornelio/Desktop/speeduino-202501.6/speeduino/SESSION_HANDOFF_2026-03-22_ROVER_MEMS_CAM_532.md)
   - [SESSION_HANDOFF_2026-03-22_ROVER_MEMS_TOOTH_LOG.md](C:/Users/Cornelio/Desktop/speeduino-202501.6/speeduino/SESSION_HANDOFF_2026-03-22_ROVER_MEMS_TOOTH_LOG.md)
-- The `megaatmega2560_sim_unittest` decoder baseline is green again at `254/254`; keep it that way as new evidence-backed slices land.
+- The `megaatmega2560_sim_unittest` decoder baseline is green again at `255/255`; keep it that way as new evidence-backed slices land.
+
+## Trouble Areas
+
+- `Rover MEMS` full replay remains intentionally deferred:
+  - the repo still lacks a safe tooth-numbered mapping from a logged cam transition to the decoder's `secondaryToothCount == 6 / 4 / 3` gap events needed for full `Crank Speed + 5-3-2 cam` replay
+  - treat this as an evidence-conversion blocker, not as a signal to synthesize more speculative traces
+- `4G63` direct AVR state coverage is still not safe to land under the current harness:
+  - prior direct pin-state-driven attempts perturbed unrelated decoder tests under `simavr`
+  - keep replay coverage, but do not re-land a direct state suite until the isolation issue is understood
+- `Nissan360` has a currently unresolved order-sensitive interaction with existing replay coverage:
+  - an added direct `useResync` state assertion was backed out after it caused a later Harley replay failure in the full `test_decoders` entrypoint
+  - the Nissan360 behavior itself was plausible, but the harness interaction was not understood well enough to keep
+- harness rule for these blocked slices:
+  - prefer the last verified green decoder baseline over landing a brittle regression
+  - if a candidate slice only passes in isolation but perturbs the full decoder entrypoint, back it out and record the interaction here before moving on
