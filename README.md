@@ -131,7 +131,7 @@ See [FIRMWARE_ROADMAP.md](speeduino/FIRMWARE_ROADMAP.md) for the full roadmap.
 
 **Phase 2: Regression Harness** is still the active phase.
 
-Recent work as of `2026-03-22`:
+Recent work as of `2026-03-23`:
 
 - Completed direct migration coverage across the EEPROM update chain from `v2 -> v24`
 - Split migration coverage into stable `test_updates` and `test_updates_tail` suites
@@ -163,6 +163,7 @@ Recent work as of `2026-03-22`:
 - Formalized the existing `36-2-2-2` AVR-side state slice around the already-verified H4 tooth-`19` and tooth-`35` sync-entry paths plus synced wrap behavior, while keeping the older evidence/staging note as the capture source
 - Formalized the existing `4G63` replay-only state slice around the already-verified no-false-sync candidate-tooth behavior under the current host harness, while keeping the older replay implementation note as the source for why full sync and direct AVR coverage are still excluded
 - Formalized the existing `Rover MEMS` primary-only state slice around the already-verified OEM-backed pattern `#2` / `#3` replay identification and the host-side pattern `#1` tooth-log proof, while keeping the full `5-3-2 cam` replay blocker explicitly deferred
+- Refreshed the latest handoff index so the maintained per-decoder state notes are discoverable from the repo root
 - Added a narrow AVR-side `Audi 135` suite that locks current cam-established sync, every-third-tooth decimation, effective-tooth `45` wrap, and `useResync` behavior alongside the existing replay-backed traces
 - Added a narrow AVR-side `Basic Distributor` suite that locks current stroke-dependent tooth-angle setup, first-pulse sync, four-cylinder wrap, and post-sync lite-filter behavior alongside the existing replay-backed traces
 - Added a narrow AVR-side `420a` suite that locks the current secondary-falling sync entry points on tooth `13` and tooth `5`, synced realignment, and `16`-tooth wrap behavior without changing production decoder logic
