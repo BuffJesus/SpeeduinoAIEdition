@@ -67,6 +67,31 @@ static void emit_fordst170_secondary_gap(unsigned long gapUs)
     triggerSec_FordST170();
 }
 
+static void test_fordst170_state_short_cam_pulse_is_filtered_without_regrouping(void)
+{
+    setup_fordst170_state_machine();
+
+    emit_fordst170_secondary_gap(2000U);
+    emit_fordst170_secondary_gap(2000U);
+    TEST_ASSERT_FALSE(revolutionOne);
+    TEST_ASSERT_EQUAL_UINT16(1U, testGetSecondaryToothCount());
+    TEST_ASSERT_TRUE(triggerSecFilterTime > 0U);
+
+    emit_fordst170_secondary_gap(50U);
+
+    TEST_ASSERT_FALSE(currentStatus.hasSync);
+    TEST_ASSERT_FALSE(revolutionOne);
+    TEST_ASSERT_EQUAL_UINT16(1U, testGetSecondaryToothCount());
+    TEST_ASSERT_TRUE(triggerSecFilterTime > 0U);
+
+    emit_fordst170_secondary_gap(2000U);
+
+    TEST_ASSERT_FALSE(currentStatus.hasSync);
+    TEST_ASSERT_FALSE(revolutionOne);
+    TEST_ASSERT_EQUAL_UINT16(2U, testGetSecondaryToothCount());
+    TEST_ASSERT_TRUE(triggerSecFilterTime > 0U);
+}
+
 void test_fordst170_newIgn_12_trig0_1()
 {
     //Test the set end tooth function. Conditions:
@@ -279,6 +304,7 @@ void testFordST170()
     RUN_TEST_P(test_fordst170_newIgn_12_trigNeg360_1);
     RUN_TEST_P(test_fordst170_state_primary_only_sets_half_sync);
     RUN_TEST_P(test_fordst170_state_cam_activity_before_gap_establishes_full_sync);
+    RUN_TEST_P(test_fordst170_state_short_cam_pulse_is_filtered_without_regrouping);
     RUN_TEST_P(test_fordst170_state_sixth_cam_tooth_restarts_grouping);
     
     }
