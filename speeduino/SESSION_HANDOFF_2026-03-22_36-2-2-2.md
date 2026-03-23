@@ -7,6 +7,9 @@ Focus: Land a safe `36-2-2-2` vertical slice from the local forum evidence witho
 - Added [ThirtySixMinus222.cpp](C:/Users/Cornelio/Desktop/speeduino-202501.6/test/test_decoders/ThirtySixMinus222/ThirtySixMinus222.cpp)
 - Added [ThirtySixMinus222.h](C:/Users/Cornelio/Desktop/speeduino-202501.6/test/test_decoders/ThirtySixMinus222/ThirtySixMinus222.h)
 - Wired the new suite into [test_decoders.cpp](C:/Users/Cornelio/Desktop/speeduino-202501.6/test/test_decoders/test_decoders.cpp)
+- Staged the strongest currently identified forum artifacts under [Resources/36_2_2_2_evidence](C:/Users/Cornelio/Desktop/speeduino-202501.6/Resources/36_2_2_2_evidence)
+- Added [analyze_36_2_2_2_evidence.py](C:/Users/Cornelio/Desktop/speeduino-202501.6/tools/analyze_36_2_2_2_evidence.py)
+- Added [test_analyze_36_2_2_2_evidence.py](C:/Users/Cornelio/Desktop/speeduino-202501.6/tools/tests/test_analyze_36_2_2_2_evidence.py)
 
 ## Evidence Basis
 
@@ -25,6 +28,42 @@ These thread summaries consistently support:
 
 That is enough for a current-code state-machine slice, but not enough for a faithful replay trace from staged local captures because those captures are not yet extracted and normalized into this repo the way Rover evidence was.
 
+## What The Staged Local Files Now Prove
+
+The staged files now normalize the strongest currently identified local evidence from those threads:
+
+- [2023-09-04_18.08.38.csv](C:/Users/Cornelio/Desktop/speeduino-202501.6/Resources/36_2_2_2_evidence/2023-09-04_18.08.38.csv)
+- [CurrentTune_6013.msq](C:/Users/Cornelio/Desktop/speeduino-202501.6/Resources/36_2_2_2_evidence/CurrentTune_6013.msq)
+- [2025-02-01_13.01.19.msq](C:/Users/Cornelio/Desktop/speeduino-202501.6/Resources/36_2_2_2_evidence/2025-02-01_13.01.19.msq)
+- [cranking_6880.csv](C:/Users/Cornelio/Desktop/speeduino-202501.6/Resources/36_2_2_2_evidence/cranking_6880.csv)
+- [subarugc4_6880.msq](C:/Users/Cornelio/Desktop/speeduino-202501.6/Resources/36_2_2_2_evidence/subarugc4_6880.msq)
+
+The host-side analyzer safely proves:
+
+- all three `.msq` files use:
+  - `TrigPattern = 36-2-2-2`
+  - `TrigEdge = FALLING`
+  - `TrigEdgeSec = RISING`
+  - `TrigSpeed = Crank Speed`
+  - `trigPatternSec = Single tooth cam`
+  - `sparkMode = Wasted Spark`
+  - `nCylinders = 4`
+- the 2023 composite CSV is a real composite-style capture with:
+  - `PriLevel` toggles: `329`
+  - `SecLevel` toggles: `10`
+  - `Sync` toggles: `0`
+- the 2023 composite CSV also separates into distinct primary edge families:
+  - tuned `FALLING` edge bins cluster mainly around `2.4` to `3.2 ms`
+  - opposite `RISING` edge bins cluster mainly around `3.4` to `4.5 ms`
+- the 2025 `cranking_6880.csv` file is a plain tooth log, not a composite log
+
+That moves the blocker from "forum links exist" to a narrower problem:
+
+- the repo now has staged local `36-2-2-2` files and machine-readable summaries
+- the tuned edge polarity is now explicit from both `.msq` settings and composite-edge bins
+- but the composite capture still never reaches `Sync`, so it does not yet provide a safe tooth-numbered replay truth source
+- therefore the repo still does not have a safe tooth-numbered mapping from those captures to a replay trace
+
 ## Current-Code Contract Now Locked
 
 For `configPage2.nCylinders = 4` the new tests lock the exact existing ISR behavior in [triggerPri_ThirtySixMinus222()](C:/Users/Cornelio/Desktop/speeduino-202501.6/speeduino/decoders.cpp):
@@ -37,6 +76,8 @@ This is intentionally framed as current Speeduino behavior, not as a claim that 
 
 ## Verification
 
+- `python -m unittest tools.tests.test_analyze_36_2_2_2_evidence`
+- `python tools\analyze_36_2_2_2_evidence.py --json Resources\36_2_2_2_evidence\CurrentTune_6013.msq Resources\36_2_2_2_evidence\2025-02-01_13.01.19.msq Resources\36_2_2_2_evidence\subarugc4_6880.msq Resources\36_2_2_2_evidence\2023-09-04_18.08.38.csv Resources\36_2_2_2_evidence\cranking_6880.csv`
 - `pio test -e megaatmega2560_sim_unittest --filter test_decoders`
 - Result: `203/203` passing
 

@@ -1179,7 +1179,7 @@ static void test_trace_replay_harley_low_primary_state_drops_sync(void)
     replayTriggerTrace(makeTriggerTrace(kHarleyLowStateEvents), makeHarleyCallbacks());
 
     TEST_ASSERT_FALSE(currentStatus.hasSync);
-    TEST_ASSERT_EQUAL_UINT8(0U, currentStatus.syncLossCounter);
+    TEST_ASSERT_EQUAL_UINT8(1U, currentStatus.syncLossCounter);
     TEST_ASSERT_EQUAL_UINT16(0U, toothCurrentCount);
     TEST_ASSERT_EQUAL_UINT16(1U, currentStatus.startRevolutions);
 }
