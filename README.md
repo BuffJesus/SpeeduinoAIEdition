@@ -151,6 +151,7 @@ Recent work as of `2026-03-22`:
 - Added a narrow AVR-side `36-2-2-2` H4 state suite that locks the current decoder's two sync-entry paths (`tooth 19` via consecutive long gaps and `tooth 35` via long-gap then normal tooth) plus synced wrap behavior without claiming real-capture tooth numbering
 - Added a narrow AVR-side `Daihatsu +1` suite that locks the current `3`- and `4`-cylinder extra-tooth sync and wrap paths without claiming external waveform truth
 - Formalized the existing `Ford ST170` AVR-side state slice with an explicit short-cam-noise assertion, locking the current primary-only half-sync, cam-before-gap full sync, short-secondary filtering, and sixth-tooth regroup behavior alongside the replay-backed traces
+- Formalized the existing `Dual-Wheel` AVR-side state slice around the already-verified clean secondary sync, first-primary wrap, short-secondary filtering, synced secondary-noise survival, and `useResync` realignment behavior alongside the replay-backed traces
 - Formalized the existing `Missing-Tooth 36-1` AVR-side state slice around the already-verified clean gap sync, primary-only sequential half-sync retention, sequential cam promotion, noisy gap retention, and early-gap sync-loss behavior alongside the replay-backed traces
 - Formalized the existing `NGC4` AVR-side state slice around the already-verified primary-only half-sync and seeded cam-phase full-sync behavior alongside the replay-backed traces
 - Formalized the existing `Nissan360` AVR-side state slice around the already-verified supported window mappings, invalid-window rejection, synced wrap, and kept positive `useResync` realignment behavior alongside the replay-backed traces
@@ -202,6 +203,7 @@ Latest handoff references:
 - [SESSION_HANDOFF_2026-03-22_DAIHATSU.md](speeduino/SESSION_HANDOFF_2026-03-22_DAIHATSU.md)
 - [SESSION_HANDOFF_2026-03-22_AUDI135.md](speeduino/SESSION_HANDOFF_2026-03-22_AUDI135.md)
 - [SESSION_HANDOFF_2026-03-23_BASIC_DISTRIBUTOR_STATE.md](speeduino/SESSION_HANDOFF_2026-03-23_BASIC_DISTRIBUTOR_STATE.md)
+- [SESSION_HANDOFF_2026-03-23_DUALWHEEL_STATE.md](speeduino/SESSION_HANDOFF_2026-03-23_DUALWHEEL_STATE.md)
 - [SESSION_HANDOFF_2026-03-23_FORDST170_STATE.md](speeduino/SESSION_HANDOFF_2026-03-23_FORDST170_STATE.md)
 - [SESSION_HANDOFF_2026-03-22_GM24X_STATE.md](speeduino/SESSION_HANDOFF_2026-03-22_GM24X_STATE.md)
 - [SESSION_HANDOFF_2026-03-23_GM7X_STATE.md](speeduino/SESSION_HANDOFF_2026-03-23_GM7X_STATE.md)
