@@ -78,7 +78,7 @@ Upstream references:
   - `mapSwitchPoint` boundary transitions and EMAP-disabled sentinel preservation
   - MAP / EMAP / baro calibration helper coverage for clamping and enabled/disabled source behavior
 
-**Current decoder replay/runtime coverage** (`255/255` decoder tests passing):
+**Current decoder replay/runtime coverage** (`256/256` decoder tests passing):
 
 - Basic Distributor
 - 420a
@@ -151,6 +151,7 @@ Recent work as of `2026-03-22`:
 - Added a narrow AVR-side `36-2-2-2` H4 state suite that locks the current decoder's two sync-entry paths (`tooth 19` via consecutive long gaps and `tooth 35` via long-gap then normal tooth) plus synced wrap behavior without claiming real-capture tooth numbering
 - Added a narrow AVR-side `Daihatsu +1` suite that locks the current `3`- and `4`-cylinder extra-tooth sync and wrap paths without claiming external waveform truth
 - Formalized the existing `Ford ST170` AVR-side state slice with an explicit short-cam-noise assertion, locking the current primary-only half-sync, cam-before-gap full sync, short-secondary filtering, and sixth-tooth regroup behavior alongside the replay-backed traces
+- Formalized the existing `Renix` AVR-side state slice with an explicit fourth-valid-group wrap assertion, locking the current virtual-tooth advancement, isolated short-gap filtering, and synced wrap behavior alongside the replay-backed traces
 - Added a narrow AVR-side `Audi 135` suite that locks current cam-established sync, every-third-tooth decimation, effective-tooth `45` wrap, and `useResync` behavior alongside the existing replay-backed traces
 - Added a narrow AVR-side `Basic Distributor` suite that locks current stroke-dependent tooth-angle setup, first-pulse sync, four-cylinder wrap, and post-sync lite-filter behavior alongside the existing replay-backed traces
 - Added a narrow AVR-side `420a` suite that locks the current secondary-falling sync entry points on tooth `13` and tooth `5`, synced realignment, and `16`-tooth wrap behavior without changing production decoder logic
@@ -172,7 +173,7 @@ Recent work as of `2026-03-22`:
 - Added [tools/derive_rover_mems_windows.py](tools/derive_rover_mems_windows.py) to derive the Rover MEMS rolling `32`-bit decoder window from the documented `36`-slot wheels, plus focused tool tests that lock the helper to all five hard-coded Rover patterns
 - Added narrow Rover MEMS primary-only replay coverage for the two OEM-backed layouts, proving the current decoder recognizes `2-14-3-13` and `11-5-12-4` and lands in half-sync without speculative timing assumptions
 - Added [tools/analyze_rover_mems_tooth_log.py](tools/analyze_rover_mems_tooth_log.py) and used the June 25 post-fix forum tooth logger to prove that the captured setup reaches Rover pattern `#1` (`17-17`) in the decoder's rolling primary window, while keeping replay coverage limited to the already-safe OEM-backed layouts
-- Verified `test_decoders`: `255/255`
+- Verified `test_decoders`: `256/256`
 - Verified `test_updates`: `38/38`
 - Verified `test_updates_tail`: `5/5`
 - Verified `test_ign`: `146/146`
@@ -206,6 +207,7 @@ Latest handoff references:
 - [SESSION_HANDOFF_2026-03-22_JEEP2000_STATE.md](speeduino/SESSION_HANDOFF_2026-03-22_JEEP2000_STATE.md)
 - [SESSION_HANDOFF_2026-03-22_MAZDAAU.md](speeduino/SESSION_HANDOFF_2026-03-22_MAZDAAU.md)
 - [SESSION_HANDOFF_2026-03-23_MIATA9905_STATE.md](speeduino/SESSION_HANDOFF_2026-03-23_MIATA9905_STATE.md)
+- [SESSION_HANDOFF_2026-03-23_RENIX_STATE.md](speeduino/SESSION_HANDOFF_2026-03-23_RENIX_STATE.md)
 - [SESSION_HANDOFF_2026-03-23_SUBARU67_STATE.md](speeduino/SESSION_HANDOFF_2026-03-23_SUBARU67_STATE.md)
 - [SESSION_HANDOFF_2026-03-23_VMAX_STATE.md](speeduino/SESSION_HANDOFF_2026-03-23_VMAX_STATE.md)
 - [SESSION_HANDOFF_2026-03-21_SUBARU67_REPLAY.md](speeduino/SESSION_HANDOFF_2026-03-21_SUBARU67_REPLAY.md)

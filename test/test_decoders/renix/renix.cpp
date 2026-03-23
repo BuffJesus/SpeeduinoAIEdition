@@ -389,6 +389,22 @@ static void test_renix_state_short_gap_is_filtered_after_valid_group(void)
     TEST_ASSERT_EQUAL_UINT16(2U, toothCurrentCount);
 }
 
+static void test_renix_state_fourth_valid_group_wraps_virtual_tooth_and_marks_sync(void)
+{
+    setup_renix44_state_machine();
+
+    emit_renix_valid_group();
+    emit_renix_valid_group();
+    emit_renix_valid_group();
+    emit_renix_valid_group();
+
+    TEST_ASSERT_TRUE(currentStatus.hasSync);
+    TEST_ASSERT_EQUAL_UINT8(0U, currentStatus.syncLossCounter);
+    TEST_ASSERT_EQUAL_UINT16(1U, toothCurrentCount);
+    TEST_ASSERT_EQUAL_UINT8(1U, currentStatus.startRevolutions);
+    TEST_ASSERT_TRUE(revolutionOne);
+}
+
 
 void testRenix()
 {
@@ -418,5 +434,6 @@ void testRenix()
   RUN_TEST_P(test_Renix_newIgn_66_trig181_2);
   RUN_TEST_P(test_renix_state_valid_gap_advances_virtual_tooth_without_sync_loss);
   RUN_TEST_P(test_renix_state_short_gap_is_filtered_after_valid_group);
+  RUN_TEST_P(test_renix_state_fourth_valid_group_wraps_virtual_tooth_and_marks_sync);
   }           
 }
