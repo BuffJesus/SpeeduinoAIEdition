@@ -17,6 +17,7 @@
 #include "Harley/Harley.h"
 #include "Jeep2000/Jeep2000.h"
 #include "MazdaAU/MazdaAU.h"
+#include "Miata9905/Miata9905.h"
 #include "HondaJ32/HondaJ32.h"
 #include "ThirtySixMinus222/ThirtySixMinus222.h"
 #include "ThirtySixMinus21/ThirtySixMinus21.h"
@@ -52,6 +53,7 @@ void setup()
     testHarley();
     testJeep2000();
     testMazdaAU();
+    testMiata9905();
     testHondaJ32();
     testThirtySixMinus222();
     testNGC();

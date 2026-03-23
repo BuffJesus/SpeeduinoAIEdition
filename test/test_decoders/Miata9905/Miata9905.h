@@ -1,0 +1,1 @@
+void testMiata9905();
