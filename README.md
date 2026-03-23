@@ -162,6 +162,7 @@ Recent work as of `2026-03-22`:
 - Formalized the existing `36-2-1` AVR-side state slice around the already-verified current-code single-gap sync, double-gap resync, and intervening tooth progression, while keeping the older 4B11 evidence note as the physical topology source
 - Formalized the existing `36-2-2-2` AVR-side state slice around the already-verified H4 tooth-`19` and tooth-`35` sync-entry paths plus synced wrap behavior, while keeping the older evidence/staging note as the capture source
 - Formalized the existing `4G63` replay-only state slice around the already-verified no-false-sync candidate-tooth behavior under the current host harness, while keeping the older replay implementation note as the source for why full sync and direct AVR coverage are still excluded
+- Formalized the existing `Rover MEMS` primary-only state slice around the already-verified OEM-backed pattern `#2` / `#3` replay identification and the host-side pattern `#1` tooth-log proof, while keeping the full `5-3-2 cam` replay blocker explicitly deferred
 - Added a narrow AVR-side `Audi 135` suite that locks current cam-established sync, every-third-tooth decimation, effective-tooth `45` wrap, and `useResync` behavior alongside the existing replay-backed traces
 - Added a narrow AVR-side `Basic Distributor` suite that locks current stroke-dependent tooth-angle setup, first-pulse sync, four-cylinder wrap, and post-sync lite-filter behavior alongside the existing replay-backed traces
 - Added a narrow AVR-side `420a` suite that locks the current secondary-falling sync entry points on tooth `13` and tooth `5`, synced realignment, and `16`-tooth wrap behavior without changing production decoder logic
@@ -219,6 +220,7 @@ Latest handoff references:
 - [SESSION_HANDOFF_2026-03-23_HARLEY_STATE.md](speeduino/SESSION_HANDOFF_2026-03-23_HARLEY_STATE.md)
 - [SESSION_HANDOFF_2026-03-23_HONDAD17_STATE.md](speeduino/SESSION_HANDOFF_2026-03-23_HONDAD17_STATE.md)
 - [SESSION_HANDOFF_2026-03-23_HONDAJ32_STATE.md](speeduino/SESSION_HANDOFF_2026-03-23_HONDAJ32_STATE.md)
+- [SESSION_HANDOFF_2026-03-23_ROVER_MEMS_PRIMARY_STATE.md](speeduino/SESSION_HANDOFF_2026-03-23_ROVER_MEMS_PRIMARY_STATE.md)
 - [SESSION_HANDOFF_2026-03-22_JEEP2000_STATE.md](speeduino/SESSION_HANDOFF_2026-03-22_JEEP2000_STATE.md)
 - [SESSION_HANDOFF_2026-03-22_MAZDAAU.md](speeduino/SESSION_HANDOFF_2026-03-22_MAZDAAU.md)
 - [SESSION_HANDOFF_2026-03-23_MIATA9905_STATE.md](speeduino/SESSION_HANDOFF_2026-03-23_MIATA9905_STATE.md)
