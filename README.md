@@ -151,6 +151,7 @@ Recent work as of `2026-03-22`:
 - Added a narrow AVR-side `36-2-2-2` H4 state suite that locks the current decoder's two sync-entry paths (`tooth 19` via consecutive long gaps and `tooth 35` via long-gap then normal tooth) plus synced wrap behavior without claiming real-capture tooth numbering
 - Added a narrow AVR-side `Daihatsu +1` suite that locks the current `3`- and `4`-cylinder extra-tooth sync and wrap paths without claiming external waveform truth
 - Formalized the existing `Ford ST170` AVR-side state slice with an explicit short-cam-noise assertion, locking the current primary-only half-sync, cam-before-gap full sync, short-secondary filtering, and sixth-tooth regroup behavior alongside the replay-backed traces
+- Formalized the existing `NGC4` AVR-side state slice around the already-verified primary-only half-sync and seeded cam-phase full-sync behavior alongside the replay-backed traces
 - Formalized the existing `Renix` AVR-side state slice around the already-verified current virtual-tooth advancement and isolated short-gap filtering behavior alongside the replay-backed traces
 - Added a narrow AVR-side `Audi 135` suite that locks current cam-established sync, every-third-tooth decimation, effective-tooth `45` wrap, and `useResync` behavior alongside the existing replay-backed traces
 - Added a narrow AVR-side `Basic Distributor` suite that locks current stroke-dependent tooth-angle setup, first-pulse sync, four-cylinder wrap, and post-sync lite-filter behavior alongside the existing replay-backed traces
@@ -207,6 +208,7 @@ Latest handoff references:
 - [SESSION_HANDOFF_2026-03-22_JEEP2000_STATE.md](speeduino/SESSION_HANDOFF_2026-03-22_JEEP2000_STATE.md)
 - [SESSION_HANDOFF_2026-03-22_MAZDAAU.md](speeduino/SESSION_HANDOFF_2026-03-22_MAZDAAU.md)
 - [SESSION_HANDOFF_2026-03-23_MIATA9905_STATE.md](speeduino/SESSION_HANDOFF_2026-03-23_MIATA9905_STATE.md)
+- [SESSION_HANDOFF_2026-03-23_NGC4_STATE.md](speeduino/SESSION_HANDOFF_2026-03-23_NGC4_STATE.md)
 - [SESSION_HANDOFF_2026-03-23_RENIX_STATE.md](speeduino/SESSION_HANDOFF_2026-03-23_RENIX_STATE.md)
 - [SESSION_HANDOFF_2026-03-23_SUBARU67_STATE.md](speeduino/SESSION_HANDOFF_2026-03-23_SUBARU67_STATE.md)
 - [SESSION_HANDOFF_2026-03-23_VMAX_STATE.md](speeduino/SESSION_HANDOFF_2026-03-23_VMAX_STATE.md)
