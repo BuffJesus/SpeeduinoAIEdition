@@ -83,6 +83,7 @@ static void reset_trace_runtime(void)
     currentStatus.RPM = 0U;
     currentStatus.crankRPM = 400U;
     currentStatus.engine = 0U;
+    currentStatus.initialisationComplete = false;
 
     toothLastToothTime = 0U;
     toothLastMinusOneToothTime = 0U;

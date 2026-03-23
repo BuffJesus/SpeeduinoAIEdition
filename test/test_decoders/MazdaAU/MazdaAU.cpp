@@ -19,6 +19,7 @@ static void reset_mazdaau_runtime(void)
     currentStatus.RPM = 0U;
     currentStatus.crankRPM = 400U;
     currentStatus.engine = 0U;
+    currentStatus.initialisationComplete = false;
 
     configPage4.TrigPattern = DECODER_MAZDA_AU;
     configPage4.TrigSpeed = CRANK_SPEED;
@@ -103,19 +104,19 @@ static void test_mazdaau_primary_cycle_wraps_after_four_edges(void)
     emit_mazdaau_secondary_gap(4000U);
     emit_mazdaau_secondary_gap(4000U);
 
-    emit_mazdaau_primary_gap(10000U);
+    emit_mazdaau_primary_gap(12000U);
     TEST_ASSERT_EQUAL_UINT16(2U, toothCurrentCount);
     TEST_ASSERT_EQUAL_UINT16(108U, triggerToothAngle);
 
-    emit_mazdaau_primary_gap(10000U);
+    emit_mazdaau_primary_gap(13000U);
     TEST_ASSERT_EQUAL_UINT16(3U, toothCurrentCount);
     TEST_ASSERT_EQUAL_UINT16(72U, triggerToothAngle);
 
-    emit_mazdaau_primary_gap(10000U);
+    emit_mazdaau_primary_gap(14000U);
     TEST_ASSERT_EQUAL_UINT16(4U, toothCurrentCount);
     TEST_ASSERT_EQUAL_UINT16(108U, triggerToothAngle);
 
-    emit_mazdaau_primary_gap(10000U);
+    emit_mazdaau_primary_gap(15000U);
 
     TEST_ASSERT_TRUE(currentStatus.hasSync);
     TEST_ASSERT_EQUAL_UINT16(1U, toothCurrentCount);
