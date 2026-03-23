@@ -1,0 +1,1 @@
+void testGm24X();
