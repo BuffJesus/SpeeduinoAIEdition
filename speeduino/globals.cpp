@@ -32,6 +32,7 @@ uint8_t getBoardCapabilityFlags(uint8_t pinMapping)
   #if defined(CORE_TEENSY41)
     flags |= BOARD_CAP_12BIT_ADC;        // 12-bit ADC hardware (0-4095 range)
     flags |= BOARD_CAP_HIGH_RES_TABLES;  // 16-bit table values (uint16_t)
+    flags |= BOARD_CAP_UNRESTRICTED_INTERRUPTS; // Phase 4: All digital pins support interrupts on Teensy 4.1
   #endif
 
   switch(pinMapping)

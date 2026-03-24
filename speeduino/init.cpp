@@ -3618,6 +3618,62 @@ void initialiseTriggers(void)
     //Teensy 4 requires a HYSTERESIS flag to be set on any external interrupt pins to prevent false interrupts
     setTeensy41PinsHysteresis();
   #endif
+
+  // Phase 4: Validate trigger pins support interrupts (prevent silent failures on AVR/STM32)
+  validateTriggerPins();
+}
+
+/**
+ * @brief Validate that decoder trigger pins support external interrupts
+ *
+ * Phase 4: Interrupt pin validation to prevent silent failures on platforms
+ * with restricted interrupt capabilities (e.g., AVR Mega 2560 has only 6 external
+ * interrupt pins, while Teensy 4.1 supports interrupts on all digital pins).
+ *
+ * @return true if all trigger pins are valid, false if validation fails
+ *
+ * Side effects:
+ * - Sets PROTECT_IO_ERROR bit in currentStatus.engineProtectStatus on failure
+ * - Logs error condition for TunerStudio diagnostics
+ */
+bool validateTriggerPins(void)
+{
+  // Platforms with unrestricted interrupt capability don't need validation
+  if(boardHasCapability(BOARD_CAP_UNRESTRICTED_INTERRUPTS))
+  {
+    return true;
+  }
+
+  bool allPinsValid = true;
+
+  // Validate primary trigger pin (always required)
+  if(digitalPinToInterrupt(pinTrigger) == NOT_AN_INTERRUPT)
+  {
+    BIT_SET(currentStatus.engineProtectStatus, PROTECT_IO_ERROR);
+    allPinsValid = false;
+  }
+
+  // Validate secondary trigger pin (if decoder uses it)
+  if(BIT_CHECK(decoderState, BIT_DECODER_HAS_SECONDARY))
+  {
+    if(digitalPinToInterrupt(pinTrigger2) == NOT_AN_INTERRUPT)
+    {
+      BIT_SET(currentStatus.engineProtectStatus, PROTECT_IO_ERROR);
+      allPinsValid = false;
+    }
+  }
+
+  // Validate tertiary trigger pin (if VVT2 enabled and pin configured)
+  if(configPage10.vvt2Enabled > 0)
+  {
+    if(digitalPinToInterrupt(pinTrigger3) == NOT_AN_INTERRUPT)
+    {
+      BIT_SET(currentStatus.engineProtectStatus, PROTECT_IO_ERROR);
+      allPinsValid = false;
+    }
+  }
+
+  return allPinsValid;
 }
 
 static inline bool isAnyFuelScheduleRunning(void) {
