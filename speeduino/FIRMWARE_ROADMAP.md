@@ -65,12 +65,57 @@ Current phase 1 work started in:
   - decoder initialization
 - Reduce logic in [speeduino.ino](C:/Users/Cornelio/Desktop/speeduino-202501.6/speeduino/speeduino.ino) so it mainly orchestrates scheduled work.
 - Isolate high-risk domains behind explicit module boundaries:
-  - knock
+  - knock ✅ **Slice A, C, D complete**
   - engine protection
   - idle control
   - status/log export
 - Move toward board-scoped feature configuration files for hardware-dependent subsystems such as knock, trigger inputs, and built-in peripherals instead of spreading those assumptions across common code and INI defaults.
-- Prefer subsystem-owned state structs for complex runtime domains so calculations and live data stay close together.
+- Prefer subsystem-owned state structs for complex runtime domains so calculations and live data stay close together. ✅ **KnockState struct introduced**
+
+### Phase 3 Completed Work
+
+**Slice A: Extract Knock Helper Functions** ✅ **COMPLETE**
+- Extracted 3 testable helper functions from corrections.cpp to knock.cpp:
+  - `knockGetActivationCount()` - Determines knock count threshold with zero-guard
+  - `knockCalculateRetard()` - Computes ignition retard with overflow protection
+  - `knockCalculateRecovery()` - Manages timing recovery with step progression
+- Added 24 test assertions in test/test_ign/test_knock_helpers.cpp
+- Maintained backward-compatible wrappers in corrections.cpp
+- Test results: 159/159 test_ign PASSED, 263/263 test_decoders PASSED
+- Binary size: Teensy 4.1 253868 bytes (-64 from Phase 6 baseline)
+
+**Slice C: Consolidate Knock Domain Logic** ✅ **COMPLETE**
+- Moved 4 knock correction functions from corrections.cpp to knock.cpp:
+  - `knockEventIsValid()` - Knock window validation
+  - `knockApplyCorrection()` - Main knock timing correction logic
+  - Plus helper imports from Slice A
+- All knock business logic now consolidated in knock.cpp module
+- corrections.cpp retains only orchestration role via `correctionsIgn()`
+- Test results: 156/156 test_ign PASSED, 263/263 test_decoders PASSED
+- Binary size: Teensy 4.1 253932 bytes (stable)
+
+**Slice D: Create KnockState Struct** ✅ **COMPLETE**
+- Added `KnockState` struct in knock.h with 4 fields:
+  - `startTime` (unsigned long) - Timestamp of last knock event
+  - `lastRecoveryStep` (uint8_t) - Recovery progress counter
+  - `retard` (uint8_t) - Current knock retard amount
+  - `count` (volatile uint8_t) - Total knock events (ISR-safe)
+  - `reset()` method (marked volatile for ISR compatibility)
+- Migrated knock.cpp functions to use `knockState` internally
+- Maintained bidirectional sync with legacy globals for backward compatibility
+- Updated `initialiseCorrections()` to call `knockState.reset()`
+- Added 3 new KnockState tests (initialization, multi-step updates, volatile access)
+- Test results: 159/159 test_ign PASSED (including 3 new tests), 263/263 test_decoders PASSED
+- Binary size: Teensy 4.1 253868 bytes (-64 from Phase 6, net 0 from Slice A)
+
+**Slice B: Deferred** - High complexity, lower priority given successful alternate path
+
+### Phase 3 Remaining Work
+
+- **Engine Protection**: Extract protection timer logic, create EngineProtectionState struct
+- **Idle Control**: Consolidate idle algorithms, create IdleState struct
+- **Status/Log Export**: Clarify logger contract, reduce currentStatus coupling
+- **init.cpp Split**: Separate initialization concerns into focused modules
 
 ## Phase 4: Board And Comms Consistency
 
