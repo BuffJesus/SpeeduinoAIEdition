@@ -23,9 +23,7 @@
 #include "table2d.h"
 #include "acc_mc33810.h"
 #include BOARD_H //Note that this is not a real file, it is defined in globals.h.
-#if defined(CORE_TEENSY41)
-  #include "adc_teensy41.h"
-#endif 
+                 //Phase 4: Board-specific includes (like adc_teensy41.h) moved to board layer
 #if defined(EEPROM_RESET_PIN)
   #include EEPROM_LIB_H
 #endif
@@ -152,13 +150,9 @@ void initialiseAll(void)
     //Always start with a clean slate on the bootloader capabilities level
     //This should be 0 until we hear otherwise from the 16u2
     configPage4.bootloaderCaps = 0;
-    
-    initBoard(); //This calls the current individual boards init function. See the board_xxx.ino files for these.
 
-    // Initialize Teensy 4.1 12-bit ADC (Phase 6: higher-resolution sampling)
-    #if defined(CORE_TEENSY41)
-        initADC_Teensy41();
-    #endif
+    initBoard(); //This calls the current individual boards init function. See the board_xxx.ino files for these.
+                 //Phase 4: Board-specific initialization (ADC, timers, peripherals) now handled inside initBoard()
 
     initialiseTimers();
     

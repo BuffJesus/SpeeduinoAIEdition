@@ -112,16 +112,30 @@ Current phase 1 work started in:
 
 ### Phase 3 Remaining Work
 
-- **Engine Protection**: Extract protection timer logic, create EngineProtectionState struct
-- **Idle Control**: Consolidate idle algorithms, create IdleState struct
-- **Status/Log Export**: Clarify logger contract, reduce currentStatus coupling
-- **init.cpp Split**: Separate initialization concerns into focused modules
+- **Engine Protection**: ✅ **Audit complete** - Already has excellent module boundary, no struct consolidation needed
+- **Idle Control**: Consolidate idle algorithms, create IdleState struct (DEFERRED - medium risk, lower priority)
+- **Status/Log Export**: Clarify logger contract, reduce currentStatus coupling (moved to Phase 4)
+- **init.cpp Split**: Separate initialization concerns into focused modules (partially complete - req_fuel helpers extracted)
+
+**Phase 3 Status:** SUBSTANTIALLY COMPLETE
+- Knock module: Full boundary consolidation with KnockState struct
+- Engine protection: Already follows target pattern
+- Init helpers: req_fuel/injector calculations extracted and tested (12 assertions)
+- Remaining work moved to Phase 4 or deferred as lower priority
 
 ## Phase 4: Board And Comms Consistency
 
-- Push board-specific behavior further into the `board_*` layer.
-- Audit interrupt-capable pin assumptions and ADC differences across supported MCUs.
-- Align status/logging/comms outputs so new runtime features are exposed consistently across protocols.
+**In Progress:**
+- ✅ Board-layer audit complete (4 LOW-risk, 1 MEDIUM-risk moves identified)
+- ✅ ADC initialization moved to board layer (initADC_Teensy41 now called from initBoard)
+- ✅ Status/logging alignment audit complete (board capabilities recommended for export)
+
+**Next Steps:**
+- Implement board capability output channel (byte 130) for TunerStudio board-aware UI
+- Abstract PWM polarity inversion into board-layer functions (MEDIUM risk, deferred)
+- Push board-specific behavior further into the `board_*` layer
+- Audit interrupt-capable pin assumptions and ADC differences across supported MCUs
+- Align status/logging/comms outputs so new runtime features are exposed consistently across protocols
 - Deprecate or clearly mark partial legacy telemetry paths.
 - Continue extracting testable helpers for legacy packet/framing paths before replacing more placeholder fields, so future cleanup stays evidence-based instead of ad hoc.
 - Add explicit board capability declarations for features like onboard knock hardware, trigger channels, CAN variants, and logging support so the firmware and tuning surface can hide unsupported options instead of exposing unsafe generic defaults.
