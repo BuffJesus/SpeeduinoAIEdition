@@ -221,10 +221,12 @@ void PIT_isr()
   bool interrupt3 = (PIT_TFLG2 & PIT_TFLG_TIF);
   bool interrupt4 = (PIT_TFLG3 & PIT_TFLG_TIF);
 
-  if(interrupt1)      { PIT_TFLG0 = 1; idleInterrupt();  }
-  else if(interrupt2) { PIT_TFLG1 = 1; boostInterrupt(); }
-  else if(interrupt3) { PIT_TFLG2 = 1; vvtInterrupt();   }
-  else if(interrupt4) { PIT_TFLG3 = 1; oneMSInterval();  }
+  // Phase 6: Drain all pending flags in single ISR invocation (not else-if chain)
+  // This prevents missed interrupts when multiple timers fire between ISR entries
+  if(interrupt1) { PIT_TFLG0 = 1; idleInterrupt();  }
+  if(interrupt2) { PIT_TFLG1 = 1; boostInterrupt(); }
+  if(interrupt3) { PIT_TFLG2 = 1; vvtInterrupt();   }
+  if(interrupt4) { PIT_TFLG3 = 1; oneMSInterval();  }
   asm volatile ("dsb") ;
 }
 
@@ -236,10 +238,11 @@ void TMR1_isr(void)
   bool interrupt3 = (TMR1_CSCTRL2 & TMR_CSCTRL_TCF1);
   bool interrupt4 = (TMR1_CSCTRL3 & TMR_CSCTRL_TCF1);
 
-  if(interrupt1)      { TMR1_CSCTRL0 &= ~TMR_CSCTRL_TCF1; fuelSchedule1Interrupt(); }
-  else if(interrupt2) { TMR1_CSCTRL1 &= ~TMR_CSCTRL_TCF1; fuelSchedule2Interrupt(); }
-  else if(interrupt3) { TMR1_CSCTRL2 &= ~TMR_CSCTRL_TCF1; fuelSchedule3Interrupt(); }
-  else if(interrupt4) { TMR1_CSCTRL3 &= ~TMR_CSCTRL_TCF1; fuelSchedule4Interrupt(); }
+  // Phase 6: Drain all pending flags in single ISR invocation
+  if(interrupt1) { TMR1_CSCTRL0 &= ~TMR_CSCTRL_TCF1; fuelSchedule1Interrupt(); }
+  if(interrupt2) { TMR1_CSCTRL1 &= ~TMR_CSCTRL_TCF1; fuelSchedule2Interrupt(); }
+  if(interrupt3) { TMR1_CSCTRL2 &= ~TMR_CSCTRL_TCF1; fuelSchedule3Interrupt(); }
+  if(interrupt4) { TMR1_CSCTRL3 &= ~TMR_CSCTRL_TCF1; fuelSchedule4Interrupt(); }
 }
 void TMR2_isr(void)
 {
@@ -249,10 +252,11 @@ void TMR2_isr(void)
   bool interrupt3 = (TMR2_CSCTRL2 & TMR_CSCTRL_TCF1);
   bool interrupt4 = (TMR2_CSCTRL3 & TMR_CSCTRL_TCF1);
 
-  if(interrupt1)      { TMR2_CSCTRL0 &= ~TMR_CSCTRL_TCF1; ignitionSchedule1Interrupt(); }
-  else if(interrupt2) { TMR2_CSCTRL1 &= ~TMR_CSCTRL_TCF1; ignitionSchedule2Interrupt(); }
-  else if(interrupt3) { TMR2_CSCTRL2 &= ~TMR_CSCTRL_TCF1; ignitionSchedule3Interrupt(); }
-  else if(interrupt4) { TMR2_CSCTRL3 &= ~TMR_CSCTRL_TCF1; ignitionSchedule4Interrupt(); }
+  // Phase 6: Drain all pending flags in single ISR invocation
+  if(interrupt1) { TMR2_CSCTRL0 &= ~TMR_CSCTRL_TCF1; ignitionSchedule1Interrupt(); }
+  if(interrupt2) { TMR2_CSCTRL1 &= ~TMR_CSCTRL_TCF1; ignitionSchedule2Interrupt(); }
+  if(interrupt3) { TMR2_CSCTRL2 &= ~TMR_CSCTRL_TCF1; ignitionSchedule3Interrupt(); }
+  if(interrupt4) { TMR2_CSCTRL3 &= ~TMR_CSCTRL_TCF1; ignitionSchedule4Interrupt(); }
 }
 void TMR3_isr(void)
 {
@@ -262,10 +266,11 @@ void TMR3_isr(void)
   bool interrupt3 = (TMR3_CSCTRL2 & TMR_CSCTRL_TCF1);
   bool interrupt4 = (TMR3_CSCTRL3 & TMR_CSCTRL_TCF1);
 
-  if(interrupt1)      { TMR3_CSCTRL0 &= ~TMR_CSCTRL_TCF1; fuelSchedule5Interrupt(); }
-  else if(interrupt2) { TMR3_CSCTRL1 &= ~TMR_CSCTRL_TCF1; fuelSchedule6Interrupt(); }
-  else if(interrupt3) { TMR3_CSCTRL2 &= ~TMR_CSCTRL_TCF1; fuelSchedule7Interrupt(); }
-  else if(interrupt4) { TMR3_CSCTRL3 &= ~TMR_CSCTRL_TCF1; fuelSchedule8Interrupt(); }
+  // Phase 6: Drain all pending flags in single ISR invocation
+  if(interrupt1) { TMR3_CSCTRL0 &= ~TMR_CSCTRL_TCF1; fuelSchedule5Interrupt(); }
+  if(interrupt2) { TMR3_CSCTRL1 &= ~TMR_CSCTRL_TCF1; fuelSchedule6Interrupt(); }
+  if(interrupt3) { TMR3_CSCTRL2 &= ~TMR_CSCTRL_TCF1; fuelSchedule7Interrupt(); }
+  if(interrupt4) { TMR3_CSCTRL3 &= ~TMR_CSCTRL_TCF1; fuelSchedule8Interrupt(); }
 }
 void TMR4_isr(void)
 {
@@ -275,10 +280,11 @@ void TMR4_isr(void)
   bool interrupt3 = (TMR4_CSCTRL2 & TMR_CSCTRL_TCF1);
   bool interrupt4 = (TMR4_CSCTRL3 & TMR_CSCTRL_TCF1);
 
-  if(interrupt1)      { TMR4_CSCTRL0 &= ~TMR_CSCTRL_TCF1; ignitionSchedule5Interrupt(); }
-  else if(interrupt2) { TMR4_CSCTRL1 &= ~TMR_CSCTRL_TCF1; ignitionSchedule6Interrupt(); }
-  else if(interrupt3) { TMR4_CSCTRL2 &= ~TMR_CSCTRL_TCF1; ignitionSchedule7Interrupt(); }
-  else if(interrupt4) { TMR4_CSCTRL3 &= ~TMR_CSCTRL_TCF1; ignitionSchedule8Interrupt(); }
+  // Phase 6: Drain all pending flags in single ISR invocation
+  if(interrupt1) { TMR4_CSCTRL0 &= ~TMR_CSCTRL_TCF1; ignitionSchedule5Interrupt(); }
+  if(interrupt2) { TMR4_CSCTRL1 &= ~TMR_CSCTRL_TCF1; ignitionSchedule6Interrupt(); }
+  if(interrupt3) { TMR4_CSCTRL2 &= ~TMR_CSCTRL_TCF1; ignitionSchedule7Interrupt(); }
+  if(interrupt4) { TMR4_CSCTRL3 &= ~TMR_CSCTRL_TCF1; ignitionSchedule8Interrupt(); }
 }
 
 uint16_t freeRam()
