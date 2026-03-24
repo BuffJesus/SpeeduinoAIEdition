@@ -33,6 +33,7 @@ static constexpr table3d_axis_t yMax = tempYAxis[_countof(tempYAxis)-1];
 
 static table3d16RpmLoad testTable;
 static table3d4RpmLoad interpolationTable;
+static table3d4RpmLoad asymmetricInterpolationTable;
 
 TEST_DATA_P table3d_axis_t interpolationXAxis[] = { 0, 100, 200, 300 };
 TEST_DATA_P table3d_axis_t interpolationYAxis[] = { 0, 100, 200, 300 };
@@ -43,10 +44,25 @@ TEST_DATA_P table3d_value_t interpolationValues[] = {
 120, 130, 140, 150,
 };
 
+TEST_DATA_P table3d_axis_t asymmetricXAxis[] = { 0, 100, 300, 600 };
+TEST_DATA_P table3d_axis_t asymmetricYAxis[] = { 0, 50, 250, 500 };
+TEST_DATA_P table3d_value_t asymmetricValues[] = {
+0, 10, 30, 60,
+10, 20, 40, 70,
+50, 60, 80, 110,
+100, 110, 130, 160,
+};
+
 static void setup_InterpolationTable(void)
 {
   populate_table_P(interpolationTable, interpolationXAxis, interpolationYAxis, interpolationValues);
   invalidate_cache(&interpolationTable.get_value_cache);
+}
+
+static void setup_AsymmetricInterpolationTable(void)
+{
+  populate_table_P(asymmetricInterpolationTable, asymmetricXAxis, asymmetricYAxis, asymmetricValues);
+  invalidate_cache(&asymmetricInterpolationTable.get_value_cache);
 }
 
 void setup_TestTable(void)
@@ -88,6 +104,11 @@ void testTables()
   RUN_TEST(test_tableLookup_underMinX);
   RUN_TEST(test_tableLookup_underMinY);
   RUN_TEST(test_tableLookup_roundUp);
+  RUN_TEST(test_tableLookup_exact_axis_endpoints);
+  RUN_TEST(test_tableLookup_mid_cell_midpoints);
+  RUN_TEST(test_tableLookup_clamps_off_table_queries);
+  RUN_TEST(test_tableLookup_single_cell_table_returns_constant_value);
+  RUN_TEST(test_tableLookup_asymmetric_axis_spacing_interpolates_correctly);
   RUN_TEST(test_tableLookup_weightedInterpolation_matches_fixed_point_weights);
   RUN_TEST(test_tableLookup_cache_hit_returns_cached_value_until_invalidated);
   //RUN_TEST(test_all_incrementing);
@@ -183,6 +204,55 @@ void test_tableLookup_roundUp(void)
   TEST_ASSERT_EQUAL(tempVE, 34);
   TEST_ASSERT_EQUAL(testTable.get_value_cache.lastXBinMax, (table3d_dim_t)14);
   TEST_ASSERT_EQUAL(testTable.get_value_cache.lastYBinMax, (table3d_dim_t)14);
+}
+
+void test_tableLookup_exact_axis_endpoints(void)
+{
+  setup_InterpolationTable();
+
+  TEST_ASSERT_EQUAL_UINT8(0U, get3DTableValue(&interpolationTable, 0, 0));
+  TEST_ASSERT_EQUAL_UINT8(150U, get3DTableValue(&interpolationTable, 300, 300));
+}
+
+void test_tableLookup_mid_cell_midpoints(void)
+{
+  setup_InterpolationTable();
+
+  TEST_ASSERT_EQUAL_UINT8(25U, get3DTableValue(&interpolationTable, 50, 50));
+  TEST_ASSERT_EQUAL_UINT8(75U, get3DTableValue(&interpolationTable, 150, 150));
+  TEST_ASSERT_EQUAL_UINT8(125U, get3DTableValue(&interpolationTable, 250, 250));
+}
+
+void test_tableLookup_clamps_off_table_queries(void)
+{
+  setup_InterpolationTable();
+
+  TEST_ASSERT_EQUAL_UINT8(0U, get3DTableValue(&interpolationTable, -25, -25));
+  TEST_ASSERT_EQUAL_UINT8(150U, get3DTableValue(&interpolationTable, 350, 350));
+  TEST_ASSERT_EQUAL_UINT8(60U, get3DTableValue(&interpolationTable, 150, -50));
+  TEST_ASSERT_EQUAL_UINT8(135U, get3DTableValue(&interpolationTable, 350, 150));
+}
+
+void test_tableLookup_single_cell_table_returns_constant_value(void)
+{
+  table3DGetValueCache cache = {};
+  static constexpr table3d_value_t values[] = { 77U };
+  static constexpr table3d_axis_t xAxis[] = { 250 };
+  static constexpr table3d_axis_t yAxis[] = { 80 };
+
+  invalidate_cache(&cache);
+  TEST_ASSERT_EQUAL_UINT8(77U, get3DTableValue(&cache, 1U, values, xAxis, yAxis, -100, -100));
+  TEST_ASSERT_EQUAL_UINT8(77U, get3DTableValue(&cache, 1U, values, xAxis, yAxis, 80, 250));
+  TEST_ASSERT_EQUAL_UINT8(77U, get3DTableValue(&cache, 1U, values, xAxis, yAxis, 1000, 1000));
+}
+
+void test_tableLookup_asymmetric_axis_spacing_interpolates_correctly(void)
+{
+  setup_AsymmetricInterpolationTable();
+
+  TEST_ASSERT_EQUAL_UINT8(45U, get3DTableValue(&asymmetricInterpolationTable, 150, 150));
+  TEST_ASSERT_EQUAL_UINT8(110U, get3DTableValue(&asymmetricInterpolationTable, 500, 100));
+  TEST_ASSERT_EQUAL_UINT8(80U, get3DTableValue(&asymmetricInterpolationTable, 250, 300));
 }
 
 void test_tableLookup_weightedInterpolation_matches_fixed_point_weights(void)

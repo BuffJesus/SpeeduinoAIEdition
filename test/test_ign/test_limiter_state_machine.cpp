@@ -76,6 +76,10 @@ static void setup_limiter_state_machine(void)
     configPage10.lnchCtrlTPS = 80U;
     configPage10.lnchCtrlVss = 50U;
 
+    pinLaunch = LED_BUILTIN;
+    pinMode(pinLaunch, INPUT_PULLUP);
+    configPage6.launchHiLo = 1U;
+
     softLimitTime = 0U;
 }
 
@@ -330,6 +334,127 @@ static void test_combined_boost_and_afr_protection_clamp_to_engine_protect_limit
     TEST_ASSERT_EQUAL_UINT16(3500U, calculateMaxAllowedRPM());
 }
 
+static void test_combined_boost_and_afr_protection_keep_hard_rev_limit_below_engine_protect_threshold(void)
+{
+    setup_limiter_state_machine();
+    enable_active_boost_cut();
+    seed_active_afr_inputs();
+    currentStatus.RPM = 4800U;
+    currentStatus.RPMdiv100 = currentStatus.RPM / 100U;
+
+    TEST_ASSERT_EQUAL_UINT8(0U, checkAFRLimit());
+    delay(120);
+    TEST_ASSERT_EQUAL_UINT8(1U, checkAFRLimit());
+    TEST_ASSERT_EQUAL_UINT8(1U, checkBoostLimit());
+    TEST_ASSERT_EQUAL_UINT8(0U, checkEngineProtect());
+    TEST_ASSERT_BIT_HIGH(ENGINE_PROTECT_BIT_AFR, currentStatus.engineProtectStatus);
+    TEST_ASSERT_BIT_HIGH(ENGINE_PROTECT_BIT_MAP, currentStatus.engineProtectStatus);
+    TEST_ASSERT_EQUAL_UINT16(configPage4.HardRevLim * 100U, calculateMaxAllowedRPM());
+}
+
+static void test_afr_protection_reactivates_only_after_tps_drop_while_boost_cut_remains_active(void)
+{
+    setup_limiter_state_machine();
+    enable_active_boost_cut();
+    seed_active_afr_inputs();
+    currentStatus.RPM = 4800U;
+    currentStatus.RPMdiv100 = currentStatus.RPM / 100U;
+
+    TEST_ASSERT_EQUAL_UINT8(0U, checkAFRLimit());
+    delay(120);
+    TEST_ASSERT_EQUAL_UINT8(1U, checkAFRLimit());
+    TEST_ASSERT_EQUAL_UINT8(1U, checkBoostLimit());
+    TEST_ASSERT_BIT_HIGH(ENGINE_PROTECT_BIT_AFR, currentStatus.engineProtectStatus);
+    TEST_ASSERT_BIT_HIGH(ENGINE_PROTECT_BIT_MAP, currentStatus.engineProtectStatus);
+
+    currentStatus.O2 = 120U;
+    TEST_ASSERT_EQUAL_UINT8(1U, checkAFRLimit());
+    TEST_ASSERT_BIT_HIGH(ENGINE_PROTECT_BIT_AFR, currentStatus.engineProtectStatus);
+
+    currentStatus.TPS = configPage9.afrProtectReactivationTPS;
+    TEST_ASSERT_EQUAL_UINT8(0U, checkAFRLimit());
+    TEST_ASSERT_BIT_LOW(ENGINE_PROTECT_BIT_AFR, currentStatus.engineProtectStatus);
+
+    TEST_ASSERT_EQUAL_UINT8(1U, checkBoostLimit());
+    TEST_ASSERT_BIT_HIGH(ENGINE_PROTECT_BIT_MAP, currentStatus.engineProtectStatus);
+    TEST_ASSERT_EQUAL_UINT16(configPage4.HardRevLim * 100U, calculateMaxAllowedRPM());
+}
+
+static void test_launch_vss_gate_blocks_launch_above_speed_threshold_until_speed_drops(void)
+{
+    setup_limiter_state_machine();
+    configPage2.vssMode = 1U;
+    currentStatus.clutchEngagedRPM = (configPage6.flatSArm * 100U) - 100U;
+    currentStatus.RPM = (configPage6.lnchHardLim * 100U) + 100U;
+    currentStatus.RPMdiv100 = currentStatus.RPM / 100U;
+    currentStatus.TPS = configPage10.lnchCtrlTPS + 1U;
+    currentStatus.vss = configPage10.lnchCtrlVss;
+
+    checkLaunchAndFlatShift();
+
+    TEST_ASSERT_FALSE(currentStatus.launchingHard);
+    TEST_ASSERT_FALSE(currentStatus.flatShiftingHard);
+    TEST_ASSERT_BIT_LOW(BIT_STATUS2_HLAUNCH, currentStatus.status2);
+
+    currentStatus.vss = configPage10.lnchCtrlVss - 1U;
+    checkLaunchAndFlatShift();
+
+    TEST_ASSERT_TRUE(currentStatus.launchingHard);
+    TEST_ASSERT_FALSE(currentStatus.flatShiftingHard);
+    TEST_ASSERT_BIT_HIGH(BIT_STATUS2_HLAUNCH, currentStatus.status2);
+
+    currentStatus.RPM = (configPage6.lnchHardLim * 100U) - 100U;
+    currentStatus.RPMdiv100 = currentStatus.RPM / 100U;
+    checkLaunchAndFlatShift();
+
+    TEST_ASSERT_FALSE(currentStatus.launchingHard);
+    TEST_ASSERT_BIT_LOW(BIT_STATUS2_HLAUNCH, currentStatus.status2);
+}
+
+static void test_clutch_latch_updates_even_when_vss_gate_blocks_launch(void)
+{
+    setup_limiter_state_machine();
+    configPage2.vssMode = 1U;
+    currentStatus.previousClutchTrigger = false;
+    currentStatus.clutchTrigger = false;
+    currentStatus.RPM = 2500U;
+    currentStatus.RPMdiv100 = currentStatus.RPM / 100U;
+    currentStatus.TPS = configPage10.lnchCtrlTPS + 1U;
+    currentStatus.vss = configPage10.lnchCtrlVss;
+
+    checkLaunchAndFlatShift();
+
+    TEST_ASSERT_FALSE(currentStatus.launchingHard);
+    TEST_ASSERT_FALSE(currentStatus.flatShiftingHard);
+    TEST_ASSERT_EQUAL_UINT16(2500U, currentStatus.clutchEngagedRPM);
+    TEST_ASSERT_BIT_LOW(BIT_STATUS2_HLAUNCH, currentStatus.status2);
+}
+
+static void test_flat_shift_activates_independently_of_vss_gate_once_clutch_state_qualifies(void)
+{
+    setup_limiter_state_machine();
+    configPage2.vssMode = 1U;
+    currentStatus.previousClutchTrigger = false;
+    currentStatus.clutchTrigger = false;
+    currentStatus.RPM = 2500U;
+    currentStatus.RPMdiv100 = currentStatus.RPM / 100U;
+    currentStatus.TPS = configPage10.lnchCtrlTPS + 1U;
+    currentStatus.vss = configPage10.lnchCtrlVss;
+
+    checkLaunchAndFlatShift();
+    TEST_ASSERT_EQUAL_UINT16(2500U, currentStatus.clutchEngagedRPM);
+
+    currentStatus.RPM = 2700U;
+    currentStatus.RPMdiv100 = currentStatus.RPM / 100U;
+    checkLaunchAndFlatShift();
+
+    TEST_ASSERT_FALSE(currentStatus.launchingHard);
+    TEST_ASSERT_TRUE(currentStatus.flatShiftingHard);
+    TEST_ASSERT_BIT_LOW(BIT_STATUS2_HLAUNCH, currentStatus.status2);
+    TEST_ASSERT_BIT_HIGH(BIT_STATUS5_FLATSH, currentStatus.status5);
+    TEST_ASSERT_EQUAL_UINT16(currentStatus.clutchEngagedRPM, calculateMaxAllowedRPM());
+}
+
 void test_limiter_state_machine(void)
 {
     SET_UNITY_FILENAME() {
@@ -344,5 +469,10 @@ void test_limiter_state_machine(void)
         RUN_TEST(test_afr_protection_target_table_mode_stays_inactive_when_target_rises_above_current_o2);
         RUN_TEST(test_boost_cut_sets_protection_bits_without_lowering_max_rpm_below_engine_protect_threshold);
         RUN_TEST(test_combined_boost_and_afr_protection_clamp_to_engine_protect_limit_before_launch_override);
+        RUN_TEST(test_combined_boost_and_afr_protection_keep_hard_rev_limit_below_engine_protect_threshold);
+        RUN_TEST(test_afr_protection_reactivates_only_after_tps_drop_while_boost_cut_remains_active);
+        RUN_TEST(test_launch_vss_gate_blocks_launch_above_speed_threshold_until_speed_drops);
+        RUN_TEST(test_clutch_latch_updates_even_when_vss_gate_blocks_launch);
+        RUN_TEST(test_flat_shift_activates_independently_of_vss_gate_once_clutch_state_qualifies);
     }
 }

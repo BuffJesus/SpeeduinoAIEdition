@@ -1166,8 +1166,42 @@ static void test_checkAFRLimit(void) {
 
 static void setup_logger_status_exports(void) {
     initialiseCorrections();
+    currentStatus.status1 = 0U;
+    currentStatus.status2 = 0U;
     currentStatus.engineProtectStatus = 0U;
     currentStatus.status5 = 0U;
+    currentStatus.hasSync = false;
+}
+
+static void test_logger_exports_status1_bits(void) {
+    setup_logger_status_exports();
+    BIT_SET(currentStatus.status1, BIT_STATUS1_DFCO);
+    BIT_SET(currentStatus.status1, BIT_STATUS1_BOOSTCUT);
+    BIT_SET(currentStatus.status1, BIT_STATUS1_TOOTHLOG1READY);
+
+    TEST_ASSERT_EQUAL_HEX8(currentStatus.status1, getTSLogEntry(1));
+    TEST_ASSERT_EQUAL_INT16(currentStatus.status1, getReadableLogEntry(1));
+    TEST_ASSERT_EQUAL_HEX8(currentStatus.status1, getLegacySecondarySerialLogEntry(1));
+    TEST_ASSERT_BIT_HIGH(BIT_STATUS1_DFCO, getTSLogEntry(1));
+    TEST_ASSERT_BIT_HIGH(BIT_STATUS1_BOOSTCUT, getReadableLogEntry(1));
+    TEST_ASSERT_BIT_HIGH(BIT_STATUS1_TOOTHLOG1READY, getLegacySecondarySerialLogEntry(1));
+}
+
+static void test_logger_exports_status2_bits(void) {
+    setup_logger_status_exports();
+    currentStatus.hasSync = true;
+    BIT_SET(currentStatus.status2, BIT_STATUS2_HLAUNCH);
+    BIT_SET(currentStatus.status2, BIT_STATUS2_SFTLIM);
+    BIT_SET(currentStatus.status2, BIT_STATUS2_BOOSTCUT);
+    BIT_SET(currentStatus.status2, BIT_STATUS2_SYNC);
+
+    TEST_ASSERT_EQUAL_HEX8(currentStatus.status2, getTSLogEntry(32));
+    TEST_ASSERT_EQUAL_INT16(currentStatus.status2, getReadableLogEntry(26));
+    TEST_ASSERT_EQUAL_HEX8(currentStatus.status2, getLegacySecondarySerialLogEntry(31));
+    TEST_ASSERT_BIT_HIGH(BIT_STATUS2_HLAUNCH, getTSLogEntry(32));
+    TEST_ASSERT_BIT_HIGH(BIT_STATUS2_SFTLIM, getReadableLogEntry(26));
+    TEST_ASSERT_BIT_HIGH(BIT_STATUS2_BOOSTCUT, getLegacySecondarySerialLogEntry(31));
+    TEST_ASSERT_BIT_HIGH(BIT_STATUS2_SYNC, getLegacySecondarySerialLogEntry(31));
 }
 
 static void test_logger_exports_engine_protection_bits(void) {
@@ -1181,6 +1215,9 @@ static void test_logger_exports_engine_protection_bits(void) {
     TEST_ASSERT_EQUAL_HEX8(currentStatus.engineProtectStatus, getTSLogEntry(85));
     TEST_ASSERT_EQUAL_INT16(currentStatus.engineProtectStatus, getReadableLogEntry(58));
     TEST_ASSERT_EQUAL_HEX8(currentStatus.engineProtectStatus, getLegacySecondarySerialLogEntry(83));
+    TEST_ASSERT_BIT_HIGH(ENGINE_PROTECT_BIT_RPM, getTSLogEntry(85));
+    TEST_ASSERT_BIT_HIGH(ENGINE_PROTECT_BIT_MAP, getReadableLogEntry(58));
+    TEST_ASSERT_BIT_HIGH(ENGINE_PROTECT_BIT_AFR, getLegacySecondarySerialLogEntry(83));
 }
 
 static void test_logger_exports_knock_status5_bits(void) {
@@ -1195,10 +1232,14 @@ static void test_logger_exports_knock_status5_bits(void) {
     TEST_ASSERT_EQUAL_INT16(currentStatus.status5, getReadableLogEntry(91));
     TEST_ASSERT_EQUAL_HEX8(currentStatus.knockCount, getTSLogEntry(128));
     TEST_ASSERT_EQUAL_HEX8(currentStatus.knockRetard, getTSLogEntry(129));
+    TEST_ASSERT_BIT_HIGH(BIT_STATUS5_FLATSH, getTSLogEntry(127));
     TEST_ASSERT_BIT_HIGH(BIT_STATUS5_KNOCK_ACTIVE, getTSLogEntry(127));
+    TEST_ASSERT_BIT_HIGH(BIT_STATUS5_KNOCK_PULSE, getReadableLogEntry(91));
 }
 
 static void test_logger_status_exports(void) {
+    RUN_TEST_P(test_logger_exports_status1_bits);
+    RUN_TEST_P(test_logger_exports_status2_bits);
     RUN_TEST_P(test_logger_exports_engine_protection_bits);
     RUN_TEST_P(test_logger_exports_knock_status5_bits);
 }

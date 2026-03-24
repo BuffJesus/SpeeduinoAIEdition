@@ -156,6 +156,14 @@ table3d_value_t __attribute__((noclone)) get3DTableValue(struct table3DGetValueC
                     const table3d_axis_t *pYAxis,
                     table3d_axis_t Y_in, table3d_axis_t X_in)
 {
+    if (axisSize <= 1U)
+    {
+      pValueCache->last_lookup.x = X_in;
+      pValueCache->last_lookup.y = Y_in;
+      pValueCache->lastOutput = pValues[0];
+      return pValueCache->lastOutput;
+    }
+
     //0th check is whether the same X and Y values are being sent as last time. 
     // If they are, this not only prevents a lookup of the axis, but prevents the 
     //interpolation calcs being performed

@@ -12,6 +12,7 @@
 #include "globals.h"
 #include "sensors.h"
 #include "sensors_map_structs.h"
+#include "storage.h"
 
 // External test helpers exposed via TESTABLE_INLINE_STATIC
 extern int16_t fastMap10Bit(uint16_t value, int16_t rangeMin, int16_t rangeMax);
@@ -20,6 +21,13 @@ extern bool isValidBaro(uint8_t baro);
 extern uint16_t mapADCToMAP(uint16_t mapADC, int8_t mapMin, uint16_t mapMax);
 extern void setMAPValuesFromReadings(const map_adc_readings_t &readings, const config2 &page2, bool useEMAP, statuses &current);
 extern void setBaroFromSensorReading(uint16_t sensorReading);
+extern bool resetInvalidADCFilterValues(config4 &page4);
+using map_sampling_runtime_fn_t = bool (*)(const statuses &, const config2 &, map_algorithm_t &, map_adc_readings_t &);
+extern map_sampling_runtime_fn_t getMapSamplingFunction(MAPSamplingMethod mapSample);
+extern bool instantaneousMAPReadingRuntime(const statuses &, const config2 &, map_algorithm_t &, map_adc_readings_t &);
+extern bool cycleAverageMAPReadingRuntime(const statuses &, const config2 &, map_algorithm_t &, map_adc_readings_t &);
+extern bool cycleMinimumMAPReadingRuntime(const statuses &, const config2 &, map_algorithm_t &, map_adc_readings_t &);
+extern bool eventAverageMAPReadingRuntime(const statuses &, const config2 &, map_algorithm_t &, map_adc_readings_t &);
 
 // ========================================== MAP Sensor Validation ==========================================
 
@@ -198,6 +206,64 @@ static void test_setBaroFromSensorReading_clamps_negative_mapped_baro_to_zero(vo
     TEST_ASSERT_EQUAL_UINT8(0U, currentStatus.baro);
 }
 
+static void test_resetInvalidADCFilterValues_resets_invalid_filter_values_to_defaults(void) {
+    configPage4.ADCFILTER_TPS = 255U;
+    configPage4.ADCFILTER_CLT = 255U;
+    configPage4.ADCFILTER_IAT = 255U;
+    configPage4.ADCFILTER_O2 = 255U;
+    configPage4.ADCFILTER_BAT = 255U;
+    configPage4.ADCFILTER_MAP = 255U;
+    configPage4.ADCFILTER_BARO = 255U;
+    configPage4.FILTER_FLEX = 255U;
+
+    TEST_ASSERT_TRUE(resetInvalidADCFilterValues(configPage4));
+
+    TEST_ASSERT_EQUAL_UINT8(ADCFILTER_TPS_DEFAULT, configPage4.ADCFILTER_TPS);
+    TEST_ASSERT_EQUAL_UINT8(ADCFILTER_CLT_DEFAULT, configPage4.ADCFILTER_CLT);
+    TEST_ASSERT_EQUAL_UINT8(ADCFILTER_IAT_DEFAULT, configPage4.ADCFILTER_IAT);
+    TEST_ASSERT_EQUAL_UINT8(ADCFILTER_O2_DEFAULT, configPage4.ADCFILTER_O2);
+    TEST_ASSERT_EQUAL_UINT8(ADCFILTER_BAT_DEFAULT, configPage4.ADCFILTER_BAT);
+    TEST_ASSERT_EQUAL_UINT8(ADCFILTER_MAP_DEFAULT, configPage4.ADCFILTER_MAP);
+    TEST_ASSERT_EQUAL_UINT8(ADCFILTER_BARO_DEFAULT, configPage4.ADCFILTER_BARO);
+    TEST_ASSERT_EQUAL_UINT8(FILTER_FLEX_DEFAULT, configPage4.FILTER_FLEX);
+}
+
+static void test_getMapSamplingFunction_matches_runtime_selection(void) {
+    TEST_ASSERT_EQUAL_PTR(instantaneousMAPReadingRuntime, getMapSamplingFunction(MAPSamplingInstantaneous));
+    TEST_ASSERT_EQUAL_PTR(cycleAverageMAPReadingRuntime, getMapSamplingFunction(MAPSamplingCycleAverage));
+    TEST_ASSERT_EQUAL_PTR(cycleMinimumMAPReadingRuntime, getMapSamplingFunction(MAPSamplingCycleMinimum));
+    TEST_ASSERT_EQUAL_PTR(eventAverageMAPReadingRuntime, getMapSamplingFunction(MAPSamplingIgnitionEventAverage));
+    TEST_ASSERT_EQUAL_PTR(instantaneousMAPReadingRuntime, getMapSamplingFunction((MAPSamplingMethod)99));
+}
+
+static void test_initialiseMAPBaro_with_external_baro_seeds_valid_sensor_value(void) {
+    configPage6.useExtBaro = 1U;
+    configPage2.baroMin = 100;
+    configPage2.baroMax = 100;
+    currentStatus.baro = 0U;
+    currentStatus.baroADC = 0U;
+    pinBaro = A0;
+
+    initialiseMAPBaro();
+
+    TEST_ASSERT_TRUE(isValidBaro(currentStatus.baro));
+    TEST_ASSERT_EQUAL_UINT8(100U, currentStatus.baro);
+}
+
+static void test_initialiseMAPBaro_without_external_baro_keeps_valid_stored_baro_seed(void) {
+    configPage6.useExtBaro = 0U;
+    configPage2.mapMin = 0;
+    configPage2.mapMax = 0;
+    currentStatus.baro = 0U;
+    pinMAP = A0;
+    storeLastBaro(102U);
+
+    initialiseMAPBaro();
+
+    TEST_ASSERT_TRUE(isValidBaro(currentStatus.baro));
+    TEST_ASSERT_EQUAL_UINT8(102U, currentStatus.baro);
+}
+
 // ========================================== fastMap10Bit Edge Cases ==========================================
 
 static void test_fastMap10Bit_zero_range(void) {
@@ -267,6 +333,10 @@ void test_filtering(void) {
     RUN_TEST(test_setMAPValuesFromReadings_leaves_emap_untouched_when_disabled);
     RUN_TEST(test_setBaroFromSensorReading_updates_baro_and_adc);
     RUN_TEST(test_setBaroFromSensorReading_clamps_negative_mapped_baro_to_zero);
+    RUN_TEST(test_resetInvalidADCFilterValues_resets_invalid_filter_values_to_defaults);
+    RUN_TEST(test_getMapSamplingFunction_matches_runtime_selection);
+    RUN_TEST(test_initialiseMAPBaro_with_external_baro_seeds_valid_sensor_value);
+    RUN_TEST(test_initialiseMAPBaro_without_external_baro_keeps_valid_stored_baro_seed);
 
     // fastMap10Bit edge case tests
     RUN_TEST(test_fastMap10Bit_zero_range);

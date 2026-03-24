@@ -33,6 +33,9 @@ volatile uint32_t flexPulseWidth = 0U;
 
 static map_algorithm_t mapAlgorithmState;
 
+typedef bool (*map_sampling_runtime_fn_t)(const statuses &, const config2 &, map_algorithm_t &, map_adc_readings_t &);
+TESTABLE_INLINE_STATIC bool resetInvalidADCFilterValues(config4 &page4);
+
 TESTABLE_INLINE_STATIC bool knockIsInsideLimits(const statuses &current, const config10 &page10)
 {
   return (current.MAP < ((long)page10.knock_maxMAP * 2L)) && (current.RPMdiv100 < page10.knock_maxRPM);
@@ -268,14 +271,7 @@ void initialiseADC(void)
   //Sanity checks to ensure none of the filter values are set above 240 (Which would include the 255 value which is the default on a new arduino)
   //If an invalid value is detected, it's reset to the default the value and burned to EEPROM. 
   //Each sensor has it's own default value
-  if(configPage4.ADCFILTER_TPS  > 240U) { configPage4.ADCFILTER_TPS   = ADCFILTER_TPS_DEFAULT;   writeConfig(ignSetPage); }
-  if(configPage4.ADCFILTER_CLT  > 240U) { configPage4.ADCFILTER_CLT   = ADCFILTER_CLT_DEFAULT;   writeConfig(ignSetPage); }
-  if(configPage4.ADCFILTER_IAT  > 240U) { configPage4.ADCFILTER_IAT   = ADCFILTER_IAT_DEFAULT;   writeConfig(ignSetPage); }
-  if(configPage4.ADCFILTER_O2   > 240U) { configPage4.ADCFILTER_O2    = ADCFILTER_O2_DEFAULT;    writeConfig(ignSetPage); }
-  if(configPage4.ADCFILTER_BAT  > 240U) { configPage4.ADCFILTER_BAT   = ADCFILTER_BAT_DEFAULT;   writeConfig(ignSetPage); }
-  if(configPage4.ADCFILTER_MAP  > 240U) { configPage4.ADCFILTER_MAP   = ADCFILTER_MAP_DEFAULT;   writeConfig(ignSetPage); }
-  if(configPage4.ADCFILTER_BARO > 240U) { configPage4.ADCFILTER_BARO  = ADCFILTER_BARO_DEFAULT;  writeConfig(ignSetPage); }
-  if(configPage4.FILTER_FLEX    > 240U) { configPage4.FILTER_FLEX     = FILTER_FLEX_DEFAULT;     writeConfig(ignSetPage); }
+  if(resetInvalidADCFilterValues(configPage4)) { writeConfig(ignSetPage); }
 
   flexStartTime = micros();
 
@@ -288,10 +284,31 @@ void initialiseADC(void)
 static constexpr uint16_t VALID_MAP_MAX=1022U; //The largest ADC value that is valid for the MAP sensor
 static constexpr uint16_t VALID_MAP_MIN=2U; //The smallest ADC value that is valid for the MAP sensor
 
+TESTABLE_INLINE_STATIC bool resetInvalidADCFilterValues(config4 &page4)
+{
+  bool changed = false;
+
+  if(page4.ADCFILTER_TPS  > 240U) { page4.ADCFILTER_TPS  = ADCFILTER_TPS_DEFAULT; changed = true; }
+  if(page4.ADCFILTER_CLT  > 240U) { page4.ADCFILTER_CLT  = ADCFILTER_CLT_DEFAULT; changed = true; }
+  if(page4.ADCFILTER_IAT  > 240U) { page4.ADCFILTER_IAT  = ADCFILTER_IAT_DEFAULT; changed = true; }
+  if(page4.ADCFILTER_O2   > 240U) { page4.ADCFILTER_O2   = ADCFILTER_O2_DEFAULT; changed = true; }
+  if(page4.ADCFILTER_BAT  > 240U) { page4.ADCFILTER_BAT  = ADCFILTER_BAT_DEFAULT; changed = true; }
+  if(page4.ADCFILTER_MAP  > 240U) { page4.ADCFILTER_MAP  = ADCFILTER_MAP_DEFAULT; changed = true; }
+  if(page4.ADCFILTER_BARO > 240U) { page4.ADCFILTER_BARO = ADCFILTER_BARO_DEFAULT; changed = true; }
+  if(page4.FILTER_FLEX    > 240U) { page4.FILTER_FLEX    = FILTER_FLEX_DEFAULT; changed = true; }
+
+  return changed;
+}
+
 TESTABLE_INLINE_STATIC bool instanteneousMAPReading(void)
 {
   // All we need to do it signal that the new readings should be used as-is
   return true;
+}
+
+TESTABLE_INLINE_STATIC bool instantaneousMAPReadingRuntime(const statuses &, const config2 &, map_algorithm_t &, map_adc_readings_t &)
+{
+  return instanteneousMAPReading();
 }
 
 static inline bool cycleAverageMAPReadingAccumulate(map_cycle_average_t &cycle_average, const map_adc_readings_t &sensorReadings) {
@@ -367,6 +384,11 @@ TESTABLE_INLINE_STATIC bool cycleAverageMAPReading(const statuses &current, cons
   return instanteneousMAPReading();
 }
 
+TESTABLE_INLINE_STATIC bool cycleAverageMAPReadingRuntime(const statuses &current, const config2 &page2, map_algorithm_t &state, map_adc_readings_t &sensorReadings)
+{
+  return cycleAverageMAPReading(current, page2, state.cycle_average, sensorReadings);
+}
+
 static inline bool cycleMinimumAccumulate(map_cycle_min_t &cycle_min, const map_adc_readings_t &sensorReadings) {
   //Check whether the current reading is lower than the running minimum
   cycle_min.mapMinimum = min(sensorReadings.mapADC, cycle_min.mapMinimum); 
@@ -409,6 +431,11 @@ TESTABLE_INLINE_STATIC bool cycleMinimumMAPReading(const statuses &current, cons
   //If the engine isn't running and RPM below switch point, fall back to instantaneous reads
   reset(current, cycle_min, sensorReadings);
   return instanteneousMAPReading();
+}
+
+TESTABLE_INLINE_STATIC bool cycleMinimumMAPReadingRuntime(const statuses &current, const config2 &page2, map_algorithm_t &state, map_adc_readings_t &sensorReadings)
+{
+  return cycleMinimumMAPReading(current, page2, state.cycle_min, sensorReadings);
 }
 
 static inline bool eventAverageAccumulate(map_event_average_t &eventAverage, const map_adc_readings_t &sensorReadings) {
@@ -481,6 +508,27 @@ TESTABLE_INLINE_STATIC bool eventAverageMAPReading(const statuses &current, cons
   return instanteneousMAPReading();
 }
 
+TESTABLE_INLINE_STATIC bool eventAverageMAPReadingRuntime(const statuses &current, const config2 &page2, map_algorithm_t &state, map_adc_readings_t &sensorReadings)
+{
+  return eventAverageMAPReading(current, page2, state.event_average, sensorReadings);
+}
+
+TESTABLE_INLINE_STATIC map_sampling_runtime_fn_t getMapSamplingFunction(MAPSamplingMethod mapSample)
+{
+  switch(mapSample)
+  {
+    case MAPSamplingCycleAverage:
+      return cycleAverageMAPReadingRuntime;
+    case MAPSamplingCycleMinimum:
+      return cycleMinimumMAPReadingRuntime;
+    case MAPSamplingIgnitionEventAverage:
+      return eventAverageMAPReadingRuntime;
+    case MAPSamplingInstantaneous:
+    default:
+      return instantaneousMAPReadingRuntime;
+  }
+}
+
 static inline bool isValidMapSensorReading(uint16_t reading) {
   return (reading < VALID_MAP_MAX) && (reading > VALID_MAP_MIN);  
 }
@@ -538,26 +586,8 @@ void readMAP(void)
   // Read sensor(s). Saves filtered ADC readings. Does not set calibrated MAP and EMAP values.
   mapAlgorithmState.sensorReadings = readMapSensors(mapAlgorithmState.sensorReadings, configPage4, configPage6.useEMAP);
 
-  bool readingIsValid;
-  switch(configPage2.mapSample)
-  {
-    case MAPSamplingCycleAverage:
-      readingIsValid = cycleAverageMAPReading(currentStatus, configPage2, mapAlgorithmState.cycle_average, mapAlgorithmState.sensorReadings);
-      break;
-
-    case MAPSamplingCycleMinimum:
-      readingIsValid = cycleMinimumMAPReading(currentStatus, configPage2, mapAlgorithmState.cycle_min, mapAlgorithmState.sensorReadings);
-      break;
-
-    case MAPSamplingIgnitionEventAverage:
-      readingIsValid = eventAverageMAPReading(currentStatus, configPage2, mapAlgorithmState.event_average, mapAlgorithmState.sensorReadings);
-      break; 
-
-    case MAPSamplingInstantaneous:
-    default:
-      readingIsValid = instanteneousMAPReading();
-      break;
-  }
+  const map_sampling_runtime_fn_t samplingFunction = getMapSamplingFunction(configPage2.mapSample);
+  const bool readingIsValid = samplingFunction(currentStatus, configPage2, mapAlgorithmState, mapAlgorithmState.sensorReadings);
 
   // Process sensor readings according to user chosen sampling algorithm
   if(readingIsValid) 
