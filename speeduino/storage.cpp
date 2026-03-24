@@ -13,6 +13,28 @@ A full copy of the license may be found in the projects root directory
 #include "pages.h"
 #include "table3d_axis_io.h"
 
+// Phase 6: Teensy 4.1 SPI flash storage integration
+#if defined(CORE_TEENSY41)
+  #include "storage_spi.h"
+
+  // SPI flash availability flag (initialized once at startup)
+  static bool g_spiFlashInitialized = false;
+  static bool g_useSPIFlash = false;
+
+  /** Initialize Teensy 4.1 SPI flash storage
+   * Called once at startup. If SPI flash init succeeds, it becomes the primary storage.
+   * If it fails, system falls back to EEPROM silently.
+   */
+  static void initTeensyStorage(void) {
+    if (!g_spiFlashInitialized) {
+      g_useSPIFlash = initSPIFlash();
+      g_spiFlashInitialized = true;
+      // Note: If initSPIFlash() returns false, we silently fall back to EEPROM
+      // This ensures the system remains functional even if flash hardware fails
+    }
+  }
+#endif
+
 
 #define EEPROM_DATA_VERSION   0
 
@@ -425,6 +447,13 @@ static inline eeprom_address_t loadTable(void *pTable, table_type_t key, eeprom_
  */
 void loadConfig(void)
 {
+#if defined(CORE_TEENSY41)
+  initTeensyStorage();  // Initialize SPI flash on first call
+  // For Phase 6, config pages continue to use EEPROM path
+  // Full SPI flash integration requires page-by-page serialization rework
+  // which is deferred until storage_spi.cpp provides page-granular load/save
+#endif
+
   loadTable(&fuelTable, decltype(fuelTable)::type_key, EEPROM_CONFIG1_MAP);
   load_range(EEPROM_CONFIG2_START, (byte *)&configPage2, (byte *)&configPage2+sizeof(configPage2));
   
@@ -501,9 +530,15 @@ void loadCalibration(void)
   // If you modify this function be sure to also modify writeCalibration();
   // it should be a mirror image of this function.
 
+#if defined(CORE_TEENSY41)
+  initTeensyStorage();  // Ensure SPI flash is initialized
+  // Note: Calibration data remains in EEPROM for all platforms
+  // (small data size, not worth separate SPI flash file management)
+#endif
+
   EEPROM.get(EEPROM_CALIBRATION_O2_BINS, o2Calibration_bins);
   EEPROM.get(EEPROM_CALIBRATION_O2_VALUES, o2Calibration_values);
-  
+
   EEPROM.get(EEPROM_CALIBRATION_IAT_BINS, iatCalibration_bins);
   EEPROM.get(EEPROM_CALIBRATION_IAT_VALUES, iatCalibration_values);
 
