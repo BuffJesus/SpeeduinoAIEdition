@@ -10,6 +10,14 @@
 #include "sensors.h"
 #include "timers.h"
 
+// Global knock state instance
+KnockState knockState;
+
+// Legacy global variables for backward compatibility during migration
+// TODO Phase 3: Remove these after full migration to knockState
+unsigned long knockStartTime = 0;
+uint8_t knockLastRecoveryStep = 0;
+
 uint8_t knockGetActivationCount(const config10 &page10)
 {
   return (page10.knock_count > 0U) ? page10.knock_count : 1U;
@@ -29,30 +37,30 @@ uint8_t knockCalculateRecovery(uint8_t curKnockRetard)
 {
   uint8_t tmpKnockRetard = curKnockRetard;
   //Check whether we are in knock recovery
-  if((micros() - knockStartTime) > (configPage10.knock_duration * 100000UL)) //knock_duration is in seconds*10
+  if((micros() - knockState.startTime) > (configPage10.knock_duration * 100000UL)) //knock_duration is in seconds*10
   {
     //Calculate how many recovery steps have occurred since the
-    uint32_t timeInRecovery = (micros() - knockStartTime) - (configPage10.knock_duration * 100000UL);
+    uint32_t timeInRecovery = (micros() - knockState.startTime) - (configPage10.knock_duration * 100000UL);
     uint8_t recoverySteps = timeInRecovery / (configPage10.knock_recoveryStepTime * 100000UL);
     int8_t recoveryTimingAdj = 0;
-    if(recoverySteps > knockLastRecoveryStep)
+    if(recoverySteps > knockState.lastRecoveryStep)
     {
-      recoveryTimingAdj = (recoverySteps - knockLastRecoveryStep) * configPage10.knock_recoveryStep;
-      knockLastRecoveryStep = recoverySteps;
+      recoveryTimingAdj = (recoverySteps - knockState.lastRecoveryStep) * configPage10.knock_recoveryStep;
+      knockState.lastRecoveryStep = recoverySteps;
     }
 
-    if(recoveryTimingAdj < currentStatus.knockRetard)
+    if(recoveryTimingAdj < knockState.retard)
     {
       //Add the timing back in provided we haven't reached the end of the recovery period
-      tmpKnockRetard = currentStatus.knockRetard - recoveryTimingAdj;
+      tmpKnockRetard = knockState.retard - recoveryTimingAdj;
     }
     else
     {
       //Recovery is complete. Knock adjustment is set to 0 and we reset the knock status
       tmpKnockRetard = 0;
       BIT_CLEAR(currentStatus.status5, BIT_STATUS5_KNOCK_ACTIVE);
-      knockStartTime = 0;
-      currentStatus.knockCount = 0;
+      knockState.startTime = 0;
+      knockState.count = 0;
     }
   }
 
@@ -65,27 +73,33 @@ int8_t knockApplyCorrection(int8_t advance)
 {
   byte tmpKnockRetard = 0;
 
+  // Sync legacy globals to knockState for backward compatibility
+  knockState.startTime = knockStartTime;
+  knockState.lastRecoveryStep = knockLastRecoveryStep;
+  knockState.count = currentStatus.knockCount;
+  knockState.retard = currentStatus.knockRetard;
+
   if( (configPage10.knock_mode == KNOCK_MODE_DIGITAL)  )
   {
     //
-    if(currentStatus.knockCount >= knockGetActivationCount(configPage10))
+    if(knockState.count >= knockGetActivationCount(configPage10))
     {
       if(BIT_CHECK(currentStatus.status5, BIT_STATUS5_KNOCK_ACTIVE))
       {
         //Knock retard is currently active already.
-        tmpKnockRetard = currentStatus.knockRetard;
+        tmpKnockRetard = knockState.retard;
 
         //Check if additional knock events occurred
         if(BIT_CHECK(currentStatus.status5, BIT_STATUS5_KNOCK_PULSE))
         {
           //Check if the latest event was far enough after the initial knock event to pull further timing
-          if((micros() - knockStartTime) > (configPage10.knock_stepTime * 1000UL))
+          if((micros() - knockState.startTime) > (configPage10.knock_stepTime * 1000UL))
           {
             //Recalculate the amount timing being pulled
-            currentStatus.knockCount++;
-            tmpKnockRetard = knockCalculateRetard(currentStatus.knockCount, configPage10);
-            knockStartTime = micros();
-            knockLastRecoveryStep = 0;
+            knockState.count++;
+            tmpKnockRetard = knockCalculateRetard(knockState.count, configPage10);
+            knockState.startTime = micros();
+            knockState.lastRecoveryStep = 0;
           }
         }
         tmpKnockRetard = knockCalculateRecovery(tmpKnockRetard);
@@ -93,10 +107,10 @@ int8_t knockApplyCorrection(int8_t advance)
       else
       {
         //Knock currently inactive but needs to be active now
-        knockStartTime = micros();
-        tmpKnockRetard = knockCalculateRetard(currentStatus.knockCount, configPage10);
+        knockState.startTime = micros();
+        tmpKnockRetard = knockCalculateRetard(knockState.count, configPage10);
         BIT_SET(currentStatus.status5, BIT_STATUS5_KNOCK_ACTIVE);
-        knockLastRecoveryStep = 0;
+        knockState.lastRecoveryStep = 0;
       }
     }
 
@@ -104,26 +118,26 @@ int8_t knockApplyCorrection(int8_t advance)
   }
   else if( (configPage10.knock_mode == KNOCK_MODE_ANALOG)  )
   {
-    tmpKnockRetard = currentStatus.knockRetard;
+    tmpKnockRetard = knockState.retard;
 
     if(BIT_CHECK(currentStatus.status5, BIT_STATUS5_KNOCK_ACTIVE))
     {
       //Check if additional knock events occurred
       //Additional knock events are when the step time has passed and the voltage remains above the threshold
-      if(knockEventIsValid() && ((micros() - knockStartTime) > (configPage10.knock_stepTime * 1000UL)))
+      if(knockEventIsValid() && ((micros() - knockState.startTime) > (configPage10.knock_stepTime * 1000UL)))
       {
         //Sufficient time has passed, check the current knock value
         uint16_t tmpKnockReading = getAnalogKnock();
 
         if(tmpKnockReading > configPage10.knock_threshold)
         {
-          currentStatus.knockCount++;
+          knockState.count++;
 
-          if(currentStatus.knockCount >= knockGetActivationCount(configPage10))
+          if(knockState.count >= knockGetActivationCount(configPage10))
           {
-            tmpKnockRetard = knockCalculateRetard(currentStatus.knockCount, configPage10);
-            knockStartTime = micros();
-            knockLastRecoveryStep = 0;
+            tmpKnockRetard = knockCalculateRetard(knockState.count, configPage10);
+            knockState.startTime = micros();
+            knockState.lastRecoveryStep = 0;
           }
         }
       }
@@ -138,15 +152,15 @@ int8_t knockApplyCorrection(int8_t advance)
 
         if(tmpKnockReading > configPage10.knock_threshold)
         {
-          currentStatus.knockCount++;
+          knockState.count++;
 
-          if(currentStatus.knockCount >= knockGetActivationCount(configPage10))
+          if(knockState.count >= knockGetActivationCount(configPage10))
           {
             //Knock detected
-            knockStartTime = micros();
-            tmpKnockRetard = knockCalculateRetard(currentStatus.knockCount, configPage10);
+            knockState.startTime = micros();
+            tmpKnockRetard = knockCalculateRetard(knockState.count, configPage10);
             BIT_SET(currentStatus.status5, BIT_STATUS5_KNOCK_ACTIVE);
-            knockLastRecoveryStep = 0;
+            knockState.lastRecoveryStep = 0;
           }
         }
       }
@@ -155,6 +169,13 @@ int8_t knockApplyCorrection(int8_t advance)
 
 
   tmpKnockRetard = min(tmpKnockRetard, configPage10.knock_maxRetard); //Ensure the commanded retard is not higher than the maximum allowed.
-  currentStatus.knockRetard = tmpKnockRetard;
+  knockState.retard = tmpKnockRetard;
+
+  // Sync knockState back to legacy globals for backward compatibility
+  knockStartTime = knockState.startTime;
+  knockLastRecoveryStep = knockState.lastRecoveryStep;
+  currentStatus.knockRetard = knockState.retard;
+  currentStatus.knockCount = knockState.count;
+
   return advance - tmpKnockRetard;
 }

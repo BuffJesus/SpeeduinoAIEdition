@@ -45,8 +45,7 @@ byte activateTPSDOT; //The tpsDOT value seen when the MAE was activated.
 
 bool idleAdvActive = false;
 uint16_t AFRnextCycle;
-unsigned long knockStartTime;
-uint8_t knockLastRecoveryStep;
+// Phase 3: knockStartTime and knockLastRecoveryStep moved to KnockState struct in knock.cpp
 //int16_t knockWindowMin; //The current minimum crank angle for a knock pulse to be valid
 //int16_t knockWindowMax;//The current maximum crank angle for a knock pulse to be valid
 uint8_t aseTaper;
@@ -86,9 +85,12 @@ void initialiseCorrections(void)
   AFRnextCycle = 0;
   BIT_CLEAR(currentStatus.status5, BIT_STATUS5_KNOCK_ACTIVE);
   BIT_CLEAR(currentStatus.status5, BIT_STATUS5_KNOCK_PULSE);
-  currentStatus.knockCount = 0;
-  knockLastRecoveryStep = 0;
-  knockStartTime = 0;
+
+  // Phase 3: Initialize knock state struct
+  knockState.reset();
+  currentStatus.knockCount = 0;  // Sync legacy field for backward compatibility
+  currentStatus.knockRetard = 0; // Sync legacy field for backward compatibility
+
   currentStatus.battery10 = 125; //Set battery voltage to sensible value for dwell correction for "flying start" (else ignition gets spurious pulses after boot)  
 }
 

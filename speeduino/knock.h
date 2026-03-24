@@ -4,7 +4,45 @@
 #include <stdint.h>
 #include "globals.h"
 
-// Knock state variables (defined in corrections.cpp for now)
+/**
+ * @brief Knock subsystem runtime state
+ *
+ * Encapsulates all knock-specific runtime state in a single struct.
+ * This consolidates variables that were previously scattered across
+ * corrections.cpp file-scope statics and currentStatus global fields.
+ *
+ * Phase 3: Introduced to improve module boundaries per FIRMWARE_ROADMAP.md
+ * "Prefer subsystem-owned state structs for complex runtime domains"
+ */
+struct KnockState
+{
+  /** Timestamp (micros) of last knock event, used for step timing and recovery */
+  unsigned long startTime;
+
+  /** Recovery step counter, increments as recovery progresses */
+  uint8_t lastRecoveryStep;
+
+  /** Current knock retard amount in degrees (0-255) */
+  uint8_t retard;
+
+  /** Total knock events detected since last reset */
+  volatile uint8_t count;
+
+  /** Initialize knock state to safe defaults */
+  void reset() volatile
+  {
+    startTime = 0;
+    lastRecoveryStep = 0;
+    retard = 0;
+    count = 0;
+  }
+};
+
+// Global knock state instance (defined in knock.cpp)
+extern KnockState knockState;
+
+// Legacy global variables for backward compatibility during migration
+// TODO Phase 3: Remove these after full migration to knockState
 extern unsigned long knockStartTime;
 extern uint8_t knockLastRecoveryStep;
 
