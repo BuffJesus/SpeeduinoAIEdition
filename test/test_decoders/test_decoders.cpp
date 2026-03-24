@@ -13,6 +13,7 @@
 #include "BasicDistributor/BasicDistributor.h"
 #include "Audi135/Audi135.h"
 #include "Daihatsu/Daihatsu.h"
+#include "DRZ400/DRZ400.h"
 #include "FourTwentyA/FourTwentyA.h"
 #include "Gm24X/Gm24X.h"
 #include "Gm7X/Gm7X.h"
@@ -54,6 +55,7 @@ void setup()
     testBasicDistributor();
     testAudi135();
     testDaihatsu();
+    testDRZ400();
     testFourTwentyA();
     testGm24X();
     testGm7X();

@@ -78,7 +78,7 @@ Upstream references:
   - `mapSwitchPoint` boundary transitions and EMAP-disabled sentinel preservation
   - MAP / EMAP / baro calibration helper coverage for clamping and enabled/disabled source behavior
 
-**Current decoder replay/runtime coverage** (`259/259` decoder tests passing):
+**Current decoder replay/runtime coverage** (`263/263` decoder tests passing):
 
 - Basic Distributor
 - 420a
@@ -89,6 +89,7 @@ Upstream references:
 - Ford ST170
 - Audi 135
 - Daihatsu +1
+- DRZ400
 - GM 24X
 - GM 7X
 - Honda D17
@@ -176,6 +177,7 @@ Recent work as of `2026-03-23`:
 - Added a narrow AVR-side `Mazda AU` suite that locks the current third-cam-tooth sync path, the unsynced short-gap cam-counter quirk, and the synced `4`-edge primary wrap path without claiming physical wheel truth
 - Added a narrow AVR-side `Miata 99-05` suite that locks the current unsynced sentinel, two-edge cam sync onto tooth `6`, noisy extra-edge sync deferral, and synced `8`-edge wrap alongside the existing replay-backed traces
 - Added a narrow AVR-side `Non-360` suite that locks multiplier-scaled setup, shared dual-wheel secondary sync / first-primary wrap behavior, RPM gating, and secondary-tooth crank-angle fallback without changing production decoder logic
+- Added a narrow AVR-side `DRZ400` suite that locks setup-seeded filters, unsynced secondary sync onto tooth `6`, synced secondary realignment, and first-primary wrap through the shared dual-wheel ISR without changing production decoder logic
 - Added a narrow AVR-side `Subaru 6/7` suite that locks the current setup state, three-cam-pulse sync onto tooth `2`, single-cam misalignment realignment to tooth `5`, and synced `12`-tooth wrap alongside the existing replay-backed traces
 - Added a narrow AVR-side `Vmax` suite that locks the current wide-lobe tooth-`1` sync, small-lobe tooth-`2` advance, and tooth-`6` wide-lobe wrap behavior without changing production decoder logic
 - Downloaded and staged the Rover MEMS forum attachments locally, confirming the archived Rover test project used `Crank Speed` with `5-3-2 cam`, `Wasted Spark`, and `Sequential` injection, while narrowing the remaining Rover blocker to composite-log CSV channel mapping and PDF wheel rendering
@@ -217,6 +219,7 @@ Latest handoff references:
 - [SESSION_HANDOFF_2026-03-22_AUDI135.md](speeduino/SESSION_HANDOFF_2026-03-22_AUDI135.md)
 - [SESSION_HANDOFF_2026-03-23_BASIC_DISTRIBUTOR_STATE.md](speeduino/SESSION_HANDOFF_2026-03-23_BASIC_DISTRIBUTOR_STATE.md)
 - [SESSION_HANDOFF_2026-03-23_DUALWHEEL_STATE.md](speeduino/SESSION_HANDOFF_2026-03-23_DUALWHEEL_STATE.md)
+- [SESSION_HANDOFF_2026-03-23_DRZ400_STATE.md](speeduino/SESSION_HANDOFF_2026-03-23_DRZ400_STATE.md)
 - [SESSION_HANDOFF_2026-03-23_FORDST170_STATE.md](speeduino/SESSION_HANDOFF_2026-03-23_FORDST170_STATE.md)
 - [SESSION_HANDOFF_2026-03-22_GM24X_STATE.md](speeduino/SESSION_HANDOFF_2026-03-22_GM24X_STATE.md)
 - [SESSION_HANDOFF_2026-03-23_GM7X_STATE.md](speeduino/SESSION_HANDOFF_2026-03-23_GM7X_STATE.md)
@@ -372,7 +375,7 @@ python tools/derive_rover_mems_windows.py 2-14-3-13 11-5-12-4
 
 ### Current Test Status
 
-- `259/259` decoder tests passing
+- `263/263` decoder tests passing
 - `38/38` config migration tests passing
 - `5/5` migration tail tests passing
 - `146/146` ignition/protection tests passing
