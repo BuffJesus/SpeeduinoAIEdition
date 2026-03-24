@@ -125,18 +125,56 @@ Current phase 1 work started in:
 
 ## Phase 4: Board And Comms Consistency
 
-**In Progress:**
-- ✅ Board-layer audit complete (4 LOW-risk, 1 MEDIUM-risk moves identified)
-- ✅ ADC initialization moved to board layer (initADC_Teensy41 now called from initBoard)
-- ✅ Status/logging alignment audit complete (board capabilities recommended for export)
+**Completed:**
+- ✅ Board-layer audit (4 LOW-risk moves, 1 MEDIUM-risk deferred)
+- ✅ ADC initialization moved to board layer (initADC_Teensy41 in initBoard)
+- ✅ Board capability output channel implemented (byte 130, 3 tests)
+- ✅ Legacy telemetry audit (3 deprecated fields identified)
+- ✅ Interrupt pin audit (29+ ungated attachInterrupt calls identified)
+
+**Board Capability Output Channel (Byte 130):**
+- Added getTSLogEntry case 130: Board capability bitfield export
+- Updated LOG_ENTRY_SIZE 130 → 131
+- Added 3 tests: export validation, readable entry, pin mapping variation
+- Enables TunerStudio board-aware UI (hide features not supported by hardware)
+- Test results: 162/162 test_ign PASSED (+3 from previous 159)
+
+**Legacy Telemetry Audit Findings:**
+- **Deprecated**: `getNextError()` at bytes 75/74 (returns hardcoded 0, no active infrastructure)
+- **Unused**: getReadableLogEntry case 59 (marked "//UNUSED!!")
+- **Review Needed**: nitrous_status, launchCorrection (legacy-only, not in main logger)
+- Recommendation: Add deprecation comments, document removal timeline
+
+**Interrupt Pin Audit Findings:**
+- **Well-Gated**: pinFlex, pinVSS, knock_pin (use `pinIsReserved()` checks)
+- **Ungated HIGH-RISK**: 29+ decoder trigger interrupts (pinTrigger, pinTrigger2, pinTrigger3)
+- **Platform Variance**: Teensy 4.1 (all pins), AVR Mega (6 ext + PCINT), STM32 (most via EXTI)
+- Recommendation: Add BOARD_CAP_UNRESTRICTED_INTERRUPTS flag, validate at init time
+
+**Binary Size:**
+- Teensy 4.1: 253,996 bytes (+64 from previous 253,932, +0.025%)
+- FLASH: code 253,996, data 30,464, headers 8,400
+- RAM1: variables 38,880, code 248,888, padding 13,256
+- RAM2: variables 12,416
+
+**Test Results:**
+- test_decoders: 263/263 PASSED (baseline maintained)
+- test_ign: 162/162 PASSED (+3 board capability tests)
+- test_fuel: 88/88 PASSED
+- test_math: 44/44 PASSED
+- test_schedules: 26/26 PASSED
+- test_sensors: 57/57 PASSED
+- test_tables: 24/24 PASSED
+- test_updates: 38/38 PASSED
+- **Total: 702/702 PASSED**
 
 **Next Steps:**
-- Implement board capability output channel (byte 130) for TunerStudio board-aware UI
+- Implement interrupt pin validation for decoder triggers (HIGH priority, safety-critical)
+- Add BOARD_CAP_UNRESTRICTED_INTERRUPTS flag and validation logic
 - Abstract PWM polarity inversion into board-layer functions (MEDIUM risk, deferred)
+- Mark deprecated telemetry fields in TunerStudio INI
 - Push board-specific behavior further into the `board_*` layer
-- Audit interrupt-capable pin assumptions and ADC differences across supported MCUs
 - Align status/logging/comms outputs so new runtime features are exposed consistently across protocols
-- Deprecate or clearly mark partial legacy telemetry paths.
 - Continue extracting testable helpers for legacy packet/framing paths before replacing more placeholder fields, so future cleanup stays evidence-based instead of ad hoc.
 - Add explicit board capability declarations for features like onboard knock hardware, trigger channels, CAN variants, and logging support so the firmware and tuning surface can hide unsupported options instead of exposing unsafe generic defaults.
 - Use official board docs such as [wiki.speeduino.com/en/boards/Dropbear](https://wiki.speeduino.com/en/boards/Dropbear) as a primary source when extracting board-scoped defaults and capabilities:

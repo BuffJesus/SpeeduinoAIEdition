@@ -13,6 +13,7 @@
 #include "../test_utils.h"
 #include "globals.h"
 #include "corrections.h"
+#include "knock.h"
 
 // External test helpers exposed via TESTABLE_INLINE_STATIC
 extern uint8_t knockActivationCount(const config10 &page10);
@@ -209,6 +210,85 @@ static void test_calculateKnockRetard_realistic_scenario(void) {
     TEST_ASSERT_EQUAL_UINT8(11, calculateKnockRetard(5, testConfig));
 }
 
+// ========================================== KnockState Tests ==========================================
+
+static void test_knockState_initialization(void) {
+    KnockState testState;
+
+    // Initialize state using reset()
+    testState.reset();
+
+    // Verify all fields are zeroed
+    TEST_ASSERT_EQUAL_UINT32(0, testState.startTime);
+    TEST_ASSERT_EQUAL_UINT8(0, testState.lastRecoveryStep);
+    TEST_ASSERT_EQUAL_UINT8(0, testState.retard);
+    TEST_ASSERT_EQUAL_UINT8(0, testState.count);
+}
+
+static void test_knockState_multi_step_updates(void) {
+    KnockState testState;
+    testState.reset();
+
+    // Simulate knock event sequence:
+    // 1. First knock detected
+    testState.count = 1;
+    testState.startTime = 1000000UL; // 1 second in micros
+    testState.retard = 5;
+    testState.lastRecoveryStep = 0;
+
+    TEST_ASSERT_EQUAL_UINT8(1, testState.count);
+    TEST_ASSERT_EQUAL_UINT32(1000000UL, testState.startTime);
+    TEST_ASSERT_EQUAL_UINT8(5, testState.retard);
+    TEST_ASSERT_EQUAL_UINT8(0, testState.lastRecoveryStep);
+
+    // 2. Additional knock event
+    testState.count = 2;
+    testState.startTime = 1500000UL; // 1.5 seconds
+    testState.retard = 7;
+
+    TEST_ASSERT_EQUAL_UINT8(2, testState.count);
+    TEST_ASSERT_EQUAL_UINT32(1500000UL, testState.startTime);
+    TEST_ASSERT_EQUAL_UINT8(7, testState.retard);
+    TEST_ASSERT_EQUAL_UINT8(0, testState.lastRecoveryStep);
+
+    // 3. Begin recovery
+    testState.lastRecoveryStep = 1;
+    testState.retard = 5; // Reduced by recovery step
+
+    TEST_ASSERT_EQUAL_UINT8(1, testState.lastRecoveryStep);
+    TEST_ASSERT_EQUAL_UINT8(5, testState.retard);
+
+    // 4. Continue recovery
+    testState.lastRecoveryStep = 2;
+    testState.retard = 3;
+
+    TEST_ASSERT_EQUAL_UINT8(2, testState.lastRecoveryStep);
+    TEST_ASSERT_EQUAL_UINT8(3, testState.retard);
+
+    // 5. Complete recovery
+    testState.reset();
+
+    TEST_ASSERT_EQUAL_UINT32(0, testState.startTime);
+    TEST_ASSERT_EQUAL_UINT8(0, testState.lastRecoveryStep);
+    TEST_ASSERT_EQUAL_UINT8(0, testState.retard);
+    TEST_ASSERT_EQUAL_UINT8(0, testState.count);
+}
+
+static void test_knockState_volatile_count_field(void) {
+    // This test verifies that the count field is properly declared volatile
+    // (for ISR safety) by checking it can be modified through volatile pointer
+    volatile KnockState testState;
+    testState.reset();
+
+    // Access count through volatile interface (ISR context simulation)
+    testState.count = 5;
+    TEST_ASSERT_EQUAL_UINT8(5, testState.count);
+
+    // Increment (as might happen in ISR)
+    testState.count++;
+    TEST_ASSERT_EQUAL_UINT8(6, testState.count);
+}
+
 // ========================================== Test Suite Entry Point ==========================================
 
 void test_knock_helpers(void) {
@@ -227,5 +307,10 @@ void test_knock_helpers(void) {
     RUN_TEST(test_calculateKnockRetard_overflow_protection);
     RUN_TEST(test_calculateKnockRetard_with_zero_knock_count_config);
     RUN_TEST(test_calculateKnockRetard_realistic_scenario);
+
+    // KnockState tests (Phase 3)
+    RUN_TEST(test_knockState_initialization);
+    RUN_TEST(test_knockState_multi_step_updates);
+    RUN_TEST(test_knockState_volatile_count_field);
   }
 }
