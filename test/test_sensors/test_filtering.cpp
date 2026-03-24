@@ -23,11 +23,17 @@ extern void setMAPValuesFromReadings(const map_adc_readings_t &readings, const c
 extern void setBaroFromSensorReading(uint16_t sensorReading);
 extern bool resetInvalidADCFilterValues(config4 &page4);
 using map_sampling_runtime_fn_t = bool (*)(const statuses &, const config2 &, map_algorithm_t &, map_adc_readings_t &);
+enum baro_read_source_t : uint8_t;
 extern map_sampling_runtime_fn_t getMapSamplingFunction(MAPSamplingMethod mapSample);
 extern bool instantaneousMAPReadingRuntime(const statuses &, const config2 &, map_algorithm_t &, map_adc_readings_t &);
 extern bool cycleAverageMAPReadingRuntime(const statuses &, const config2 &, map_algorithm_t &, map_adc_readings_t &);
 extern bool cycleMinimumMAPReadingRuntime(const statuses &, const config2 &, map_algorithm_t &, map_adc_readings_t &);
 extern bool eventAverageMAPReadingRuntime(const statuses &, const config2 &, map_algorithm_t &, map_adc_readings_t &);
+extern bool processMapReadings(statuses &current, const config2 &page2, bool useEMAP, map_algorithm_t &state);
+extern baro_read_source_t getBaroReadSource(uint8_t useExtBaro, uint16_t rpm, bool engineRunning);
+static constexpr baro_read_source_t BARO_READ_NONE = (baro_read_source_t)0U;
+static constexpr baro_read_source_t BARO_READ_EXTERNAL = (baro_read_source_t)1U;
+static constexpr baro_read_source_t BARO_READ_MAP = (baro_read_source_t)2U;
 
 // ========================================== MAP Sensor Validation ==========================================
 
@@ -143,6 +149,17 @@ static config2 calibrated_pressure_page(void) {
     return page2;
 }
 
+static config2 identity_pressure_page(void) {
+    config2 page2 {};
+    page2.mapMin = 0;
+    page2.mapMax = 1024;
+    page2.EMAPMin = 0;
+    page2.EMAPMax = 1024;
+    page2.baroMin = 0;
+    page2.baroMax = 1024;
+    return page2;
+}
+
 static void test_mapADCToMAP_clamps_negative_mapped_values_to_zero(void) {
     TEST_ASSERT_EQUAL_UINT16(0U, mapADCToMAP(0U, -20, 300));
     TEST_ASSERT_EQUAL_UINT16(0U, mapADCToMAP(32U, -20, 300));
@@ -204,6 +221,72 @@ static void test_setBaroFromSensorReading_clamps_negative_mapped_baro_to_zero(vo
 
     TEST_ASSERT_EQUAL_UINT16(0U, currentStatus.baroADC);
     TEST_ASSERT_EQUAL_UINT8(0U, currentStatus.baro);
+}
+
+static void test_processMapReadings_instantaneous_updates_map_emap_and_last_reading(void) {
+    statuses current {};
+    config2 page2 = identity_pressure_page();
+    map_algorithm_t state {};
+
+    current.MAP = 88U;
+    current.EMAP = 99U;
+    page2.mapSample = MAPSamplingInstantaneous;
+    state.sensorReadings.mapADC = 512U;
+    state.sensorReadings.emapADC = 768U;
+    state.lastReading.currentReadingTime = micros();
+
+    delay(2);
+    TEST_ASSERT_TRUE(processMapReadings(current, page2, true, state));
+    TEST_ASSERT_EQUAL_UINT16(512U, current.MAP);
+    TEST_ASSERT_EQUAL_UINT16(768U, current.EMAP);
+    TEST_ASSERT_EQUAL_UINT16(88U, state.lastReading.lastMAPValue);
+    TEST_ASSERT_GREATER_THAN_UINT32(0U, state.lastReading.timeDeltaReadings);
+}
+
+static void test_processMapReadings_cycle_average_defers_update_until_cycle_end(void) {
+    statuses current {};
+    config2 page2 = identity_pressure_page();
+    map_algorithm_t state {};
+
+    current.MAP = 111U;
+    current.EMAP = 222U;
+    current.RPMdiv100 = 43U;
+    current.startRevolutions = 10U;
+    current.hasSync = true;
+    page2.mapSample = MAPSamplingCycleAverage;
+    page2.mapSwitchPoint = 15U;
+    state.cycle_average.cycleStartIndex = (uint8_t)current.startRevolutions;
+
+    state.sensorReadings.mapADC = 100U;
+    state.sensorReadings.emapADC = 200U;
+    TEST_ASSERT_FALSE(processMapReadings(current, page2, true, state));
+    TEST_ASSERT_EQUAL_UINT16(111U, current.MAP);
+    TEST_ASSERT_EQUAL_UINT16(222U, current.EMAP);
+    TEST_ASSERT_EQUAL_UINT16(1U, state.cycle_average.sampleCount);
+
+    state.sensorReadings.mapADC = 300U;
+    state.sensorReadings.emapADC = 500U;
+    TEST_ASSERT_FALSE(processMapReadings(current, page2, true, state));
+    TEST_ASSERT_EQUAL_UINT16(2U, state.cycle_average.sampleCount);
+
+    current.startRevolutions += 2U;
+    state.sensorReadings.mapADC = 500U;
+    state.sensorReadings.emapADC = 700U;
+    TEST_ASSERT_TRUE(processMapReadings(current, page2, true, state));
+    TEST_ASSERT_EQUAL_UINT16(200U, current.MAP);
+    TEST_ASSERT_EQUAL_UINT16(350U, current.EMAP);
+    TEST_ASSERT_EQUAL_UINT16(111U, state.lastReading.lastMAPValue);
+    TEST_ASSERT_EQUAL_UINT16(1U, state.cycle_average.sampleCount);
+    TEST_ASSERT_EQUAL_UINT32(500U, state.cycle_average.mapAdcRunningTotal);
+    TEST_ASSERT_EQUAL_UINT32(700U, state.cycle_average.emapAdcRunningTotal);
+}
+
+static void test_getBaroReadSource_prefers_external_sensor_then_map_then_none(void) {
+    TEST_ASSERT_EQUAL(BARO_READ_EXTERNAL, getBaroReadSource(1U, 2500U, true));
+    TEST_ASSERT_EQUAL(BARO_READ_EXTERNAL, getBaroReadSource(1U, 0U, false));
+    TEST_ASSERT_EQUAL(BARO_READ_MAP, getBaroReadSource(0U, 0U, false));
+    TEST_ASSERT_EQUAL(BARO_READ_NONE, getBaroReadSource(0U, 500U, false));
+    TEST_ASSERT_EQUAL(BARO_READ_NONE, getBaroReadSource(0U, 0U, true));
 }
 
 static void test_resetInvalidADCFilterValues_resets_invalid_filter_values_to_defaults(void) {
@@ -333,8 +416,11 @@ void test_filtering(void) {
     RUN_TEST(test_setMAPValuesFromReadings_leaves_emap_untouched_when_disabled);
     RUN_TEST(test_setBaroFromSensorReading_updates_baro_and_adc);
     RUN_TEST(test_setBaroFromSensorReading_clamps_negative_mapped_baro_to_zero);
+    RUN_TEST(test_processMapReadings_instantaneous_updates_map_emap_and_last_reading);
+    RUN_TEST(test_processMapReadings_cycle_average_defers_update_until_cycle_end);
     RUN_TEST(test_resetInvalidADCFilterValues_resets_invalid_filter_values_to_defaults);
     RUN_TEST(test_getMapSamplingFunction_matches_runtime_selection);
+    RUN_TEST(test_getBaroReadSource_prefers_external_sensor_then_map_then_none);
     RUN_TEST(test_initialiseMAPBaro_with_external_baro_seeds_valid_sensor_value);
     RUN_TEST(test_initialiseMAPBaro_without_external_baro_keeps_valid_stored_baro_seed);
 

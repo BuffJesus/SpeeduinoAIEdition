@@ -1382,6 +1382,47 @@ static void test_buildLegacyValuesPacket_maps_wbo2_enable(void) {
     TEST_ASSERT_EQUAL_HEX8(0U, packet[15]); // wbo2_en2
 }
 
+static void test_buildLegacyValuesPacket_rejects_null_or_short_buffer(void) {
+    uint8_t packet[113] = {0};
+
+    TEST_ASSERT_EQUAL_UINT(0U, buildLegacyValuesPacket(nullptr, 114U));
+    TEST_ASSERT_EQUAL_UINT(0U, buildLegacyValuesPacket(packet, sizeof(packet)));
+}
+
+static void test_buildLegacyValuesPacket_locks_target_and_pressure_offsets(void) {
+    setup_legacy_packet_exports();
+    uint8_t packet[114] = {0};
+
+    buildLegacyValuesPacket(packet, sizeof(packet));
+
+    TEST_ASSERT_EQUAL_HEX8(currentStatus.afrTarget, packet[12]);
+    TEST_ASSERT_EQUAL_HEX8(currentStatus.afrTarget, packet[13]);
+    TEST_ASSERT_EQUAL_HEX8(0x03U, packet[16]); // baro * 10 = 980 = 0x03D4
+    TEST_ASSERT_EQUAL_HEX8(0xD4U, packet[17]);
+    TEST_ASSERT_EQUAL_HEX8(0x04U, packet[18]); // MAP * 10 = 1100 = 0x044C
+    TEST_ASSERT_EQUAL_HEX8(0x4CU, packet[19]);
+    TEST_ASSERT_EQUAL_HEX8(0x03U, packet[24]); // TPS * 10 = 900 = 0x0384
+    TEST_ASSERT_EQUAL_HEX8(0x84U, packet[25]);
+}
+
+static void test_buildLegacyValuesPacket_locks_scaled_corrections_and_tail_fill(void) {
+    setup_legacy_packet_exports();
+    uint8_t packet[114];
+    memset(packet, 0xAA, sizeof(packet));
+
+    buildLegacyValuesPacket(packet, sizeof(packet));
+
+    TEST_ASSERT_EQUAL_HEX8(0x03U, packet[34]); // egoCorrection * 10 = 1010 = 0x03F2
+    TEST_ASSERT_EQUAL_HEX8(0xF2U, packet[35]);
+    TEST_ASSERT_EQUAL_HEX8(0x03U, packet[38]); // iatCorrection * 10 = 1020 = 0x03FC
+    TEST_ASSERT_EQUAL_HEX8(0xFCU, packet[39]);
+    TEST_ASSERT_EQUAL_HEX8(0x04U, packet[40]); // wueCorrection * 10 = 1030 = 0x0406
+    TEST_ASSERT_EQUAL_HEX8(0x06U, packet[41]);
+    TEST_ASSERT_EQUAL_HEX8(120U, packet[66]); // fuelLoad * 10
+    TEST_ASSERT_EQUAL_HEX8(99U, packet[74]);
+    TEST_ASSERT_EQUAL_HEX8(99U, packet[113]);
+}
+
 static void test_parseLegacyPageReadRequest_valid(void) {
     const uint8_t buffer[] = { 0x00U, 0x04U, 0x34U, 0x12U, 0x78U, 0x56U };
     LegacyPageReadRequest request = {};
@@ -1695,6 +1736,9 @@ static void test_legacy_packet_exports(void) {
     RUN_TEST_P(test_buildLegacyValuesPacket_maps_stepper_idle_position);
     RUN_TEST_P(test_buildLegacyValuesPacket_maps_accel_enrich_and_fuel_cut);
     RUN_TEST_P(test_buildLegacyValuesPacket_maps_wbo2_enable);
+    RUN_TEST_P(test_buildLegacyValuesPacket_rejects_null_or_short_buffer);
+    RUN_TEST_P(test_buildLegacyValuesPacket_locks_target_and_pressure_offsets);
+    RUN_TEST_P(test_buildLegacyValuesPacket_locks_scaled_corrections_and_tail_fill);
     RUN_TEST_P(test_parseLegacyPageReadRequest_valid);
     RUN_TEST_P(test_parseLegacyPageWriteRequest_valid);
     RUN_TEST_P(test_parseLegacyPageRequests_reject_short_or_null);

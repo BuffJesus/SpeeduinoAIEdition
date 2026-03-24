@@ -35,6 +35,12 @@ static map_algorithm_t mapAlgorithmState;
 
 typedef bool (*map_sampling_runtime_fn_t)(const statuses &, const config2 &, map_algorithm_t &, map_adc_readings_t &);
 TESTABLE_INLINE_STATIC bool resetInvalidADCFilterValues(config4 &page4);
+static inline void storeLastMAPReadings(map_last_read_t &lastRead, uint16_t oldMAPValue);
+enum baro_read_source_t : uint8_t {
+  BARO_READ_NONE = 0U,
+  BARO_READ_EXTERNAL = 1U,
+  BARO_READ_MAP = 2U
+};
 
 TESTABLE_INLINE_STATIC bool knockIsInsideLimits(const statuses &current, const config10 &page10)
 {
@@ -575,6 +581,20 @@ TESTABLE_INLINE_STATIC void setMAPValuesFromReadings(const map_adc_readings_t &r
   if(useEMAP) { current.EMAP = mapADCToMAP(readings.emapADC, page2.EMAPMin, page2.EMAPMax); }
 }
 
+TESTABLE_INLINE_STATIC bool processMapReadings(statuses &current, const config2 &page2, bool useEMAP, map_algorithm_t &state)
+{
+  const map_sampling_runtime_fn_t samplingFunction = getMapSamplingFunction(page2.mapSample);
+  const bool readingIsValid = samplingFunction(current, page2, state, state.sensorReadings);
+
+  if(readingIsValid)
+  {
+    storeLastMAPReadings(state.lastReading, current.MAP);
+    setMAPValuesFromReadings(state.sensorReadings, page2, useEMAP, current);
+  }
+
+  return readingIsValid;
+}
+
 #if defined(UNIT_TEST)
 map_last_read_t& getMapLast(void){
   return mapAlgorithmState.lastReading;
@@ -585,19 +605,7 @@ void readMAP(void)
 {
   // Read sensor(s). Saves filtered ADC readings. Does not set calibrated MAP and EMAP values.
   mapAlgorithmState.sensorReadings = readMapSensors(mapAlgorithmState.sensorReadings, configPage4, configPage6.useEMAP);
-
-  const map_sampling_runtime_fn_t samplingFunction = getMapSamplingFunction(configPage2.mapSample);
-  const bool readingIsValid = samplingFunction(currentStatus, configPage2, mapAlgorithmState, mapAlgorithmState.sensorReadings);
-
-  // Process sensor readings according to user chosen sampling algorithm
-  if(readingIsValid) 
-  {
-    // Roll over the last reading
-    storeLastMAPReadings(mapAlgorithmState.lastReading, currentStatus.MAP);
-
-    // Convert from filtered sensor readings to kPa
-    setMAPValuesFromReadings(mapAlgorithmState.sensorReadings, configPage2, configPage6.useEMAP, currentStatus);
-  }
+  (void)processMapReadings(currentStatus, configPage2, configPage6.useEMAP, mapAlgorithmState);
 }
 
 /** @brief Get the MAP change between the last 2 readings */
@@ -700,17 +708,29 @@ static inline void setBaroFromMAP(void)
   }
 }
 
+TESTABLE_INLINE_STATIC baro_read_source_t getBaroReadSource(uint8_t useExtBaro, uint16_t rpm, bool engineRunning)
+{
+  if (useExtBaro != 0U) { return BARO_READ_EXTERNAL; }
+  if ((rpm == 0U) && !engineRunning) { return BARO_READ_MAP; }
+  return BARO_READ_NONE;
+}
+
 void readBaro(void)
 {
-  if ( configPage6.useExtBaro != 0U  ) 
+  switch(getBaroReadSource(configPage6.useExtBaro, currentStatus.RPM, engineIsRunning(micros()-MICROS_PER_SEC)))
   {
-    // readings
-    setBaroFromSensorReading(LOW_PASS_FILTER(readMAPSensor(pinBaro), configPage4.ADCFILTER_BARO, currentStatus.baroADC)); //Very weak filter
-  // If no dedicated baro sensor is available, attempt to get a reading from the MAP sensor. This can only be done if the engine is not running. 
-  } else if ((currentStatus.RPM == 0U) && !engineIsRunning(micros()-MICROS_PER_SEC)) {
-    setBaroFromMAP();
-  } else {
-    // Do nothing - baro remains at last read value & MISRA checker is kept happy.
+    case BARO_READ_EXTERNAL:
+      setBaroFromSensorReading(LOW_PASS_FILTER(readMAPSensor(pinBaro), configPage4.ADCFILTER_BARO, currentStatus.baroADC)); //Very weak filter
+      break;
+
+    case BARO_READ_MAP:
+      setBaroFromMAP();
+      break;
+
+    case BARO_READ_NONE:
+    default:
+      // Do nothing - baro remains at last read value & MISRA checker is kept happy.
+      break;
   }
 }
 
