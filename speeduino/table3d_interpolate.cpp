@@ -214,7 +214,9 @@ table3d_value_t __attribute__((noclone)) get3DTableValue(struct table3DGetValueC
       const QU1X8_t n = mulQU1X8(p, q);
       const QU1X8_t o = mulQU1X8(QU1X8_ONE-p, QU1X8_ONE-q);
       const QU1X8_t r = mulQU1X8(p, QU1X8_ONE-q);
-      pValueCache->lastOutput = ( (A * m) + (B * n) + (C * o) + (D * r) ) >> QU1X8_INTEGER_SHIFT;
+      // Use 32-bit accumulator for 16-bit table values to prevent overflow during interpolation
+      // On AVR (8-bit values), this is optimized away by the compiler
+      pValueCache->lastOutput = ( ((uint32_t)A * m) + ((uint32_t)B * n) + ((uint32_t)C * o) + ((uint32_t)D * r) ) >> QU1X8_INTEGER_SHIFT;
     }
 
     return pValueCache->lastOutput;

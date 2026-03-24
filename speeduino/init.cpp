@@ -21,7 +21,10 @@
 #include "idle.h"
 #include "table2d.h"
 #include "acc_mc33810.h"
-#include BOARD_H //Note that this is not a real file, it is defined in globals.h. 
+#include BOARD_H //Note that this is not a real file, it is defined in globals.h.
+#if defined(CORE_TEENSY41)
+  #include "adc_teensy41.h"
+#endif 
 #if defined(EEPROM_RESET_PIN)
   #include EEPROM_LIB_H
 #endif
@@ -150,6 +153,12 @@ void initialiseAll(void)
     configPage4.bootloaderCaps = 0;
     
     initBoard(); //This calls the current individual boards init function. See the board_xxx.ino files for these.
+
+    // Initialize Teensy 4.1 12-bit ADC (Phase 6: higher-resolution sampling)
+    #if defined(CORE_TEENSY41)
+        initADC_Teensy41();
+    #endif
+
     initialiseTimers();
     
 //Teensy 4.1 does not require .begin() to be called. This introduces a 700ms delay on startup time whilst USB is enumerated if it is called

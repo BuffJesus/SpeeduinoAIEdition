@@ -28,6 +28,12 @@ uint8_t getBoardCapabilityFlags(uint8_t pinMapping)
     flags |= BOARD_CAP_NATIVE_CAN;
   #endif
 
+  // Phase 6: Teensy 4.1 Platform Enablement capabilities
+  #if defined(CORE_TEENSY41)
+    flags |= BOARD_CAP_12BIT_ADC;        // 12-bit ADC hardware (0-4095 range)
+    flags |= BOARD_CAP_HIGH_RES_TABLES;  // 16-bit table values (uint16_t)
+  #endif
+
   switch(pinMapping)
   {
     case PIN_LAYOUT_DROPBEAR:

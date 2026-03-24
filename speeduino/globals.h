@@ -127,11 +127,13 @@ constexpr uint8_t PIN_LAYOUT_DROPBEAR = 55U;
 constexpr uint8_t PIN_LAYOUT_BEAR_CUB = 56U;
 
 enum board_capability : uint8_t {
-  BOARD_CAP_NONE      = 0U,
-  BOARD_CAP_RTC       = (1U << 0),
-  BOARD_CAP_SD        = (1U << 1),
-  BOARD_CAP_NATIVE_CAN= (1U << 2),
-  BOARD_CAP_SPI_FLASH = (1U << 3)
+  BOARD_CAP_NONE          = 0U,
+  BOARD_CAP_RTC           = (1U << 0),
+  BOARD_CAP_SD            = (1U << 1),
+  BOARD_CAP_NATIVE_CAN    = (1U << 2),
+  BOARD_CAP_SPI_FLASH     = (1U << 3),
+  BOARD_CAP_12BIT_ADC     = (1U << 4),  ///< 12-bit ADC (4096 steps) vs 10-bit (1024 steps)
+  BOARD_CAP_HIGH_RES_TABLES = (1U << 5) ///< 16-bit table values (0.1% resolution) vs 8-bit (1% resolution)
 };
 
 uint8_t getBoardCapabilityFlags(uint8_t pinMapping);

@@ -21,8 +21,16 @@
 /** @brief Encodes the \b length of the axes */
 using table3d_dim_t = uint8_t;
 
-/** @brief The type of each table value */
-using table3d_value_t = uint8_t;
+/** @brief The type of each table value
+ *
+ * Teensy 4.1 uses 16-bit table values for 10x better resolution (0.1% vs 1% for VE/AFR).
+ * AVR platforms remain at 8-bit due to memory constraints.
+ */
+#if defined(CORE_TEENSY41)
+  using table3d_value_t = uint16_t;
+#else
+  using table3d_value_t = uint8_t;
+#endif
 
 /** @brief The type of each axis value */
 using table3d_axis_t = int16_t;

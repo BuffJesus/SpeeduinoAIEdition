@@ -5,6 +5,9 @@
 #include "tests_tables.h"
 #include "test_table2d.h"
 
+// Forward declaration for 16-bit table tests
+void run_table3d_16bit_tests(void);
+
 #define UNITY_EXCLUDE_DETAILS
 
 void setup()
@@ -21,6 +24,7 @@ void setup()
 
     testTables();
     testTable2d();
+    run_table3d_16bit_tests();
 
     UNITY_END(); // stop unit testing
 
