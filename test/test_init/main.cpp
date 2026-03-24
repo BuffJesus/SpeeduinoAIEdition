@@ -28,6 +28,7 @@ void testInitialisation(void);
 void testFuelScheduleInit(void);
 void testIgnitionScheduleInit(void);
 void test_comms_helpers(void);
+void test_trigger_pin_validation(void);
 
 #define UNITY_EXCLUDE_DETAILS
 
@@ -47,6 +48,7 @@ void setup()
     testIgnitionScheduleInit();
     testInitialisation();
     test_comms_helpers();
+    test_trigger_pin_validation();
 
     UNITY_END(); // stop unit testing
 
