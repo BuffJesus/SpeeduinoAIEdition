@@ -5,6 +5,7 @@
 #include <avr/sleep.h>
 
 #include "missing_tooth/missing_tooth.h"
+#include "Non360/Non360.h"
 #include "dual_wheel/dual_wheel.h"
 #include "renix/renix.h"
 #include "Nissan360/Nissan360.h"
@@ -45,6 +46,7 @@ void setup()
 
     testDecoder_General();
     testMissingTooth();
+    testNon360();
     testDualWheel();
     testRenix();
     testNissan360();
