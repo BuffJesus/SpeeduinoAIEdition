@@ -119,7 +119,6 @@ static void assertValuesUnchanged(table3d_t &table, uint8_t expectedStart) {
 }
 
 void testConfigMigrations_group1(void);
-void testConfigMigrations_group1b(void);
 void testConfigMigrations_group2(void);
 void testConfigMigrations_group3(void);
 void testConfigMigrations_group3a(void);
@@ -1359,44 +1358,6 @@ void test_doUpdates_future_version_clamps_to_current(void) {
     TEST_ASSERT_EQUAL_UINT8(0U, state.writeCalibrationCalls);
 }
 
-void test_migrateVVTTableEntry_v17_to_v18_normal_range(void) {
-    TEST_ASSERT_EQUAL_UINT8(0, migrateVVTTableEntry_v17_to_v18(0));
-    TEST_ASSERT_EQUAL_UINT8(2, migrateVVTTableEntry_v17_to_v18(1));
-    TEST_ASSERT_EQUAL_UINT8(100, migrateVVTTableEntry_v17_to_v18(50));
-    TEST_ASSERT_EQUAL_UINT8(200, migrateVVTTableEntry_v17_to_v18(100));
-    TEST_ASSERT_EQUAL_UINT8(254, migrateVVTTableEntry_v17_to_v18(127));
-}
-
-void test_migrateVVTTableEntry_v17_to_v18_overflow_protection(void) {
-    TEST_ASSERT_EQUAL_UINT8(UINT8_MAX, migrateVVTTableEntry_v17_to_v18(128));
-    TEST_ASSERT_EQUAL_UINT8(UINT8_MAX, migrateVVTTableEntry_v17_to_v18(200));
-    TEST_ASSERT_EQUAL_UINT8(UINT8_MAX, migrateVVTTableEntry_v17_to_v18(255));
-}
-
-void test_migrateVVTTableEntry_v17_to_v18_boundary_values(void) {
-    TEST_ASSERT_EQUAL_UINT8(254, migrateVVTTableEntry_v17_to_v18(127));
-    TEST_ASSERT_EQUAL_UINT8(UINT8_MAX, migrateVVTTableEntry_v17_to_v18(128));
-}
-
-void test_migrateIdleAdvDelay_v17_to_v18_normal_range(void) {
-    TEST_ASSERT_EQUAL_UINT8(0, migrateIdleAdvDelay_v17_to_v18(0));
-    TEST_ASSERT_EQUAL_UINT8(2, migrateIdleAdvDelay_v17_to_v18(1));
-    TEST_ASSERT_EQUAL_UINT8(20, migrateIdleAdvDelay_v17_to_v18(10));
-    TEST_ASSERT_EQUAL_UINT8(50, migrateIdleAdvDelay_v17_to_v18(25));
-    TEST_ASSERT_EQUAL_UINT8(254, migrateIdleAdvDelay_v17_to_v18(127));
-}
-
-void test_migrateIdleAdvDelay_v17_to_v18_overflow_protection(void) {
-    TEST_ASSERT_EQUAL_UINT8(UINT8_MAX, migrateIdleAdvDelay_v17_to_v18(128));
-    TEST_ASSERT_EQUAL_UINT8(UINT8_MAX, migrateIdleAdvDelay_v17_to_v18(200));
-    TEST_ASSERT_EQUAL_UINT8(UINT8_MAX, migrateIdleAdvDelay_v17_to_v18(255));
-}
-
-void test_migrateIdleAdvDelay_v17_to_v18_boundary_values(void) {
-    TEST_ASSERT_EQUAL_UINT8(254, migrateIdleAdvDelay_v17_to_v18(127));
-    TEST_ASSERT_EQUAL_UINT8(UINT8_MAX, migrateIdleAdvDelay_v17_to_v18(128));
-}
-
 void testConfigMigrations(void) {
     testConfigMigrations_group1();
     testConfigMigrations_group2();
@@ -1422,16 +1383,6 @@ void testConfigMigrations_group1(void) {
     RUN_TEST(test_divideTableLoad_scales_only_load_axis);
     RUN_TEST(test_multiplyTableValue_scales_entire_page);
     RUN_TEST(test_divideTableValue_scales_entire_page);
-}
-
-void testConfigMigrations_group1b(void) {
-    // v17→v18 migration helpers (Phase 5)
-    RUN_TEST(test_migrateVVTTableEntry_v17_to_v18_normal_range);
-    RUN_TEST(test_migrateVVTTableEntry_v17_to_v18_overflow_protection);
-    RUN_TEST(test_migrateVVTTableEntry_v17_to_v18_boundary_values);
-    RUN_TEST(test_migrateIdleAdvDelay_v17_to_v18_normal_range);
-    RUN_TEST(test_migrateIdleAdvDelay_v17_to_v18_overflow_protection);
-    RUN_TEST(test_migrateIdleAdvDelay_v17_to_v18_boundary_values);
 }
 
 void testConfigMigrations_group2(void) {

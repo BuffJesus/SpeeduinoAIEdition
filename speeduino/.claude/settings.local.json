@@ -10,7 +10,8 @@
       "Bash(awk 'NR>=1253' speeduino/init.cpp)",
       "Bash(grep -n \"knockEventIsValid\\\\|isKnockWindowActive\" /c/Users/Cornelio/Desktop/speeduino-202501.6/speeduino/*.h)",
       "Bash(echo \"EXIT:$?\")",
-      "Bash(cmd //c \"cd /d C:\\\\Users\\\\Cornelio\\\\Desktop\\\\speeduino-202501.6 && pio test -e megaatmega2560_sim_unittest --filter test_updates 2>&1\")"
+      "Bash(cmd //c \"cd /d C:\\\\Users\\\\Cornelio\\\\Desktop\\\\speeduino-202501.6 && pio test -e megaatmega2560_sim_unittest --filter test_updates 2>&1\")",
+      "Bash(/c/Users/Cornelio/.platformio/packages/toolchain-atmelavr/bin/avr-objdump.exe -h /c/Users/Cornelio/Desktop/speeduino-202501.6/.pio/build/megaatmega2560_sim_unittest/firmware.elf)"
     ]
   }
 }

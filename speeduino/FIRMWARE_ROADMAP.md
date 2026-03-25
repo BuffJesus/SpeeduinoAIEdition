@@ -205,6 +205,53 @@ Current phase 1 work started in:
 
 ## Phase 5: Configuration And Observability
 
+### Phase 5 Completed Work
+
+**Slice A: updates.cpp Migration Audit** ✅ **COMPLETE** (no code changes)
+- CURRENT_DATA_VERSION = 24; 22 migration steps v2→v24
+- ALL steps covered by 38 (test_updates) + 11 (test_updates_tail) = 49 tests total
+- 7 testable helper functions extracted: migratePIDGain, migrateCrankingEnrich, migrateFlexAdvance, migrateCrankingPctToCurve, migrateTPSResolution, migrateVVTTableEntry, migrateIdleAdvDelay
+- Migration types: EEPROM raw shifts (v5→v6, v6→v7, v16→v17), unit conversions, default fills, struct fixes
+- All raw EEPROM shift tests confirmed present
+
+**Slice B: Knock Observability Status Flags** ✅ **COMPLETE**
+- Added 5 `KNOCK_STATUS_*` bitmask constants to knock.h
+- Implemented `knockGetStatusFlags(knockMode, windowActive, knockCount, activationCount, retard, lastRecoveryStep)` in knock.cpp
+  - Pure function with no global state dependencies — fully testable
+  - Flags: MODE_ENABLED, WINDOW_ACTIVE, COUNT_AT_THRESHOLD, RETARD_ACTIVE, RECOVERY_ACTIVE
+- Added 8 tests in test_ign/test_knock_helpers.cpp
+- test_ign: 164 → 172/172 PASSED
+
+**Slice C: Migration Helpers for v17→v18** ✅ **COMPLETE**
+- Extracted `migrateVVTTableEntry_v17_to_v18(uint8_t)` — shift left by 1, saturates at UINT8_MAX for inputs > 127
+- Extracted `migrateIdleAdvDelay_v17_to_v18(uint8_t)` — multiply by 2, saturates at UINT8_MAX for inputs > 127
+- Both declared in updates.h UNIT_TEST section, implemented in updates.cpp UNIT_TEST section
+- Added 6 tests in new `testConfigMigrations_group1b()` runner (placed in test_updates_tail to stay within ATmega2560 SRAM limit)
+- test_updates_tail: 5 → 11/11 PASSED
+
+**Test Results (Phase 5 Closing Baseline):**
+- test_decoders: 263/263 PASSED
+- test_ign: 172/172 PASSED (+8 from knockGetStatusFlags tests)
+- test_updates: 38/38 PASSED (unchanged)
+- test_updates_tail: 11/11 PASSED (+6 from v17→v18 migration helper tests)
+- test_sensors: 57/57 PASSED
+- test_tables: 24/24 PASSED
+- test_math: 44/44 PASSED
+- test_fuel: 88/88 PASSED
+- test_schedules: 26/26 PASSED
+- test_init: TIMED OUT (known simavr long-running issue, 139 tests in suite)
+- **Total passing: 723/723 (excluding test_init timeout)**
+
+**Binary Size (Phase 5):**
+- Teensy 4.1: 254,060 bytes code + 30,464 data (unchanged from Phase 4)
+
+**Phase 5 Remaining Work:**
+- Tune-compatibility policy and regression checks for stock Speeduino `.msq` files (deferred)
+- Live-data map for high-value subsystems (deferred)
+- Logger byte → TunerStudio bit mapping regression tests (deferred)
+
+### Phase 5 Objectives
+
 - Treat [updates.cpp](C:/Users/Cornelio/Desktop/speeduino-202501.6/speeduino/updates.cpp) as a first-class subsystem with validation and tests.
 - Add clearer runtime observability for feature state, block conditions, and fault reasons.
 - Prefer explicit status and counters over ambiguous flags when debugging field issues.

@@ -2,6 +2,7 @@
 #include <unity.h>
 #include <avr/sleep.h>
 
+void testConfigMigrations_group1b(void);
 void testConfigMigrations_group3b1(void);
 void testConfigMigrations_group3b2(void);
 
@@ -17,6 +18,7 @@ void setup()
 
     UNITY_BEGIN();
 
+    testConfigMigrations_group1b();
     testConfigMigrations_group3b1();
     testConfigMigrations_group3b2();
 

@@ -4,7 +4,6 @@
 
 void testConfigMigrations(void);
 void testConfigMigrations_group1(void);
-void testConfigMigrations_group1b(void);
 void testConfigMigrations_group2(void);
 void testConfigMigrations_group3(void);
 void testConfigMigrations_group3a(void);
@@ -25,7 +24,6 @@ void setup()
     UNITY_BEGIN();
 
     testConfigMigrations_group1();
-    testConfigMigrations_group1b();
     testConfigMigrations_group2();
     testConfigMigrations_group3a();
 
