@@ -109,7 +109,9 @@ byte pinTranslateKnock(byte knockPinIndex)
   // Dropbear-specific mapping (new simplified layout)
   if(knockPinIndex == 0) { return 34; }
   else if(knockPinIndex == 1) { return 35; }
+#if defined(CORE_TEENSY)
   else if(knockPinIndex == 2) { return A16; }
+#endif
 
   // Legacy mapping for generic speeduino.ini compatibility
   else if(knockPinIndex == 30) { return 34; } // Pin 34 at old position 30

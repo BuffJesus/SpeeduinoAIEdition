@@ -7,6 +7,7 @@
 #include "timers.h"
 #include "comms_secondary.h"
 #include "adc_teensy41.h"  // Phase 4: ADC initialization
+#include "utilities.h"     // Phase 4: pinTranslateKnock
 
 /*
   //These are declared locally in comms_CAN now due to this issue: https://github.com/tonton81/FlexCAN_T4/issues/67
