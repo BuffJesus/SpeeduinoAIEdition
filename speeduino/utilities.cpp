@@ -99,18 +99,24 @@ byte pinTranslateAnalog(byte rawPin)
 byte pinTranslateKnock(byte knockPinIndex)
 {
   // Map knock_pin INI indices to actual pin numbers
-  // Indices 0-49 are digital pins, 50+ are analog pins (A0 at index 50)
-  if(knockPinIndex == 2) { return 2; }
-  else if(knockPinIndex == 3) { return 3; }
-  else if(knockPinIndex == 18) { return 18; }
-  else if(knockPinIndex == 19) { return 19; }
-  else if(knockPinIndex == 20) { return 20; }
-  else if(knockPinIndex == 21) { return 21; }
-  else if(knockPinIndex == 30) { return 34; } // Pin 34 is at position 30
-  else if(knockPinIndex == 31) { return 35; } // Pin 35 is at position 31
-  else if(knockPinIndex >= 50)
+  // For Dropbear-specific INI (v2.0.1+):
+  //   Index 0 = Pin 34 (Digital)
+  //   Index 1 = Pin 35 (Digital)
+  //   Index 2 = A16 (Analog)
+  // For generic INI:
+  //   Maintains backward compatibility with old index layout
+
+  // Dropbear-specific mapping (new simplified layout)
+  if(knockPinIndex == 0) { return 34; }
+  else if(knockPinIndex == 1) { return 35; }
+  else if(knockPinIndex == 2) { return A16; }
+
+  // Legacy mapping for generic speeduino.ini compatibility
+  else if(knockPinIndex == 30) { return 34; } // Pin 34 at old position 30
+  else if(knockPinIndex == 31) { return 35; } // Pin 35 at old position 31
+  else if(knockPinIndex >= 50 && knockPinIndex <= 63)
   {
-    // Analog pins start at index 50 (A0)
+    // Analog pins at old positions 50-63 (A0-A13)
     return pinTranslateAnalog(knockPinIndex - 50);
   }
 
