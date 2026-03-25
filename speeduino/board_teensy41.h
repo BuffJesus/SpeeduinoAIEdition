@@ -3,6 +3,8 @@
 
 #if defined(CORE_TEENSY) && defined(__IMXRT1062__)
 
+#include "adc_teensy41.h" // 12-bit ADC backend with analogRead10bit() for sensor normalization
+
 /*
 ***********************************************************************************************************
 * General

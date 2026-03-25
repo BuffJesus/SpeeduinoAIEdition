@@ -310,17 +310,24 @@ See audit findings below.
 - `LOG_ENTRY_SIZE=132` already updated in Phase 4; no further payload changes needed
 - Comms transport is not a bottleneck for Teensy 4.1 with current protocol
 
-**Slice E: ADC Backend Audit** ✅ **COMPLETE** (no code changes)
-- `initADC_Teensy41()` sets hardware to 12-bit via `analogReadResolution(12)` — called at board init (board_teensy41.cpp:34)
-- `sensors.cpp` `readAnalogPin()` returns raw `analogRead()` values — on Teensy 4.1 these are 12-bit (0-4095), not 10-bit
-- `fastMap10Bit()` in sensors.cpp expects 0-1023 input range: potential 4× over-range on Teensy 4.1 for any code path using `readAnalogPin()` directly
-- Mitigation: `adc_teensy41.h` provides `analogRead10bit()` wrapper (returns `analogRead() >> 2`) — needs to be wired into `readAnalogPin()` for Teensy 4.1; deferred to Phase 7 as a correctness fix
-- `ANALOG_ISR` path (interrupt-driven ADC on AVR) is not used on Teensy 4.1; all reads go through `readAnalogPin()`
+**Slice E: ADC Backend Audit** ✅ **COMPLETE** (no code changes — identified bug, fixed in Phase 7 Slice A)
 
 **Phase 6 Remaining Work:**
-- ADC 10-bit normalization fix for Teensy 4.1 (Phase 7 candidate — correctness impact on sensor readings)
 - Stabilize native CAN (disabled due to lockup; needs separate investigation)
 - ESP32-C3 coprocessor path
+
+---
+
+## Phase 7: ADC Normalization + Sensor Correctness
+
+### Phase 7 Progress Log
+
+**Slice A: ADC 10-bit Normalization Fix** ✅ **COMPLETE**
+- Root cause: `initADC_Teensy41()` sets hardware to 12-bit (0-4095) but `readAnalogPin()` in `sensors.cpp` returned raw `analogRead()` value — on Teensy 4.1 this is 4× too large for `fastMap10Bit()` and all downstream sensor math (TPS, CLT, IAT, MAP, O2, baro)
+- Fix: added `#include "adc_teensy41.h"` to `board_teensy41.h` (exposed via `globals.h` → `sensors.cpp`); patched `readAnalogPin()` with `#if defined(CORE_TEENSY41)` branch calling `analogRead10bit()` (`analogRead() >> 2`)
+- All sensor reads flow through `readAnalogPin()` on Teensy 4.1 (no `ANALOG_ISR` path), so one change covers TPS, CLT, IAT, MAP, baro, O2 simultaneously
+- Added 8 regression tests in `test/test_sensors/test_adc_normalization.cpp`: shift math bounds, normalized TPS/MAP ranges, and overrange-without-normalization assertions
+- test_sensors: 57 → 65/65 PASSED; total: 723 → 731/731
 
 - Treat Teensy 4.1 as a first-class platform, not just a faster AVR replacement.
 - Move capability decisions behind explicit board declarations for SD, RTC, native CAN, onboard SPI flash, trigger hardware, and driver chips so runtime code and the tuning surface can distinguish generic MCU support from specific board support.
@@ -335,7 +342,7 @@ See audit findings below.
   - finish PWM fan support using TMR3 channel 1 COMP2 alongside Fuel6 ✅ (Phase 6 Slice B)
   - wire SPI flash storage into writeConfig()/loadConfig() for all 7 struct pages ✅ (Phase 6 Slice C)
   - stabilize native CAN and expose the real capability cleanly
-  - fix readAnalogPin() 10-bit normalization for Teensy 4.1 (Phase 7 candidate)
+  - fix readAnalogPin() 10-bit normalization for Teensy 4.1 ✅ (Phase 7 Slice A)
   - add higher-resolution oversampling/averaging to Teensy 4.1 ADC path
 - Use the existing ESP32-C3 board hardware as a real secondary transport / coprocessor path for wireless tuning, log offload, and update workflows once the board capability layer exists.
 

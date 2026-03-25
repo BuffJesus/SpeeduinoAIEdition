@@ -8,6 +8,7 @@ extern void test_fastMap10Bit(void);
 extern void test_map_sampling(void);
 extern void test_knock_window(void);
 extern void test_filtering(void);
+extern void test_adc_normalization(void);
 
 void setup()
 {
@@ -25,6 +26,7 @@ void setup()
     test_map_sampling();
     test_knock_window();
     test_filtering();
+    test_adc_normalization();
     
     UNITY_END(); // stop unit testing
 
