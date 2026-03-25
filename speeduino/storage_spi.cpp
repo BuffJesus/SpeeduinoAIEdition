@@ -122,100 +122,93 @@ bool saveConfigToFlash(uint8_t configPage, const void* buffer, uint16_t size) {
     return (bytesWritten == size);
 }
 
+// Struct config page numbers matching pages.h constants:
+// veSetPage=1, ignSetPage=4, afrSetPage=6, canbusPage=9, warmupPage=10, progOutsPage=13, boostvvtPage2=15
+// Map/table pages (fuel map, ignition map, etc.) are not included — they remain EEPROM-only
+// until full page serialization is implemented.
+static const uint8_t kStructPageIDs[] = { 1, 4, 6, 9, 10, 13, 15 };
+static const uint8_t kStructPageCount = sizeof(kStructPageIDs) / sizeof(kStructPageIDs[0]);
+
+// Copy a single file on the LittleFS filesystem. Returns true on success.
+static bool copyFlashFile(const char* src, const char* dst)
+{
+    File srcFile = myfs.open(src, FILE_READ);
+    if (!srcFile) { return false; }
+
+    size_t fileSize = srcFile.size();
+    if (fileSize == 0 || fileSize > 512) { srcFile.close(); return false; }
+
+    uint8_t* buf = (uint8_t*)malloc(fileSize);
+    if (buf == NULL) { srcFile.close(); return false; }
+
+    size_t bytesRead = srcFile.read(buf, fileSize);
+    srcFile.close();
+
+    if (bytesRead != fileSize) { free(buf); return false; }
+
+    File dstFile = myfs.open(dst, FILE_WRITE);
+    if (!dstFile) { free(buf); return false; }
+
+    size_t bytesWritten = dstFile.write(buf, fileSize);
+    dstFile.close();
+    free(buf);
+
+    return (bytesWritten == fileSize);
+}
+
 /**
  * @brief Load a different tune bank (switch active config)
  *
- * Loads all config pages from /banks/bankN/ to active config memory.
- * This allows runtime switching between multiple complete tunes (e.g., pump gas vs. E85).
+ * Copies struct config page files from /banks/bankN/ to /config/.
+ * Takes effect on the next call to loadConfig() — a reboot is required.
+ * Map/table pages (fuel, ignition, AFR maps) are not included in tune banks;
+ * they remain EEPROM-backed until full page serialization is implemented.
  *
  * @param bankID Tune bank ID (0-4, bank 0 is default)
- * @return true if all pages loaded successfully, false if bank doesn't exist or read error
+ * @return true if at least one page was copied, false if bank is empty or storage error
  */
 bool loadTuneBank(uint8_t bankID) {
-    if (!spiFlashInitialized) return false;
-    if (bankID > 4) return false; // Only support 5 banks (0-4)
+    if (!spiFlashInitialized) { return false; }
+    if (bankID > 4) { return false; }
 
-    // Load all config pages from bank directory
-    // Note: This is a simplified implementation. Full implementation would need to:
-    // 1. Load all 15 config pages from /banks/bankN/pageX.bin
-    // 2. Copy to active runtime config structs (configPage2, configPage4, etc.)
-    // 3. Validate checksums
-    // 4. Trigger config reload (call loadConfig() equivalent)
-    //
-    // For now, just check if bank directory exists and has at least page1.bin
-    char filename[48];
-    snprintf(filename, sizeof(filename), "/banks/bank%d/page1.bin", bankID);
+    bool anyPageLoaded = false;
+    char src[48];
+    char dst[32];
 
-    File file = myfs.open(filename, FILE_READ);
-    if (!file) {
-        return false; // Bank doesn't exist or is empty
+    for (uint8_t i = 0; i < kStructPageCount; i++) {
+        snprintf(src, sizeof(src), "/banks/bank%d/page%d.bin", bankID, kStructPageIDs[i]);
+        snprintf(dst, sizeof(dst), "/config/page%d.bin", kStructPageIDs[i]);
+        if (copyFlashFile(src, dst)) { anyPageLoaded = true; }
     }
-    file.close();
 
-    // TODO: Actually load pages into runtime config
-    // This requires integration with storage.cpp loadConfig() flow
-    return true;
+    return anyPageLoaded;
 }
 
 /**
  * @brief Save current config as a different tune bank
  *
- * Copies all config pages from /config/ to /banks/bankN/.
- * This allows creating alternate tunes that can be switched at runtime.
+ * Copies struct config page files from /config/ to /banks/bankN/.
+ * Only pages that have been saved to SPI flash via writeConfig() are included.
+ * Map/table pages (fuel, ignition, AFR maps) are not included — they remain EEPROM-backed.
  *
  * @param bankID Tune bank ID (0-4, bank 0 is default)
- * @return true if all pages saved successfully, false if write error or flash full
+ * @return true if at least one page was saved, false if no pages exist or write error
  */
 bool saveTuneBank(uint8_t bankID) {
-    if (!spiFlashInitialized) return false;
-    if (bankID > 4) return false; // Only support 5 banks (0-4)
+    if (!spiFlashInitialized) { return false; }
+    if (bankID > 4) { return false; }
 
-    // Copy all config pages to bank directory
-    // Simplified implementation: just copy the first page as a marker
-    // Full implementation would copy all 15 config pages
-    char srcFilename[32];
-    char dstFilename[48];
+    bool anyPageSaved = false;
+    char src[32];
+    char dst[48];
 
-    // For now, just copy page1 as a proof-of-concept
-    snprintf(srcFilename, sizeof(srcFilename), "/config/page1.bin");
-    snprintf(dstFilename, sizeof(dstFilename), "/banks/bank%d/page1.bin", bankID);
-
-    // Read source
-    File srcFile = myfs.open(srcFilename, FILE_READ);
-    if (!srcFile) return false;
-
-    size_t fileSize = srcFile.size();
-    if (fileSize == 0 || fileSize > 4096) { // Sanity check
-        srcFile.close();
-        return false;
+    for (uint8_t i = 0; i < kStructPageCount; i++) {
+        snprintf(src, sizeof(src), "/config/page%d.bin", kStructPageIDs[i]);
+        snprintf(dst, sizeof(dst), "/banks/bank%d/page%d.bin", bankID, kStructPageIDs[i]);
+        if (copyFlashFile(src, dst)) { anyPageSaved = true; }
     }
 
-    uint8_t* buffer = (uint8_t*)malloc(fileSize);
-    if (buffer == NULL) {
-        srcFile.close();
-        return false;
-    }
-
-    size_t bytesRead = srcFile.read(buffer, fileSize);
-    srcFile.close();
-
-    if (bytesRead != fileSize) {
-        free(buffer);
-        return false;
-    }
-
-    // Write destination
-    File dstFile = myfs.open(dstFilename, FILE_WRITE);
-    if (!dstFile) {
-        free(buffer);
-        return false;
-    }
-
-    size_t bytesWritten = dstFile.write(buffer, fileSize);
-    dstFile.close();
-    free(buffer);
-
-    return (bytesWritten == fileSize);
+    return anyPageSaved;
 }
 
 /**
@@ -352,23 +345,14 @@ uint32_t getFlashFreeSpace(void) {
     if (!spiFlashInitialized) {
         return 0;
     }
-
-    // LittleFS doesn't have a direct "free space" API
-    // Estimate: total space - used space
-    // Teensy 4.1 has 8MB (8388608 bytes) onboard flash
-    uint32_t totalSpace = getFlashTotalSpace();
-
-    // TODO: Calculate actual used space by iterating all files
-    // For now, return total space (optimistic estimate)
-    return totalSpace;
+    return (uint32_t)myfs.totalSize() - (uint32_t)myfs.usedSize();
 }
 
 /**
  * @brief Get total SPI flash capacity
  */
 uint32_t getFlashTotalSpace(void) {
-    // Teensy 4.1 has 8MB onboard QSPI flash
-    return 8388608UL;
+    return spiFlashInitialized ? (uint32_t)myfs.totalSize() : 8388608UL;
 }
 
 /**

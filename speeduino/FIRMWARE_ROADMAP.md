@@ -297,9 +297,29 @@ See audit findings below.
 - Updated misleading "most likely won't work" comment to document the sharing model (Fuel6 COMP1 + Fan COMP2 on same channel 1 counter)
 - Test baseline unchanged: 723/723 PASSED (board file changes not exercised by AVR test suite)
 
+**Slice C: SPI Flash Storage Wiring** ✅ **COMPLETE**
+- Wired `g_useSPIFlash` flag into `writeConfig()` and `loadConfig()` in `storage.cpp`: all 7 struct config pages (veSetPage/1, ignSetPage/4, afrSetPage/6, canbusPage/9, warmupPage/10, progOutsPage/13, boostvvtPage2/15) now dual-write to SPI flash and load from SPI flash first with EEPROM fallback
+- Rewrote `saveTuneBank()` and `loadTuneBank()` in `storage_spi.cpp`: full multi-page iteration over kStructPageIDs[], file-level copy via shared `copyFlashFile()` helper
+- Added `loadTuneBank()` contract note: takes effect on next `loadConfig()` (reboot required); map/table pages deferred
+- Fixed `getFlashFreeSpace()` to compute `totalSize() - usedSize()` instead of returning totalSpace
+- All changes under `#if defined(CORE_TEENSY41)` — AVR code path unchanged; 723/723 PASSED
+
+**Slice D: Comms Transport Audit** ✅ **COMPLETE** (no code changes)
+- `SERIAL_BUFFER_SIZE` already bumped to 2051 (2048+3) on Teensy 4.1 via `SD_LOGGING` override in comms.cpp — no change needed
+- `sendPage()` iterates entity-by-entity via `page_iterator_t`, no fixed block size to increase
+- `LOG_ENTRY_SIZE=132` already updated in Phase 4; no further payload changes needed
+- Comms transport is not a bottleneck for Teensy 4.1 with current protocol
+
+**Slice E: ADC Backend Audit** ✅ **COMPLETE** (no code changes)
+- `initADC_Teensy41()` sets hardware to 12-bit via `analogReadResolution(12)` — called at board init (board_teensy41.cpp:34)
+- `sensors.cpp` `readAnalogPin()` returns raw `analogRead()` values — on Teensy 4.1 these are 12-bit (0-4095), not 10-bit
+- `fastMap10Bit()` in sensors.cpp expects 0-1023 input range: potential 4× over-range on Teensy 4.1 for any code path using `readAnalogPin()` directly
+- Mitigation: `adc_teensy41.h` provides `analogRead10bit()` wrapper (returns `analogRead() >> 2`) — needs to be wired into `readAnalogPin()` for Teensy 4.1; deferred to Phase 7 as a correctness fix
+- `ANALOG_ISR` path (interrupt-driven ADC on AVR) is not used on Teensy 4.1; all reads go through `readAnalogPin()`
+
 **Phase 6 Remaining Work:**
+- ADC 10-bit normalization fix for Teensy 4.1 (Phase 7 candidate — correctness impact on sensor readings)
 - Stabilize native CAN (disabled due to lockup; needs separate investigation)
-- Larger page sizes / blocking factors for Teensy-only comms transport
 - ESP32-C3 coprocessor path
 
 - Treat Teensy 4.1 as a first-class platform, not just a faster AVR replacement.
@@ -313,8 +333,10 @@ See audit findings below.
 - Rework Teensy 4.1 timing and peripheral usage where the current board layer is still unfinished or AVR-shaped:
   - drain all pending timer flags per ISR instead of single `else if` servicing ✅ (Phase 6 Slice A)
   - finish PWM fan support using TMR3 channel 1 COMP2 alongside Fuel6 ✅ (Phase 6 Slice B)
+  - wire SPI flash storage into writeConfig()/loadConfig() for all 7 struct pages ✅ (Phase 6 Slice C)
   - stabilize native CAN and expose the real capability cleanly
-  - add a Teensy-specific ADC backend with higher-resolution sampling / averaging
+  - fix readAnalogPin() 10-bit normalization for Teensy 4.1 (Phase 7 candidate)
+  - add higher-resolution oversampling/averaging to Teensy 4.1 ADC path
 - Use the existing ESP32-C3 board hardware as a real secondary transport / coprocessor path for wireless tuning, log offload, and update workflows once the board capability layer exists.
 
 ## Borrowed From rusEFI

@@ -229,6 +229,9 @@ void writeConfig(uint8_t pageNum)
       | 64 byte long config table
       -----------------------------------------------------*/
       result = write_range((byte *)&configPage2, (byte *)&configPage2+sizeof(configPage2), result.changeWriteAddress(EEPROM_CONFIG2_START));
+      #if defined(CORE_TEENSY41)
+      if (g_useSPIFlash) { saveConfigToFlash(veSetPage, &configPage2, sizeof(configPage2)); }
+      #endif
       break;
 
     case ignMapPage:
@@ -245,6 +248,9 @@ void writeConfig(uint8_t pageNum)
       | 64 byte long config table
       -----------------------------------------------------*/
       result = write_range((byte *)&configPage4, (byte *)&configPage4+sizeof(configPage4), result.changeWriteAddress(EEPROM_CONFIG4_START));
+      #if defined(CORE_TEENSY41)
+      if (g_useSPIFlash) { saveConfigToFlash(ignSetPage, &configPage4, sizeof(configPage4)); }
+      #endif
       break;
 
     case afrMapPage:
@@ -261,6 +267,9 @@ void writeConfig(uint8_t pageNum)
       | 64 byte long config table
       -----------------------------------------------------*/
       result = write_range((byte *)&configPage6, (byte *)&configPage6+sizeof(configPage6), result.changeWriteAddress(EEPROM_CONFIG6_START));
+      #if defined(CORE_TEENSY41)
+      if (g_useSPIFlash) { saveConfigToFlash(afrSetPage, &configPage6, sizeof(configPage6)); }
+      #endif
       break;
 
     case boostvvtPage:
@@ -294,6 +303,9 @@ void writeConfig(uint8_t pageNum)
       | 192 byte long config table
       -----------------------------------------------------*/
       result = write_range((byte *)&configPage9, (byte *)&configPage9+sizeof(configPage9), result.changeWriteAddress(EEPROM_CONFIG9_START));
+      #if defined(CORE_TEENSY41)
+      if (g_useSPIFlash) { saveConfigToFlash(canbusPage, &configPage9, sizeof(configPage9)); }
+      #endif
       break;
 
     case warmupPage:
@@ -302,6 +314,9 @@ void writeConfig(uint8_t pageNum)
       | 192 byte long config table
       -----------------------------------------------------*/
       result = write_range((byte *)&configPage10, (byte *)&configPage10+sizeof(configPage10), result.changeWriteAddress(EEPROM_CONFIG10_START));
+      #if defined(CORE_TEENSY41)
+      if (g_useSPIFlash) { saveConfigToFlash(warmupPage, &configPage10, sizeof(configPage10)); }
+      #endif
       break;
 
     case fuelMap2Page:
@@ -329,6 +344,9 @@ void writeConfig(uint8_t pageNum)
       | Config page 13 (See storage.h for data layout)
       -----------------------------------------------------*/
       result = write_range((byte *)&configPage13, (byte *)&configPage13+sizeof(configPage13), result.changeWriteAddress(EEPROM_CONFIG13_START));
+      #if defined(CORE_TEENSY41)
+      if (g_useSPIFlash) { saveConfigToFlash(progOutsPage, &configPage13, sizeof(configPage13)); }
+      #endif
       break;
     
     case ignMap2Page:
@@ -350,6 +368,9 @@ void writeConfig(uint8_t pageNum)
       | Config page 15 (See storage.h for data layout)
       -----------------------------------------------------*/
       result = write_range((byte *)&configPage15, (byte *)&configPage15+sizeof(configPage15), result.changeWriteAddress(EEPROM_CONFIG15_START));
+      #if defined(CORE_TEENSY41)
+      if (g_useSPIFlash) { saveConfigToFlash(boostvvtPage2, &configPage15, sizeof(configPage15)); }
+      #endif
       break;
 
     default:
@@ -455,19 +476,28 @@ void loadConfig(void)
 #endif
 
   loadTable(&fuelTable, decltype(fuelTable)::type_key, EEPROM_CONFIG1_MAP);
-  load_range(EEPROM_CONFIG2_START, (byte *)&configPage2, (byte *)&configPage2+sizeof(configPage2));
-  
+  #if defined(CORE_TEENSY41)
+  if (!g_useSPIFlash || !loadConfigFromFlash(veSetPage, &configPage2, sizeof(configPage2)))
+  #endif
+  { load_range(EEPROM_CONFIG2_START, (byte *)&configPage2, (byte *)&configPage2+sizeof(configPage2)); }
+
   //*********************************************************************************************************************************************************************************
   //IGNITION CONFIG PAGE (2)
 
   loadTable(&ignitionTable, decltype(ignitionTable)::type_key, EEPROM_CONFIG3_MAP);
-  load_range(EEPROM_CONFIG4_START, (byte *)&configPage4, (byte *)&configPage4+sizeof(configPage4));
+  #if defined(CORE_TEENSY41)
+  if (!g_useSPIFlash || !loadConfigFromFlash(ignSetPage, &configPage4, sizeof(configPage4)))
+  #endif
+  { load_range(EEPROM_CONFIG4_START, (byte *)&configPage4, (byte *)&configPage4+sizeof(configPage4)); }
 
   //*********************************************************************************************************************************************************************************
   //AFR TARGET CONFIG PAGE (3)
 
   loadTable(&afrTable, decltype(afrTable)::type_key, EEPROM_CONFIG5_MAP);
-  load_range(EEPROM_CONFIG6_START, (byte *)&configPage6, (byte *)&configPage6+sizeof(configPage6));
+  #if defined(CORE_TEENSY41)
+  if (!g_useSPIFlash || !loadConfigFromFlash(afrSetPage, &configPage6, sizeof(configPage6)))
+  #endif
+  { load_range(EEPROM_CONFIG6_START, (byte *)&configPage6, (byte *)&configPage6+sizeof(configPage6)); }
 
   //*********************************************************************************************************************************************************************************
   // Boost and vvt tables load
@@ -488,12 +518,18 @@ void loadConfig(void)
 
   //*********************************************************************************************************************************************************************************
   //canbus control page load
-  load_range(EEPROM_CONFIG9_START, (byte *)&configPage9, (byte *)&configPage9+sizeof(configPage9));
+  #if defined(CORE_TEENSY41)
+  if (!g_useSPIFlash || !loadConfigFromFlash(canbusPage, &configPage9, sizeof(configPage9)))
+  #endif
+  { load_range(EEPROM_CONFIG9_START, (byte *)&configPage9, (byte *)&configPage9+sizeof(configPage9)); }
 
   //*********************************************************************************************************************************************************************************
 
   //CONFIG PAGE (10)
-  load_range(EEPROM_CONFIG10_START, (byte *)&configPage10, (byte *)&configPage10+sizeof(configPage10));
+  #if defined(CORE_TEENSY41)
+  if (!g_useSPIFlash || !loadConfigFromFlash(warmupPage, &configPage10, sizeof(configPage10)))
+  #endif
+  { load_range(EEPROM_CONFIG10_START, (byte *)&configPage10, (byte *)&configPage10+sizeof(configPage10)); }
 
   //*********************************************************************************************************************************************************************************
   //Fuel table 2 (See storage.h for data layout)
@@ -507,7 +543,10 @@ void loadConfig(void)
 
   //*********************************************************************************************************************************************************************************
   //CONFIG PAGE (13)
-  load_range(EEPROM_CONFIG13_START, (byte *)&configPage13, (byte *)&configPage13+sizeof(configPage13));
+  #if defined(CORE_TEENSY41)
+  if (!g_useSPIFlash || !loadConfigFromFlash(progOutsPage, &configPage13, sizeof(configPage13)))
+  #endif
+  { load_range(EEPROM_CONFIG13_START, (byte *)&configPage13, (byte *)&configPage13+sizeof(configPage13)); }
 
   //*********************************************************************************************************************************************************************************
   //SECOND IGNITION CONFIG PAGE (14)
@@ -517,7 +556,10 @@ void loadConfig(void)
   //*********************************************************************************************************************************************************************************
   //CONFIG PAGE (15) + boost duty lookup table (LUT)
   loadTable(&boostTableLookupDuty, decltype(boostTableLookupDuty)::type_key, EEPROM_CONFIG15_MAP);
-  load_range(EEPROM_CONFIG15_START, (byte *)&configPage15, (byte *)&configPage15+sizeof(configPage15));  
+  #if defined(CORE_TEENSY41)
+  if (!g_useSPIFlash || !loadConfigFromFlash(boostvvtPage2, &configPage15, sizeof(configPage15)))
+  #endif
+  { load_range(EEPROM_CONFIG15_START, (byte *)&configPage15, (byte *)&configPage15+sizeof(configPage15)); }
 
   //*********************************************************************************************************************************************************************************
 }

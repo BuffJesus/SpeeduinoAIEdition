@@ -13,7 +13,8 @@
       "Bash(cmd //c \"cd /d C:\\\\Users\\\\Cornelio\\\\Desktop\\\\speeduino-202501.6 && pio test -e megaatmega2560_sim_unittest --filter test_updates 2>&1\")",
       "Bash(/c/Users/Cornelio/.platformio/packages/toolchain-atmelavr/bin/avr-objdump.exe -h /c/Users/Cornelio/Desktop/speeduino-202501.6/.pio/build/megaatmega2560_sim_unittest/firmware.elf)",
       "Bash(xargs grep:*)",
-      "Bash(grep -r 'int16_t getReadableLogEntry' C:UsersCornelioDesktopspeeduino-202501.6speeduino --include=*.cpp --include=*.h)"
+      "Bash(grep -r 'int16_t getReadableLogEntry' C:UsersCornelioDesktopspeeduino-202501.6speeduino --include=*.cpp --include=*.h)",
+      "Bash(grep -rn \"veSetPage\\\\|ignSetPage\\\\|afrSetPage\\\\|canbusPage\\\\|warmupPage\\\\|progOutsPage\\\\|boostvvtPage2\" C:/Users/Cornelio/Desktop/speeduino-202501.6/speeduino/ --include=*.h)"
     ]
   }
 }
