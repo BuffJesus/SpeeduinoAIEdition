@@ -281,6 +281,27 @@ See audit findings below.
 
 ## Phase 6: Teensy 4.1 Platform Enablement
 
+### Phase 6 Progress Log
+
+**Slice A: Board Audit** ✅ **COMPLETE** (no code changes)
+- Timer drain-all pattern already implemented in all 5 ISRs (PIT, TMR1–TMR4) with explicit "Phase 6" comments
+- `storage_spi.cpp` (396 lines) already provides LittleFS SPI flash abstraction: init, load/save config pages, tune banks, migration snapshots
+- ADC 12-bit support exists in `adc_teensy41.h`
+- PWM fan was disabled (`//#define PWM_FAN_AVAILABLE`) with placeholder macros using a mismatched register (`TMR3_COMP22` vs CSCTRL on channel 1)
+- Native CAN intentionally disabled due to lockup risk
+
+**Slice B: PWM Fan Support** ✅ **COMPLETE**
+- Fixed register bug: `FAN_TIMER_COMPARE` was `TMR3_COMP22` (channel 2 COMP2) but `ENABLE_FAN_TIMER()` operates on `TMR3_CSCTRL1` (channel 1); corrected to `TMR3_COMP21` (channel 1 COMP2)
+- Uncommented `#define PWM_FAN_AVAILABLE` in `board_teensy41.h:35`
+- Added TCF2 fan dispatch to `TMR3_isr()` in `board_teensy41.cpp` following drain-all pattern (read all flags before clearing any)
+- Updated misleading "most likely won't work" comment to document the sharing model (Fuel6 COMP1 + Fan COMP2 on same channel 1 counter)
+- Test baseline unchanged: 723/723 PASSED (board file changes not exercised by AVR test suite)
+
+**Phase 6 Remaining Work:**
+- Stabilize native CAN (disabled due to lockup; needs separate investigation)
+- Larger page sizes / blocking factors for Teensy-only comms transport
+- ESP32-C3 coprocessor path
+
 - Treat Teensy 4.1 as a first-class platform, not just a faster AVR replacement.
 - Move capability decisions behind explicit board declarations for SD, RTC, native CAN, onboard SPI flash, trigger hardware, and driver chips so runtime code and the tuning surface can distinguish generic MCU support from specific board support.
 - Add a Teensy/DropBear storage path that uses onboard SPI flash for tune persistence, tune banks, migration staging, and higher-rate diagnostic capture instead of constraining new features to the legacy EEPROM layout.
@@ -290,9 +311,9 @@ See audit findings below.
   - larger output-channel payloads
   - higher-resolution 3D tables
 - Rework Teensy 4.1 timing and peripheral usage where the current board layer is still unfinished or AVR-shaped:
-  - drain all pending timer flags per ISR instead of single `else if` servicing
+  - drain all pending timer flags per ISR instead of single `else if` servicing ✅ (Phase 6 Slice A)
+  - finish PWM fan support using TMR3 channel 1 COMP2 alongside Fuel6 ✅ (Phase 6 Slice B)
   - stabilize native CAN and expose the real capability cleanly
-  - finish PWM fan support with a proper Teensy timer instead of leaving it disabled
   - add a Teensy-specific ADC backend with higher-resolution sampling / averaging
 - Use the existing ESP32-C3 board hardware as a real secondary transport / coprocessor path for wireless tuning, log offload, and update workflows once the board capability layer exists.
 

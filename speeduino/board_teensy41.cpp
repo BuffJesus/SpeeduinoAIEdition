@@ -72,8 +72,6 @@ void initBoard()
     PIT_TCTRL3 |= PIT_TCTRL_TEN; // start Timer 2
     PIT_LDVAL3 = 500; //500 * 2uS = 1ms
 
-    //TODO: Configure timers here
-
     /*
     ***********************************************************************************************************
     * Auxiliaries
@@ -100,7 +98,7 @@ void initBoard()
       fan_pwm_max_count = (uint16_t)(MICROS_PER_SEC / (2U * configPage6.vvtFreq * 2U)); //Converts the frequency in Hz to the number of ticks (at 2uS) it takes to complete 1 cycle
     #endif
 
-    //TODO: Configure timers here
+    // Fan timer (TMR3 ch1 COMP2) is lazily enabled via ENABLE_FAN_TIMER() in auxiliaries.cpp
 
     /*
     ***********************************************************************************************************
@@ -270,12 +268,19 @@ void TMR3_isr(void)
   bool interrupt2 = (TMR3_CSCTRL1 & TMR_CSCTRL_TCF1);
   bool interrupt3 = (TMR3_CSCTRL2 & TMR_CSCTRL_TCF1);
   bool interrupt4 = (TMR3_CSCTRL3 & TMR_CSCTRL_TCF1);
+  #if defined(PWM_FAN_AVAILABLE)
+  // Fan uses COMP2 on TMR3 channel 1 (TCF2); read before any clears (drain-all pattern)
+  bool fan_interrupt = (TMR3_CSCTRL1 & TMR_CSCTRL_TCF2);
+  #endif
 
   // Phase 6: Drain all pending flags in single ISR invocation
   if(interrupt1) { TMR3_CSCTRL0 &= ~TMR_CSCTRL_TCF1; fuelSchedule5Interrupt(); }
   if(interrupt2) { TMR3_CSCTRL1 &= ~TMR_CSCTRL_TCF1; fuelSchedule6Interrupt(); }
   if(interrupt3) { TMR3_CSCTRL2 &= ~TMR_CSCTRL_TCF1; fuelSchedule7Interrupt(); }
   if(interrupt4) { TMR3_CSCTRL3 &= ~TMR_CSCTRL_TCF1; fuelSchedule8Interrupt(); }
+  #if defined(PWM_FAN_AVAILABLE)
+  if(fan_interrupt) { TMR3_CSCTRL1 &= ~TMR_CSCTRL_TCF2; fanInterrupt(); }
+  #endif
 }
 void TMR4_isr(void)
 {

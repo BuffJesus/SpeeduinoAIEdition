@@ -32,7 +32,7 @@
   #define SD_CONFIG  SdioConfig(FIFO_SDIO) //Set Teensy to use SDIO in FIFO mode. This is the fastest SD mode on Teensy as it offloads most of the writes
 
   #define micros_safe() micros() //timer5 method is not used on anything but AVR, the micros_safe() macro is simply an alias for the normal micros()
-  //#define PWM_FAN_AVAILABLE
+  #define PWM_FAN_AVAILABLE
   #define pinIsReserved(pin)  ( ((pin) == 0) || ((pin) == 42) || ((pin) == 43) || ((pin) == 44) || ((pin) == 45) || ((pin) == 46) || ((pin) == 47) || pinIsSerial((pin)) ) //Forbidden pins like USB
 
 
@@ -143,7 +143,7 @@
   #define ENABLE_VVT_TIMER()    PIT_TCTRL2 |= PIT_TCTRL_TEN
   #define DISABLE_VVT_TIMER()   PIT_TCTRL2 &= ~PIT_TCTRL_TEN
 
-  //Ran out of timers, this most likely won't work. This should be possible to implement with the GPT timer. 
+  // Fan PWM uses TMR3 channel 1 COMP2 (shared counter with Fuel6 COMP1 — independent compare registers)
   #define ENABLE_FAN_TIMER()    TMR3_CSCTRL1 |= TMR_CSCTRL_TCF2EN
   #define DISABLE_FAN_TIMER()   TMR3_CSCTRL1 &= ~TMR_CSCTRL_TCF2EN
 
@@ -152,8 +152,8 @@
   #define VVT_TIMER_COMPARE     PIT_LDVAL2
   #define VVT_TIMER_COUNTER     0
 
-  //these probaply need to be PIT_LDVAL something???
-  #define FAN_TIMER_COMPARE     TMR3_COMP22
+  // TMR3 channel 1 COMP2 register (compare 2 of channel 1; COMP1 of channel 1 is Fuel6)
+  #define FAN_TIMER_COMPARE     TMR3_COMP21
   #define FAN_TIMER_COUNTER     TMR3_CNTR1
 
 /*
