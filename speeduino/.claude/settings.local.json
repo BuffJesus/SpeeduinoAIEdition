@@ -5,7 +5,9 @@
       "Bash(awk 'NR>=1253' \"C:\\\\Users\\\\Cornelio\\\\Desktop\\\\speeduino-202501.6\\\\speeduino\\\\init.cpp\")",
       "Bash(grep -rn isSPIFlash /c/Users/Cornelio/Desktop/speeduino-202501.6/speeduino/*.h)",
       "Bash(grep -rn \"isSPIFlash\\\\|storage_spi.h\" /c/Users/Cornelio/Desktop/speeduino-202501.6/speeduino/*.cpp)",
-      "Bash(pio test:*)"
+      "Bash(pio test:*)",
+      "Bash(pio run:*)",
+      "Bash(awk 'NR>=1253' speeduino/init.cpp)"
     ]
   }
 }

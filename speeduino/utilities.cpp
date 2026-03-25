@@ -90,6 +90,32 @@ byte pinTranslateAnalog(byte rawPin)
   return outputPin;
 }
 
+/** Translate knock_pin index from INI to actual pin number.
+* The knock_pin field in the INI uses an enumerated list where array position corresponds to pin number.
+* This function maps the INI index to the actual pin number that should be used.
+* @param knockPinIndex - Index from configPage10.knock_pin (0-63)
+* @return Actual pin number, or 0xFF if invalid
+*/
+byte pinTranslateKnock(byte knockPinIndex)
+{
+  // Map knock_pin INI indices to actual pin numbers
+  // Indices 0-49 are digital pins, 50+ are analog pins (A0 at index 50)
+  if(knockPinIndex == 2) { return 2; }
+  else if(knockPinIndex == 3) { return 3; }
+  else if(knockPinIndex == 18) { return 18; }
+  else if(knockPinIndex == 19) { return 19; }
+  else if(knockPinIndex == 20) { return 20; }
+  else if(knockPinIndex == 21) { return 21; }
+  else if(knockPinIndex == 30) { return 34; } // Pin 34 is at position 30
+  else if(knockPinIndex == 31) { return 35; } // Pin 35 is at position 31
+  else if(knockPinIndex >= 50)
+  {
+    // Analog pins start at index 50 (A0)
+    return pinTranslateAnalog(knockPinIndex - 50);
+  }
+
+  return 0xFF; // Invalid pin
+}
 
 void setResetControlPinState(void)
 {

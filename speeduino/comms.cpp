@@ -56,6 +56,8 @@ static constexpr byte SERIAL_RC_RANGE_ERR  = 0x84U; //!< Incorrect range. TS wil
 static constexpr byte SERIAL_RC_BUSY_ERR   = 0x85U; //!< TS will wait and retry
 ///@}
 
+static constexpr uint8_t SEND_OUTPUT_CHANNELS = 48U; //!< Code for the "send output channels command"
+
 #if defined(RTC_ENABLED) && defined(SD_LOGGING)
   #define COMMS_SD            
 #endif
@@ -66,7 +68,7 @@ static constexpr byte serialVersion[] PROGMEM = {SERIAL_RC_OK, '0', '0', '2'};
 static constexpr byte canId[] PROGMEM = {SERIAL_RC_OK, 0};
 //static constexpr byte codeVersion[] PROGMEM = { SERIAL_RC_OK, 's','p','e','e','d','u','i','n','o',' ','2','0','2','4','0','5','-','d','e','v'} ; //Note no null terminator in array and status variable at the start
 //static constexpr byte productString[] PROGMEM = { SERIAL_RC_OK, 'S', 'p', 'e', 'e', 'd', 'u', 'i', 'n', 'o', ' ', '2', '0', '2', '4', '.', '0', '5', '-', 'd', 'e', 'v'};
-static constexpr byte codeVersion[] PROGMEM = { SERIAL_RC_OK, 's','p','e','e','d','u','i','n','o',' ','2','0','2','5','0','1'} ; //Note no null terminator in array and status variable at the start
+static constexpr byte codeVersion[] PROGMEM = { SERIAL_RC_OK, 's','p','e','e','d','u','i','n','o',' ','2','0','2','5','0','1','-','T','4','1'} ; //Note no null terminator in array and status variable at the start
 static constexpr byte productString[] PROGMEM = { SERIAL_RC_OK, 'S', 'p', 'e', 'e', 'd', 'u', 'i', 'n', 'o', ' ', '2', '0', '2', '5', '.', '0', '1', '.','6'};
 static constexpr byte testCommsResponse[] PROGMEM = { SERIAL_RC_OK, 255 };
 /// @}
@@ -479,7 +481,13 @@ void serialReceive(void)
     if(highByte == 0xF0) { primarySerial.read(); return; }
 
     //Check if the command is legacy using the call/response mechanism
-    if(isLegacyCommandByte(highByte, BIT_CHECK(currentStatus.status4, BIT_STATUS4_ALLOW_LEGACY_COMMS)))
+    if(highByte == 'F')
+    {
+      //F command is always allowed as it provides the initial serial protocol version. 
+      legacySerialCommand();
+      return;
+    }
+    else if( (((highByte >= 'A') && (highByte <= 'z')) || (highByte == '?')) && (BIT_CHECK(currentStatus.status4, BIT_STATUS4_ALLOW_LEGACY_COMMS)) )
     {
       //Handle legacy cases here
       legacySerialCommand();
@@ -543,11 +551,8 @@ void serialTransmit(void)
   switch (serialStatusFlag)
   {
     case SERIAL_TRANSMIT_INPROGRESS_LEGACY:
-    {
-      const LegacySerialResumeRequest request = buildLegacySerialResumeRequest(logItemsTransmitted, inProgressLength);
-      sendValues(request.offset, request.length, request.cmd, Serial, serialStatusFlag);
+      sendValues(logItemsTransmitted, inProgressLength, SEND_OUTPUT_CHANNELS, Serial, serialStatusFlag);
       break;
-    }
 
     case SERIAL_TRANSMIT_TOOTH_INPROGRESS:
       sendToothLog();
@@ -580,19 +585,33 @@ void processSerialCommand(void)
       generateLiveValues(0, LOG_ENTRY_SIZE); 
       break;
 
-    case 'b': // New EEPROM burn command to only burn a single page at a time 
+    case 'b': // New EEPROM burn command to only burn a single page at a time
+      #if defined(CORE_TEENSY)
+      //On Teensy, disable defer mechanism - burn immediately
+      writeConfig(serialPayload[2]);
+      //Flush TX buffer to prevent hang in writeByteReliableBlocking
+      primarySerial.flush();
+      #else
       if( (micros() > deferEEPROMWritesUntil)) { writeConfig(serialPayload[2]); } //Read the table number and perform burn. Note that byte 1 in the array is unused
       else { BIT_SET(currentStatus.status4, BIT_STATUS4_BURNPENDING); }
-      
+      #endif
+
       sendReturnCodeMsg(SERIAL_RC_BURN_OK);
       break;
 
     case 'B': // Same as above, but for the comms compat mode. Slows down the burn rate and increases the defer time
       BIT_SET(currentStatus.status4, BIT_STATUS4_COMMS_COMPAT); //Force the compat mode
+      #if defined(CORE_TEENSY)
+      //On Teensy, disable defer mechanism - burn immediately
+      writeConfig(serialPayload[2]);
+      //Flush TX buffer to prevent hang in writeByteReliableBlocking
+      primarySerial.flush();
+      #else
       deferEEPROMWritesUntil += (EEPROM_DEFER_DELAY/4); //Add 25% more to the EEPROM defer time
       if( (micros() > deferEEPROMWritesUntil)) { writeConfig(serialPayload[2]); } //Read the table number and perform burn. Note that byte 1 in the array is unused
       else { BIT_SET(currentStatus.status4, BIT_STATUS4_BURNPENDING); }
-      
+      #endif
+
       sendReturnCodeMsg(SERIAL_RC_BURN_OK);
       break;
 
@@ -740,7 +759,7 @@ void processSerialCommand(void)
       uint16_t SD_arg2 = word(serialPayload[5], serialPayload[6]);
 #endif
 
-      if(isLegacyOutputChannelsCommandSupported(cmd))
+      if(cmd == SEND_OUTPUT_CHANNELS) //Send output channels command 0x30 is 48dec
       {
         generateLiveValues(offset, length);
         sendSerialPayloadNonBlocking(length + 1U);

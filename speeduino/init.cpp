@@ -263,13 +263,14 @@ void initialiseAll(void)
     //As above but for knock pulses
     if(configPage10.knock_mode == KNOCK_MODE_DIGITAL)
     {
-      if(configPage10.knock_pullup) { pinMode(configPage10.knock_pin, INPUT_PULLUP); }
-      else { pinMode(configPage10.knock_pin, INPUT); }
+      byte pinKnock = pinTranslateKnock(configPage10.knock_pin); //Translate from INI index to actual pin number
+      if(configPage10.knock_pullup) { pinMode(pinKnock, INPUT_PULLUP); }
+      else { pinMode(pinKnock, INPUT); }
 
-      if(!pinIsReserved(configPage10.knock_pin)) 
-      { 
-        if(configPage10.knock_trigger == KNOCK_TRIGGER_HIGH) { attachInterrupt(digitalPinToInterrupt(configPage10.knock_pin), knockPulse, RISING); }
-        else { attachInterrupt(digitalPinToInterrupt(configPage10.knock_pin), knockPulse, FALLING); }
+      if(!pinIsReserved(pinKnock))
+      {
+        if(configPage10.knock_trigger == KNOCK_TRIGGER_HIGH) { attachInterrupt(digitalPinToInterrupt(pinKnock), knockPulse, RISING); }
+        else { attachInterrupt(digitalPinToInterrupt(pinKnock), knockPulse, FALLING); }
       }
     }
 
@@ -2281,7 +2282,7 @@ void setPinMapping(byte boardID)
       pinMAP = A1; //MAP sensor pin
       pinBaro = A0; //Baro sensor pin
       pinBat = A14; //Battery reference voltage pin
-      pinSpareTemp1 = A17; //spare Analog input 1
+      pinSpareTemp1 = A16; //spare Analog input 1 (shared with Flex on connector C2)
       pinLaunch = A15; //Can be overwritten below
       pinTachOut = 5; //Tacho output pin
       pinIdle1 = 27; //Single wire idle control
@@ -2403,8 +2404,8 @@ void setPinMapping(byte boardID)
       pinO2 = A2; //O2 Sensor pin
       pinLaunch = 36;
 
-      pinSpareTemp1 = A16; //spare Analog input 1
-      pinSpareTemp2 = A17; //spare Analog input 2
+      pinSpareTemp1 = A16; //spare Analog input 1 (connector C2)
+      pinSpareTemp2 = A16; //spare Analog input 2 (connector C3) - Note: C3 not mappable on T4.1 due to pin limit
       pinTachOut = 38; //Tacho output pin
       pinIdle1 = 27; //Single wire idle control
       pinIdle2 = 26; //2 wire idle control. Shared with Spare 1 output
