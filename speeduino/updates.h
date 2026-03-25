@@ -36,6 +36,8 @@ uint8_t migrateCrankingEnrich_v13_to_v14(uint8_t oldValue); // v13→v14: Rescal
 uint8_t migrateFlexAdvance_v13_to_v14(uint8_t oldAdvance); // v13→v14: Add 40 degree offset to flex fuel advance values
 uint8_t migrateCrankingPctToCurve_v4_to_v5(uint8_t oldCrankingPct); // v4→v5: Convert single cranking % to curve value (100 + old %)
 uint8_t migrateTPSResolution_v18_to_v19(uint8_t oldTPSValue); // v18→v19: Multiply TPS values by 2 for 0.5% resolution upgrade
+uint8_t migrateVVTTableEntry_v17_to_v18(uint8_t oldValue);  // v17→v18: Double VVT target resolution (shift left by 1), saturates at UINT8_MAX for inputs > 127
+uint8_t migrateIdleAdvDelay_v17_to_v18(uint8_t oldValue);   // v17→v18: Double idle advance delay resolution (multiply by 2), saturates at UINT8_MAX for inputs > 127
 #endif
 
 #endif

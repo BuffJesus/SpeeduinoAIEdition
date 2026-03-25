@@ -289,6 +289,61 @@ static void test_knockState_volatile_count_field(void) {
     TEST_ASSERT_EQUAL_UINT8(6, testState.count);
 }
 
+// ========================================== knockGetStatusFlags Tests ==========================================
+
+static void test_knockGetStatusFlags_all_clear_when_off_and_no_activity(void) {
+    uint8_t flags = knockGetStatusFlags(KNOCK_MODE_OFF, false, 0, 3, 0, 0);
+    TEST_ASSERT_EQUAL_UINT8(0U, flags);
+}
+
+static void test_knockGetStatusFlags_mode_enabled_digital(void) {
+    uint8_t flags = knockGetStatusFlags(KNOCK_MODE_DIGITAL, false, 0, 3, 0, 0);
+    TEST_ASSERT_TRUE(flags & KNOCK_STATUS_MODE_ENABLED);
+    TEST_ASSERT_FALSE(flags & KNOCK_STATUS_WINDOW_ACTIVE);
+    TEST_ASSERT_FALSE(flags & KNOCK_STATUS_COUNT_AT_THRESHOLD);
+    TEST_ASSERT_FALSE(flags & KNOCK_STATUS_RETARD_ACTIVE);
+    TEST_ASSERT_FALSE(flags & KNOCK_STATUS_RECOVERY_ACTIVE);
+}
+
+static void test_knockGetStatusFlags_mode_enabled_analog(void) {
+    uint8_t flags = knockGetStatusFlags(KNOCK_MODE_ANALOG, false, 0, 3, 0, 0);
+    TEST_ASSERT_TRUE(flags & KNOCK_STATUS_MODE_ENABLED);
+}
+
+static void test_knockGetStatusFlags_window_active_flag(void) {
+    uint8_t flags = knockGetStatusFlags(KNOCK_MODE_DIGITAL, true, 0, 3, 0, 0);
+    TEST_ASSERT_TRUE(flags & KNOCK_STATUS_WINDOW_ACTIVE);
+
+    flags = knockGetStatusFlags(KNOCK_MODE_DIGITAL, false, 0, 3, 0, 0);
+    TEST_ASSERT_FALSE(flags & KNOCK_STATUS_WINDOW_ACTIVE);
+}
+
+static void test_knockGetStatusFlags_count_at_threshold_flag(void) {
+    TEST_ASSERT_FALSE(knockGetStatusFlags(KNOCK_MODE_DIGITAL, true, 2, 3, 0, 0) & KNOCK_STATUS_COUNT_AT_THRESHOLD);
+    TEST_ASSERT_TRUE(knockGetStatusFlags(KNOCK_MODE_DIGITAL, true, 3, 3, 0, 0) & KNOCK_STATUS_COUNT_AT_THRESHOLD);
+    TEST_ASSERT_TRUE(knockGetStatusFlags(KNOCK_MODE_DIGITAL, true, 5, 3, 0, 0) & KNOCK_STATUS_COUNT_AT_THRESHOLD);
+}
+
+static void test_knockGetStatusFlags_retard_active_flag(void) {
+    TEST_ASSERT_TRUE(knockGetStatusFlags(KNOCK_MODE_DIGITAL, true, 3, 3, 5, 0) & KNOCK_STATUS_RETARD_ACTIVE);
+    TEST_ASSERT_FALSE(knockGetStatusFlags(KNOCK_MODE_DIGITAL, true, 3, 3, 0, 0) & KNOCK_STATUS_RETARD_ACTIVE);
+}
+
+static void test_knockGetStatusFlags_recovery_active_flag(void) {
+    TEST_ASSERT_TRUE(knockGetStatusFlags(KNOCK_MODE_DIGITAL, true, 3, 3, 5, 2) & KNOCK_STATUS_RECOVERY_ACTIVE);
+    TEST_ASSERT_FALSE(knockGetStatusFlags(KNOCK_MODE_DIGITAL, true, 3, 3, 5, 0) & KNOCK_STATUS_RECOVERY_ACTIVE);
+}
+
+static void test_knockGetStatusFlags_all_active(void) {
+    uint8_t flags = knockGetStatusFlags(KNOCK_MODE_ANALOG, true, 5, 3, 10, 2);
+    TEST_ASSERT_EQUAL_UINT8(
+        KNOCK_STATUS_MODE_ENABLED | KNOCK_STATUS_WINDOW_ACTIVE |
+        KNOCK_STATUS_COUNT_AT_THRESHOLD | KNOCK_STATUS_RETARD_ACTIVE |
+        KNOCK_STATUS_RECOVERY_ACTIVE,
+        flags
+    );
+}
+
 // ========================================== Test Suite Entry Point ==========================================
 
 void test_knock_helpers(void) {
@@ -312,5 +367,14 @@ void test_knock_helpers(void) {
     RUN_TEST(test_knockState_initialization);
     RUN_TEST(test_knockState_multi_step_updates);
     RUN_TEST(test_knockState_volatile_count_field);
+    // knockGetStatusFlags tests (Phase 5)
+    RUN_TEST(test_knockGetStatusFlags_all_clear_when_off_and_no_activity);
+    RUN_TEST(test_knockGetStatusFlags_mode_enabled_digital);
+    RUN_TEST(test_knockGetStatusFlags_mode_enabled_analog);
+    RUN_TEST(test_knockGetStatusFlags_window_active_flag);
+    RUN_TEST(test_knockGetStatusFlags_count_at_threshold_flag);
+    RUN_TEST(test_knockGetStatusFlags_retard_active_flag);
+    RUN_TEST(test_knockGetStatusFlags_recovery_active_flag);
+    RUN_TEST(test_knockGetStatusFlags_all_active);
   }
 }

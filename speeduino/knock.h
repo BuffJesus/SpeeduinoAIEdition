@@ -46,6 +46,32 @@ extern KnockState knockState;
 extern unsigned long knockStartTime;
 extern uint8_t knockLastRecoveryStep;
 
+// Knock subsystem status flags for runtime observability
+// Returned by knockGetStatusFlags() as a bitmask
+#define KNOCK_STATUS_MODE_ENABLED        0x01U  ///< Knock mode is not KNOCK_MODE_OFF
+#define KNOCK_STATUS_WINDOW_ACTIVE       0x02U  ///< Knock detection window is open
+#define KNOCK_STATUS_COUNT_AT_THRESHOLD  0x04U  ///< knockCount >= activationCount
+#define KNOCK_STATUS_RETARD_ACTIVE       0x08U  ///< Timing retard > 0 is being applied
+#define KNOCK_STATUS_RECOVERY_ACTIVE     0x10U  ///< Recovery is in progress (lastRecoveryStep > 0)
+
+/**
+ * @brief Get knock subsystem observable status flags
+ *
+ * Returns a bitmask of KNOCK_STATUS_* flags describing the current knock
+ * correction state. All parameters are passed explicitly so the function
+ * is pure and testable without depending on global state.
+ *
+ * @param knockMode Configured knock mode (KNOCK_MODE_OFF/DIGITAL/ANALOG)
+ * @param windowActive Whether the knock detection window is currently open
+ * @param knockCount Number of knock events detected
+ * @param activationCount Threshold for knock retard activation
+ * @param retard Current knock retard value (0 = no retard)
+ * @param lastRecoveryStep Current recovery step counter (0 = not recovering)
+ * @return uint8_t Bitmask of KNOCK_STATUS_* flags
+ */
+uint8_t knockGetStatusFlags(uint8_t knockMode, bool windowActive, uint8_t knockCount,
+                             uint8_t activationCount, uint8_t retard, uint8_t lastRecoveryStep);
+
 /**
  * @brief Get the knock activation count threshold
  *

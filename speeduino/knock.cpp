@@ -33,6 +33,18 @@ uint8_t knockCalculateRetard(uint8_t knockCount, const config10 &page10)
   return (retard > 255U) ? 255U : (uint8_t)retard;
 }
 
+uint8_t knockGetStatusFlags(uint8_t knockMode, bool windowActive, uint8_t knockCount,
+                             uint8_t activationCount, uint8_t retard, uint8_t lastRecoveryStep)
+{
+  uint8_t flags = 0;
+  if (knockMode != KNOCK_MODE_OFF)  { flags |= KNOCK_STATUS_MODE_ENABLED; }
+  if (windowActive)                  { flags |= KNOCK_STATUS_WINDOW_ACTIVE; }
+  if (knockCount >= activationCount) { flags |= KNOCK_STATUS_COUNT_AT_THRESHOLD; }
+  if (retard > 0)                    { flags |= KNOCK_STATUS_RETARD_ACTIVE; }
+  if (lastRecoveryStep > 0)          { flags |= KNOCK_STATUS_RECOVERY_ACTIVE; }
+  return flags;
+}
+
 uint8_t knockCalculateRecovery(uint8_t curKnockRetard)
 {
   uint8_t tmpKnockRetard = curKnockRetard;

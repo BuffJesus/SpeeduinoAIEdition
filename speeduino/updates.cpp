@@ -1005,4 +1005,21 @@ uint8_t migrateTPSResolution_v18_to_v19(uint8_t oldTPSValue) {
   }
   return oldTPSValue * 2;
 }
+
+// Testable migration helper for v17→v18 VVT table entry resolution upgrade
+// Old: 1° per unit, New: 0.5° per unit (shift left by 1 doubles the stored value)
+// VVT targets are typically 0-100% duty cycle; max input 127 gives output 254 (fits uint8_t)
+// Saturates at UINT8_MAX for inputs > 127 to prevent wrap-around
+uint8_t migrateVVTTableEntry_v17_to_v18(uint8_t oldValue) {
+  if (oldValue > 127) { return UINT8_MAX; }
+  return oldValue << 1;
+}
+
+// Testable migration helper for v17→v18 idle advance delay resolution upgrade
+// Old: 1.0 second per unit, New: 0.5 second per unit (multiply by 2)
+// Saturates at UINT8_MAX for inputs > 127 to prevent wrap-around
+uint8_t migrateIdleAdvDelay_v17_to_v18(uint8_t oldValue) {
+  if (oldValue > 127) { return UINT8_MAX; }
+  return oldValue * 2;
+}
 #endif

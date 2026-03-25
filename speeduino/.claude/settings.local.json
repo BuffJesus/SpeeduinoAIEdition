@@ -7,7 +7,10 @@
       "Bash(grep -rn \"isSPIFlash\\\\|storage_spi.h\" /c/Users/Cornelio/Desktop/speeduino-202501.6/speeduino/*.cpp)",
       "Bash(pio test:*)",
       "Bash(pio run:*)",
-      "Bash(awk 'NR>=1253' speeduino/init.cpp)"
+      "Bash(awk 'NR>=1253' speeduino/init.cpp)",
+      "Bash(grep -n \"knockEventIsValid\\\\|isKnockWindowActive\" /c/Users/Cornelio/Desktop/speeduino-202501.6/speeduino/*.h)",
+      "Bash(echo \"EXIT:$?\")",
+      "Bash(cmd //c \"cd /d C:\\\\Users\\\\Cornelio\\\\Desktop\\\\speeduino-202501.6 && pio test -e megaatmega2560_sim_unittest --filter test_updates 2>&1\")"
     ]
   }
 }
