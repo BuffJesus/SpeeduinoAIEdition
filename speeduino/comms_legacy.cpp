@@ -1189,8 +1189,8 @@ size_t buildLegacyValuesPacket(uint8_t *buffer, size_t bufferSize)
   temp = currentStatus.dwell * 10U;
   appendWord(temp); // dwell
 
-  appendByte(99); // MAF
-  appendByte(99); // MAF
+  appendByte(99); // MAF - DEPRECATED: MAF sensor not implemented; hardcoded placeholder returns 99
+  appendByte(99); // MAF - DEPRECATED: MAF sensor not implemented; hardcoded placeholder returns 99
   appendByte(currentStatus.fuelLoad * 10); // fuelload
   appendByte(currentStatus.flexCorrection); // fuelcor (flex fuel correction %)
   appendByte(currentStatus.flexCorrection); // fuelcor

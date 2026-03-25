@@ -81,11 +81,44 @@ static void test_board_capability_varies_by_pin_mapping(void)
   #endif
 }
 
+/**
+ * @brief Test that SPI flash health is exported at byte 131
+ *
+ * On non-Teensy4.1 platforms (AVR sim), isSPIFlashHealthy() is not compiled;
+ * the channel should return 0. On Teensy 4.1 the return depends on flash state.
+ */
+static void test_spi_flash_health_export_byte_131(void)
+{
+  byte result = getTSLogEntry(131);
+  // On AVR sim (not CORE_TEENSY41) the channel is always 0
+  #if !defined(CORE_TEENSY41)
+    TEST_ASSERT_EQUAL_UINT8(0U, result);
+  #else
+    // On Teensy 4.1 the value reflects actual flash health; just verify range
+    TEST_ASSERT_TRUE(result == 0U || result == 1U);
+  #endif
+}
+
+/**
+ * @brief Test that getReadableLogEntry index 95 exports SPI flash health
+ */
+static void test_spi_flash_health_readable_entry_index_95(void)
+{
+  int16_t result = getReadableLogEntry(95);
+  #if !defined(CORE_TEENSY41)
+    TEST_ASSERT_EQUAL_INT16(0, result);
+  #else
+    TEST_ASSERT_TRUE(result == 0 || result == 1);
+  #endif
+}
+
 void test_board_capability_export(void)
 {
   SET_UNITY_FILENAME() {
     RUN_TEST(test_board_capability_export_byte_130);
     RUN_TEST(test_board_capability_readable_export);
     RUN_TEST(test_board_capability_varies_by_pin_mapping);
+    RUN_TEST(test_spi_flash_health_export_byte_131);
+    RUN_TEST(test_spi_flash_health_readable_entry_index_95);
   }
 }

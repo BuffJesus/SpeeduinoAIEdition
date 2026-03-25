@@ -4,7 +4,10 @@
 #include "init.h"
 #include "maths.h"
 #include "utilities.h"
-#include BOARD_H 
+#include BOARD_H
+#if defined(CORE_TEENSY41)
+  #include "storage_spi.h"
+#endif
 
 /** 
  * Returns a numbered byte-field (partial field in case of multi-byte fields) from "current status" structure in the format expected by TunerStudio
@@ -117,7 +120,7 @@ byte getTSLogEntry(uint16_t byteNum)
     case 73: statusValue = highByte(currentStatus.canin[15]); break;
 
     case 74: statusValue = currentStatus.tpsADC; break;
-    case 75: statusValue = 0U /*getNextError()*/; break;
+    case 75: statusValue = 0U /*getNextError()*/; break; // DEPRECATED: getNextError() infrastructure removed; always returns 0. No active error queue.
 
     case 76: statusValue = lowByte(currentStatus.PW1); break; //Pulsewidth 1 multiplied by 10 in ms. Have to convert from uS to mS.
     case 77: statusValue = highByte(currentStatus.PW1); break; //Pulsewidth 1 multiplied by 10 in ms. Have to convert from uS to mS.
@@ -175,6 +178,11 @@ byte getTSLogEntry(uint16_t byteNum)
     case 128: statusValue = currentStatus.knockCount; break;
     case 129: statusValue = currentStatus.knockRetard; break;
     case 130: statusValue = getBoardCapabilityFlags(configPage2.pinMapping); break; // Phase 4: Board capability flags for TunerStudio board-aware UI
+    case 131: // Phase 4: SPI flash health status (Teensy 4.1 only; 1=healthy, 0=unavailable)
+      #if defined(CORE_TEENSY41)
+        statusValue = isSPIFlashHealthy() ? 1U : 0U;
+      #endif
+      break;
     default: statusValue = 0; // MISRA check
   }
 
@@ -256,7 +264,7 @@ int16_t getReadableLogEntry(uint16_t logIndex)
     case 50: statusValue = currentStatus.canin[15]; break;
     
     case 51: statusValue = currentStatus.tpsADC; break;
-    case 52: statusValue = 0U /*getNextError()*/; break;
+    case 52: statusValue = 0U /*getNextError()*/; break; // DEPRECATED: getNextError() infrastructure removed; always returns 0. No active error queue.
 
     case 53: statusValue = currentStatus.PW1; break; //Pulsewidth 1 multiplied by 10 in ms. Have to convert from uS to mS.
     case 54: statusValue = currentStatus.PW2; break; //Pulsewidth 2 multiplied by 10 in ms. Have to convert from uS to mS.
@@ -266,7 +274,7 @@ int16_t getReadableLogEntry(uint16_t logIndex)
     case 57: statusValue = currentStatus.status3; break;
     case 58: statusValue = currentStatus.engineProtectStatus; break;
 
-    case 59: break; //UNUSED!!
+    case 59: break; //UNUSED!! DEPRECATED: reserved slot, always returns 0. No runtime value assigned.
 
     case 60: statusValue = currentStatus.fuelLoad; break;
     case 61: statusValue = currentStatus.ignLoad; break;
@@ -303,13 +311,18 @@ int16_t getReadableLogEntry(uint16_t logIndex)
     case 92: statusValue = currentStatus.knockCount; break;
     case 93: statusValue = currentStatus.knockRetard; break;
     case 94: statusValue = getBoardCapabilityFlags(configPage2.pinMapping); break; // Phase 4: Board capability flags
+    case 95: // Phase 4: SPI flash health status (Teensy 4.1 only; 1=healthy, 0=unavailable)
+      #if defined(CORE_TEENSY41)
+        statusValue = isSPIFlashHealthy() ? 1 : 0;
+      #endif
+      break;
     default: statusValue = 0; // MISRA check
   }
 
   return statusValue;
 }
 
-/** 
+/**
  * An expansion to the @ref getReadableLogEntry function for systems that have an FPU. It will provide a floating point value for any parameter that this is appropriate for, otherwise will return the result of @ref getReadableLogEntry.
  * See logger.h for the field names and order
  * @param logIndex - The log index required. Note that this is NOT the byte number, but the index in the log
@@ -424,7 +437,7 @@ uint8_t getLegacySecondarySerialLogEntry(uint16_t byteNum)
     case 72: statusValue = highByte(currentStatus.canin[15]); break;
 
     case 73: statusValue = currentStatus.tpsADC; break;
-    case 74: statusValue = 0U /*getNextError()*/; break; // errorNum (0:1), currentError(2:7)
+    case 74: statusValue = 0U /*getNextError()*/; break; // DEPRECATED: getNextError() infrastructure removed; always returns 0. No active error queue.
 
     case 75: statusValue = currentStatus.launchCorrection; break;
     case 76: statusValue = lowByte(currentStatus.PW2); break; //Pulsewidth 2 multiplied by 10 in ms. Have to convert from uS to mS.

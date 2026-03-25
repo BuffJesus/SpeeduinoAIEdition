@@ -18,6 +18,10 @@ extern bool isLegacyCommandByte(byte highByte, bool allowLegacyComms);
 extern byte decodeLegacyPageIdentifier(byte rawPageValue);
 extern bool shouldRouteSecondaryTunerStudioToPrimary(uint8_t secondaryProtocol, uint8_t status5);
 
+// Additional pure helpers declared in comms_legacy.h (included via comms_secondary.h above)
+// Pull them in explicitly for clarity
+#include "comms_legacy.h"
+
 // ========================================== isLegacyCommandByte Tests ==========================================
 
 static void test_isLegacyCommandByte_F_always_allowed(void) {
@@ -161,6 +165,106 @@ static void test_shouldRouteSecondaryTunerStudioToPrimary_other_bits_set(void) {
     TEST_ASSERT_FALSE(shouldRouteSecondaryTunerStudioToPrimary(SECONDARY_SERIAL_PROTO_TUNERSTUDIO, status5));
 }
 
+// ========================================== calculateLegacySendProgress Tests ==========================================
+
+static void test_calculateLegacySendProgress_full_packet_single_send(void) {
+    // Sending exactly the full packet in one go: nextOffset = offset+itemsSent, remainingLength = 0
+    LegacySendProgress p = calculateLegacySendProgress(0U, 64U, 64U);
+    TEST_ASSERT_EQUAL_UINT8(64U, p.nextOffset);
+    TEST_ASSERT_EQUAL_UINT8(0U,  p.remainingLength);
+}
+
+static void test_calculateLegacySendProgress_partial_send(void) {
+    // Sending 16 of 64 bytes starting at offset 0: next=16, remaining=48
+    LegacySendProgress p = calculateLegacySendProgress(0U, 64U, 16U);
+    TEST_ASSERT_EQUAL_UINT8(16U, p.nextOffset);
+    TEST_ASSERT_EQUAL_UINT8(48U, p.remainingLength);
+}
+
+static void test_calculateLegacySendProgress_with_nonzero_offset(void) {
+    // Resume: offset=16, packetLength=64, itemsSent=16 → next=32, remaining=48
+    LegacySendProgress p = calculateLegacySendProgress(16U, 64U, 16U);
+    TEST_ASSERT_EQUAL_UINT8(32U, p.nextOffset);
+    TEST_ASSERT_EQUAL_UINT8(48U, p.remainingLength);
+}
+
+static void test_calculateLegacySendProgress_clamps_at_uint8_max(void) {
+    // nextOffset overflow clamps to UINT8_MAX (255)
+    LegacySendProgress p = calculateLegacySendProgress(250U, 10U, 10U);
+    TEST_ASSERT_EQUAL_UINT8(255U, p.nextOffset);
+    // remainingLength: packetLength(10) - itemsSent(10) = 0
+    TEST_ASSERT_EQUAL_UINT8(0U, p.remainingLength);
+}
+
+static void test_calculateLegacySendProgress_items_exceed_packet(void) {
+    // If itemsSent > packetLength, remainingLength = 0 (not negative)
+    LegacySendProgress p = calculateLegacySendProgress(0U, 10U, 20U);
+    TEST_ASSERT_EQUAL_UINT8(20U, p.nextOffset);
+    TEST_ASSERT_EQUAL_UINT8(0U,  p.remainingLength);
+}
+
+// ========================================== getLegacyVersionResponse Tests ==========================================
+
+static void test_getLegacyVersionResponse_Q_returns_speeduino_string(void) {
+    const char *resp = getLegacyVersionResponse('Q');
+    TEST_ASSERT_NOT_NULL(resp);
+    // Must start with "speeduino" (lowercase)
+    TEST_ASSERT_EQUAL_UINT8('s', resp[0]);
+    TEST_ASSERT_EQUAL_UINT8('p', resp[1]);
+    TEST_ASSERT_EQUAL_UINT8('e', resp[2]);
+}
+
+static void test_getLegacyVersionResponse_S_returns_Speeduino_string(void) {
+    const char *resp = getLegacyVersionResponse('S');
+    TEST_ASSERT_NOT_NULL(resp);
+    // Must start with "Speeduino" (uppercase)
+    TEST_ASSERT_EQUAL_UINT8('S', resp[0]);
+}
+
+static void test_getLegacyVersionResponse_unknown_returns_null(void) {
+    TEST_ASSERT_NULL(getLegacyVersionResponse('X'));
+    TEST_ASSERT_NULL(getLegacyVersionResponse('A'));
+    TEST_ASSERT_NULL(getLegacyVersionResponse(0));
+}
+
+// ========================================== isLegacyOutputChannelsCommandSupported Tests ==========================================
+
+static void test_isLegacyOutputChannelsCommandSupported_valid(void) {
+    TEST_ASSERT_TRUE(isLegacyOutputChannelsCommandSupported(LEGACY_SEND_OUTPUT_CHANNELS_CMD));
+}
+
+static void test_isLegacyOutputChannelsCommandSupported_invalid(void) {
+    TEST_ASSERT_FALSE(isLegacyOutputChannelsCommandSupported(LEGACY_FIXED_OUTPUT_CHANNELS_CMD));
+    TEST_ASSERT_FALSE(isLegacyOutputChannelsCommandSupported(LEGACY_NEW_OUTPUT_CHANNELS_CMD));
+    TEST_ASSERT_FALSE(isLegacyOutputChannelsCommandSupported(0U));
+    TEST_ASSERT_FALSE(isLegacyOutputChannelsCommandSupported(0xFFU));
+}
+
+// ========================================== getLegacyVersionResponseCommand Tests ==========================================
+
+static void test_getLegacyVersionResponseCommand_non_S_passthrough(void) {
+    // For any command other than 'S', returns the command unchanged
+    TEST_ASSERT_EQUAL_UINT8('A', getLegacyVersionResponseCommand('A', false, 0U));
+    TEST_ASSERT_EQUAL_UINT8('Q', getLegacyVersionResponseCommand('Q', false, 0U));
+    TEST_ASSERT_EQUAL_UINT8('r', getLegacyVersionResponseCommand('r', false, 0U));
+}
+
+static void test_getLegacyVersionResponseCommand_S_primary_msdroid_returns_Q(void) {
+    // Primary port + MSDroid → version string via 'Q'
+    TEST_ASSERT_EQUAL_UINT8('Q', getLegacyVersionResponseCommand('S', false, SECONDARY_SERIAL_PROTO_MSDROID));
+}
+
+static void test_getLegacyVersionResponseCommand_S_primary_tunerstudio_returns_Q(void) {
+    // Primary port + TunerStudio protocol → version string via 'Q'
+    TEST_ASSERT_EQUAL_UINT8('Q', getLegacyVersionResponseCommand('S', false, SECONDARY_SERIAL_PROTO_TUNERSTUDIO));
+}
+
+static void test_getLegacyVersionResponseCommand_S_primary_generic_returns_S(void) {
+    // Primary port + generic protocol → 'S'
+    TEST_ASSERT_EQUAL_UINT8('S', getLegacyVersionResponseCommand('S', false, SECONDARY_SERIAL_PROTO_GENERIC_FIXED));
+    TEST_ASSERT_EQUAL_UINT8('S', getLegacyVersionResponseCommand('S', false, SECONDARY_SERIAL_PROTO_GENERIC_INI));
+}
+
 // ========================================== Test Suite Entry Point ==========================================
 
 void test_comms_helpers(void) {
@@ -186,5 +290,27 @@ void test_comms_helpers(void) {
     RUN_TEST(test_shouldRouteSecondaryTunerStudioToPrimary_bit_not_set);
     RUN_TEST(test_shouldRouteSecondaryTunerStudioToPrimary_neither_condition_met);
     RUN_TEST(test_shouldRouteSecondaryTunerStudioToPrimary_other_bits_set);
+
+    // calculateLegacySendProgress tests (Phase 4 Slice D)
+    RUN_TEST(test_calculateLegacySendProgress_full_packet_single_send);
+    RUN_TEST(test_calculateLegacySendProgress_partial_send);
+    RUN_TEST(test_calculateLegacySendProgress_with_nonzero_offset);
+    RUN_TEST(test_calculateLegacySendProgress_clamps_at_uint8_max);
+    RUN_TEST(test_calculateLegacySendProgress_items_exceed_packet);
+
+    // getLegacyVersionResponse tests (Phase 4 Slice D)
+    RUN_TEST(test_getLegacyVersionResponse_Q_returns_speeduino_string);
+    RUN_TEST(test_getLegacyVersionResponse_S_returns_Speeduino_string);
+    RUN_TEST(test_getLegacyVersionResponse_unknown_returns_null);
+
+    // isLegacyOutputChannelsCommandSupported tests (Phase 4 Slice D)
+    RUN_TEST(test_isLegacyOutputChannelsCommandSupported_valid);
+    RUN_TEST(test_isLegacyOutputChannelsCommandSupported_invalid);
+
+    // getLegacyVersionResponseCommand tests (Phase 4 Slice D)
+    RUN_TEST(test_getLegacyVersionResponseCommand_non_S_passthrough);
+    RUN_TEST(test_getLegacyVersionResponseCommand_S_primary_msdroid_returns_Q);
+    RUN_TEST(test_getLegacyVersionResponseCommand_S_primary_tunerstudio_returns_Q);
+    RUN_TEST(test_getLegacyVersionResponseCommand_S_primary_generic_returns_S);
   }
 }
