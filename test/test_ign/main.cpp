@@ -7,6 +7,7 @@ void test_knock_helpers(void);
 void test_protection_timer(void);
 void test_limiter_state_machine(void);
 void test_board_capability_export(void);
+void test_logger_byte_regression(void);
 
 #define UNITY_EXCLUDE_DETAILS
 
@@ -27,6 +28,7 @@ void setup()
     test_protection_timer();
     test_limiter_state_machine();
     test_board_capability_export();
+    test_logger_byte_regression();
 
     UNITY_END(); // stop unit testing
 

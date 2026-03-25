@@ -245,10 +245,22 @@ Current phase 1 work started in:
 **Binary Size (Phase 5):**
 - Teensy 4.1: 254,060 bytes code + 30,464 data (unchanged from Phase 4)
 
+**Slice D: Logger Byte Regression Tests** ✅ **COMPLETE**
+- Created `test/test_ign/test_logger_byte_regression.cpp` with 10 tests
+- Locks locked byte positions in `getTSLogEntry()` and `getReadableLogEntry()`:
+  - Byte 84 / index 57: `currentStatus.status3` (halfsync, fuel2, nitrous bits)
+  - Byte 85 / index 58: `currentStatus.engineProtectStatus` (RPM/MAP/oil/AFR/coolant bits)
+  - Byte 127 / index 91: `currentStatus.status5` (KNOCK_ACTIVE bit 3, KNOCK_PULSE bit 4)
+  - Byte 128 / index 92: `currentStatus.knockCount`
+  - Byte 129 / index 93: `currentStatus.knockRetard`
+- test_ign: 172 → 182/182 PASSED
+
+**Slice E: Tune Compatibility Audit** ✅ **COMPLETE** (no code changes)
+See audit findings below.
+
 **Phase 5 Remaining Work:**
-- Tune-compatibility policy and regression checks for stock Speeduino `.msq` files (deferred)
 - Live-data map for high-value subsystems (deferred)
-- Logger byte → TunerStudio bit mapping regression tests (deferred)
+- Slice F: declarative live_data_map.h comment block (optional, low priority)
 
 ### Phase 5 Objectives
 
