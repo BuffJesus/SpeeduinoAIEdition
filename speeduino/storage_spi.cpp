@@ -22,6 +22,7 @@
 
 #include "globals.h"
 #include "storage_spi.h"
+#include "pages.h"
 
 // Only compile this module for Teensy 4.1 (has onboard 8MB QSPI flash)
 #if defined(CORE_TEENSY41)
@@ -122,11 +123,9 @@ bool saveConfigToFlash(uint8_t configPage, const void* buffer, uint16_t size) {
     return (bytesWritten == size);
 }
 
-// Struct config page numbers matching pages.h constants:
-// veSetPage=1, ignSetPage=4, afrSetPage=6, canbusPage=9, warmupPage=10, progOutsPage=13, boostvvtPage2=15
-// Map/table pages (fuel map, ignition map, etc.) are not included — they remain EEPROM-only
-// until full page serialization is implemented.
-static const uint8_t kStructPageIDs[] = { 1, 4, 6, 9, 10, 13, 15 };
+// All config page numbers (1-15). Tune bank save/load copies every page so that a
+// full tune switch (tables + structs) is captured in a single bank operation.
+static const uint8_t kStructPageIDs[] = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15 };
 static const uint8_t kStructPageCount = sizeof(kStructPageIDs) / sizeof(kStructPageIDs[0]);
 
 // Copy a single file on the LittleFS filesystem. Returns true on success.
@@ -136,7 +135,7 @@ static bool copyFlashFile(const char* src, const char* dst)
     if (!srcFile) { return false; }
 
     size_t fileSize = srcFile.size();
-    if (fileSize == 0 || fileSize > 512) { srcFile.close(); return false; }
+    if (fileSize == 0 || fileSize > 512) { srcFile.close(); return false; } // max page size is 384 (seqFuelPage)
 
     uint8_t* buf = (uint8_t*)malloc(fileSize);
     if (buf == NULL) { srcFile.close(); return false; }
@@ -157,12 +156,71 @@ static bool copyFlashFile(const char* src, const char* dst)
 }
 
 /**
+ * @brief Serialize a table/map page to SPI flash via the page iterator API
+ *
+ * Uses getPageValue(pageNum, i) to read each byte so that complex page layouts
+ * (e.g. seqFuelPage with 8 non-contiguous trim tables) are handled transparently.
+ * Stack buffer is sized for the largest possible page (seqFuelPage = 384 bytes).
+ */
+bool saveTablePageToFlash(uint8_t pageNum) {
+    if (!spiFlashInitialized) { return false; }
+
+    uint16_t pageSize = getPageSize(pageNum);
+    if (pageSize == 0 || pageSize > 384) { return false; }
+
+    uint8_t buf[384];
+    for (uint16_t i = 0; i < pageSize; i++) {
+        buf[i] = getPageValue(pageNum, i);
+    }
+
+    char filename[32];
+    snprintf(filename, sizeof(filename), "/config/page%d.bin", pageNum);
+
+    File file = myfs.open(filename, FILE_WRITE);
+    if (!file) { return false; }
+
+    size_t bytesWritten = file.write(buf, pageSize);
+    file.close();
+
+    return (bytesWritten == pageSize);
+}
+
+/**
+ * @brief Deserialize a table/map page from SPI flash via the page iterator API
+ *
+ * Uses setPageValue(pageNum, i, v) to populate each byte so that all page types
+ * including multi-table pages are restored without an EEPROM round-trip.
+ */
+bool loadTablePageFromFlash(uint8_t pageNum) {
+    if (!spiFlashInitialized) { return false; }
+
+    uint16_t pageSize = getPageSize(pageNum);
+    if (pageSize == 0 || pageSize > 384) { return false; }
+
+    char filename[32];
+    snprintf(filename, sizeof(filename), "/config/page%d.bin", pageNum);
+
+    File file = myfs.open(filename, FILE_READ);
+    if (!file) { return false; }
+
+    uint8_t buf[384];
+    size_t bytesRead = file.read(buf, pageSize);
+    file.close();
+
+    if (bytesRead != pageSize) { return false; }
+
+    for (uint16_t i = 0; i < pageSize; i++) {
+        setPageValue(pageNum, i, buf[i]);
+    }
+
+    return true;
+}
+
+/**
  * @brief Load a different tune bank (switch active config)
  *
- * Copies struct config page files from /banks/bankN/ to /config/.
+ * Copies all config page files (tables + structs) from /banks/bankN/ to /config/.
  * Takes effect on the next call to loadConfig() — a reboot is required.
- * Map/table pages (fuel, ignition, AFR maps) are not included in tune banks;
- * they remain EEPROM-backed until full page serialization is implemented.
  *
  * @param bankID Tune bank ID (0-4, bank 0 is default)
  * @return true if at least one page was copied, false if bank is empty or storage error
@@ -187,9 +245,8 @@ bool loadTuneBank(uint8_t bankID) {
 /**
  * @brief Save current config as a different tune bank
  *
- * Copies struct config page files from /config/ to /banks/bankN/.
+ * Copies all config page files (tables + structs) from /config/ to /banks/bankN/.
  * Only pages that have been saved to SPI flash via writeConfig() are included.
- * Map/table pages (fuel, ignition, AFR maps) are not included — they remain EEPROM-backed.
  *
  * @param bankID Tune bank ID (0-4, bank 0 is default)
  * @return true if at least one page was saved, false if no pages exist or write error

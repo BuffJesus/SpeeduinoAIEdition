@@ -226,6 +226,9 @@ void writeConfig(uint8_t pageNum)
       | 16x16 table itself + the 16 values along each of the axis
       -----------------------------------------------------*/
       result = writeTable(&fuelTable, decltype(fuelTable)::type_key, result.changeWriteAddress(EEPROM_CONFIG1_MAP));
+      #if defined(CORE_TEENSY41)
+      if (g_useSPIFlash) { saveTablePageToFlash(veMapPage); }
+      #endif
       break;
 
     case veSetPage:
@@ -245,6 +248,9 @@ void writeConfig(uint8_t pageNum)
       | 16x16 table itself + the 16 values along each of the axis
       -----------------------------------------------------*/
       result = writeTable(&ignitionTable, decltype(ignitionTable)::type_key, result.changeWriteAddress(EEPROM_CONFIG3_MAP));
+      #if defined(CORE_TEENSY41)
+      if (g_useSPIFlash) { saveTablePageToFlash(ignMapPage); }
+      #endif
       break;
 
     case ignSetPage:
@@ -264,6 +270,9 @@ void writeConfig(uint8_t pageNum)
       | 16x16 table itself + the 16 values along each of the axis
       -----------------------------------------------------*/
       result = writeTable(&afrTable, decltype(afrTable)::type_key, result.changeWriteAddress(EEPROM_CONFIG5_MAP));
+      #if defined(CORE_TEENSY41)
+      if (g_useSPIFlash) { saveTablePageToFlash(afrMapPage); }
+      #endif
       break;
 
     case afrSetPage:
@@ -285,6 +294,9 @@ void writeConfig(uint8_t pageNum)
       result = writeTable(&boostTable, decltype(boostTable)::type_key, result.changeWriteAddress(EEPROM_CONFIG7_MAP1));
       result = writeTable(&vvtTable, decltype(vvtTable)::type_key, result.changeWriteAddress(EEPROM_CONFIG7_MAP2));
       result = writeTable(&stagingTable, decltype(stagingTable)::type_key, result.changeWriteAddress(EEPROM_CONFIG7_MAP3));
+      #if defined(CORE_TEENSY41)
+      if (g_useSPIFlash) { saveTablePageToFlash(boostvvtPage); }
+      #endif
       break;
 
     case seqFuelPage:
@@ -300,6 +312,9 @@ void writeConfig(uint8_t pageNum)
       result = writeTable(&trim6Table, decltype(trim6Table)::type_key, result.changeWriteAddress(EEPROM_CONFIG8_MAP6));
       result = writeTable(&trim7Table, decltype(trim7Table)::type_key, result.changeWriteAddress(EEPROM_CONFIG8_MAP7));
       result = writeTable(&trim8Table, decltype(trim8Table)::type_key, result.changeWriteAddress(EEPROM_CONFIG8_MAP8));
+      #if defined(CORE_TEENSY41)
+      if (g_useSPIFlash) { saveTablePageToFlash(seqFuelPage); }
+      #endif
       break;
 
     case canbusPage:
@@ -330,6 +345,9 @@ void writeConfig(uint8_t pageNum)
       | 16x16 table itself + the 16 values along each of the axis
       -----------------------------------------------------*/
       result = writeTable(&fuelTable2, decltype(fuelTable2)::type_key, result.changeWriteAddress(EEPROM_CONFIG11_MAP));
+      #if defined(CORE_TEENSY41)
+      if (g_useSPIFlash) { saveTablePageToFlash(fuelMap2Page); }
+      #endif
       break;
 
     case wmiMapPage:
@@ -342,6 +360,9 @@ void writeConfig(uint8_t pageNum)
       result = writeTable(&wmiTable, decltype(wmiTable)::type_key, result.changeWriteAddress(EEPROM_CONFIG12_MAP));
       result = writeTable(&vvt2Table, decltype(vvt2Table)::type_key, result.changeWriteAddress(EEPROM_CONFIG12_MAP2));
       result = writeTable(&dwellTable, decltype(dwellTable)::type_key, result.changeWriteAddress(EEPROM_CONFIG12_MAP3));
+      #if defined(CORE_TEENSY41)
+      if (g_useSPIFlash) { saveTablePageToFlash(wmiMapPage); }
+      #endif
       break;
       
     case progOutsPage:
@@ -360,6 +381,9 @@ void writeConfig(uint8_t pageNum)
       | 16x16 table itself + the 16 values along each of the axis
       -----------------------------------------------------*/
       result = writeTable(&ignitionTable2, decltype(ignitionTable2)::type_key, result.changeWriteAddress(EEPROM_CONFIG14_MAP));
+      #if defined(CORE_TEENSY41)
+      if (g_useSPIFlash) { saveTablePageToFlash(ignMap2Page); }
+      #endif
       break;
 
     case boostvvtPage2:
@@ -374,7 +398,7 @@ void writeConfig(uint8_t pageNum)
       -----------------------------------------------------*/
       result = write_range((byte *)&configPage15, (byte *)&configPage15+sizeof(configPage15), result.changeWriteAddress(EEPROM_CONFIG15_START));
       #if defined(CORE_TEENSY41)
-      if (g_useSPIFlash) { saveConfigToFlash(boostvvtPage2, &configPage15, sizeof(configPage15)); }
+      if (g_useSPIFlash) { saveTablePageToFlash(boostvvtPage2); } // saves entire page (table + struct)
       #endif
       break;
 
@@ -475,12 +499,12 @@ void loadConfig(void)
 {
 #if defined(CORE_TEENSY41)
   initTeensyStorage();  // Initialize SPI flash on first call
-  // For Phase 6, config pages continue to use EEPROM path
-  // Full SPI flash integration requires page-by-page serialization rework
-  // which is deferred until storage_spi.cpp provides page-granular load/save
 #endif
 
-  loadTable(&fuelTable, decltype(fuelTable)::type_key, EEPROM_CONFIG1_MAP);
+  #if defined(CORE_TEENSY41)
+  if (!g_useSPIFlash || !loadTablePageFromFlash(veMapPage))
+  #endif
+  { loadTable(&fuelTable, decltype(fuelTable)::type_key, EEPROM_CONFIG1_MAP); }
   #if defined(CORE_TEENSY41)
   if (!g_useSPIFlash || !loadConfigFromFlash(veSetPage, &configPage2, sizeof(configPage2)))
   #endif
@@ -489,7 +513,10 @@ void loadConfig(void)
   //*********************************************************************************************************************************************************************************
   //IGNITION CONFIG PAGE (2)
 
-  loadTable(&ignitionTable, decltype(ignitionTable)::type_key, EEPROM_CONFIG3_MAP);
+  #if defined(CORE_TEENSY41)
+  if (!g_useSPIFlash || !loadTablePageFromFlash(ignMapPage))
+  #endif
+  { loadTable(&ignitionTable, decltype(ignitionTable)::type_key, EEPROM_CONFIG3_MAP); }
   #if defined(CORE_TEENSY41)
   if (!g_useSPIFlash || !loadConfigFromFlash(ignSetPage, &configPage4, sizeof(configPage4)))
   #endif
@@ -498,7 +525,10 @@ void loadConfig(void)
   //*********************************************************************************************************************************************************************************
   //AFR TARGET CONFIG PAGE (3)
 
-  loadTable(&afrTable, decltype(afrTable)::type_key, EEPROM_CONFIG5_MAP);
+  #if defined(CORE_TEENSY41)
+  if (!g_useSPIFlash || !loadTablePageFromFlash(afrMapPage))
+  #endif
+  { loadTable(&afrTable, decltype(afrTable)::type_key, EEPROM_CONFIG5_MAP); }
   #if defined(CORE_TEENSY41)
   if (!g_useSPIFlash || !loadConfigFromFlash(afrSetPage, &configPage6, sizeof(configPage6)))
   #endif
@@ -506,20 +536,30 @@ void loadConfig(void)
 
   //*********************************************************************************************************************************************************************************
   // Boost and vvt tables load
-  loadTable(&boostTable, decltype(boostTable)::type_key, EEPROM_CONFIG7_MAP1);
-  loadTable(&vvtTable, decltype(vvtTable)::type_key,  EEPROM_CONFIG7_MAP2);
-  loadTable(&stagingTable, decltype(stagingTable)::type_key, EEPROM_CONFIG7_MAP3);
+  #if defined(CORE_TEENSY41)
+  if (!g_useSPIFlash || !loadTablePageFromFlash(boostvvtPage))
+  #endif
+  {
+    loadTable(&boostTable, decltype(boostTable)::type_key, EEPROM_CONFIG7_MAP1);
+    loadTable(&vvtTable, decltype(vvtTable)::type_key,  EEPROM_CONFIG7_MAP2);
+    loadTable(&stagingTable, decltype(stagingTable)::type_key, EEPROM_CONFIG7_MAP3);
+  }
 
   //*********************************************************************************************************************************************************************************
   // Fuel trim tables load
-  loadTable(&trim1Table, decltype(trim1Table)::type_key, EEPROM_CONFIG8_MAP1);
-  loadTable(&trim2Table, decltype(trim2Table)::type_key, EEPROM_CONFIG8_MAP2);
-  loadTable(&trim3Table, decltype(trim3Table)::type_key, EEPROM_CONFIG8_MAP3);
-  loadTable(&trim4Table, decltype(trim4Table)::type_key, EEPROM_CONFIG8_MAP4);
-  loadTable(&trim5Table, decltype(trim5Table)::type_key, EEPROM_CONFIG8_MAP5);
-  loadTable(&trim6Table, decltype(trim6Table)::type_key, EEPROM_CONFIG8_MAP6);
-  loadTable(&trim7Table, decltype(trim7Table)::type_key, EEPROM_CONFIG8_MAP7);
-  loadTable(&trim8Table, decltype(trim8Table)::type_key, EEPROM_CONFIG8_MAP8);
+  #if defined(CORE_TEENSY41)
+  if (!g_useSPIFlash || !loadTablePageFromFlash(seqFuelPage))
+  #endif
+  {
+    loadTable(&trim1Table, decltype(trim1Table)::type_key, EEPROM_CONFIG8_MAP1);
+    loadTable(&trim2Table, decltype(trim2Table)::type_key, EEPROM_CONFIG8_MAP2);
+    loadTable(&trim3Table, decltype(trim3Table)::type_key, EEPROM_CONFIG8_MAP3);
+    loadTable(&trim4Table, decltype(trim4Table)::type_key, EEPROM_CONFIG8_MAP4);
+    loadTable(&trim5Table, decltype(trim5Table)::type_key, EEPROM_CONFIG8_MAP5);
+    loadTable(&trim6Table, decltype(trim6Table)::type_key, EEPROM_CONFIG8_MAP6);
+    loadTable(&trim7Table, decltype(trim7Table)::type_key, EEPROM_CONFIG8_MAP7);
+    loadTable(&trim8Table, decltype(trim8Table)::type_key, EEPROM_CONFIG8_MAP8);
+  }
 
   //*********************************************************************************************************************************************************************************
   //canbus control page load
@@ -538,13 +578,21 @@ void loadConfig(void)
 
   //*********************************************************************************************************************************************************************************
   //Fuel table 2 (See storage.h for data layout)
-  loadTable(&fuelTable2, decltype(fuelTable2)::type_key, EEPROM_CONFIG11_MAP);
+  #if defined(CORE_TEENSY41)
+  if (!g_useSPIFlash || !loadTablePageFromFlash(fuelMap2Page))
+  #endif
+  { loadTable(&fuelTable2, decltype(fuelTable2)::type_key, EEPROM_CONFIG11_MAP); }
 
   //*********************************************************************************************************************************************************************************
   // WMI, VVT2 and Dwell table load
-  loadTable(&wmiTable, decltype(wmiTable)::type_key, EEPROM_CONFIG12_MAP);
-  loadTable(&vvt2Table, decltype(vvt2Table)::type_key, EEPROM_CONFIG12_MAP2);
-  loadTable(&dwellTable, decltype(dwellTable)::type_key, EEPROM_CONFIG12_MAP3);
+  #if defined(CORE_TEENSY41)
+  if (!g_useSPIFlash || !loadTablePageFromFlash(wmiMapPage))
+  #endif
+  {
+    loadTable(&wmiTable, decltype(wmiTable)::type_key, EEPROM_CONFIG12_MAP);
+    loadTable(&vvt2Table, decltype(vvt2Table)::type_key, EEPROM_CONFIG12_MAP2);
+    loadTable(&dwellTable, decltype(dwellTable)::type_key, EEPROM_CONFIG12_MAP3);
+  }
 
   //*********************************************************************************************************************************************************************************
   //CONFIG PAGE (13)
@@ -556,15 +604,23 @@ void loadConfig(void)
   //*********************************************************************************************************************************************************************************
   //SECOND IGNITION CONFIG PAGE (14)
 
-  loadTable(&ignitionTable2, decltype(ignitionTable2)::type_key, EEPROM_CONFIG14_MAP);
+  #if defined(CORE_TEENSY41)
+  if (!g_useSPIFlash || !loadTablePageFromFlash(ignMap2Page))
+  #endif
+  { loadTable(&ignitionTable2, decltype(ignitionTable2)::type_key, EEPROM_CONFIG14_MAP); }
 
   //*********************************************************************************************************************************************************************************
   //CONFIG PAGE (15) + boost duty lookup table (LUT)
-  loadTable(&boostTableLookupDuty, decltype(boostTableLookupDuty)::type_key, EEPROM_CONFIG15_MAP);
   #if defined(CORE_TEENSY41)
-  if (!g_useSPIFlash || !loadConfigFromFlash(boostvvtPage2, &configPage15, sizeof(configPage15)))
+  if (g_useSPIFlash && loadTablePageFromFlash(boostvvtPage2)) {
+    // table + struct loaded from flash by setPageValue() iterator
+  } else {
   #endif
-  { load_range(EEPROM_CONFIG15_START, (byte *)&configPage15, (byte *)&configPage15+sizeof(configPage15)); }
+    loadTable(&boostTableLookupDuty, decltype(boostTableLookupDuty)::type_key, EEPROM_CONFIG15_MAP);
+    load_range(EEPROM_CONFIG15_START, (byte *)&configPage15, (byte *)&configPage15+sizeof(configPage15));
+  #if defined(CORE_TEENSY41)
+  }
+  #endif
 
   //*********************************************************************************************************************************************************************************
 }

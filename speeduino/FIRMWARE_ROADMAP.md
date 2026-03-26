@@ -201,7 +201,7 @@ Current phase 1 work started in:
 - setPinMapping data-driven conversion (documented, deferred)
 - Abstract PWM polarity inversion into board-layer functions (MEDIUM risk, deferred)
 - Platform-specific code moves into board_* layer (ongoing, incremental)
-- Full SPI flash page serialization (documented in Resources/spi_flash_serialization_approach.md, deferred)
+- Full SPI flash page serialization ✅ (Phase 10: saveTablePageToFlash/loadTablePageFromFlash added; all 8 table pages dual-write wired in storage.cpp; kStructPageIDs expanded to all 15 pages for complete tune bank capture)
 
 ## Phase 5: Configuration And Observability
 
@@ -404,13 +404,14 @@ See audit findings below.
 - Increase Teensy-only tune transport limits after storage is decoupled:
   - larger page sizes (deferred — INI-locked; requires struct + INI overhaul)
   - larger blocking factors ✅ (Phase 8 Slices C+D: BLOCKING_FACTOR 251→512, TABLE_BLOCKING_FACTOR 256→512)
-  - larger output-channel payloads ✅ (Phase 8 Slice E: LOG_ENTRY_SIZE 132→143; PW5-PW8, launchCorrection, injAngle added)
+  - larger output-channel payloads ✅ (Phase 8 Slice E: LOG_ENTRY_SIZE 132→143; PW5-PW8, launchCorrection, injAngle added) ✅ (Phase 10: LOG_ENTRY_SIZE 143→148; startRevolutions 4-byte LE + runtimeStatusA packed status byte added at bytes 143-147)
   - higher-resolution 3D tables (deferred — requires struct + INI overhaul)
   - faster EEPROM burns ✅ (Phase 8 Slice B: EEPROM_MAX_WRITE_BLOCK 64→255)
 - Rework Teensy 4.1 timing and peripheral usage where the current board layer is still unfinished or AVR-shaped:
   - drain all pending timer flags per ISR instead of single `else if` servicing ✅ (Phase 6 Slice A)
   - finish PWM fan support using TMR3 channel 1 COMP2 alongside Fuel6 ✅ (Phase 6 Slice B)
   - wire SPI flash storage into writeConfig()/loadConfig() for all 7 struct pages ✅ (Phase 6 Slice C)
+  - extend SPI flash dual-write to all 8 table/map pages ✅ (Phase 10: saveTablePageToFlash/loadTablePageFromFlash via getPageValue/setPageValue iterator; kStructPageIDs expanded to all 15 pages)
   - stabilize native CAN and expose the real capability cleanly ✅ (Phase 10: TX stall fix — enable_intcan guard on sendCANBroadcast(); boardCap_nativeCAN bit decoded in INI; CANisAvailable tightened to require hardware truth)
   - fix readAnalogPin() 10-bit normalization for Teensy 4.1 ✅ (Phase 7 Slice A)
   - add higher-resolution oversampling/averaging to Teensy 4.1 ADC path ✅ (Phase 7 Slice C)

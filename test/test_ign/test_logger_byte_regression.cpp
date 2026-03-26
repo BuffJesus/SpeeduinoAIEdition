@@ -231,6 +231,95 @@ static void test_readable_indices_96_101_export_pw5_pw8_launch_inj(void)
     currentStatus.launchCorrection = 0U; currentStatus.injAngle = 0U;
 }
 
+// ========= Phase 10: startRevolutions (bytes 143-146) and runtimeStatusA (byte 147) =========
+
+static void test_logger_bytes_143_146_export_start_revolutions(void)
+{
+    // Zero value
+    currentStatus.startRevolutions =0UL;
+    TEST_ASSERT_EQUAL_UINT8(0x00U, getTSLogEntry(143));
+    TEST_ASSERT_EQUAL_UINT8(0x00U, getTSLogEntry(144));
+    TEST_ASSERT_EQUAL_UINT8(0x00U, getTSLogEntry(145));
+    TEST_ASSERT_EQUAL_UINT8(0x00U, getTSLogEntry(146));
+
+    // Known multi-byte value: 0x01020304
+    currentStatus.startRevolutions =0x01020304UL;
+    TEST_ASSERT_EQUAL_UINT8(0x04U, getTSLogEntry(143)); // byte 0 = LSB
+    TEST_ASSERT_EQUAL_UINT8(0x03U, getTSLogEntry(144));
+    TEST_ASSERT_EQUAL_UINT8(0x02U, getTSLogEntry(145));
+    TEST_ASSERT_EQUAL_UINT8(0x01U, getTSLogEntry(146)); // byte 3 = MSB
+
+    currentStatus.startRevolutions =0UL; // restore
+}
+
+static void test_logger_byte_147_exports_runtime_status_a(void)
+{
+    // All flags clear
+    currentStatus.fuelPumpOn = false;
+    currentStatus.launchingHard = false;
+    currentStatus.flatShiftingHard = false;
+    currentStatus.idleUpActive = false;
+    TEST_ASSERT_EQUAL_UINT8(0x00U, getTSLogEntry(147));
+
+    // fuelPumpOn only → bit 0
+    currentStatus.fuelPumpOn = true;
+    TEST_ASSERT_EQUAL_UINT8(0x01U, getTSLogEntry(147));
+
+    // launchingHard only → bit 1
+    currentStatus.fuelPumpOn = false;
+    currentStatus.launchingHard = true;
+    TEST_ASSERT_EQUAL_UINT8(0x02U, getTSLogEntry(147));
+
+    // All four flags set → 0x0F
+    currentStatus.fuelPumpOn = true;
+    currentStatus.launchingHard = true;
+    currentStatus.flatShiftingHard = true;
+    currentStatus.idleUpActive = true;
+    TEST_ASSERT_EQUAL_UINT8(0x0FU, getTSLogEntry(147));
+
+    // restore
+    currentStatus.fuelPumpOn = false;
+    currentStatus.launchingHard = false;
+    currentStatus.flatShiftingHard = false;
+    currentStatus.idleUpActive = false;
+}
+
+static void test_readable_indices_102_103_export_start_rev_halves(void)
+{
+    currentStatus.startRevolutions =0UL;
+    TEST_ASSERT_EQUAL_INT16(0, getReadableLogEntry(102));
+    TEST_ASSERT_EQUAL_INT16(0, getReadableLogEntry(103));
+
+    // Low 16 bits only
+    currentStatus.startRevolutions =0x0000FFFFUL;
+    TEST_ASSERT_EQUAL_INT16((int16_t)0xFFFF, getReadableLogEntry(102));
+    TEST_ASSERT_EQUAL_INT16(0, getReadableLogEntry(103));
+
+    // High 16 bits only
+    currentStatus.startRevolutions =0x00030000UL;
+    TEST_ASSERT_EQUAL_INT16(0, getReadableLogEntry(102));
+    TEST_ASSERT_EQUAL_INT16(3, getReadableLogEntry(103));
+
+    currentStatus.startRevolutions =0UL; // restore
+}
+
+static void test_readable_index_104_exports_runtime_status_a(void)
+{
+    currentStatus.fuelPumpOn = false;
+    currentStatus.launchingHard = false;
+    currentStatus.flatShiftingHard = false;
+    currentStatus.idleUpActive = false;
+    TEST_ASSERT_EQUAL_INT16(0, getReadableLogEntry(104));
+
+    currentStatus.flatShiftingHard = true;
+    currentStatus.idleUpActive = true;
+    TEST_ASSERT_EQUAL_INT16(0x0C, getReadableLogEntry(104)); // bits 2+3
+
+    // restore
+    currentStatus.flatShiftingHard = false;
+    currentStatus.idleUpActive = false;
+}
+
 void test_logger_byte_regression(void)
 {
     SET_UNITY_FILENAME() {
@@ -244,6 +333,9 @@ void test_logger_byte_regression(void)
         RUN_TEST(test_logger_bytes_132_139_export_pw5_pw8);
         RUN_TEST(test_logger_byte_140_exports_launch_correction);
         RUN_TEST(test_logger_bytes_141_142_export_inj_angle);
+        // Phase 10: startRevolutions + runtimeStatusA (bytes 143-147)
+        RUN_TEST(test_logger_bytes_143_146_export_start_revolutions);
+        RUN_TEST(test_logger_byte_147_exports_runtime_status_a);
         // getReadableLogEntry case index locks
         RUN_TEST(test_readable_index_57_exports_status3);
         RUN_TEST(test_readable_index_58_exports_engine_protect_status);
@@ -252,5 +344,8 @@ void test_logger_byte_regression(void)
         RUN_TEST(test_readable_index_93_exports_knock_retard);
         // Phase 8E: readable index locks (96-101)
         RUN_TEST(test_readable_indices_96_101_export_pw5_pw8_launch_inj);
+        // Phase 10: readable index locks (102-104)
+        RUN_TEST(test_readable_indices_102_103_export_start_rev_halves);
+        RUN_TEST(test_readable_index_104_exports_runtime_status_a);
     }
 }

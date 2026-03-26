@@ -197,6 +197,21 @@ byte getTSLogEntry(uint16_t byteNum)
     case 141: statusValue = lowByte(currentStatus.injAngle); break;
     case 142: statusValue = highByte(currentStatus.injAngle); break;
 
+    // Phase 10: startRevolutions (4-byte LE counter) and runtimeStatusA packed status byte
+    case 143: statusValue = (uint8_t)(currentStatus.startRevolutions & 0xFFU); break;
+    case 144: statusValue = (uint8_t)((currentStatus.startRevolutions >> 8U) & 0xFFU); break;
+    case 145: statusValue = (uint8_t)((currentStatus.startRevolutions >> 16U) & 0xFFU); break;
+    case 146: statusValue = (uint8_t)((currentStatus.startRevolutions >> 24U) & 0xFFU); break;
+    case 147:
+    {
+      uint8_t runtimeStatusA = (currentStatus.fuelPumpOn      ? (1U << 0U) : 0U)
+                             | (currentStatus.launchingHard    ? (1U << 1U) : 0U)
+                             | (currentStatus.flatShiftingHard ? (1U << 2U) : 0U)
+                             | (currentStatus.idleUpActive     ? (1U << 3U) : 0U);
+      statusValue = runtimeStatusA;
+      break;
+    }
+
     default: statusValue = 0; // MISRA check
   }
 
@@ -338,6 +353,19 @@ int16_t getReadableLogEntry(uint16_t logIndex)
     case 99: statusValue = currentStatus.PW8; break;
     case 100: statusValue = currentStatus.launchCorrection; break;
     case 101: statusValue = (int16_t)currentStatus.injAngle; break;
+
+    // Phase 10: startRevolutions (split into lo/hi 16-bit halves) and runtimeStatusA
+    case 102: statusValue = (int16_t)(currentStatus.startRevolutions & 0xFFFFU); break;
+    case 103: statusValue = (int16_t)(currentStatus.startRevolutions >> 16U); break;
+    case 104:
+    {
+      uint8_t runtimeStatusA = (currentStatus.fuelPumpOn      ? (1U << 0U) : 0U)
+                             | (currentStatus.launchingHard    ? (1U << 1U) : 0U)
+                             | (currentStatus.flatShiftingHard ? (1U << 2U) : 0U)
+                             | (currentStatus.idleUpActive     ? (1U << 3U) : 0U);
+      statusValue = (int16_t)runtimeStatusA;
+      break;
+    }
 
     default: statusValue = 0; // MISRA check
   }

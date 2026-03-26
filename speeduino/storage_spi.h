@@ -123,6 +123,29 @@ bool formatSPIFlash(void);
  */
 bool isSPIFlashHealthy(void);
 
+/**
+ * @brief Serialize a table/map page to SPI flash via the page iterator API
+ *
+ * Iterates byte-by-byte using getPageValue() so all page types are handled uniformly,
+ * including multi-table pages (e.g. seqFuelPage with 8 non-contiguous trim tables).
+ * No EEPROM round-trip is needed; the in-memory structures are read directly.
+ *
+ * @param pageNum Page number (1-15; valid for any page including struct-only pages)
+ * @return true if save succeeded, false if page size is 0 or write error
+ */
+bool saveTablePageToFlash(uint8_t pageNum);
+
+/**
+ * @brief Deserialize a table/map page from SPI flash via the page iterator API
+ *
+ * Iterates byte-by-byte using setPageValue() so all page types are populated uniformly.
+ * Directly updates in-memory table/struct data without an EEPROM round-trip.
+ *
+ * @param pageNum Page number (1-15; valid for any page including struct-only pages)
+ * @return true if load succeeded, false if file not found, size mismatch, or read error
+ */
+bool loadTablePageFromFlash(uint8_t pageNum);
+
 #endif // CORE_TEENSY41
 
 #endif // STORAGE_SPI_H
