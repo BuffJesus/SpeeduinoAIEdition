@@ -190,8 +190,13 @@ void writeConfig(uint8_t pageNum)
 #if defined(USE_SPI_EEPROM)
   //For use with common Winbond SPI EEPROMs Eg W25Q16JV
   uint8_t EEPROM_MAX_WRITE_BLOCK = 20; //This needs tuning
-#elif defined(CORE_STM32) || defined(CORE_TEENSY)
+#elif defined(CORE_STM32)
   uint8_t EEPROM_MAX_WRITE_BLOCK = 64;
+#elif defined(CORE_TEENSY)
+  // Teensy FlexNVM EEPROM emulation has no per-byte write delay; raise block size
+  // so any page (max 384B) can be written in ≤2 writeConfig() calls while running
+  // (and 1 call when stopped, since can_write() uses write_block_size*8 at RPM==0)
+  uint8_t EEPROM_MAX_WRITE_BLOCK = 255;
 #else
   uint8_t EEPROM_MAX_WRITE_BLOCK = 18;
   if(BIT_CHECK(currentStatus.status4, BIT_STATUS4_COMMS_COMPAT)) { EEPROM_MAX_WRITE_BLOCK = 8; } //If comms compatibility mode is on, slow the burn rate down even further

@@ -335,14 +335,43 @@ See audit findings below.
 - SNR improvement: ~6 dB (sqrt(4)); latency cost: ~4µs per read — negligible on Teensy 4.1
 - No test changes needed: hardware averaging is Teensy-only init, not exercised by simavr; existing 65 ADC tests still pass 65/65; total: 731/731
 
+---
+
+## Phase 8: Teensy 4.1 Tune Transport Limits
+
+### Phase 8 Progress Log
+
+**Slice A: Transport Limits Audit** ✅ **COMPLETE** (no code changes)
+- `serialPayload` buffer: already 2051B on Teensy (COMMS_SD path, RTC_ENABLED+SD_LOGGING) — no gap
+- `BLOCKING_FACTOR`: 251 on Teensy (vs 121 AVR) — largest page is 384B (seqFuelPage), so 251 < 384 means 2-chunk writes for that page
+- `TABLE_BLOCKING_FACTOR`: 256 on Teensy (vs 64 AVR) — covers all table pages (max 288B) in 1 shot
+- `EEPROM_MAX_WRITE_BLOCK`: 64 on Teensy (vs 15 AVR) — no per-byte delay on Teensy FlexNVM; safely raisable
+- Page sizes (max 384B): INI-locked; 16×16 table resize needs struct + INI overhaul — explicitly deferred
+- `LOG_ENTRY_SIZE` (132B): needs INI `ochBlockSize` change to expand — deferred
+
+**Slice B: `EEPROM_MAX_WRITE_BLOCK` raise** ✅ **COMPLETE**
+- Raised from 64 → 255 for `CORE_TEENSY` in `storage.cpp` (split from STM32 path)
+- At RPM>0 (running): up to 255 bytes per `writeConfig()` call (was 64) → largest page (384B) in ≤2 calls (was 6)
+- At RPM==0 (stopped): up to 2040 bytes per call (255×8) → any page in 1 call
+- Teensy FlexNVM EEPROM emulation is memory-mapped; no 3.8ms-per-byte write constraint
+
+**Slices C+D: `BLOCKING_FACTOR` and `TABLE_BLOCKING_FACTOR` raise** ✅ **COMPLETE**
+- `BLOCKING_FACTOR`: 251 → 512 for `CORE_TEENSY` in `comms.h`
+- `TABLE_BLOCKING_FACTOR`: 256 → 512 for `CORE_TEENSY` in `comms.h`
+- All current pages (max 384B) now fit in a single TS read/write chunk — no 2-chunk splits
+- Both are reported to TunerStudio as `uint16_t` in the 'f' command; 512 is within range
+- `serialPayload` buffer (2051B) safely absorbs any read/write payload ≤ 512B
+- No tests reference BLOCKING_FACTOR or TABLE_BLOCKING_FACTOR — runtime/protocol constants only; 731/731 unchanged
+
 - Treat Teensy 4.1 as a first-class platform, not just a faster AVR replacement.
 - Move capability decisions behind explicit board declarations for SD, RTC, native CAN, onboard SPI flash, trigger hardware, and driver chips so runtime code and the tuning surface can distinguish generic MCU support from specific board support.
 - Add a Teensy/DropBear storage path that uses onboard SPI flash for tune persistence, tune banks, migration staging, and higher-rate diagnostic capture instead of constraining new features to the legacy EEPROM layout.
 - Increase Teensy-only tune transport limits after storage is decoupled:
-  - larger page sizes
-  - larger blocking factors
-  - larger output-channel payloads
-  - higher-resolution 3D tables
+  - larger page sizes (deferred — INI-locked; requires struct + INI overhaul)
+  - larger blocking factors ✅ (Phase 8 Slices C+D: BLOCKING_FACTOR 251→512, TABLE_BLOCKING_FACTOR 256→512)
+  - larger output-channel payloads (deferred — requires INI ochBlockSize change)
+  - higher-resolution 3D tables (deferred — requires struct + INI overhaul)
+  - faster EEPROM burns ✅ (Phase 8 Slice B: EEPROM_MAX_WRITE_BLOCK 64→255)
 - Rework Teensy 4.1 timing and peripheral usage where the current board layer is still unfinished or AVR-shaped:
   - drain all pending timer flags per ISR instead of single `else if` servicing ✅ (Phase 6 Slice A)
   - finish PWM fan support using TMR3 channel 1 COMP2 alongside Fuel6 ✅ (Phase 6 Slice B)
