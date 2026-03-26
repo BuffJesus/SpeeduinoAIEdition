@@ -371,6 +371,19 @@ See audit findings below.
 - 4 new regression tests added to `test_logger_byte_regression.cpp` (byte positions 132-142, readable indices 96-101)
 - test_ign: 182 → 186/186; total: 735/735 (was 731+4 = 735)
 
+## Phase 9: Decoder Tooth-Number Resolution
+
+### Phase 9 Progress Log
+
+**Slice B: Resolve 36-2-1 single-gap tooth assignment** ✅ **COMPLETE**
+- Prior code: `toothCurrentCount = 20` with comment `// it's either 19 or 20, need to clarify engine direction!`
+- Evidence from rusEFI 4B11 real capture (`4b11-running.csv`) and `analyze_36_2_1.py`: 17 physical teeth from double gap to single gap, 16 physical teeth from single gap to double gap
+- Correct assignment: `toothCurrentCount = 19` — nominal positions 1-17 are actual teeth, position 18 is the single gap, position 19 is the first tooth after it; total: 17+1+16+2 = 36 ✓
+- `toothCurrentCount = 20` was wrong: left only 1 missing position for the 2-tooth double gap
+- Changes: `decoders.cpp` (assignment + comment + `getRPM` guard `!= 19`), `ThirtySixMinus21.cpp` (assertion `19U`, loop `15` teeth, intermediate count `34`), `3621_resync_trace.h` (15 teeth = real 16-tooth run)
+- `SESSION_HANDOFF_2026-03-23_36-2-1_STATE.md` updated: blocker marked resolved
+- 263/263 test_decoders PASSED; 735/735 total unchanged
+
 - Treat Teensy 4.1 as a first-class platform, not just a faster AVR replacement.
 - Move capability decisions behind explicit board declarations for SD, RTC, native CAN, onboard SPI flash, trigger hardware, and driver chips so runtime code and the tuning surface can distinguish generic MCU support from specific board support.
 - Add a Teensy/DropBear storage path that uses onboard SPI flash for tune persistence, tune banks, migration staging, and higher-rate diagnostic capture instead of constraining new features to the legacy EEPROM layout.
