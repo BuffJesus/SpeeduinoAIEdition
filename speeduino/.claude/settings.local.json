@@ -14,7 +14,10 @@
       "Bash(/c/Users/Cornelio/.platformio/packages/toolchain-atmelavr/bin/avr-objdump.exe -h /c/Users/Cornelio/Desktop/speeduino-202501.6/.pio/build/megaatmega2560_sim_unittest/firmware.elf)",
       "Bash(xargs grep:*)",
       "Bash(grep -r 'int16_t getReadableLogEntry' C:UsersCornelioDesktopspeeduino-202501.6speeduino --include=*.cpp --include=*.h)",
-      "Bash(grep -rn \"veSetPage\\\\|ignSetPage\\\\|afrSetPage\\\\|canbusPage\\\\|warmupPage\\\\|progOutsPage\\\\|boostvvtPage2\" C:/Users/Cornelio/Desktop/speeduino-202501.6/speeduino/ --include=*.h)"
+      "Bash(grep -rn \"veSetPage\\\\|ignSetPage\\\\|afrSetPage\\\\|canbusPage\\\\|warmupPage\\\\|progOutsPage\\\\|boostvvtPage2\" C:/Users/Cornelio/Desktop/speeduino-202501.6/speeduino/ --include=*.h)",
+      "Bash(tasklist /FI \"IMAGENAME eq pio.exe\")",
+      "Bash(tasklist /FI \"IMAGENAME eq simavr.exe\")",
+      "Bash(tasklist /FI \"IMAGENAME eq python.exe\")"
     ]
   }
 }
