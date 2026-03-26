@@ -1,20 +1,20 @@
-/**
- * @file main.cpp
- * @brief Test harness entry point for comms integration tests
- */
-
+#include <Arduino.h>
 #include <unity.h>
+#include <avr/sleep.h>
 
-// Forward declarations of test suites
 extern void test_setup();
 
-int main(int argc, char **argv) {
-  (void)argc;
-  (void)argv;
+void setup()
+{
+    UNITY_BEGIN();
+    test_setup();
+    UNITY_END();
 
-  UNITY_BEGIN();
-  test_setup();
-  UNITY_END();
-
-  return 0;
+#if defined(SIMULATOR)
+    cli();
+    sleep_enable();
+    sleep_cpu();
+#endif
 }
+
+void loop() {}

@@ -133,27 +133,27 @@ void test_table_row_size(void) {
 }
 
 void test_axis_storage_size(void) {
-  // Verify axis values are always 1 byte (uint8_t) regardless of table value size
+  // Verify axis values are table3d_axis_t (int16_t = 2 bytes) regardless of platform
   // fuelTable is 16x16 by definition
 
   auto x_it = fuelTable.axisX.begin();
   auto y_it = fuelTable.axisY.begin();
 
-  // Axis iterator should dereference to 1-byte values
-  TEST_ASSERT_EQUAL(sizeof(uint8_t), sizeof(*x_it));
-  TEST_ASSERT_EQUAL(sizeof(uint8_t), sizeof(*y_it));
+  TEST_ASSERT_EQUAL(sizeof(table3d_axis_t), sizeof(*x_it));
+  TEST_ASSERT_EQUAL(sizeof(table3d_axis_t), sizeof(*y_it));
+  TEST_ASSERT_EQUAL(2, sizeof(table3d_axis_t)); // int16_t on all platforms
 }
 
 void test_setup(void) {
-  SET_UNITY_FILENAME();
-
-  RUN_TEST_P(test_table_value_byte_size);
-  RUN_TEST_P(test_page_size_16x16_table);
-  RUN_TEST_P(test_page_size_8x8_tables);
-  RUN_TEST_P(test_page_size_6x6_tables);
-  RUN_TEST_P(test_page_size_mixed_tables);
-  RUN_TEST_P(test_config_page_sizes_unchanged);
-  RUN_TEST_P(test_16bit_table_value_range);
-  RUN_TEST_P(test_table_row_size);
-  RUN_TEST_P(test_axis_storage_size);
+  SET_UNITY_FILENAME() {
+    RUN_TEST_P(test_table_value_byte_size);
+    RUN_TEST_P(test_page_size_16x16_table);
+    RUN_TEST_P(test_page_size_8x8_tables);
+    RUN_TEST_P(test_page_size_6x6_tables);
+    RUN_TEST_P(test_page_size_mixed_tables);
+    RUN_TEST_P(test_config_page_sizes_unchanged);
+    RUN_TEST_P(test_16bit_table_value_range);
+    RUN_TEST_P(test_table_row_size);
+    RUN_TEST_P(test_axis_storage_size);
+  }
 }
