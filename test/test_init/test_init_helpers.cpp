@@ -3,7 +3,10 @@
  * @brief Unit tests for init_helpers.h pure calculation functions
  */
 
+#include <Arduino.h>
 #include <unity.h>
+#include <avr/sleep.h>
+#include "../test_utils.h"
 #include "init_helpers.h"
 
 // Test calculateReqFuelMicroseconds()
@@ -39,7 +42,7 @@ void test_calculateInjectorOpenTimeMicroseconds_normal_range(void)
   // Normal range: 0.5ms to 2.0ms (5 to 20 in tenths)
   TEST_ASSERT_EQUAL_UINT16(500, calculateInjectorOpenTimeMicroseconds(5));    // 0.5ms
   TEST_ASSERT_EQUAL_UINT16(1000, calculateInjectorOpenTimeMicroseconds(10));  // 1.0ms
-  TEST_ASSERT_EQUAL_UINT16(1550, calculateInjectorOpenTimeMicroseconds(15));  // 1.5ms (common value)
+  TEST_ASSERT_EQUAL_UINT16(1500, calculateInjectorOpenTimeMicroseconds(15));  // 1.5ms (common value)
   TEST_ASSERT_EQUAL_UINT16(2000, calculateInjectorOpenTimeMicroseconds(20));  // 2.0ms
 }
 
@@ -140,24 +143,35 @@ void test_calculateStagedInjectorMultipliers_boundary_values(void)
   TEST_ASSERT_EQUAL_UINT16(100, secMult);
 }
 
+// Note: int main() here overrides the Arduino framework entry point, intentionally
+// keeping only this file's tests in scope to stay within ATmega2560 SRAM limits.
+// The other test_init functions (testFuelScheduleInit etc.) exceed 8192 bytes when
+// combined and are excluded from the simavr suite.
 int main(void)
 {
   UNITY_BEGIN();
 
-  // calculateReqFuelMicroseconds tests
-  RUN_TEST(test_calculateReqFuelMicroseconds_normal_range);
-  RUN_TEST(test_calculateReqFuelMicroseconds_edge_cases);
-  RUN_TEST(test_calculateReqFuelMicroseconds_overflow_protection);
+  SET_UNITY_FILENAME() {
+    RUN_TEST_P(test_calculateReqFuelMicroseconds_normal_range);
+    RUN_TEST_P(test_calculateReqFuelMicroseconds_edge_cases);
+    RUN_TEST_P(test_calculateReqFuelMicroseconds_overflow_protection);
 
-  // calculateInjectorOpenTimeMicroseconds tests
-  RUN_TEST(test_calculateInjectorOpenTimeMicroseconds_normal_range);
-  RUN_TEST(test_calculateInjectorOpenTimeMicroseconds_edge_cases);
+    RUN_TEST_P(test_calculateInjectorOpenTimeMicroseconds_normal_range);
+    RUN_TEST_P(test_calculateInjectorOpenTimeMicroseconds_edge_cases);
 
-  // calculateStagedInjectorMultipliers tests
-  RUN_TEST(test_calculateStagedInjectorMultipliers_normal_range);
-  RUN_TEST(test_calculateStagedInjectorMultipliers_divide_by_zero);
-  RUN_TEST(test_calculateStagedInjectorMultipliers_overflow_protection);
-  RUN_TEST(test_calculateStagedInjectorMultipliers_boundary_values);
+    RUN_TEST_P(test_calculateStagedInjectorMultipliers_normal_range);
+    RUN_TEST_P(test_calculateStagedInjectorMultipliers_divide_by_zero);
+    RUN_TEST_P(test_calculateStagedInjectorMultipliers_overflow_protection);
+    RUN_TEST_P(test_calculateStagedInjectorMultipliers_boundary_values);
+  }
 
-  return UNITY_END();
+  UNITY_END();
+
+#if defined(SIMULATOR)
+  cli();
+  sleep_enable();
+  sleep_cpu();
+#endif
+
+  return 0;
 }
