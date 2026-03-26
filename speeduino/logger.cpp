@@ -183,6 +183,20 @@ byte getTSLogEntry(uint16_t byteNum)
         statusValue = isSPIFlashHealthy() ? 1U : 0U;
       #endif
       break;
+
+    // Phase 8E: PW5-PW8 for 5-8 cylinder engines, launchCorrection, injAngle
+    case 132: statusValue = lowByte(currentStatus.PW5); break;
+    case 133: statusValue = highByte(currentStatus.PW5); break;
+    case 134: statusValue = lowByte(currentStatus.PW6); break;
+    case 135: statusValue = highByte(currentStatus.PW6); break;
+    case 136: statusValue = lowByte(currentStatus.PW7); break;
+    case 137: statusValue = highByte(currentStatus.PW7); break;
+    case 138: statusValue = lowByte(currentStatus.PW8); break;
+    case 139: statusValue = highByte(currentStatus.PW8); break;
+    case 140: statusValue = currentStatus.launchCorrection; break;
+    case 141: statusValue = lowByte(currentStatus.injAngle); break;
+    case 142: statusValue = highByte(currentStatus.injAngle); break;
+
     default: statusValue = 0; // MISRA check
   }
 
@@ -316,6 +330,15 @@ int16_t getReadableLogEntry(uint16_t logIndex)
         statusValue = isSPIFlashHealthy() ? 1 : 0;
       #endif
       break;
+
+    // Phase 8E: PW5-PW8, launchCorrection, injAngle
+    case 96: statusValue = currentStatus.PW5; break;
+    case 97: statusValue = currentStatus.PW6; break;
+    case 98: statusValue = currentStatus.PW7; break;
+    case 99: statusValue = currentStatus.PW8; break;
+    case 100: statusValue = currentStatus.launchCorrection; break;
+    case 101: statusValue = (int16_t)currentStatus.injAngle; break;
+
     default: statusValue = 0; // MISRA check
   }
 
@@ -345,6 +368,10 @@ float getReadableFloatLogEntry(uint16_t logIndex)
     case 54: statusValue = currentStatus.PW2 / 1000.0; break; //Pulsewidth 2 Have to convert from uS to mS.
     case 55: statusValue = currentStatus.PW3 / 1000.0; break; //Pulsewidth 3 Have to convert from uS to mS.
     case 56: statusValue = currentStatus.PW4 / 1000.0; break; //Pulsewidth 4 Have to convert from uS to mS.
+    case 96: statusValue = currentStatus.PW5 / 1000.0; break; //Pulsewidth 5 Have to convert from uS to mS.
+    case 97: statusValue = currentStatus.PW6 / 1000.0; break; //Pulsewidth 6 Have to convert from uS to mS.
+    case 98: statusValue = currentStatus.PW7 / 1000.0; break; //Pulsewidth 7 Have to convert from uS to mS.
+    case 99: statusValue = currentStatus.PW8 / 1000.0; break; //Pulsewidth 8 Have to convert from uS to mS.
 
     default: statusValue = getReadableLogEntry(logIndex); break; //If logIndex value is NOT a float based one, use the regular function
   }

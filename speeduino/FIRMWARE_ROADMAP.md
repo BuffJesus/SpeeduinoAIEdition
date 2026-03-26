@@ -363,13 +363,21 @@ See audit findings below.
 - `serialPayload` buffer (2051B) safely absorbs any read/write payload ≤ 512B
 - No tests reference BLOCKING_FACTOR or TABLE_BLOCKING_FACTOR — runtime/protocol constants only; 731/731 unchanged
 
+**Slice E: `LOG_ENTRY_SIZE` expansion — PW5-PW8, launchCorrection, injAngle** ✅ **COMPLETE**
+- Added 11 bytes (bytes 132-142) to `getTSLogEntry()` and `getReadableLogEntry()` in `logger.cpp`
+- Fields: `PW5`/`PW6`/`PW7`/`PW8` (uint16 each, for 5-8 cylinder engines), `launchCorrection` (byte), `injAngle` (uint16)
+- `getReadableFloatLogEntry()` extended with PW5-PW8 ÷1000.0 float cases (indices 96-99)
+- `LOG_ENTRY_SIZE`: 132 → 143 in `logger.h`; `ochBlockSize`: 132 → 143 in `speeduino.ini`
+- 4 new regression tests added to `test_logger_byte_regression.cpp` (byte positions 132-142, readable indices 96-101)
+- test_ign: 182 → 186/186; total: 735/735 (was 731+4 = 735)
+
 - Treat Teensy 4.1 as a first-class platform, not just a faster AVR replacement.
 - Move capability decisions behind explicit board declarations for SD, RTC, native CAN, onboard SPI flash, trigger hardware, and driver chips so runtime code and the tuning surface can distinguish generic MCU support from specific board support.
 - Add a Teensy/DropBear storage path that uses onboard SPI flash for tune persistence, tune banks, migration staging, and higher-rate diagnostic capture instead of constraining new features to the legacy EEPROM layout.
 - Increase Teensy-only tune transport limits after storage is decoupled:
   - larger page sizes (deferred — INI-locked; requires struct + INI overhaul)
   - larger blocking factors ✅ (Phase 8 Slices C+D: BLOCKING_FACTOR 251→512, TABLE_BLOCKING_FACTOR 256→512)
-  - larger output-channel payloads (deferred — requires INI ochBlockSize change)
+  - larger output-channel payloads ✅ (Phase 8 Slice E: LOG_ENTRY_SIZE 132→143; PW5-PW8, launchCorrection, injAngle added)
   - higher-resolution 3D tables (deferred — requires struct + INI overhaul)
   - faster EEPROM burns ✅ (Phase 8 Slice B: EEPROM_MAX_WRITE_BLOCK 64→255)
 - Rework Teensy 4.1 timing and peripheral usage where the current board layer is still unfinished or AVR-shaped:

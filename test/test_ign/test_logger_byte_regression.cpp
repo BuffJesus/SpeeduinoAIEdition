@@ -162,6 +162,75 @@ static void test_readable_index_93_exports_knock_retard(void)
     currentStatus.knockRetard = 0U; // restore
 }
 
+// ========= Phase 8E: PW5-PW8, launchCorrection, injAngle byte/index locks =========
+
+static void test_logger_bytes_132_139_export_pw5_pw8(void)
+{
+    // PW5: bytes 132 (low) and 133 (high)
+    currentStatus.PW5 = 0x1234U;
+    TEST_ASSERT_EQUAL_UINT8(0x34U, getTSLogEntry(132));
+    TEST_ASSERT_EQUAL_UINT8(0x12U, getTSLogEntry(133));
+    // PW6: bytes 134-135
+    currentStatus.PW6 = 0xABCDU;
+    TEST_ASSERT_EQUAL_UINT8(0xCDU, getTSLogEntry(134));
+    TEST_ASSERT_EQUAL_UINT8(0xABU, getTSLogEntry(135));
+    // PW7: bytes 136-137
+    currentStatus.PW7 = 500U;
+    TEST_ASSERT_EQUAL_UINT8(lowByte(500U),  getTSLogEntry(136));
+    TEST_ASSERT_EQUAL_UINT8(highByte(500U), getTSLogEntry(137));
+    // PW8: bytes 138-139
+    currentStatus.PW8 = 0U;
+    TEST_ASSERT_EQUAL_UINT8(0U, getTSLogEntry(138));
+    TEST_ASSERT_EQUAL_UINT8(0U, getTSLogEntry(139));
+    // restore
+    currentStatus.PW5 = 0U; currentStatus.PW6 = 0U;
+    currentStatus.PW7 = 0U; currentStatus.PW8 = 0U;
+}
+
+static void test_logger_byte_140_exports_launch_correction(void)
+{
+    currentStatus.launchCorrection = 0U;
+    TEST_ASSERT_EQUAL_UINT8(0U, getTSLogEntry(140));
+
+    currentStatus.launchCorrection = 120U;
+    TEST_ASSERT_EQUAL_UINT8(120U, getTSLogEntry(140));
+
+    currentStatus.launchCorrection = 0U; // restore
+}
+
+static void test_logger_bytes_141_142_export_inj_angle(void)
+{
+    currentStatus.injAngle = 0U;
+    TEST_ASSERT_EQUAL_UINT8(0U, getTSLogEntry(141));
+    TEST_ASSERT_EQUAL_UINT8(0U, getTSLogEntry(142));
+
+    currentStatus.injAngle = 0x01F4U; // 500
+    TEST_ASSERT_EQUAL_UINT8(lowByte(500U),  getTSLogEntry(141));
+    TEST_ASSERT_EQUAL_UINT8(highByte(500U), getTSLogEntry(142));
+
+    currentStatus.injAngle = 0U; // restore
+}
+
+static void test_readable_indices_96_101_export_pw5_pw8_launch_inj(void)
+{
+    currentStatus.PW5 = 1000U;
+    TEST_ASSERT_EQUAL_INT16(1000, getReadableLogEntry(96));
+    currentStatus.PW6 = 2000U;
+    TEST_ASSERT_EQUAL_INT16(2000, getReadableLogEntry(97));
+    currentStatus.PW7 = 3000U;
+    TEST_ASSERT_EQUAL_INT16(3000, getReadableLogEntry(98));
+    currentStatus.PW8 = 4000U;
+    TEST_ASSERT_EQUAL_INT16(4000, getReadableLogEntry(99));
+    currentStatus.launchCorrection = 75U;
+    TEST_ASSERT_EQUAL_INT16(75, getReadableLogEntry(100));
+    currentStatus.injAngle = 720U;
+    TEST_ASSERT_EQUAL_INT16(720, getReadableLogEntry(101));
+    // restore
+    currentStatus.PW5 = 0U; currentStatus.PW6 = 0U;
+    currentStatus.PW7 = 0U; currentStatus.PW8 = 0U;
+    currentStatus.launchCorrection = 0U; currentStatus.injAngle = 0U;
+}
+
 void test_logger_byte_regression(void)
 {
     SET_UNITY_FILENAME() {
@@ -171,11 +240,17 @@ void test_logger_byte_regression(void)
         RUN_TEST(test_logger_byte_127_exports_status5);
         RUN_TEST(test_logger_byte_128_exports_knock_count);
         RUN_TEST(test_logger_byte_129_exports_knock_retard);
+        // Phase 8E: new field locks (bytes 132-142)
+        RUN_TEST(test_logger_bytes_132_139_export_pw5_pw8);
+        RUN_TEST(test_logger_byte_140_exports_launch_correction);
+        RUN_TEST(test_logger_bytes_141_142_export_inj_angle);
         // getReadableLogEntry case index locks
         RUN_TEST(test_readable_index_57_exports_status3);
         RUN_TEST(test_readable_index_58_exports_engine_protect_status);
         RUN_TEST(test_readable_index_91_exports_status5);
         RUN_TEST(test_readable_index_92_exports_knock_count);
         RUN_TEST(test_readable_index_93_exports_knock_retard);
+        // Phase 8E: readable index locks (96-101)
+        RUN_TEST(test_readable_indices_96_101_export_pw5_pw8_launch_inj);
     }
 }
