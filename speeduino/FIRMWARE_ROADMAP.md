@@ -390,6 +390,14 @@ See audit findings below.
 - Previously blocked (single-gap tooth was unresolved); now safe as physical truth
 - 264/264 test_decoders PASSED (+1 new test); 736/736 total
 
+**Slice D: Re-land Nissan360 `useResync == false` assertion** ✅ **COMPLETE**
+- Resolved the previously-backed-out order-sensitive interaction with Harley replay coverage
+- Root cause: `reset_nissan360_runtime()` was missing `testClearTriggerStateOverrides()` — unlike `reset_harley_runtime()` which calls it explicitly; trigger-state override machinery left in unknown state after each Nissan360 state test could leak into subsequent tests
+- Fix: added `testClearTriggerStateOverrides()` to `reset_nissan360_runtime()` (mirrors the Harley pattern); added terminal `reset_nissan360_runtime()` call to both resync state tests for defense-in-depth isolation
+- New test `test_nissan360_state_no_resync_preserves_tooth_counter`: starts at `toothCurrentCount = 50`, emits 16 primaries inside a secondary window with `useResync == false`; asserts count stays at `66` (50+16, not realigned), `hasSync` remains true, `syncLossCounter` stays 0
+- Changes: `Nissan360.cpp` — `testClearTriggerStateOverrides()` in reset function, terminal cleanup in `test_nissan360_state_resync_realigns_tooth_counter`, new test added and registered
+- 265/265 test_decoders PASSED (+1 new test); 737/737 total
+
 - Treat Teensy 4.1 as a first-class platform, not just a faster AVR replacement.
 - Move capability decisions behind explicit board declarations for SD, RTC, native CAN, onboard SPI flash, trigger hardware, and driver chips so runtime code and the tuning surface can distinguish generic MCU support from specific board support.
 - Add a Teensy/DropBear storage path that uses onboard SPI flash for tune persistence, tune banks, migration staging, and higher-rate diagnostic capture instead of constraining new features to the legacy EEPROM layout.
@@ -439,9 +447,9 @@ See audit findings below.
 - `4G63` direct AVR state coverage is still not safe to land under the current harness:
   - prior direct pin-state-driven attempts perturbed unrelated decoder tests under `simavr`
   - keep replay coverage, but do not re-land a direct state suite until the isolation issue is understood
-- `Nissan360` has a currently unresolved order-sensitive interaction with existing replay coverage:
-  - an added direct `useResync` state assertion was backed out after it caused a later Harley replay failure in the full `test_decoders` entrypoint
-  - the Nissan360 behavior itself was plausible, but the harness interaction was not understood well enough to keep
+- `Nissan360` order-sensitive interaction with Harley replay — **resolved (Phase 9 Slice D)**:
+  - root cause: `reset_nissan360_runtime()` was missing `testClearTriggerStateOverrides()`, leaving trigger-state override machinery in an unknown state that could affect `lastGap`/`targetGap` comparisons in subsequent Harley ISR calls
+  - fix: added `testClearTriggerStateOverrides()` to `reset_nissan360_runtime()` + terminal cleanup calls; `useResync == false` assertion now safely landed
 - harness rule for these blocked slices:
   - prefer the last verified green decoder baseline over landing a brittle regression
   - if a candidate slice only passes in isolation but perturbs the full decoder entrypoint, back it out and record the interaction here before moving on
@@ -468,4 +476,4 @@ See audit findings below.
 - Blocked-but-important work still stays ahead of these lower-priority items only when the blocker itself becomes actionable:
   - `Rover MEMS` full `Crank Speed + 5-3-2 cam` replay
   - `4G63` direct AVR state isolation under the current harness
-  - the backed-out extra `Nissan360` `useResync == false` assertion once the Harley interaction is understood
+  - ~~the backed-out extra `Nissan360` `useResync == false` assertion once the Harley interaction is understood~~ ✅ resolved (Phase 9 Slice D)

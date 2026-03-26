@@ -26,6 +26,7 @@ static void reset_nissan360_runtime(void)
     configPage4.TrigEdgeSec = 0U;
     configPage2.nCylinders = 4U;
     configPage2.perToothIgn = false;
+    testClearTriggerStateOverrides();
     resetDecoder();
 }
 
@@ -295,6 +296,27 @@ void test_nissan360_state_resync_realigns_tooth_counter(void)
 
     TEST_ASSERT_TRUE(currentStatus.hasSync);
     TEST_ASSERT_EQUAL_UINT16(16U, toothCurrentCount);
+
+    reset_nissan360_runtime();
+}
+
+void test_nissan360_state_no_resync_preserves_tooth_counter(void)
+{
+    // With useResync == false, the secondary window end must NOT realign toothCurrentCount.
+    // Physical tooth count advances unconditionally: 50 initial + 16 primaries = 66.
+    setup_nissan360_state_machine();
+
+    currentStatus.hasSync = true;
+    configPage4.useResync = false;
+    toothCurrentCount = 50U;
+
+    emit_nissan360_window(2000U, 16U);
+
+    TEST_ASSERT_TRUE(currentStatus.hasSync);
+    TEST_ASSERT_EQUAL_UINT16(66U, toothCurrentCount);  // NOT realigned — stays at 50+16
+    TEST_ASSERT_EQUAL_UINT8(0U, currentStatus.syncLossCounter);
+
+    reset_nissan360_runtime();
 }
 
 void testNissan360()
@@ -317,5 +339,6 @@ void testNissan360()
     RUN_TEST_P(test_nissan360_state_invalid_window_does_not_sync);
     RUN_TEST_P(test_nissan360_state_wraps_and_counts_revolution_when_synced);
     RUN_TEST_P(test_nissan360_state_resync_realigns_tooth_counter);
+    RUN_TEST_P(test_nissan360_state_no_resync_preserves_tooth_counter);
   }
 }
