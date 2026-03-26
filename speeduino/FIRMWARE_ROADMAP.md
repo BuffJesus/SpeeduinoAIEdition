@@ -384,6 +384,12 @@ See audit findings below.
 - `SESSION_HANDOFF_2026-03-23_36-2-1_STATE.md` updated: blocker marked resolved
 - 263/263 test_decoders PASSED; 735/735 total unchanged
 
+**Slice C: Full-revolution 36-2-1 test** ✅ **COMPLETE**
+- Added `t3621_full_revolution` to `ThirtySixMinus21.cpp`: anchors on double gap (count=1), drives all 33 actual teeth through both gap events, asserts counts at every sync point
+- Sequence: count=1 → +16 teeth → count=17 → single gap → count=19 → +15 teeth → count=34 → double gap → count=1
+- Previously blocked (single-gap tooth was unresolved); now safe as physical truth
+- 264/264 test_decoders PASSED (+1 new test); 736/736 total
+
 - Treat Teensy 4.1 as a first-class platform, not just a faster AVR replacement.
 - Move capability decisions behind explicit board declarations for SD, RTC, native CAN, onboard SPI flash, trigger hardware, and driver chips so runtime code and the tuning surface can distinguish generic MCU support from specific board support.
 - Add a Teensy/DropBear storage path that uses onboard SPI flash for tune persistence, tune banks, migration staging, and higher-rate diagnostic capture instead of constraining new features to the legacy EEPROM layout.
