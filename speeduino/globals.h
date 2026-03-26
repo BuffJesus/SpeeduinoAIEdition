@@ -134,7 +134,8 @@ enum board_capability : uint8_t {
   BOARD_CAP_SPI_FLASH     = (1U << 3),
   BOARD_CAP_12BIT_ADC     = (1U << 4),  ///< 12-bit ADC (4096 steps) vs 10-bit (1024 steps)
   BOARD_CAP_HIGH_RES_TABLES = (1U << 5), ///< 16-bit table values (0.1% resolution) vs 8-bit (1% resolution)
-  BOARD_CAP_UNRESTRICTED_INTERRUPTS = (1U << 6) ///< All digital pins support external interrupts (Phase 4: interrupt validation)
+  BOARD_CAP_UNRESTRICTED_INTERRUPTS = (1U << 6), ///< All digital pins support external interrupts (Phase 4: interrupt validation)
+  BOARD_CAP_WIFI_TRANSPORT = (1U << 7)  ///< Onboard ESP32-C3 co-processor available for Wi-Fi/BT secondary transport (DropBear only)
 };
 
 uint8_t getBoardCapabilityFlags(uint8_t pinMapping);

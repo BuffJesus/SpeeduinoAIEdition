@@ -316,8 +316,8 @@ See audit findings below.
 **Slice E: ADC Backend Audit** ✅ **COMPLETE** (no code changes — identified bug, fixed in Phase 7 Slice A)
 
 **Phase 6 Remaining Work:**
-- Stabilize native CAN (disabled due to lockup; needs separate investigation)
-- ESP32-C3 coprocessor path
+- Stabilize native CAN ✅ (Phase 10: TX stall fixed; `Can0.begin()` confirmed non-blocking; all write paths gated on `enable_intcan==1`)
+- ESP32-C3 coprocessor path ✅ (capability bit established: `BOARD_CAP_WIFI_TRANSPORT`; transport implementation deferred to hardware availability)
 
 ---
 
@@ -399,6 +399,24 @@ See audit findings below.
 - Demonstrates the decoder's gap-event self-correction: every gap re-anchors the tooth count, so a single spurious tooth cannot permanently desync the decoder
 - 267/267 test_decoders PASSED (+2 new tests); 782/788 total
 
+**Slice F: 36-2-2-2 extended coverage (full revolution + spurious tooth resync)** ✅ **COMPLETE**
+- Added `test_36222_h4_full_revolution`: anchors on double gap (count=19), drives 12 regular teeth (count=31), single-gap long-gap (count=34), regular (count=35), 2 more regulars (count=36, 37→wrap count=1, startRevolutions=1), then re-syncs to count=19 on next double-gap group
+- Added `test_36222_h4_double_gap_reanchors_count_after_spurious_tooth`: 2 regular + spurious (count drifts to 3), double-gap event forces count=19 regardless of drift
+- Added `test_36222_h4_single_gap_reanchors_count_after_spurious_tooth`: 2 regular + spurious (count drifts to 3), single-gap event (long+regular) forces count=35 regardless of drift
+- Demonstrates the 36-2-2-2 decoder's gap-event self-correction: both double-gap and single-gap groups re-anchor the tooth count unconditionally
+- 270/270 test_decoders PASSED (+3 new tests); 785/791 total
+
+**Slice G: Idle OL PWM regression suite (Option 3)** ✅ **COMPLETE**
+- Created `test/test_idle/` suite: `main.cpp`, `test_idle_ol_pwm.h`, `test_idle_ol_pwm.cpp`
+- 5 tests covering the open-loop PWM idleLoad state machine:
+  - Cranking → uses cranking table (BIT_ENGINE_CRANK path)
+  - Not running + iacPWMrun=true → uses cranking table (pre-crank warmup path)
+  - Not running + iacPWMrun=false → idleLoad stays 0 (no active control)
+  - Running, taper complete → uses running table (steady-state path)
+  - Running, taper at start → map(0, 0, taperTime, crankVal, runVal) = crankVal (taper edge)
+- Test pattern: manually initializes iacCrankDutyTable/iacPWMTable struct pointers to configPage6 arrays, fills with uniform predictable values via populate_2dtable, sets idleInitComplete to skip re-init, calls idleControl() directly
+- 790/796 PASSED (+5 new tests in new suite, 6 skipped unchanged)
+
 **Slice D: Re-land Nissan360 `useResync == false` assertion** ✅ **COMPLETE**
 - Resolved the previously-backed-out order-sensitive interaction with Harley replay coverage
 - Root cause: `reset_nissan360_runtime()` was missing `testClearTriggerStateOverrides()` — unlike `reset_harley_runtime()` which calls it explicitly; trigger-state override machinery left in unknown state after each Nissan360 state test could leak into subsequent tests
@@ -424,7 +442,7 @@ See audit findings below.
   - stabilize native CAN and expose the real capability cleanly ✅ (Phase 10: TX stall fix — enable_intcan guard on sendCANBroadcast(); boardCap_nativeCAN bit decoded in INI; CANisAvailable tightened to require hardware truth)
   - fix readAnalogPin() 10-bit normalization for Teensy 4.1 ✅ (Phase 7 Slice A)
   - add higher-resolution oversampling/averaging to Teensy 4.1 ADC path ✅ (Phase 7 Slice C)
-- Use the existing ESP32-C3 board hardware as a real secondary transport / coprocessor path for wireless tuning, log offload, and update workflows once the board capability layer exists.
+- Use the existing ESP32-C3 board hardware as a real secondary transport / coprocessor path for wireless tuning, log offload, and update workflows once the board capability layer exists. ✅ (Capability layer established: `BOARD_CAP_WIFI_TRANSPORT` bit 7 added to board_capability enum; set for PIN_LAYOUT_DROPBEAR on CORE_TEENSY41; `boardCap_wifiTransport` channel exposed in INI at byte 130 [7:7]. Transport implementation deferred until hardware schematic / UART pin assignment confirmed.)
 
 ## Borrowed From rusEFI
 

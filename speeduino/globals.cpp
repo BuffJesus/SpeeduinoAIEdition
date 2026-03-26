@@ -40,6 +40,7 @@ uint8_t getBoardCapabilityFlags(uint8_t pinMapping)
     case PIN_LAYOUT_DROPBEAR:
       #if defined(CORE_TEENSY41)
         flags |= BOARD_CAP_SPI_FLASH;
+        flags |= BOARD_CAP_WIFI_TRANSPORT; // Onboard ESP32-C3 co-processor (Wi-Fi/BT secondary transport)
       #endif
       break;
 
