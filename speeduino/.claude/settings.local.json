@@ -17,7 +17,8 @@
       "Bash(grep -rn \"veSetPage\\\\|ignSetPage\\\\|afrSetPage\\\\|canbusPage\\\\|warmupPage\\\\|progOutsPage\\\\|boostvvtPage2\" C:/Users/Cornelio/Desktop/speeduino-202501.6/speeduino/ --include=*.h)",
       "Bash(tasklist /FI \"IMAGENAME eq pio.exe\")",
       "Bash(tasklist /FI \"IMAGENAME eq simavr.exe\")",
-      "Bash(tasklist /FI \"IMAGENAME eq python.exe\")"
+      "Bash(tasklist /FI \"IMAGENAME eq python.exe\")",
+      "Bash(grep:*)"
     ]
   }
 }
