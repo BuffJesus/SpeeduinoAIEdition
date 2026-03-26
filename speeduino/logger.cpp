@@ -1,5 +1,6 @@
 #include "globals.h"
 #include "logger.h"
+#include "live_data_map.h" // Compile-time guard: LOG_ENTRY_SIZE must equal LIVE_DATA_MAP_SIZE
 #include "decoders.h"
 #include "init.h"
 #include "maths.h"

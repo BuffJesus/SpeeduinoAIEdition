@@ -258,9 +258,12 @@ Current phase 1 work started in:
 **Slice E: Tune Compatibility Audit** ✅ **COMPLETE** (no code changes)
 See audit findings below.
 
-**Phase 5 Remaining Work:**
-- Live-data map for high-value subsystems (deferred)
-- Slice F: declarative live_data_map.h comment block (optional, low priority)
+**Slice F: Declarative live_data_map.h** ✅ **COMPLETE**
+- Created `speeduino/live_data_map.h`: 148-row Byte/RIdx/Field/Encoding comment table covering all LOG_ENTRY_SIZE positions; `#define LIVE_DATA_MAP_SIZE 148U`; `#error` drift guard in production builds (fired by `#include "live_data_map.h"` in `logger.cpp`)
+- Added 3 tests in `test/test_ign/test_live_data_map.cpp`: size constant == 148, last byte (runtimeStatusA) returns 0 with flags clear, out-of-range byte returns 0
+- test_ign: 190 → 193/193; total: 780/786 (6 skipped, same as Phase 10)
+
+**Phase 5 Status: COMPLETE** ✅
 
 ### Phase 5 Objectives
 
@@ -389,6 +392,12 @@ See audit findings below.
 - Sequence: count=1 → +16 teeth → count=17 → single gap → count=19 → +15 teeth → count=34 → double gap → count=1
 - Previously blocked (single-gap tooth was unresolved); now safe as physical truth
 - 264/264 test_decoders PASSED (+1 new test); 736/736 total
+
+**Slice E: 36-2-1 self-correction (spurious tooth resync)** ✅ **COMPLETE**
+- Added `t3621_single_gap_reanchors_count_after_spurious_tooth`: establishes sync (count=1), drives 8 regular + 1 spurious + 8 regular teeth (count drifts to 18), verifies single-gap event forces count=19 regardless of drift
+- Added `t3621_double_gap_reanchors_count_after_spurious_tooth`: from count=19 (after single gap), drives 5 regular + 1 spurious + 10 regular teeth (count drifts to 35), verifies double-gap event forces count=1 regardless of drift
+- Demonstrates the decoder's gap-event self-correction: every gap re-anchors the tooth count, so a single spurious tooth cannot permanently desync the decoder
+- 267/267 test_decoders PASSED (+2 new tests); 782/788 total
 
 **Slice D: Re-land Nissan360 `useResync == false` assertion** ✅ **COMPLETE**
 - Resolved the previously-backed-out order-sensitive interaction with Harley replay coverage

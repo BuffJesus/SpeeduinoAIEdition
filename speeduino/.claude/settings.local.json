@@ -19,7 +19,12 @@
       "Bash(tasklist /FI \"IMAGENAME eq simavr.exe\")",
       "Bash(tasklist /FI \"IMAGENAME eq python.exe\")",
       "Bash(grep:*)",
-      "Bash(find /c/Users/Cornelio/Desktop/speeduino-202501.6 -name speeduino.ini -o -name speeduino-dropbear*.ini)"
+      "Bash(find /c/Users/Cornelio/Desktop/speeduino-202501.6 -name speeduino.ini -o -name speeduino-dropbear*.ini)",
+      "Bash(wc -l \"C:/Users/Cornelio/Desktop/speeduino-202501.6/test/test_ign/\"*.cpp)",
+      "Bash(head -20 grep -n \"enable_intcan\\\\|CANisAvailable\\\\|CAN_read\\\\|CAN_write\\\\|sendCANBroadcast\\\\|initCAN\" \"C:/Users/Cornelio/Desktop/speeduino-202501.6/speeduino/init.cpp\")",
+      "Bash(head -10 grep -n \"define MAX_RPM\\\\|MAX_RPM \" \"C:/Users/Cornelio/Desktop/speeduino-202501.6/speeduino/decoders.cpp\")",
+      "Bash(python \"C:/Users/Cornelio/Desktop/speeduino-202501.6/tools/analyze_36_2_2_2_evidence.py\" --json \"C:/Users/Cornelio/Desktop/speeduino-202501.6/Resources/36_2_2_2_evidence/2023-09-04_18.08.38.csv\" \"C:/Users/Cornelio/Desktop/speeduino-202501.6/Resources/36_2_2_2_evidence/cranking_6880.csv\")",
+      "Bash(python:*)"
     ]
   }
 }
