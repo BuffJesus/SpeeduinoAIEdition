@@ -417,6 +417,17 @@ See audit findings below.
 - Test pattern: manually initializes iacCrankDutyTable/iacPWMTable struct pointers to configPage6 arrays, fills with uniform predictable values via populate_2dtable, sets idleInitComplete to skip re-init, calls idleControl() directly
 - 790/796 PASSED (+5 new tests in new suite, 6 skipped unchanged)
 
+**Slice K: Idle OL Stepper regression suite** ✅ **COMPLETE**
+- Added `test/test_idle/test_idle_ol_steps.h` and `test_idle_ol_steps.cpp` to existing suite
+- 5 tests covering the open-loop stepper `targetIdleStep` state machine:
+  - Not running (engine=0) → targetIdleStep = iacCrankStepsTable * 3
+  - Cranking (BIT_ENGINE_CRANK, !BIT_ENGINE_RUN) → targetIdleStep = iacCrankStepsTable * 3
+  - Running, taper complete + BIT_TIMER_10HZ → targetIdleStep = iacStepTable * 3
+  - Running, taper start (idleTaper=0) + BIT_TIMER_10HZ → map(0,0,T,crank*3,run*3) = crank*3
+  - Max-steps clamp: iacMaxSteps=1 → targetIdleStep saturates at 1*3=3 even when run table exceeds it
+- Test pattern: sets idleStepper.stepperStatus=SOFF and iacStepHome=0 so checkForStepping()/isStepperHomed() gate passes without hardware; asserts on targetIdleStep (set before doStep() modifies curIdleStep)
+- test_idle: 10/10 PASSED (+5); total: 795/801 (6 skipped unchanged)
+
 **Slice D: Re-land Nissan360 `useResync == false` assertion** ✅ **COMPLETE**
 - Resolved the previously-backed-out order-sensitive interaction with Harley replay coverage
 - Root cause: `reset_nissan360_runtime()` was missing `testClearTriggerStateOverrides()` — unlike `reset_harley_runtime()` which calls it explicitly; trigger-state override machinery left in unknown state after each Nissan360 state test could leak into subsequent tests

@@ -2,6 +2,7 @@
 #include <unity.h>
 #include <avr/sleep.h>
 #include "test_idle_ol_pwm.h"
+#include "test_idle_ol_steps.h"
 
 #define UNITY_EXCLUDE_DETAILS
 
@@ -16,6 +17,7 @@ void setup()
     UNITY_BEGIN();
 
     testIdleOLPWM();
+    testIdleOLSteps();
 
     UNITY_END();
 
