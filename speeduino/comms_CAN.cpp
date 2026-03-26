@@ -31,10 +31,10 @@ void DashMessage(uint16_t DashMessageID);
 void initCAN()
 {
   #if defined (NATIVE_CAN_AVAILABLE)
-    configPage9.intcan_available = 1;   // device has internal canbus
+    // intcan_available is already set from boardHasCapability() in init.cpp before this is called
     //Teensy uses the Flexcan_T4 library to use the internal canbus
     //enable local can interface
-    //setup can interface to 500k   
+    //setup can interface to 500k
     Can0.begin();
     Can0.setBaudRate(500000);
     Can0.enableFIFO();
@@ -53,9 +53,9 @@ int CAN_read()
   return Can0.read(inMsg);
 }
 
-void CAN_write()
+bool CAN_write()
 {
-  Can0.write(outMsg);
+  return Can0.write(outMsg) >= 0;
 }
 
 void sendCANBroadcast(uint8_t frequency)

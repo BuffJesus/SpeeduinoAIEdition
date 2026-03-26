@@ -210,7 +210,7 @@ void __attribute__((always_inline)) loop(void)
       BIT_CLEAR(TIMER_mask, BIT_TIMER_50HZ);
 
       #if defined(NATIVE_CAN_AVAILABLE)
-      sendCANBroadcast(50);
+      if (configPage9.enable_intcan == 1) { sendCANBroadcast(50); }
       #endif
 
     }
@@ -233,7 +233,7 @@ void __attribute__((always_inline)) loop(void)
       }
       
       #if defined(NATIVE_CAN_AVAILABLE)
-      sendCANBroadcast(30);
+      if (configPage9.enable_intcan == 1) { sendCANBroadcast(30); }
       #endif
 
       #ifdef SD_LOGGING
@@ -260,7 +260,7 @@ void __attribute__((always_inline)) loop(void)
       checkLaunchAndFlatShift(); //Check for launch control and flat shift being active
 
       #if defined(NATIVE_CAN_AVAILABLE)
-      sendCANBroadcast(15);
+      if (configPage9.enable_intcan == 1) { sendCANBroadcast(15); }
       #endif
 
       //And check whether the tooth log buffer is ready
@@ -280,7 +280,7 @@ void __attribute__((always_inline)) loop(void)
       currentStatus.gear = getGear();
 
       #if defined(NATIVE_CAN_AVAILABLE)
-      sendCANBroadcast(10);
+      if (configPage9.enable_intcan == 1) { sendCANBroadcast(10); }
       #endif
 
       #ifdef SD_LOGGING

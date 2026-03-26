@@ -39,7 +39,7 @@
 
 void initCAN();
 int CAN_read();
-void CAN_write();
+bool CAN_write();
 void sendCANBroadcast(uint8_t);
 void receiveCANwbo();
 void DashMessages(uint16_t DashMessageID);

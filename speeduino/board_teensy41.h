@@ -183,7 +183,7 @@
   extern FlexCAN_T4<CAN2, RX_SIZE_256, TX_SIZE_16> Can1;
   extern FlexCAN_T4<CAN3, RX_SIZE_256, TX_SIZE_16> Can2;
   */
-  #define NATIVE_CAN_AVAILABLE //Disable for now as it causes lockup 
+  #define NATIVE_CAN_AVAILABLE // CAN1 via FlexCAN_T4; Can0 object declared in comms_CAN.cpp (see FlexCAN_T4 issue #67). initCAN() called after setPinMapping() (see issue #14). sendCANBroadcast() is gated by enable_intcan to prevent TX stall when no bus is present.
   
 #endif //CORE_TEENSY
 #endif //TEENSY41_H
