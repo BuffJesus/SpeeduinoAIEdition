@@ -57,16 +57,17 @@ void t3621(void)
     emit_3621_gap(4000U);
 
     TEST_ASSERT_TRUE(currentStatus.hasSync);
-    TEST_ASSERT_EQUAL_UINT16(20U, toothCurrentCount);
+    TEST_ASSERT_EQUAL_UINT16(19U, toothCurrentCount); // Evidence-backed: single gap at position 18, so first tooth after it is position 19
     TEST_ASSERT_FALSE(BIT_CHECK(decoderState, BIT_DECODER_TOOTH_ANG_CORRECT));
 
-    for (uint8_t tooth = 0; tooth < 17U; ++tooth)
+    // 15 more teeth to complete the 16-tooth run (count 19 is the 1st, 15 more = 16 total)
+    for (uint8_t tooth = 0; tooth < 15U; ++tooth)
     {
         emit_3621_gap(2000U);
     }
 
     TEST_ASSERT_TRUE(currentStatus.hasSync);
-    TEST_ASSERT_EQUAL_UINT16(37U, toothCurrentCount);
+    TEST_ASSERT_EQUAL_UINT16(34U, toothCurrentCount); // 19 + 15 = 34; double gap follows at positions 35-36
     TEST_ASSERT_EQUAL_UINT16(0U, currentStatus.startRevolutions);
     TEST_ASSERT_FALSE(revolutionOne);
 

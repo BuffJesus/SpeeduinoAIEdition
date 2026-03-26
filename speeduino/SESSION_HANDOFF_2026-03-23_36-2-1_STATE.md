@@ -9,10 +9,20 @@ Focus: Formalize the current `36-2-1` single-gap / double-gap current-code contr
 The current [triggerSetup_ThirtySixMinus21()](C:/Users/Cornelio/Desktop/speeduino-202501.6/speeduino/decoders.cpp), [triggerPri_ThirtySixMinus21()](C:/Users/Cornelio/Desktop/speeduino-202501.6/speeduino/decoders.cpp), and [triggerSetEndTeeth_ThirtySixMinus21()](C:/Users/Cornelio/Desktop/speeduino-202501.6/speeduino/decoders.cpp) behavior is:
 
 - a large gap above the current `1.5x` threshold establishes sync on the `36-2-1` primary path
-- a current-code single-gap event lands on `toothCurrentCount = 20`
-- a current-code double-gap event lands on `toothCurrentCount = 1`
-- the maintained narrow replay/state slice proves the current decoder can advance from the single-gap path through the long run of normal teeth and resync on the double-gap path
-- this maintained slice is explicitly about current in-tree ISR behavior, not about claiming the single-gap tooth numbering is physically correct
+- a single-gap event (1.5x < gap < 3x) lands on `toothCurrentCount = 19` (**evidence-backed, Phase 9**)
+- a double-gap event (gap >= 3x) lands on `toothCurrentCount = 1`
+- the maintained narrow replay/state slice proves the decoder advances from the single-gap path through the 16-tooth run and resyncs on the double-gap path
+
+## Resolved: single-gap tooth-number assignment (Phase 9)
+
+The prior `toothCurrentCount = 20` with the comment `// it's either 19 or 20, need to clarify engine direction!` has been resolved by evidence:
+
+- **rusEFI 4B11 real capture** (`4b11-running.csv`) and `analyze_36_2_1.py` confirm: 17 physical teeth from double gap to single gap, 16 physical teeth from single gap to double gap
+- **Nominal-position accounting**: count=1 (double gap) through count=17 (last actual tooth before single gap) → single gap occupies nominal position 18 → first tooth after single gap = position **19**
+- **Total-position check**: 17 actual + 1 single-gap + 16 actual + 2 double-gap = **36 total** ✓ (with 19; count=20 breaks this: only 1 position remains for the 2-tooth double gap)
+- **Changed in**: `decoders.cpp` `triggerPri_ThirtySixMinus21` (assignment + comment) and `getRPM_ThirtySixMinus21` (`!= 19` guard)
+- **Test updated**: `ThirtySixMinus21.cpp` assertion changed to `19U`, loop changed from 17 to 15 teeth (16-tooth run), intermediate assertion changed to `34U`
+- **Replay trace updated**: `3621_resync_trace.h` changed from 17 to 15 teeth to represent the real 16-tooth run
 
 ## Implemented in-tree
 
@@ -40,5 +50,5 @@ Expected maintained state after this slice:
 ## Notes
 
 - The repo already had the physical wheel-evidence note plus a narrow AVR/replay current-code slice; this handoff separates the stable in-tree state contract from the external-evidence narrative
-- The remaining blocker is unchanged: the single-gap tooth-number assignment is still not safe to promote from current-code behavior into asserted physical truth
+- **The single-gap tooth-number blocker is resolved** (Phase 9): `toothCurrentCount = 19` is now evidence-backed physical truth, not just current-code behavior
 - No Rover replay work was changed here

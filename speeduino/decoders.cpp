@@ -4058,8 +4058,12 @@ void triggerPri_ThirtySixMinus21(void)
      {
       if ( (curGap < targetGap2))
        {
-           //we are at the tooth after the single gap
-           toothCurrentCount = 20; //it's either 19 or 20, need to clarify engine direction!
+           //we are at the tooth after the single gap.
+           // Evidence-backed (rusEFI 4B11 real capture + analyze_36_2_1.py): the wheel has
+           // 17 physical teeth from the double gap to the single gap (nominal positions 1-17),
+           // the single gap occupies position 18, so the first tooth after it is position 19.
+           // Nominal count: 17 actual + 1 single-gap + 16 actual + 2 double-gap = 36 total.
+           toothCurrentCount = 19;
            currentStatus.hasSync = true;
         }
         else 
@@ -4117,7 +4121,7 @@ uint16_t getRPM_ThirtySixMinus21(void)
   uint16_t tempRPM = 0;
   if( currentStatus.RPM < currentStatus.crankRPM)
   {
-    if( (toothCurrentCount != 20) && (BIT_CHECK(decoderState, BIT_DECODER_TOOTH_ANG_CORRECT)) )
+    if( (toothCurrentCount != 19) && (BIT_CHECK(decoderState, BIT_DECODER_TOOTH_ANG_CORRECT)) )
     {
       tempRPM = crankingGetRPM(36, CRANK_SPEED);
     }
