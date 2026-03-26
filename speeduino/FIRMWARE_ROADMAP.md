@@ -329,6 +329,12 @@ See audit findings below.
 - Added 8 regression tests in `test/test_sensors/test_adc_normalization.cpp`: shift math bounds, normalized TPS/MAP ranges, and overrange-without-normalization assertions
 - test_sensors: 57 → 65/65 PASSED; total: 723 → 731/731
 
+**Slice C: ADC Hardware Averaging** ✅ **COMPLETE**
+- Added `analogReadAveraging(4)` to `initADC_Teensy41()` in `adc_teensy41.h`
+- IMXRT1062 accumulates 4 samples internally; output remains 12-bit; `>> 2` normalization unchanged
+- SNR improvement: ~6 dB (sqrt(4)); latency cost: ~4µs per read — negligible on Teensy 4.1
+- No test changes needed: hardware averaging is Teensy-only init, not exercised by simavr; existing 65 ADC tests still pass 65/65; total: 731/731
+
 - Treat Teensy 4.1 as a first-class platform, not just a faster AVR replacement.
 - Move capability decisions behind explicit board declarations for SD, RTC, native CAN, onboard SPI flash, trigger hardware, and driver chips so runtime code and the tuning surface can distinguish generic MCU support from specific board support.
 - Add a Teensy/DropBear storage path that uses onboard SPI flash for tune persistence, tune banks, migration staging, and higher-rate diagnostic capture instead of constraining new features to the legacy EEPROM layout.
@@ -343,7 +349,7 @@ See audit findings below.
   - wire SPI flash storage into writeConfig()/loadConfig() for all 7 struct pages ✅ (Phase 6 Slice C)
   - stabilize native CAN and expose the real capability cleanly
   - fix readAnalogPin() 10-bit normalization for Teensy 4.1 ✅ (Phase 7 Slice A)
-  - add higher-resolution oversampling/averaging to Teensy 4.1 ADC path
+  - add higher-resolution oversampling/averaging to Teensy 4.1 ADC path ✅ (Phase 7 Slice C)
 - Use the existing ESP32-C3 board hardware as a real secondary transport / coprocessor path for wireless tuning, log offload, and update workflows once the board capability layer exists.
 
 ## Borrowed From rusEFI

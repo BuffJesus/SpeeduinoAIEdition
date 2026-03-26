@@ -1,15 +1,21 @@
 /** @file
- * @brief Teensy 4.1 12-bit ADC backend with higher-resolution sampling
+ * @brief Teensy 4.1 12-bit ADC backend with hardware averaging
  *
  * Teensy 4.1 supports 12-bit ADC (0-4095 range) vs standard Arduino 10-bit (0-1023).
  * This module provides:
  * - 12-bit ADC initialization during board setup
- * - Backward-compatible 10-bit scaling (default) to avoid breaking existing sensor math
- * - Opt-in native 12-bit readings for sensors that benefit from higher precision
+ * - 4-sample hardware averaging (IMXRT1062 ADC accumulator) for noise reduction
+ * - Backward-compatible 10-bit scaling (>> 2) to avoid breaking existing sensor math
+ * - Opt-in native 12-bit readings for sensors that need higher precision
+ *
+ * Hardware averaging: analogReadAveraging(4) instructs the ADC peripheral to accumulate
+ * 4 samples and return their average as a single 12-bit result. At ~1µs per sample,
+ * this adds ~4µs latency per read and gives sqrt(4) = ~6 dB SNR improvement.
+ * The output range remains 0-4095 (12-bit); >> 2 normalization still applies.
  *
  * Implementation strategy:
- * - By default, all analogRead() results are scaled down to 10-bit (>> 2) for compatibility
- * - Specific sensors (MAP, baro, O2) can opt into native 12-bit via dedicated functions
+ * - All analogRead() results are scaled down to 10-bit (>> 2) for compatibility
+ * - Specific sensors can opt into native 12-bit via analogRead12bit()
  * - Existing sensor code requires no changes (works with 10-bit scaled values)
  */
 
@@ -27,6 +33,7 @@
  */
 inline void initADC_Teensy41(void) {
     analogReadResolution(12); // Set hardware to 12-bit mode (0-4095 range)
+    analogReadAveraging(4);   // 4-sample hardware averaging: ~6dB SNR improvement, ~4µs latency
 }
 
 /**
