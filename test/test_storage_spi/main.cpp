@@ -1,4 +1,6 @@
+#include <Arduino.h>
 #include <unity.h>
+#include <avr/sleep.h>
 #include "../test_utils.h"
 
 // Test suite for storage_spi module (Teensy 4.1 SPI flash storage)
@@ -37,16 +39,26 @@ void test_wear_leveling_distributes_writes_across_blocks(void) {
     TEST_IGNORE_MESSAGE("Stub: test_wear_leveling_distributes_writes_across_blocks not yet implemented");
 }
 
-int main(int argc, char **argv) {
+void setup()
+{
     UNITY_BEGIN();
 
-    RUN_TEST(test_spi_flash_init_creates_directory_structure);
-    RUN_TEST(test_config_page_save_and_load_roundtrip);
-    RUN_TEST(test_tune_bank_switch_loads_alternate_config);
-    RUN_TEST(test_migration_snapshot_preserves_config_before_update);
-    RUN_TEST(test_flash_corruption_recovery_reformats_on_mount_failure);
-    RUN_TEST(test_wear_leveling_distributes_writes_across_blocks);
+    SET_UNITY_FILENAME() {
+        RUN_TEST_P(test_spi_flash_init_creates_directory_structure);
+        RUN_TEST_P(test_config_page_save_and_load_roundtrip);
+        RUN_TEST_P(test_tune_bank_switch_loads_alternate_config);
+        RUN_TEST_P(test_migration_snapshot_preserves_config_before_update);
+        RUN_TEST_P(test_flash_corruption_recovery_reformats_on_mount_failure);
+        RUN_TEST_P(test_wear_leveling_distributes_writes_across_blocks);
+    }
 
     UNITY_END();
-    return 0;
+
+#if defined(SIMULATOR)
+    cli();
+    sleep_enable();
+    sleep_cpu();
+#endif
 }
+
+void loop() {}
