@@ -428,6 +428,18 @@ See audit findings below.
 - Test pattern: sets idleStepper.stepperStatus=SOFF and iacStepHome=0 so checkForStepping()/isStepperHomed() gate passes without hardware; asserts on targetIdleStep (set before doStep() modifies curIdleStep)
 - test_idle: 10/10 PASSED (+5); total: 795/801 (6 skipped unchanged)
 
+**Slice L: Launch control + flat shift scenario tests** ✅ **COMPLETE**
+- Created `test/test_launch/` suite: `main.cpp`, `test_launch_flatshift.h`, `test_launch_flatshift.cpp`
+- 6 tests covering the `checkLaunchAndFlatShift()` state machine from `speeduino.ino`:
+  - RPM above hard-launch limit, clutch engaged → `launchingHard=true` + `BIT_STATUS2_HLAUNCH`
+  - RPM below hard-launch limit → `launchingHard=false`
+  - Clutch released (active-high polarity, pin LOW → 0) → no launch regardless of RPM
+  - TPS below `lnchCtrlTPS` gate → no launch even with clutch in and RPM over limit
+  - Flat shift: RPM > `clutchEngagedRPM` with clutch at high speed → `flatShiftingHard=true` + `BIT_STATUS5_FLATSH`
+  - Flat shift: RPM ≤ `clutchEngagedRPM` → `flatShiftingHard=false`
+- Clutch state injected via `launchHiLo` polarity: `launchHiLo=0` (active-low) + pin-LOW → engaged; `launchHiLo=1` + pin-LOW → released; pre-match `clutchTrigger`/`previousClutchTrigger` to avoid edge-triggered `clutchEngagedRPM` update
+- test_launch: 6/6 PASSED (new suite); total: 801/807 (6 skipped unchanged)
+
 **Slice D: Re-land Nissan360 `useResync == false` assertion** ✅ **COMPLETE**
 - Resolved the previously-backed-out order-sensitive interaction with Harley replay coverage
 - Root cause: `reset_nissan360_runtime()` was missing `testClearTriggerStateOverrides()` — unlike `reset_harley_runtime()` which calls it explicitly; trigger-state override machinery left in unknown state after each Nissan360 state test could leak into subsequent tests
