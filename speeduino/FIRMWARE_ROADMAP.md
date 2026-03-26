@@ -411,7 +411,7 @@ See audit findings below.
   - drain all pending timer flags per ISR instead of single `else if` servicing ✅ (Phase 6 Slice A)
   - finish PWM fan support using TMR3 channel 1 COMP2 alongside Fuel6 ✅ (Phase 6 Slice B)
   - wire SPI flash storage into writeConfig()/loadConfig() for all 7 struct pages ✅ (Phase 6 Slice C)
-  - stabilize native CAN and expose the real capability cleanly
+  - stabilize native CAN and expose the real capability cleanly ✅ (Phase 10: TX stall fix — enable_intcan guard on sendCANBroadcast(); boardCap_nativeCAN bit decoded in INI; CANisAvailable tightened to require hardware truth)
   - fix readAnalogPin() 10-bit normalization for Teensy 4.1 ✅ (Phase 7 Slice A)
   - add higher-resolution oversampling/averaging to Teensy 4.1 ADC path ✅ (Phase 7 Slice C)
 - Use the existing ESP32-C3 board hardware as a real secondary transport / coprocessor path for wireless tuning, log offload, and update workflows once the board capability layer exists.
