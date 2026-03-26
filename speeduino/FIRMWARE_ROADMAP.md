@@ -440,6 +440,14 @@ See audit findings below.
 - Clutch state injected via `launchHiLo` polarity: `launchHiLo=0` (active-low) + pin-LOW → engaged; `launchHiLo=1` + pin-LOW → released; pre-match `clutchTrigger`/`previousClutchTrigger` to avoid edge-triggered `clutchEngagedRPM` update
 - test_launch: 6/6 PASSED (new suite); total: 801/807 (6 skipped unchanged)
 
+**Slice M: Engine protection limiter scenario tests** ✅ **COMPLETE**
+- Created `test/test_protection/` suite: `main.cpp`, `test_engine_protection.h`, `test_engine_protection.cpp`
+- 12 tests across three protection subsystems:
+  - `protectionTimerElapsed()` (pure, 4 tests): not-elapsed, just-elapsed, well-past, uint8 wrap-around (`(uint8_t)(5-250)=11 >= 10`)
+  - `checkRevLimit()` fixed mode (4 tests): below limit (no bits), at hard limit (ENGINE_PROTECT_BIT_RPM + BIT_STATUS2_HRDLIM), PROTECT_CUT_OFF disables entirely, soft-window expired triggers hard cut
+  - `checkBoostLimit()` (4 tests): MAP below threshold (no cut), PROTECT_CUT_IGN (status2 bit only), PROTECT_CUT_FUEL (status1 bit only), PROTECT_CUT_BOTH (both bits)
+- test_protection: 12/12 PASSED (new suite); total: 813/819 (6 skipped unchanged)
+
 **Slice D: Re-land Nissan360 `useResync == false` assertion** ✅ **COMPLETE**
 - Resolved the previously-backed-out order-sensitive interaction with Harley replay coverage
 - Root cause: `reset_nissan360_runtime()` was missing `testClearTriggerStateOverrides()` — unlike `reset_harley_runtime()` which calls it explicitly; trigger-state override machinery left in unknown state after each Nissan360 state test could leak into subsequent tests
