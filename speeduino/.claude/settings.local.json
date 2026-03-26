@@ -18,7 +18,8 @@
       "Bash(tasklist /FI \"IMAGENAME eq pio.exe\")",
       "Bash(tasklist /FI \"IMAGENAME eq simavr.exe\")",
       "Bash(tasklist /FI \"IMAGENAME eq python.exe\")",
-      "Bash(grep:*)"
+      "Bash(grep:*)",
+      "Bash(find /c/Users/Cornelio/Desktop/speeduino-202501.6 -name speeduino.ini -o -name speeduino-dropbear*.ini)"
     ]
   }
 }
