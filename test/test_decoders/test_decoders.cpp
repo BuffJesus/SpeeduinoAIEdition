@@ -17,6 +17,7 @@
 #include "FourTwentyA/FourTwentyA.h"
 #include "Gm24X/Gm24X.h"
 #include "Gm7X/Gm7X.h"
+#include "FourG63/FourG63.h"
 #include "Harley/Harley.h"
 #include "Jeep2000/Jeep2000.h"
 #include "MazdaAU/MazdaAU.h"
@@ -74,6 +75,7 @@ void setup()
     testSuzukiK6A_runtimeState();
     testTriggerTraceReplay();
     testThirtySixMinus21();
+    testFourG63();
     
     UNITY_END(); // stop unit testing
 

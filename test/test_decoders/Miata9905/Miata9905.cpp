@@ -41,6 +41,7 @@ static void reset_miata9905_runtime(void)
     triggerSecFilterTime = 0U;
     toothOneTime = 0U;
     toothOneMinusOneTime = 0U;
+    testClearTriggerStateOverrides();
     resetDecoder();
 }
 

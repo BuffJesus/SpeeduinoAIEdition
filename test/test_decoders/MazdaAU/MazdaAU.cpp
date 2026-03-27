@@ -39,6 +39,7 @@ static void reset_mazdaau_runtime(void)
     toothOneMinusOneTime = 0U;
     lastGap = 0U;
     targetGap = 0U;
+    testClearTriggerStateOverrides();
     resetDecoder();
 }
 

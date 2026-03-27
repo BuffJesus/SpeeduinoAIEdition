@@ -41,6 +41,7 @@ static void reset_subaru67_runtime(void)
     triggerToothAngle = 0U;
     toothOneTime = 0U;
     toothOneMinusOneTime = 0U;
+    testClearTriggerStateOverrides();
     resetDecoder();
 }
 
