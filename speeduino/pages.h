@@ -39,6 +39,11 @@ byte getPageValue(  byte pageNum,       /**< [in] The page number to retrieve da
                     );
 
 /**
+ * Copies a contiguous TS-visible byte range from a page into a caller buffer.
+ */
+void copyPageValuesToBuffer(byte pageNum, uint16_t offset, byte *buffer, uint16_t length);
+
+/**
  * Sets a single value from a page, with data aligned as per the ini file
  */
 void setPageValue(  byte pageNum,       /**< [in] The page number to retrieve data from. */

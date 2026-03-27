@@ -441,6 +441,14 @@ byte getPageValue(byte pageNum, uint16_t offset)
   return get_value(entity, offset);
 }
 
+void copyPageValuesToBuffer(byte pageNum, uint16_t offset, byte *buffer, uint16_t length)
+{
+  for (uint16_t i = 0; i < length; i++)
+  {
+    buffer[i] = getPageValue(pageNum, offset + i);
+  }
+}
+
 // Support iteration over a pages entities.
 // Check for entity.type==End
 page_iterator_t page_begin(byte pageNum)

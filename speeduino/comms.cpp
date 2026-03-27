@@ -339,14 +339,6 @@ static bool updatePageValues(uint8_t pageNum, uint16_t offset, const byte *buffe
  * @param buffer The buffer to read from
  * @param length The buffer length
  */
-static void loadPageValuesToBuffer(uint8_t pageNum, uint16_t offset, byte *buffer, uint16_t length)
-{
-  for(uint16_t i = 0; i < length; i++)
-  {
-    buffer[i] = getPageValue(pageNum, offset + i);
-  }
-}
-
 /** @brief Send a status record back to tuning/logging SW.
  * This will "live" information from @ref currentStatus struct.
  * @param offset - Start field number
@@ -739,7 +731,7 @@ void processSerialCommand(void)
 
       //Setup the transmit buffer
       serialPayload[0] = SERIAL_RC_OK;
-      loadPageValuesToBuffer(serialPayload[2], word(serialPayload[4], serialPayload[3]), &serialPayload[1], length);
+      copyPageValuesToBuffer(serialPayload[2], word(serialPayload[4], serialPayload[3]), &serialPayload[1], length);
       sendSerialPayloadNonBlocking(length + 1U);
       break;
     }
