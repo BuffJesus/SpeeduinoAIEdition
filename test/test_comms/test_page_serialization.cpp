@@ -15,6 +15,8 @@
 #include "table3d_typedefs.h"
 #include "../../speeduino/src/FastCRC/FastCRC.h"
 
+extern byte getVE1(void);
+
 void test_table_value_byte_size_matches_platform(void)
 {
 #if defined(CORE_TEENSY41)
@@ -214,6 +216,103 @@ void test_experimental_native_u16_page2_seam(void)
 #endif
 }
 
+void test_experimental_native_u16_page2_layout_matches_ini_offsets(void)
+{
+#if defined(CORE_TEENSY41) && defined(TS_EXPERIMENTAL_NATIVE_U16_PAGE2)
+  const byte originalPinMapping = configPage2.pinMapping;
+  const table3d_value_t originalFirstValue = fuelTable.values.value_at(0U);
+  const table3d_value_t originalLastValue = fuelTable.values.value_at(255U);
+  const table3d_axis_t originalFirstRpmAxis = *fuelTable.axisX.begin();
+  const table3d_axis_t originalLastRpmAxis = *fuelTable.axisX.begin().advance(15U);
+  const table3d_axis_t originalFirstLoadAxis = *fuelTable.axisY.begin();
+  const table3d_axis_t originalLastLoadAxis = *fuelTable.axisY.begin().advance(15U);
+  byte pageBuffer[544];
+
+  configPage2.pinMapping = PIN_LAYOUT_DROPBEAR;
+  TEST_ASSERT_TRUE(isExperimentalNativeU16Page2Enabled());
+  TEST_ASSERT_EQUAL_UINT16(544U, getTunerStudioPageSize(veMapPage));
+
+  fuelTable.values.value_at(0U) = 0x1234U;
+  fuelTable.values.value_at(255U) = 0xABCDU;
+  *fuelTable.axisX.begin() = 1000;
+  *fuelTable.axisX.begin().advance(15U) = 2500;
+  *fuelTable.axisY.begin() = 40;
+  *fuelTable.axisY.begin().advance(15U) = 220;
+
+  copyTunerStudioPageValuesToBuffer(veMapPage, 0U, pageBuffer, sizeof(pageBuffer));
+
+  TEST_ASSERT_EQUAL_UINT8(0x34U, pageBuffer[0]);
+  TEST_ASSERT_EQUAL_UINT8(0x12U, pageBuffer[1]);
+  TEST_ASSERT_EQUAL_UINT8(0xCDU, pageBuffer[510]);
+  TEST_ASSERT_EQUAL_UINT8(0xABU, pageBuffer[511]);
+  TEST_ASSERT_EQUAL_UINT8(get_table3d_axis_converter(fuelTable.axisX.begin().get_domain()).to_byte(1000), pageBuffer[512]);
+  TEST_ASSERT_EQUAL_UINT8(get_table3d_axis_converter(fuelTable.axisX.begin().get_domain()).to_byte(2500), pageBuffer[527]);
+  TEST_ASSERT_EQUAL_UINT8(get_table3d_axis_converter(fuelTable.axisY.begin().get_domain()).to_byte(40), pageBuffer[528]);
+  TEST_ASSERT_EQUAL_UINT8(get_table3d_axis_converter(fuelTable.axisY.begin().get_domain()).to_byte(220), pageBuffer[543]);
+
+  configPage2.pinMapping = originalPinMapping;
+  fuelTable.values.value_at(0U) = originalFirstValue;
+  fuelTable.values.value_at(255U) = originalLastValue;
+  *fuelTable.axisX.begin() = originalFirstRpmAxis;
+  *fuelTable.axisX.begin().advance(15U) = originalLastRpmAxis;
+  *fuelTable.axisY.begin() = originalFirstLoadAxis;
+  *fuelTable.axisY.begin().advance(15U) = originalLastLoadAxis;
+#else
+  TEST_IGNORE_MESSAGE("Experimental native U16 page-2 layout detail is compile-time disabled");
+#endif
+}
+
+void test_experimental_native_u16_page2_requires_dropbear_runtime_gate(void)
+{
+#if defined(CORE_TEENSY41) && defined(TS_EXPERIMENTAL_NATIVE_U16_PAGE2)
+  const byte originalPinMapping = configPage2.pinMapping;
+
+  configPage2.pinMapping = 0U;
+  TEST_ASSERT_FALSE(isExperimentalNativeU16Page2Enabled());
+  TEST_ASSERT_EQUAL_UINT8(TS_PAGE_SERIALIZATION_CURRENT_BYTES, getTunerStudioPageSerializationMode(veMapPage));
+  TEST_ASSERT_EQUAL_UINT16(getPageSize(veMapPage), getTunerStudioPageSize(veMapPage));
+
+  configPage2.pinMapping = originalPinMapping;
+#else
+  TEST_IGNORE_MESSAGE("Experimental native U16 page-2 runtime gating detail is compile-time disabled");
+#endif
+}
+
+void test_experimental_native_u16_page2_runtime_consumers_still_narrow_to_byte(void)
+{
+#if defined(CORE_TEENSY41) && defined(TS_EXPERIMENTAL_NATIVE_U16_PAGE2)
+  const byte originalPinMapping = configPage2.pinMapping;
+  const table3d_value_t originalValue = fuelTable.values.value_at(0U);
+  const table3d_axis_t originalRpmAxis = *fuelTable.axisX.begin();
+  const table3d_axis_t originalLoadAxis = *fuelTable.axisY.begin();
+  const uint16_t originalRpm = currentStatus.RPM;
+  const int16_t originalFuelLoad = currentStatus.fuelLoad;
+  const byte originalAlgorithm = configPage2.fuelAlgorithm;
+
+  configPage2.pinMapping = PIN_LAYOUT_DROPBEAR;
+  configPage2.fuelAlgorithm = LOAD_SOURCE_MAP;
+  *fuelTable.axisX.begin() = 1000;
+  *fuelTable.axisY.begin() = 40;
+  fuelTable.values.value_at(0U) = 850U;
+  currentStatus.RPM = 1000U;
+  currentStatus.MAP = 40U;
+  currentStatus.fuelLoad = 40;
+
+  TEST_ASSERT_TRUE(isExperimentalNativeU16Page2Enabled());
+  TEST_ASSERT_EQUAL_UINT8(static_cast<uint8_t>(850U & 0xFFU), getVE1());
+
+  configPage2.pinMapping = originalPinMapping;
+  configPage2.fuelAlgorithm = originalAlgorithm;
+  fuelTable.values.value_at(0U) = originalValue;
+  *fuelTable.axisX.begin() = originalRpmAxis;
+  *fuelTable.axisY.begin() = originalLoadAxis;
+  currentStatus.RPM = originalRpm;
+  currentStatus.fuelLoad = originalFuelLoad;
+#else
+  TEST_IGNORE_MESSAGE("Experimental native U16 page-2 runtime narrowing detail is compile-time disabled");
+#endif
+}
+
 void test_setup(void)
 {
   SET_UNITY_FILENAME() {
@@ -229,5 +328,8 @@ void test_setup(void)
     RUN_TEST_P(test_explicit_ts_byte_mode_matches_existing_contract);
     RUN_TEST_P(test_explicit_ts_byte_mode_round_trips_multi_entity_page);
     RUN_TEST_P(test_experimental_native_u16_page2_seam);
+    RUN_TEST_P(test_experimental_native_u16_page2_layout_matches_ini_offsets);
+    RUN_TEST_P(test_experimental_native_u16_page2_requires_dropbear_runtime_gate);
+    RUN_TEST_P(test_experimental_native_u16_page2_runtime_consumers_still_narrow_to_byte);
   }
 }
