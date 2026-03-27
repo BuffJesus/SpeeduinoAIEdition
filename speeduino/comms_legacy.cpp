@@ -399,11 +399,7 @@ const char *getLegacyVersionResponse(byte cmd)
   switch (cmd)
   {
     case 'Q':
-#if defined(CORE_TEENSY41) && defined(TS_EXPERIMENTAL_NATIVE_U16_PAGE2)
-      return "speeduino 202501-T41-U16P2";
-#else
-      return "speeduino 202501-T41";   // Teensy 4.1 with 16-bit table values
-#endif
+      return isExperimentalNativeU16Page2Enabled() ? "speeduino 202501-T41-U16P2" : "speeduino 202501-T41";
     case 'S':
       return "Speeduino 2025.01.6";
     default:

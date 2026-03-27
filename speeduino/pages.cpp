@@ -37,6 +37,7 @@ inline bool supports_native_u16_page2_mode(byte pageNum, ts_page_serialization_m
 #if defined(CORE_TEENSY41) && defined(TS_EXPERIMENTAL_NATIVE_U16_PAGE2)
   return (mode == TS_PAGE_SERIALIZATION_NATIVE_U16)
       && (pageNum == veMapPage)
+      && (configPage2.pinMapping == PIN_LAYOUT_DROPBEAR)
       && boardHasCapability(BOARD_CAP_HIGH_RES_TABLES);
 #else
   (void)pageNum;

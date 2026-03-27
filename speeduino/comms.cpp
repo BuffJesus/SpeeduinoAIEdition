@@ -68,11 +68,8 @@ static constexpr byte serialVersion[] PROGMEM = {SERIAL_RC_OK, '0', '0', '2'};
 static constexpr byte canId[] PROGMEM = {SERIAL_RC_OK, 0};
 //static constexpr byte codeVersion[] PROGMEM = { SERIAL_RC_OK, 's','p','e','e','d','u','i','n','o',' ','2','0','2','4','0','5','-','d','e','v'} ; //Note no null terminator in array and status variable at the start
 //static constexpr byte productString[] PROGMEM = { SERIAL_RC_OK, 'S', 'p', 'e', 'e', 'd', 'u', 'i', 'n', 'o', ' ', '2', '0', '2', '4', '.', '0', '5', '-', 'd', 'e', 'v'};
-#if defined(CORE_TEENSY41) && defined(TS_EXPERIMENTAL_NATIVE_U16_PAGE2)
-static constexpr byte codeVersion[] PROGMEM = { SERIAL_RC_OK, 's','p','e','e','d','u','i','n','o',' ','2','0','2','5','0','1','-','T','4','1','-','U','1','6','P','2'} ; // Alternate experimental signature for native-U16 page-2 TS contract
-#else
-static constexpr byte codeVersion[] PROGMEM = { SERIAL_RC_OK, 's','p','e','e','d','u','i','n','o',' ','2','0','2','5','0','1','-','T','4','1'} ; //Note no null terminator in array and status variable at the start
-#endif
+static constexpr byte codeVersionExperimental[] PROGMEM = { SERIAL_RC_OK, 's','p','e','e','d','u','i','n','o',' ','2','0','2','5','0','1','-','T','4','1','-','U','1','6','P','2'} ; // Alternate experimental signature for native-U16 page-2 TS contract
+static constexpr byte codeVersionDefault[] PROGMEM = { SERIAL_RC_OK, 's','p','e','e','d','u','i','n','o',' ','2','0','2','5','0','1','-','T','4','1'} ; //Note no null terminator in array and status variable at the start
 static constexpr byte productString[] PROGMEM = { SERIAL_RC_OK, 'S', 'p', 'e', 'e', 'd', 'u', 'i', 'n', 'o', ' ', '2', '0', '2', '5', '.', '0', '1', '.','6'};
 static constexpr byte testCommsResponse[] PROGMEM = { SERIAL_RC_OK, 255 };
 /// @}
@@ -106,6 +103,18 @@ static uint32_t SDreadCompletedSectors = 0;
 static uint8_t serialPayload[SERIAL_BUFFER_SIZE]; //!< Serial payload buffer
 static uint16_t serialPayloadLength = 0; //!< How many bytes in serialPayload were received or sent
 Stream* pPrimarySerial;
+
+static void copyCodeVersionToPayload(void)
+{
+  if (isExperimentalNativeU16Page2Enabled())
+  {
+    (void)memcpy_P(serialPayload, codeVersionExperimental, sizeof(codeVersionExperimental));
+  }
+  else
+  {
+    (void)memcpy_P(serialPayload, codeVersionDefault, sizeof(codeVersionDefault));
+  }
+}
 
 #if defined(CORE_AVR)
 #pragma GCC push_options
@@ -738,8 +747,8 @@ void processSerialCommand(void)
     }
 
     case 'Q': // send code version
-      (void)memcpy_P(serialPayload, codeVersion, sizeof(codeVersion) );
-      sendSerialPayloadNonBlocking(sizeof(codeVersion));
+      copyCodeVersionToPayload();
+      sendSerialPayloadNonBlocking(isExperimentalNativeU16Page2Enabled() ? sizeof(codeVersionExperimental) : sizeof(codeVersionDefault));
       break;
 
     case 'r': //New format for the optimised OutputChannels
@@ -760,8 +769,8 @@ void processSerialCommand(void)
       else if(cmd == 0x0fU)
       {
         //Request for signature
-        (void)memcpy_P(serialPayload, codeVersion, sizeof(codeVersion) );
-        sendSerialPayloadNonBlocking(sizeof(codeVersion));
+        copyCodeVersionToPayload();
+        sendSerialPayloadNonBlocking(isExperimentalNativeU16Page2Enabled() ? sizeof(codeVersionExperimental) : sizeof(codeVersionDefault));
       }
 #ifdef COMMS_SD
       else if(cmd == SD_RTC_PAGE) //Request to read SD card RTC

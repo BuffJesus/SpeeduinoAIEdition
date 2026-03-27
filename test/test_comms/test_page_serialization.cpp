@@ -184,6 +184,8 @@ void test_explicit_ts_byte_mode_round_trips_multi_entity_page(void)
 void test_experimental_native_u16_page2_seam(void)
 {
 #if defined(CORE_TEENSY41) && defined(TS_EXPERIMENTAL_NATIVE_U16_PAGE2)
+  const byte originalPinMapping = configPage2.pinMapping;
+  configPage2.pinMapping = PIN_LAYOUT_DROPBEAR;
   TEST_ASSERT_TRUE(isExperimentalNativeU16Page2Enabled());
   TEST_ASSERT_EQUAL_UINT8(TS_PAGE_SERIALIZATION_NATIVE_U16, getTunerStudioPageSerializationMode(veMapPage));
   TEST_ASSERT_EQUAL_UINT16(544U, getTunerStudioPageSize(veMapPage));
@@ -206,6 +208,7 @@ void test_experimental_native_u16_page2_seam(void)
   TEST_ASSERT_EQUAL_HEX32(expected, calculatePageCRC32(veMapPage));
 
   fuelTable.values.value_at(0U) = original;
+  configPage2.pinMapping = originalPinMapping;
 #else
   TEST_IGNORE_MESSAGE("Experimental native U16 page-2 seam is compile-time disabled");
 #endif
