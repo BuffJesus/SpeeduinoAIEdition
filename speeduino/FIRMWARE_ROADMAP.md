@@ -448,6 +448,13 @@ See audit findings below.
   - `checkBoostLimit()` (4 tests): MAP below threshold (no cut), PROTECT_CUT_IGN (status2 bit only), PROTECT_CUT_FUEL (status1 bit only), PROTECT_CUT_BOTH (both bits)
 - test_protection: 12/12 PASSED (new suite); total: 813/819 (6 skipped unchanged)
 
+**Slice N: Oil pressure and coolant-mode rev limit tests** ✅ **COMPLETE**
+- Extended `test/test_protection/test_engine_protection.cpp` with 7 new tests:
+  - `checkRevLimit()` coolant mode (2 tests): uniform-bin `coolantProtectTable` via `construct2dTable`; below limit (no bits), above limit (`ENGINE_PROTECT_BIT_COOLANT` + `ENGINE_PROTECT_BIT_RPM` + `BIT_STATUS2_HRDLIM`)
+  - `checkOilPressureLimit()` (5 tests): `PROTECT_CUT_OFF` disables, `oilPressureProtEnbl=0` skips gate, pressure above limit (no cut), zero delay fires immediately (`protectionTimerElapsed(0,0,0)=true`), pre-set `ENGINE_PROTECT_BIT_OIL` `alreadyActive` path bypasses non-zero delay
+- Key pattern: `oilProtectCountEnabled` reset via above-limit call in `setup_oil_protect()`; `alreadyActive` captured before bit is cleared at call start
+- test_protection: 12 → 19/19 PASSED; total: 813/819 → 820/826 (6 skipped unchanged)
+
 **Slice D: Re-land Nissan360 `useResync == false` assertion** ✅ **COMPLETE**
 - Resolved the previously-backed-out order-sensitive interaction with Harley replay coverage
 - Root cause: `reset_nissan360_runtime()` was missing `testClearTriggerStateOverrides()` — unlike `reset_harley_runtime()` which calls it explicitly; trigger-state override machinery left in unknown state after each Nissan360 state test could leak into subsequent tests
