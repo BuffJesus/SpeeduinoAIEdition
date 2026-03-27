@@ -7,6 +7,7 @@
 extern volatile unsigned long toothLastToothTime;
 extern volatile unsigned long toothLastMinusOneToothTime;
 extern volatile uint16_t toothCurrentCount;
+extern volatile unsigned long curGap2;
 extern volatile unsigned long lastGap;
 extern volatile unsigned long targetGap;
 
@@ -37,6 +38,7 @@ static void reset_mazdaau_runtime(void)
     toothCurrentCount = 0U;
     toothOneTime = 0U;
     toothOneMinusOneTime = 0U;
+    curGap2 = 0U;
     lastGap = 0U;
     targetGap = 0U;
     testClearTriggerStateOverrides();

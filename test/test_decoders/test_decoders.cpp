@@ -60,6 +60,7 @@ void setup()
     testFourTwentyA();
     testGm24X();
     testGm7X();
+    testFourG63();
     testHarley();
     testJeep2000();
     testMazdaAU();
@@ -75,7 +76,6 @@ void setup()
     testSuzukiK6A_runtimeState();
     testTriggerTraceReplay();
     testThirtySixMinus21();
-    testFourG63();
     
     UNITY_END(); // stop unit testing
 
