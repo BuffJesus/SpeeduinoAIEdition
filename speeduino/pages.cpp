@@ -1,7 +1,9 @@
 #include "pages.h"
 #include "globals.h"
+#include "page_crc.h"
 #include "utilities.h"
 #include "table3d_axis_io.h"
+#include "src/FastCRC/FastCRC.h"
 
 // Maps from virtual page "addresses" to addresses/bytes of real in memory entities
 //
@@ -31,6 +33,20 @@ namespace {
 constexpr uint16_t kExperimentalNativeU16Page2ValueBytes = 16U * 16U * sizeof(uint16_t);
 constexpr uint16_t kExperimentalNativeU16Page2AxisBytes = 16U;
 constexpr uint16_t kExperimentalNativeU16Page2Size = kExperimentalNativeU16Page2ValueBytes + (2U * kExperimentalNativeU16Page2AxisBytes);
+
+#if defined(CORE_TEENSY41) && defined(TS_EXPERIMENTAL_NATIVE_U16_PAGE2)
+struct experimental_native_u16_page2_write_debug_t {
+  bool valid;
+  bool bufferInitialized;
+  uint16_t lastOffset;
+  uint16_t lastLength;
+  uint32_t incomingPageCrc;
+  uint32_t controllerPageCrc;
+  byte pageBuffer[kExperimentalNativeU16Page2Size];
+};
+
+experimental_native_u16_page2_write_debug_t experimentalNativeU16Page2WriteDebug = {};
+#endif
 
 inline bool experimental_native_u16_page2_looks_legacy_byte_scaled(void)
 {
@@ -160,6 +176,41 @@ inline void write_experimental_native_u16_page2_bytes(uint16_t offset, const byt
   }
 
   invalidate_cache(&fuelTable.get_value_cache);
+}
+
+inline void seed_experimental_native_u16_page2_debug_buffer(void)
+{
+  for (uint16_t offset = 0U; offset < kExperimentalNativeU16Page2Size; ++offset)
+  {
+    experimentalNativeU16Page2WriteDebug.pageBuffer[offset] = get_experimental_native_u16_page2_byte(offset);
+  }
+  experimentalNativeU16Page2WriteDebug.bufferInitialized = true;
+}
+
+inline void capture_experimental_native_u16_page2_incoming_write(uint16_t offset, const byte *buffer, uint16_t length)
+{
+  if (!experimentalNativeU16Page2WriteDebug.bufferInitialized || (offset == 0U))
+  {
+    seed_experimental_native_u16_page2_debug_buffer();
+  }
+
+  memcpy(&experimentalNativeU16Page2WriteDebug.pageBuffer[offset], buffer, length);
+
+  FastCRC32 crcCalc;
+  experimentalNativeU16Page2WriteDebug.lastOffset = offset;
+  experimentalNativeU16Page2WriteDebug.lastLength = length;
+  experimentalNativeU16Page2WriteDebug.incomingPageCrc = ~crcCalc.crc32(
+    experimentalNativeU16Page2WriteDebug.pageBuffer,
+    kExperimentalNativeU16Page2Size,
+    false);
+  experimentalNativeU16Page2WriteDebug.valid = true;
+}
+
+inline void capture_experimental_native_u16_page2_controller_crc(void)
+{
+  experimentalNativeU16Page2WriteDebug.controllerPageCrc =
+    calculatePageCRC32ForMode(veMapPage, TS_PAGE_SERIALIZATION_NATIVE_U16);
+  experimentalNativeU16Page2WriteDebug.valid = true;
 }
 #endif
 
@@ -601,6 +652,41 @@ bool isExperimentalNativeU16Page2Enabled(void)
   return supports_native_u16_page2_mode(veMapPage, TS_PAGE_SERIALIZATION_NATIVE_U16);
 }
 
+bool getExperimentalNativeU16Page2WriteDebug(uint16_t *lastOffset, uint16_t *lastLength, uint32_t *incomingPageCrc, uint32_t *controllerPageCrc)
+{
+#if defined(CORE_TEENSY41) && defined(TS_EXPERIMENTAL_NATIVE_U16_PAGE2)
+  if (!experimentalNativeU16Page2WriteDebug.valid)
+  {
+    return false;
+  }
+
+  if (lastOffset != nullptr)
+  {
+    *lastOffset = experimentalNativeU16Page2WriteDebug.lastOffset;
+  }
+  if (lastLength != nullptr)
+  {
+    *lastLength = experimentalNativeU16Page2WriteDebug.lastLength;
+  }
+  if (incomingPageCrc != nullptr)
+  {
+    *incomingPageCrc = experimentalNativeU16Page2WriteDebug.incomingPageCrc;
+  }
+  if (controllerPageCrc != nullptr)
+  {
+    *controllerPageCrc = experimentalNativeU16Page2WriteDebug.controllerPageCrc;
+  }
+
+  return true;
+#else
+  (void)lastOffset;
+  (void)lastLength;
+  (void)incomingPageCrc;
+  (void)controllerPageCrc;
+  return false;
+#endif
+}
+
 void normalizeExperimentalNativeU16Page2IfNeeded(void)
 {
 #if defined(CORE_TEENSY41) && defined(TS_EXPERIMENTAL_NATIVE_U16_PAGE2)
@@ -677,7 +763,9 @@ void writeTunerStudioPageValuesFromBufferForMode(byte pageNum, uint16_t offset, 
 #if defined(CORE_TEENSY41)
   if (normalizedMode == TS_PAGE_SERIALIZATION_NATIVE_U16)
   {
+    capture_experimental_native_u16_page2_incoming_write(offset, buffer, length);
     write_experimental_native_u16_page2_bytes(offset, buffer, length);
+    capture_experimental_native_u16_page2_controller_crc();
     return;
   }
 #else
