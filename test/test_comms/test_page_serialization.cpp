@@ -83,6 +83,28 @@ void test_copy_page_values_matches_get_page_value_for_multi_entity_page(void)
   }
 }
 
+void test_write_page_values_from_buffer_round_trips_multi_entity_page(void)
+{
+  byte original[240];
+  byte modified[240];
+  const uint16_t pageSize = getPageSize(boostvvtPage);
+
+  copyPageValuesToBuffer(boostvvtPage, 0U, original, pageSize);
+  for (uint16_t offset = 0; offset < pageSize; offset++)
+  {
+    modified[offset] = byte((offset * 3U) & 0xFFU);
+  }
+
+  writePageValuesFromBuffer(boostvvtPage, 0U, modified, pageSize);
+
+  for (uint16_t offset = 0; offset < pageSize; offset++)
+  {
+    TEST_ASSERT_EQUAL_UINT8(modified[offset], getPageValue(boostvvtPage, offset));
+  }
+
+  writePageValuesFromBuffer(boostvvtPage, 0U, original, pageSize);
+}
+
 void test_page_crc_matches_serialized_ts_byte_stream(void)
 {
   byte pageBuffer[288];
@@ -129,6 +151,7 @@ void test_setup(void)
     RUN_TEST_P(test_page_iterators_match_virtual_page_sizes);
     RUN_TEST_P(test_copy_page_values_matches_get_page_value);
     RUN_TEST_P(test_copy_page_values_matches_get_page_value_for_multi_entity_page);
+    RUN_TEST_P(test_write_page_values_from_buffer_round_trips_multi_entity_page);
     RUN_TEST_P(test_page_crc_matches_serialized_ts_byte_stream);
     RUN_TEST_P(test_multi_entity_page_crc_matches_serialized_ts_byte_stream);
     RUN_TEST_P(test_teensy_internal_values_still_serialize_as_single_bytes);

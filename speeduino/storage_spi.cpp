@@ -207,9 +207,7 @@ bool loadTablePageFromFlash(uint8_t pageNum) {
 
     if (bytesRead != pageSize) { return false; }
 
-    for (uint16_t i = 0; i < pageSize; i++) {
-        setPageValue(pageNum, i, buf[i]);
-    }
+    writePageValuesFromBuffer(pageNum, 0U, buf, pageSize);
 
     return true;
 }

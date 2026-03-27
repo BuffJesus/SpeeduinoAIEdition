@@ -320,10 +320,7 @@ static bool updatePageValues(uint8_t pageNum, uint16_t offset, const byte *buffe
 {
   if ( (offset + length) <= getPageSize(pageNum) )
   {
-    for(uint16_t i = 0; i < length; i++)
-    {
-      setPageValue(pageNum, (offset + i), buffer[i]);
-    }
+    writePageValuesFromBuffer(pageNum, offset, buffer, length);
     deferEEPROMWritesUntil = micros() + EEPROM_DEFER_DELAY;
     return true;
   }

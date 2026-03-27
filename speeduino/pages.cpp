@@ -434,6 +434,14 @@ void setPageValue(byte pageNum, uint16_t offset, byte value)
   set_value(entity, value, offset);
 }
 
+void writePageValuesFromBuffer(byte pageNum, uint16_t offset, const byte *buffer, uint16_t length)
+{
+  for (uint16_t i = 0; i < length; i++)
+  {
+    setPageValue(pageNum, offset + i, buffer[i]);
+  }
+}
+
 byte getPageValue(byte pageNum, uint16_t offset)
 {
   page_iterator_t entity = map_page_offset_to_entity(pageNum, offset);

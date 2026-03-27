@@ -51,6 +51,11 @@ void setPageValue(  byte pageNum,       /**< [in] The page number to retrieve da
                     byte value          /**< [in] The new value */
                     );
 
+/**
+ * Writes a contiguous TS-visible byte range into a page from a caller buffer.
+ */
+void writePageValuesFromBuffer(byte pageNum, uint16_t offset, const byte *buffer, uint16_t length);
+
 // ============================== Page Iteration ==========================
 
 // A logical TS page is actually multiple in memory entities. Allow iteration
