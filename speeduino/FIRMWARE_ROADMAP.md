@@ -511,6 +511,8 @@ See audit findings below.
   - TunerStudio itself supports `U16` tables, but this firmware's TS-facing transport still exposes the main tune/map pages as byte-serialized virtual pages
   - the current `p` / `M` / `d` handlers, `getPageValue()` / `setPageValue()` mapping, page CRC calculation, and SPI-flash page mirroring all operate on that byte stream contract
   - internal Teensy table storage may be `uint16_t`, but the TS-visible page layout is still `288`-byte virtual pages for the 16x16 maps, not native `544`-byte `U16` pages
+  - the non-TS persistence path already writes full `table3d_value_t` rows through [storage.cpp](C:/Users/Cornelio/Desktop/speeduino-202501.6/speeduino/storage.cpp), so the narrowest future experiment is not "flip the INI to `U16`"; it is a parallel Teensy-only TS serializer/deserializer/CRC path for one page while keeping the current byte path intact
+  - the current public page API is the blocking seam: [pages.h](C:/Users/Cornelio/Desktop/speeduino-202501.6/speeduino/pages.h) only exposes `getPageSize()`, `getPageValue()`, and `setPageValue()` as byte-oriented operations, and both [comms.cpp](C:/Users/Cornelio/Desktop/speeduino-202501.6/speeduino/comms.cpp) and [comms_legacy.cpp](C:/Users/Cornelio/Desktop/speeduino-202501.6/speeduino/comms_legacy.cpp) stream those bytes directly
   - prior attempts to switch the INI/page sizes to native `U16` broke burn reliability because page sizing, serialization, CRC hashing, and project-local INI copies no longer matched
   - a real native-`U16` implementation would need a deliberate feature slice:
     - define a TS-visible `U16` page contract for the affected pages
@@ -519,6 +521,10 @@ See audit findings below.
     - update CRC hashing to cover the exact same transmitted byte stream
     - update SPI-flash save/load helpers that currently iterate bytewise via `getPageValue()` / `setPageValue()`
     - update packaged and project-local INIs consistently
+  - the safest experimental milestone would be:
+    - add a parallel Teensy-only TS page reader/writer + CRC helper for one 16x16 table page
+    - gate it behind an explicit experimental signature or capability bit so existing projects stay on the working byte contract
+    - prove end-to-end coherence for page read, page write, burn, CRC, and flash mirror before touching the remaining pages
   - until that full slice is implemented and validated end-to-end on Teensy, keep the working byte-serialized TS contract
 - `Rover MEMS` full replay remains intentionally deferred:
   - the repo still lacks a safe tooth-numbered mapping from a logged cam transition to the decoder's `secondaryToothCount == 6 / 4 / 3` gap events needed for full `Crank Speed + 5-3-2 cam` replay
