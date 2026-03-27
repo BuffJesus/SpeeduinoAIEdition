@@ -507,6 +507,19 @@ See audit findings below.
 
 ## Trouble Areas
 
+- Teensy 4.1 native 16-bit TunerStudio tune pages remain **deferred**:
+  - TunerStudio itself supports `U16` tables, but this firmware's TS-facing transport still exposes the main tune/map pages as byte-serialized virtual pages
+  - the current `p` / `M` / `d` handlers, `getPageValue()` / `setPageValue()` mapping, page CRC calculation, and SPI-flash page mirroring all operate on that byte stream contract
+  - internal Teensy table storage may be `uint16_t`, but the TS-visible page layout is still `288`-byte virtual pages for the 16x16 maps, not native `544`-byte `U16` pages
+  - prior attempts to switch the INI/page sizes to native `U16` broke burn reliability because page sizing, serialization, CRC hashing, and project-local INI copies no longer matched
+  - a real native-`U16` implementation would need a deliberate feature slice:
+    - define a TS-visible `U16` page contract for the affected pages
+    - update page sizing and offset mapping
+    - update read serialization and write deserialization
+    - update CRC hashing to cover the exact same transmitted byte stream
+    - update SPI-flash save/load helpers that currently iterate bytewise via `getPageValue()` / `setPageValue()`
+    - update packaged and project-local INIs consistently
+  - until that full slice is implemented and validated end-to-end on Teensy, keep the working byte-serialized TS contract
 - `Rover MEMS` full replay remains intentionally deferred:
   - the repo still lacks a safe tooth-numbered mapping from a logged cam transition to the decoder's `secondaryToothCount == 6 / 4 / 3` gap events needed for full `Crank Speed + 5-3-2 cam` replay
   - treat this as an evidence-conversion blocker, not as a signal to synthesize more speculative traces
