@@ -122,14 +122,13 @@ Those transport proofs now exist for the experimental page-2 seam.
 
 The remaining blocker is no longer TunerStudio page transport. It is the runtime VE contract.
 
-Primary bottlenecks:
+Primary bottlenecks that originally blocked end-to-end U16 fueling:
 - [speeduino.ino](C:/Users/Cornelio/Desktop/speeduino-202501.6/speeduino/speeduino.ino)
-  - `getVE1()` still returns `byte`
-  - `PW(int REQ_FUEL, byte VE, ...)` still accepts `byte`
-  - the main loop assigns `currentStatus.VE1 = getVE1()` and then `currentStatus.VE = currentStatus.VE1`
+  - `getVE1Runtime()` / `PW(..., table3d_value_t VE, ...)` now provide a high-resolution runtime fueling path in the experimental page-2 mode
+  - `getVE1()` remains a byte-sized compatibility/display view
 - [secondaryTables.cpp](C:/Users/Cornelio/Desktop/speeduino-202501.6/speeduino/secondaryTables.cpp)
-  - `getVE2()` still returns `byte`
-  - secondary-table combine/switch modes clamp or assign into byte-sized `currentStatus.VE` / `VE2`
+  - `getVE2Runtime()` and `calculateSecondaryFuel(...)` now normalize the secondary-table runtime VE path to the same experimental runtime unit
+  - `getVE2()` remains a byte-sized compatibility/display view
 - [globals.h](C:/Users/Cornelio/Desktop/speeduino-202501.6/speeduino/globals.h)
   - `currentStatus.VE`, `currentStatus.VE1`, and `currentStatus.VE2` are all `byte`
 - [logger.cpp](C:/Users/Cornelio/Desktop/speeduino-202501.6/speeduino/logger.cpp), [live_data_map.h](C:/Users/Cornelio/Desktop/speeduino-202501.6/speeduino/live_data_map.h), and [comms_legacy.cpp](C:/Users/Cornelio/Desktop/speeduino-202501.6/speeduino/comms_legacy.cpp)
@@ -139,11 +138,10 @@ That means the experimental page-2 native-`U16` path currently proves:
 - TS can read/write page 2 as `U16`
 - CRC matches the same serialized page-2 byte stream
 - SPI-flash mirroring can follow the same serialized page-2 byte stream
+- runtime fueling can consume the full high-resolution VE path for experimental page 2 while keeping byte-sized compatibility status fields
 
 It does **not** yet prove:
-- runtime fueling uses the full `U16` VE value
-- secondary VE blending preserves `U16` precision
-- output channels / logs / legacy channels can represent widened VE values coherently
+- output channels / logs / legacy channels can represent widened VE values coherently without a separate packet contract
 
 ## Minimum Safe Design For Real U16 Fueling
 
@@ -151,9 +149,9 @@ If end-to-end high-resolution fueling is attempted, the narrowest defensible pat
 
 1. Keep the production byte TS contract unchanged.
 2. Keep the current experimental page-2 TS seam as the transport boundary.
-3. Introduce a separate runtime VE type/helper for Teensy high-resolution fueling instead of widening every status/log field first.
-4. Decide explicitly whether `currentStatus.VE*` remain byte-sized display channels or gain parallel high-resolution fields.
-5. Only widen logger/live-data contracts if a concrete external consumer requires true runtime high-resolution VE visibility.
+3. Use a separate runtime VE type/helper for Teensy high-resolution fueling instead of widening every status/log field first.
+4. Keep `currentStatus.VE*` as byte-sized compatibility/display channels unless a separate experimental output-channel contract is deliberately added.
+5. Only widen logger/live-data contracts if a concrete external consumer requires true runtime high-resolution VE visibility and an alternate signature/INI/ochBlockSize flow is introduced.
 
 The risky version would be to widen `currentStatus.VE`, `VE1`, `VE2`, `PW(...)`, logger maps, legacy channels, and TS contracts all in one slice. That is not a narrow change.
 

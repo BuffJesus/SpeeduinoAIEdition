@@ -528,8 +528,9 @@ See audit findings below.
   - until that full slice is implemented and validated end-to-end on Teensy, keep the working byte-serialized TS contract
   - current repo state update:
     - the experimental milestone above is now substantially complete for page `2` only: there is a Teensy-only, DropBear-gated, alternate-signature native-`U16` TS transport seam with matching read/write/CRC/SPI-flash behavior
-    - what remains deferred is **end-to-end runtime high-resolution fueling**, because `getVE1()` / `getVE2()`, `PW(...)`, `currentStatus.VE*`, and logger/live-data surfaces are still byte-oriented
-    - treat this as a separate design slice from TS page transport; do not conflate "TS can edit `U16` page 2" with "fueling consumes `U16` VE end-to-end"
+    - the experimental runtime fueling slice is now also in place for page `2`: fueling uses a high-resolution runtime VE path while `currentStatus.VE*` remain byte-sized compatibility/display channels
+    - what remains deferred is **high-resolution VE telemetry/output-channel exposure**, because logger/live-data/legacy packet layouts are still byte-oriented and shared by existing consumers
+    - treat telemetry widening as a separate design slice from TS page transport and fueling; do not conflate "TS can edit `U16` page 2" or "fueling consumes hi-res VE" with "all external status/log contracts expose hi-res VE"
 - `Rover MEMS` full replay remains intentionally deferred:
   - the repo still lacks a safe tooth-numbered mapping from a logged cam transition to the decoder's `secondaryToothCount == 6 / 4 / 3` gap events needed for full `Crank Speed + 5-3-2 cam` replay
   - treat this as an evidence-conversion blocker, not as a signal to synthesize more speculative traces
