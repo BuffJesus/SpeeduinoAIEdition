@@ -2,13 +2,13 @@
 #include <globals.h>
 #include <unity.h>
 #include "../test_utils.h"
+#include "../decoder_test_utils.h"
 #include "DRZ400.h"
 
 extern volatile unsigned long toothLastToothTime;
 extern volatile unsigned long toothLastMinusOneToothTime;
 extern volatile unsigned long triggerFilterTime;
 extern volatile unsigned long triggerSecFilterTime;
-extern volatile unsigned long curGap2;
 extern volatile uint16_t toothCurrentCount;
 extern volatile uint16_t triggerToothAngle;
 
@@ -40,7 +40,6 @@ static void reset_drz400_runtime(void)
     toothLastMinusOneToothTime = 0U;
     triggerFilterTime = 0U;
     triggerSecFilterTime = 0U;
-    curGap2 = 0U;
     toothCurrentCount = 0U;
     triggerToothAngle = 0U;
     toothOneTime = 0U;
@@ -48,9 +47,7 @@ static void reset_drz400_runtime(void)
     revolutionTime = 0U;
     revolutionOne = false;
 
-    testClearTriggerStateOverrides();
-    curGap2 = 0U;
-    resetDecoder();
+    resetDecoderTestTransientState();
 }
 
 static void setup_drz400_state_machine(void)
@@ -61,8 +58,7 @@ static void setup_drz400_state_machine(void)
 
 static void cleanup_drz400_state_machine(void)
 {
-    testClearTriggerStateOverrides();
-    resetDecoder();
+    resetDecoderTestTransientState();
 }
 
 static void emit_drz400_primary_gap(unsigned long gapUs)

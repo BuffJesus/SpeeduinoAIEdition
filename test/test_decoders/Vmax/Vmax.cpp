@@ -2,12 +2,11 @@
 #include <globals.h>
 #include <unity.h>
 #include "../test_utils.h"
+#include "../decoder_test_utils.h"
 #include "Vmax.h"
 
 extern volatile unsigned long toothLastToothTime;
 extern volatile unsigned long toothLastMinusOneToothTime;
-extern volatile unsigned long curGap2;
-extern volatile unsigned long lastGap;
 extern volatile unsigned long triggerFilterTime;
 extern volatile uint16_t toothCurrentCount;
 extern volatile uint16_t triggerToothAngle;
@@ -35,8 +34,6 @@ static void reset_vmax_runtime(void)
 
     toothLastToothTime = 0U;
     toothLastMinusOneToothTime = 0U;
-    curGap2 = 0U;
-    lastGap = 0U;
     triggerFilterTime = 0U;
     toothCurrentCount = 0U;
     triggerToothAngle = 0U;
@@ -44,8 +41,7 @@ static void reset_vmax_runtime(void)
     toothOneMinusOneTime = 0U;
 
     primaryTriggerEdge = true;
-    testClearTriggerStateOverrides();
-    resetDecoder();
+    resetDecoderTestTransientState();
 }
 
 static void setup_vmax_state_machine(void)
@@ -58,7 +54,7 @@ static void setup_vmax_state_machine(void)
 
 static void cleanup_vmax_state_machine(void)
 {
-    testClearTriggerStateOverrides();
+    resetDecoderTestTransientState();
 }
 
 static void emit_vmax_edge(unsigned long gapUs, bool primaryState)

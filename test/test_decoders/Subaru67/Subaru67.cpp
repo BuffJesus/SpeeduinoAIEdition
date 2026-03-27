@@ -2,6 +2,7 @@
 #include <globals.h>
 #include <unity.h>
 #include "../test_utils.h"
+#include "../decoder_test_utils.h"
 #include "Subaru67.h"
 
 extern volatile unsigned long toothLastToothTime;
@@ -41,8 +42,7 @@ static void reset_subaru67_runtime(void)
     triggerToothAngle = 0U;
     toothOneTime = 0U;
     toothOneMinusOneTime = 0U;
-    testClearTriggerStateOverrides();
-    resetDecoder();
+    resetDecoderTestTransientState();
 }
 
 static void setup_subaru67_state_machine(void)

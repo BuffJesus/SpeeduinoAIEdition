@@ -2,12 +2,11 @@
 #include <globals.h>
 #include <unity.h>
 #include "../test_utils.h"
+#include "../decoder_test_utils.h"
 #include "HondaD17.h"
 
 extern volatile unsigned long toothLastToothTime;
 extern volatile unsigned long toothLastMinusOneToothTime;
-extern volatile unsigned long lastGap;
-extern volatile unsigned long targetGap;
 extern volatile uint16_t toothCurrentCount;
 extern volatile uint16_t triggerToothAngle;
 
@@ -34,12 +33,10 @@ static void reset_hondad17_runtime(void)
     toothLastToothTime = 0U;
     toothLastMinusOneToothTime = 0U;
     toothCurrentCount = 0U;
-    lastGap = 0U;
-    targetGap = 0U;
     triggerToothAngle = 0U;
     toothOneTime = 0U;
     toothOneMinusOneTime = 0U;
-    resetDecoder();
+    resetDecoderTestTransientState();
 }
 
 static void setup_hondad17_state_machine(void)

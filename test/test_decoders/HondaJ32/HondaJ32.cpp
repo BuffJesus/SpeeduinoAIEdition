@@ -2,10 +2,10 @@
 #include <globals.h>
 #include <unity.h>
 #include "../test_utils.h"
+#include "../decoder_test_utils.h"
 #include "HondaJ32.h"
 extern volatile unsigned long toothLastToothTime;
 extern volatile uint16_t toothCurrentCount;
-extern volatile unsigned long lastGap;
 
 static void reset_hondaj32_runtime(void)
 {
@@ -27,8 +27,7 @@ static void reset_hondaj32_runtime(void)
 
     toothLastToothTime = 0U;
     toothCurrentCount = 0U;
-    lastGap = 0U;
-    resetDecoder();
+    resetDecoderTestTransientState();
 }
 
 static void setup_hondaj32_state_machine(void)

@@ -2,6 +2,7 @@
 #include <globals.h>
 #include <unity.h>
 #include "../test_utils.h"
+#include "../decoder_test_utils.h"
 #include "FourG63.h"
 
 extern volatile unsigned long toothLastToothTime;
@@ -48,8 +49,7 @@ static void reset_4g63_runtime(void)
     revolutionOne = false;
     secondaryLastToothTime1 = 0U;
 
-    testClearTriggerStateOverrides();
-    resetDecoder();
+    resetDecoderTestTransientState();
 }
 
 static void setup_4g63_state_machine(void)
@@ -62,7 +62,7 @@ static void setup_4g63_state_machine(void)
 
 static void cleanup_4g63_state_machine(void)
 {
-    testClearTriggerStateOverrides();
+    resetDecoderTestTransientState();
 }
 
 static void emit_4g63_primary_gap(unsigned long gapUs, bool primaryHigh, bool secondaryHigh)
