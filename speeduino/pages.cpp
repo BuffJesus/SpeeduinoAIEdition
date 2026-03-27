@@ -118,6 +118,49 @@ inline void set_experimental_native_u16_page2_byte(uint16_t offset, byte newValu
   *fuelTable.axisY.begin().advance(axisOffset - kExperimentalNativeU16Page2AxisBytes) = converter.from_byte(newValue);
   invalidate_cache(&fuelTable.get_value_cache);
 }
+
+inline void write_experimental_native_u16_page2_bytes(uint16_t offset, const byte *buffer, uint16_t length)
+{
+  uint16_t currentOffset = offset;
+  const byte *current = buffer;
+  uint16_t remaining = length;
+
+  if ((currentOffset < kExperimentalNativeU16Page2ValueBytes) && ((currentOffset & 1U) != 0U) && (remaining > 0U))
+  {
+    set_experimental_native_u16_page2_byte(currentOffset, *current);
+    ++currentOffset;
+    ++current;
+    --remaining;
+  }
+
+  while ((remaining >= 2U) && ((currentOffset + 1U) < kExperimentalNativeU16Page2ValueBytes))
+  {
+    const uint16_t valueIndex = currentOffset >> 1U;
+    const uint16_t newValue = static_cast<uint16_t>(current[0]) | (static_cast<uint16_t>(current[1]) << 8U);
+    fuelTable.values.value_at(valueIndex) = static_cast<table3d_value_t>(newValue);
+    currentOffset += 2U;
+    current += 2;
+    remaining -= 2U;
+  }
+
+  if ((remaining > 0U) && (currentOffset < kExperimentalNativeU16Page2ValueBytes))
+  {
+    set_experimental_native_u16_page2_byte(currentOffset, *current);
+    ++currentOffset;
+    ++current;
+    --remaining;
+  }
+
+  while (remaining > 0U)
+  {
+    set_experimental_native_u16_page2_byte(currentOffset, *current);
+    ++currentOffset;
+    ++current;
+    --remaining;
+  }
+
+  invalidate_cache(&fuelTable.get_value_cache);
+}
 #endif
 
 } // namespace
@@ -634,10 +677,7 @@ void writeTunerStudioPageValuesFromBufferForMode(byte pageNum, uint16_t offset, 
 #if defined(CORE_TEENSY41)
   if (normalizedMode == TS_PAGE_SERIALIZATION_NATIVE_U16)
   {
-    for (uint16_t i = 0; i < length; i++)
-    {
-      set_experimental_native_u16_page2_byte(offset + i, buffer[i]);
-    }
+    write_experimental_native_u16_page2_bytes(offset, buffer, length);
     return;
   }
 #else
