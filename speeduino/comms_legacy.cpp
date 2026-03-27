@@ -399,7 +399,7 @@ const char *getLegacyVersionResponse(byte cmd)
   switch (cmd)
   {
     case 'Q':
-      return "speeduino 202501";       // AVR/STM32 with 8-bit table values
+      return "speeduino 202501-T41";   // Teensy 4.1 with 16-bit table values
     case 'S':
       return "Speeduino 2025.01.6";
     default:
