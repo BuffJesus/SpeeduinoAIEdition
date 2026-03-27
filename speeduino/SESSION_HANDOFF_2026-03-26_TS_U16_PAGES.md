@@ -6,6 +6,11 @@ Native `U16` TunerStudio tune pages were **not** implemented in this session.
 
 The current Teensy 4.1 / DropBear TunerStudio path is working because it preserves the existing **byte-serialized virtual page contract**. A safe native-`U16` experiment would require a **parallel Teensy-only TS page path**, not an in-place conversion of the existing page API.
 
+Update from the follow-on experimental seam work:
+- there is now a **Teensy-only, DropBear-gated, page-2-only experimental native-`U16` TS transport seam**
+- it is isolated behind an alternate signature / alternate INI and does not replace the production byte contract
+- it is validated as a **transport/editing/CRC/SPI-flash seam**, not as end-to-end high-resolution fueling
+
 ## What Was Verified
 
 - TunerStudio itself supports `U16` arrays/tables.
@@ -110,6 +115,47 @@ Before claiming success for a one-page experimental `U16` path, prove:
    - remains intentionally on the existing byte contract, or
    - is explicitly upgraded to the same experimental stream
 5. The default production byte path remains unchanged and working.
+
+Those transport proofs now exist for the experimental page-2 seam.
+
+## What Is Still Blocking End-To-End U16 Fueling
+
+The remaining blocker is no longer TunerStudio page transport. It is the runtime VE contract.
+
+Primary bottlenecks:
+- [speeduino.ino](C:/Users/Cornelio/Desktop/speeduino-202501.6/speeduino/speeduino.ino)
+  - `getVE1()` still returns `byte`
+  - `PW(int REQ_FUEL, byte VE, ...)` still accepts `byte`
+  - the main loop assigns `currentStatus.VE1 = getVE1()` and then `currentStatus.VE = currentStatus.VE1`
+- [secondaryTables.cpp](C:/Users/Cornelio/Desktop/speeduino-202501.6/speeduino/secondaryTables.cpp)
+  - `getVE2()` still returns `byte`
+  - secondary-table combine/switch modes clamp or assign into byte-sized `currentStatus.VE` / `VE2`
+- [globals.h](C:/Users/Cornelio/Desktop/speeduino-202501.6/speeduino/globals.h)
+  - `currentStatus.VE`, `currentStatus.VE1`, and `currentStatus.VE2` are all `byte`
+- [logger.cpp](C:/Users/Cornelio/Desktop/speeduino-202501.6/speeduino/logger.cpp), [live_data_map.h](C:/Users/Cornelio/Desktop/speeduino-202501.6/speeduino/live_data_map.h), and [comms_legacy.cpp](C:/Users/Cornelio/Desktop/speeduino-202501.6/speeduino/comms_legacy.cpp)
+  - output channels and legacy live-data layouts still expose VE fields as byte-sized values
+
+That means the experimental page-2 native-`U16` path currently proves:
+- TS can read/write page 2 as `U16`
+- CRC matches the same serialized page-2 byte stream
+- SPI-flash mirroring can follow the same serialized page-2 byte stream
+
+It does **not** yet prove:
+- runtime fueling uses the full `U16` VE value
+- secondary VE blending preserves `U16` precision
+- output channels / logs / legacy channels can represent widened VE values coherently
+
+## Minimum Safe Design For Real U16 Fueling
+
+If end-to-end high-resolution fueling is attempted, the narrowest defensible path is:
+
+1. Keep the production byte TS contract unchanged.
+2. Keep the current experimental page-2 TS seam as the transport boundary.
+3. Introduce a separate runtime VE type/helper for Teensy high-resolution fueling instead of widening every status/log field first.
+4. Decide explicitly whether `currentStatus.VE*` remain byte-sized display channels or gain parallel high-resolution fields.
+5. Only widen logger/live-data contracts if a concrete external consumer requires true runtime high-resolution VE visibility.
+
+The risky version would be to widen `currentStatus.VE`, `VE1`, `VE2`, `PW(...)`, logger maps, legacy channels, and TS contracts all in one slice. That is not a narrow change.
 
 ## Current Test Gap
 
