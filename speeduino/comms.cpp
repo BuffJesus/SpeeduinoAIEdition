@@ -68,7 +68,11 @@ static constexpr byte serialVersion[] PROGMEM = {SERIAL_RC_OK, '0', '0', '2'};
 static constexpr byte canId[] PROGMEM = {SERIAL_RC_OK, 0};
 //static constexpr byte codeVersion[] PROGMEM = { SERIAL_RC_OK, 's','p','e','e','d','u','i','n','o',' ','2','0','2','4','0','5','-','d','e','v'} ; //Note no null terminator in array and status variable at the start
 //static constexpr byte productString[] PROGMEM = { SERIAL_RC_OK, 'S', 'p', 'e', 'e', 'd', 'u', 'i', 'n', 'o', ' ', '2', '0', '2', '4', '.', '0', '5', '-', 'd', 'e', 'v'};
+#if defined(CORE_TEENSY41) && defined(TS_EXPERIMENTAL_NATIVE_U16_PAGE2)
+static constexpr byte codeVersion[] PROGMEM = { SERIAL_RC_OK, 's','p','e','e','d','u','i','n','o',' ','2','0','2','5','0','1','-','T','4','1','-','U','1','6','P','2'} ; // Alternate experimental signature for native-U16 page-2 TS contract
+#else
 static constexpr byte codeVersion[] PROGMEM = { SERIAL_RC_OK, 's','p','e','e','d','u','i','n','o',' ','2','0','2','5','0','1','-','T','4','1'} ; //Note no null terminator in array and status variable at the start
+#endif
 static constexpr byte productString[] PROGMEM = { SERIAL_RC_OK, 'S', 'p', 'e', 'e', 'd', 'u', 'i', 'n', 'o', ' ', '2', '0', '2', '5', '.', '0', '1', '.','6'};
 static constexpr byte testCommsResponse[] PROGMEM = { SERIAL_RC_OK, 255 };
 /// @}
@@ -318,9 +322,9 @@ static void sendReturnCodeMsg(byte returnCode)
  */
 static bool updatePageValues(uint8_t pageNum, uint16_t offset, const byte *buffer, uint16_t length)
 {
-  if ( (offset + length) <= getPageSize(pageNum) )
+  if ( (offset + length) <= getTunerStudioPageSize(pageNum) )
   {
-    writePageValuesFromBuffer(pageNum, offset, buffer, length);
+    writeTunerStudioPageValuesFromBuffer(pageNum, offset, buffer, length);
     deferEEPROMWritesUntil = micros() + EEPROM_DEFER_DELAY;
     return true;
   }
@@ -728,7 +732,7 @@ void processSerialCommand(void)
 
       //Setup the transmit buffer
       serialPayload[0] = SERIAL_RC_OK;
-      copyPageValuesToBuffer(serialPayload[2], word(serialPayload[4], serialPayload[3]), &serialPayload[1], length);
+      copyTunerStudioPageValuesToBuffer(serialPayload[2], word(serialPayload[4], serialPayload[3]), &serialPayload[1], length);
       sendSerialPayloadNonBlocking(length + 1U);
       break;
     }

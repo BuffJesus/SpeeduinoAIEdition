@@ -26,6 +26,85 @@
 // Page sizes as defined in the .ini file
 constexpr const uint16_t PROGMEM ini_page_sizes[] = { 0, 128, 288, 288, 128, 288, 128, 240, 384, 192, 192, 288, 192, 128, 288, 256 };
 
+namespace {
+
+constexpr uint16_t kExperimentalNativeU16Page2ValueBytes = 16U * 16U * sizeof(uint16_t);
+constexpr uint16_t kExperimentalNativeU16Page2AxisBytes = 16U;
+constexpr uint16_t kExperimentalNativeU16Page2Size = kExperimentalNativeU16Page2ValueBytes + (2U * kExperimentalNativeU16Page2AxisBytes);
+
+inline bool supports_native_u16_page2_mode(byte pageNum, ts_page_serialization_mode mode)
+{
+#if defined(CORE_TEENSY41) && defined(TS_EXPERIMENTAL_NATIVE_U16_PAGE2)
+  return (mode == TS_PAGE_SERIALIZATION_NATIVE_U16)
+      && (pageNum == veMapPage)
+      && boardHasCapability(BOARD_CAP_HIGH_RES_TABLES);
+#else
+  (void)pageNum;
+  (void)mode;
+  return false;
+#endif
+}
+
+inline ts_page_serialization_mode normalize_tunerstudio_page_mode(byte pageNum, ts_page_serialization_mode mode)
+{
+  return supports_native_u16_page2_mode(pageNum, mode) ? mode : TS_PAGE_SERIALIZATION_CURRENT_BYTES;
+}
+
+#if defined(CORE_TEENSY41)
+inline byte get_experimental_native_u16_page2_byte(uint16_t offset)
+{
+  if (offset < kExperimentalNativeU16Page2ValueBytes)
+  {
+    const uint16_t valueIndex = offset >> 1U;
+    const uint16_t value = static_cast<uint16_t>(fuelTable.values.value_at(valueIndex));
+    return ((offset & 1U) == 0U) ? lowByte(value) : highByte(value);
+  }
+
+  const uint16_t axisOffset = offset - kExperimentalNativeU16Page2ValueBytes;
+  if (axisOffset < kExperimentalNativeU16Page2AxisBytes)
+  {
+    return get_table3d_axis_converter(fuelTable.axisX.begin().get_domain()).to_byte(*fuelTable.axisX.begin().advance(axisOffset));
+  }
+
+  return get_table3d_axis_converter(fuelTable.axisY.begin().get_domain()).to_byte(*fuelTable.axisY.begin().advance(axisOffset - kExperimentalNativeU16Page2AxisBytes));
+}
+
+inline void set_experimental_native_u16_page2_byte(uint16_t offset, byte newValue)
+{
+  if (offset < kExperimentalNativeU16Page2ValueBytes)
+  {
+    const uint16_t valueIndex = offset >> 1U;
+    uint16_t value = static_cast<uint16_t>(fuelTable.values.value_at(valueIndex));
+    if ((offset & 1U) == 0U)
+    {
+      value = static_cast<uint16_t>((value & 0xFF00U) | newValue);
+    }
+    else
+    {
+      value = static_cast<uint16_t>((value & 0x00FFU) | (static_cast<uint16_t>(newValue) << 8U));
+    }
+    fuelTable.values.value_at(valueIndex) = static_cast<table3d_value_t>(value);
+    invalidate_cache(&fuelTable.get_value_cache);
+    return;
+  }
+
+  const uint16_t axisOffset = offset - kExperimentalNativeU16Page2ValueBytes;
+  if (axisOffset < kExperimentalNativeU16Page2AxisBytes)
+  {
+    const table3d_axis_io_converter converter = get_table3d_axis_converter(fuelTable.axisX.begin().get_domain());
+    *fuelTable.axisX.begin().advance(axisOffset) = converter.from_byte(newValue);
+    invalidate_cache(&fuelTable.get_value_cache);
+    return;
+  }
+
+  const table3d_axis_io_converter converter = get_table3d_axis_converter(fuelTable.axisY.begin().get_domain());
+  *fuelTable.axisY.begin().advance(axisOffset - kExperimentalNativeU16Page2AxisBytes) = converter.from_byte(newValue);
+  invalidate_cache(&fuelTable.get_value_cache);
+}
+#endif
+
+} // namespace
+
 // ========================= Table size calculations =========================
 // Note that these should be computed at compile time, assuming the correct
 // calling context.
@@ -455,6 +534,82 @@ void copyPageValuesToBuffer(byte pageNum, uint16_t offset, byte *buffer, uint16_
   {
     buffer[i] = getPageValue(pageNum, offset + i);
   }
+}
+
+bool isExperimentalNativeU16Page2Enabled(void)
+{
+  return supports_native_u16_page2_mode(veMapPage, TS_PAGE_SERIALIZATION_NATIVE_U16);
+}
+
+ts_page_serialization_mode getTunerStudioPageSerializationMode(byte pageNum)
+{
+  return normalize_tunerstudio_page_mode(pageNum, TS_PAGE_SERIALIZATION_NATIVE_U16);
+}
+
+uint16_t getTunerStudioPageSize(byte pageNum)
+{
+  return getTunerStudioPageSizeForMode(pageNum, getTunerStudioPageSerializationMode(pageNum));
+}
+
+uint16_t getTunerStudioPageSizeForMode(byte pageNum, ts_page_serialization_mode mode)
+{
+  const ts_page_serialization_mode normalizedMode = normalize_tunerstudio_page_mode(pageNum, mode);
+  if (normalizedMode == TS_PAGE_SERIALIZATION_NATIVE_U16)
+  {
+    return kExperimentalNativeU16Page2Size;
+  }
+
+  return getPageSize(pageNum);
+}
+
+void copyTunerStudioPageValuesToBuffer(byte pageNum, uint16_t offset, byte *buffer, uint16_t length)
+{
+  copyTunerStudioPageValuesToBufferForMode(pageNum, offset, buffer, length, getTunerStudioPageSerializationMode(pageNum));
+}
+
+void copyTunerStudioPageValuesToBufferForMode(byte pageNum, uint16_t offset, byte *buffer, uint16_t length, ts_page_serialization_mode mode)
+{
+  const ts_page_serialization_mode normalizedMode = normalize_tunerstudio_page_mode(pageNum, mode);
+
+#if defined(CORE_TEENSY41)
+  if (normalizedMode == TS_PAGE_SERIALIZATION_NATIVE_U16)
+  {
+    for (uint16_t i = 0; i < length; i++)
+    {
+      buffer[i] = get_experimental_native_u16_page2_byte(offset + i);
+    }
+    return;
+  }
+#else
+  (void)normalizedMode;
+#endif
+
+  copyPageValuesToBuffer(pageNum, offset, buffer, length);
+}
+
+void writeTunerStudioPageValuesFromBuffer(byte pageNum, uint16_t offset, const byte *buffer, uint16_t length)
+{
+  writeTunerStudioPageValuesFromBufferForMode(pageNum, offset, buffer, length, getTunerStudioPageSerializationMode(pageNum));
+}
+
+void writeTunerStudioPageValuesFromBufferForMode(byte pageNum, uint16_t offset, const byte *buffer, uint16_t length, ts_page_serialization_mode mode)
+{
+  const ts_page_serialization_mode normalizedMode = normalize_tunerstudio_page_mode(pageNum, mode);
+
+#if defined(CORE_TEENSY41)
+  if (normalizedMode == TS_PAGE_SERIALIZATION_NATIVE_U16)
+  {
+    for (uint16_t i = 0; i < length; i++)
+    {
+      set_experimental_native_u16_page2_byte(offset + i, buffer[i]);
+    }
+    return;
+  }
+#else
+  (void)normalizedMode;
+#endif
+
+  writePageValuesFromBuffer(pageNum, offset, buffer, length);
 }
 
 // Support iteration over a pages entities.

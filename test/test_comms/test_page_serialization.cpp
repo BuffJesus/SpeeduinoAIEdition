@@ -143,6 +143,74 @@ void test_teensy_internal_values_still_serialize_as_single_bytes(void)
 #endif
 }
 
+void test_explicit_ts_byte_mode_matches_existing_contract(void)
+{
+  byte pageBuffer[288];
+  const uint16_t legacyPageSize = getPageSize(veMapPage);
+
+  TEST_ASSERT_EQUAL_UINT16(legacyPageSize, getTunerStudioPageSizeForMode(veMapPage, TS_PAGE_SERIALIZATION_CURRENT_BYTES));
+
+  copyTunerStudioPageValuesToBufferForMode(veMapPage, 0U, pageBuffer, legacyPageSize, TS_PAGE_SERIALIZATION_CURRENT_BYTES);
+  for (uint16_t offset = 0; offset < legacyPageSize; offset++)
+  {
+    TEST_ASSERT_EQUAL_UINT8(getPageValue(veMapPage, offset), pageBuffer[offset]);
+  }
+
+  TEST_ASSERT_EQUAL_HEX32(calculatePageCRC32ForMode(veMapPage, TS_PAGE_SERIALIZATION_CURRENT_BYTES), calculatePageCRC32(veMapPage));
+}
+
+void test_explicit_ts_byte_mode_round_trips_multi_entity_page(void)
+{
+  byte original[240];
+  byte modified[240];
+  const uint16_t pageSize = getPageSize(boostvvtPage);
+
+  copyPageValuesToBuffer(boostvvtPage, 0U, original, pageSize);
+  for (uint16_t offset = 0; offset < pageSize; offset++)
+  {
+    modified[offset] = byte((offset * 5U) & 0xFFU);
+  }
+
+  writeTunerStudioPageValuesFromBufferForMode(boostvvtPage, 0U, modified, pageSize, TS_PAGE_SERIALIZATION_CURRENT_BYTES);
+
+  for (uint16_t offset = 0; offset < pageSize; offset++)
+  {
+    TEST_ASSERT_EQUAL_UINT8(modified[offset], getPageValue(boostvvtPage, offset));
+  }
+
+  writePageValuesFromBuffer(boostvvtPage, 0U, original, pageSize);
+}
+
+void test_experimental_native_u16_page2_seam(void)
+{
+#if defined(CORE_TEENSY41) && defined(TS_EXPERIMENTAL_NATIVE_U16_PAGE2)
+  TEST_ASSERT_TRUE(isExperimentalNativeU16Page2Enabled());
+  TEST_ASSERT_EQUAL_UINT8(TS_PAGE_SERIALIZATION_NATIVE_U16, getTunerStudioPageSerializationMode(veMapPage));
+  TEST_ASSERT_EQUAL_UINT16(544U, getTunerStudioPageSize(veMapPage));
+
+  const table3d_value_t original = fuelTable.values.value_at(0U);
+  fuelTable.values.value_at(0U) = 0x1234U;
+
+  byte pageBuffer[544];
+  copyTunerStudioPageValuesToBuffer(veMapPage, 0U, pageBuffer, getTunerStudioPageSize(veMapPage));
+  TEST_ASSERT_EQUAL_UINT8(0x34U, pageBuffer[0]);
+  TEST_ASSERT_EQUAL_UINT8(0x12U, pageBuffer[1]);
+
+  byte modifiedValue[2] = {0xCDU, 0xABU};
+  writeTunerStudioPageValuesFromBuffer(veMapPage, 0U, modifiedValue, sizeof(modifiedValue));
+  TEST_ASSERT_EQUAL_HEX16(0xABCDU, static_cast<uint16_t>(fuelTable.values.value_at(0U)));
+
+  copyTunerStudioPageValuesToBuffer(veMapPage, 0U, pageBuffer, getTunerStudioPageSize(veMapPage));
+  FastCRC32 crcCalc;
+  const uint32_t expected = ~crcCalc.crc32(pageBuffer, getTunerStudioPageSize(veMapPage), false);
+  TEST_ASSERT_EQUAL_HEX32(expected, calculatePageCRC32(veMapPage));
+
+  fuelTable.values.value_at(0U) = original;
+#else
+  TEST_IGNORE_MESSAGE("Experimental native U16 page-2 seam is compile-time disabled");
+#endif
+}
+
 void test_setup(void)
 {
   SET_UNITY_FILENAME() {
@@ -155,5 +223,8 @@ void test_setup(void)
     RUN_TEST_P(test_page_crc_matches_serialized_ts_byte_stream);
     RUN_TEST_P(test_multi_entity_page_crc_matches_serialized_ts_byte_stream);
     RUN_TEST_P(test_teensy_internal_values_still_serialize_as_single_bytes);
+    RUN_TEST_P(test_explicit_ts_byte_mode_matches_existing_contract);
+    RUN_TEST_P(test_explicit_ts_byte_mode_round_trips_multi_entity_page);
+    RUN_TEST_P(test_experimental_native_u16_page2_seam);
   }
 }

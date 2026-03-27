@@ -94,6 +94,21 @@ static inline uint32_t compute_crc(const page_iterator_t &entity, pCrcCalc calcF
 
 uint32_t calculatePageCRC32(byte pageNum)
 {
+  return calculatePageCRC32ForMode(pageNum, getTunerStudioPageSerializationMode(pageNum));
+}
+
+uint32_t calculatePageCRC32ForMode(byte pageNum, ts_page_serialization_mode mode)
+{
+  if (mode != TS_PAGE_SERIALIZATION_CURRENT_BYTES)
+  {
+    byte pageBuffer[MAX_TUNERSTUDIO_PAGE_SIZE];
+    const uint16_t pageSize = getTunerStudioPageSizeForMode(pageNum, mode);
+    copyTunerStudioPageValuesToBufferForMode(pageNum, 0U, pageBuffer, pageSize, mode);
+
+    FastCRC32 crcCalc;
+    return ~crcCalc.crc32(pageBuffer, pageSize, false);
+  }
+
   FastCRC32 crcCalc;
   page_iterator_t entity = page_begin(pageNum);
   // Initial CRC calc

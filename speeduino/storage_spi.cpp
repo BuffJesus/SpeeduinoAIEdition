@@ -135,7 +135,7 @@ static bool copyFlashFile(const char* src, const char* dst)
     if (!srcFile) { return false; }
 
     size_t fileSize = srcFile.size();
-    if (fileSize == 0 || fileSize > 512) { srcFile.close(); return false; } // max page size is 384 (seqFuelPage)
+    if (fileSize == 0 || fileSize > MAX_TUNERSTUDIO_PAGE_SIZE) { srcFile.close(); return false; }
 
     uint8_t* buf = (uint8_t*)malloc(fileSize);
     if (buf == NULL) { srcFile.close(); return false; }
@@ -158,18 +158,17 @@ static bool copyFlashFile(const char* src, const char* dst)
 /**
  * @brief Serialize a table/map page to SPI flash via the page iterator API
  *
- * Uses getPageValue(pageNum, i) to read each byte so that complex page layouts
- * (e.g. seqFuelPage with 8 non-contiguous trim tables) are handled transparently.
- * Stack buffer is sized for the largest possible page (seqFuelPage = 384 bytes).
+ * Uses the active TS serialization helpers so the mirrored SPI-flash stream
+ * stays identical to the TS-visible page bytes in either byte or experimental mode.
  */
 bool saveTablePageToFlash(uint8_t pageNum) {
     if (!spiFlashInitialized) { return false; }
 
-    uint16_t pageSize = getPageSize(pageNum);
-    if (pageSize == 0 || pageSize > 384) { return false; }
+    uint16_t pageSize = getTunerStudioPageSize(pageNum);
+    if (pageSize == 0 || pageSize > MAX_TUNERSTUDIO_PAGE_SIZE) { return false; }
 
-    uint8_t buf[384];
-    copyPageValuesToBuffer(pageNum, 0U, buf, pageSize);
+    uint8_t buf[MAX_TUNERSTUDIO_PAGE_SIZE];
+    copyTunerStudioPageValuesToBuffer(pageNum, 0U, buf, pageSize);
 
     char filename[32];
     snprintf(filename, sizeof(filename), "/config/page%d.bin", pageNum);
@@ -186,14 +185,14 @@ bool saveTablePageToFlash(uint8_t pageNum) {
 /**
  * @brief Deserialize a table/map page from SPI flash via the page iterator API
  *
- * Uses setPageValue(pageNum, i, v) to populate each byte so that all page types
- * including multi-table pages are restored without an EEPROM round-trip.
+ * Uses the active TS serialization helpers so all page types, including any
+ * experimental TS-visible layout, restore from the same mirrored byte stream.
  */
 bool loadTablePageFromFlash(uint8_t pageNum) {
     if (!spiFlashInitialized) { return false; }
 
-    uint16_t pageSize = getPageSize(pageNum);
-    if (pageSize == 0 || pageSize > 384) { return false; }
+    uint16_t pageSize = getTunerStudioPageSize(pageNum);
+    if (pageSize == 0 || pageSize > MAX_TUNERSTUDIO_PAGE_SIZE) { return false; }
 
     char filename[32];
     snprintf(filename, sizeof(filename), "/config/page%d.bin", pageNum);
@@ -201,13 +200,13 @@ bool loadTablePageFromFlash(uint8_t pageNum) {
     File file = myfs.open(filename, FILE_READ);
     if (!file) { return false; }
 
-    uint8_t buf[384];
+    uint8_t buf[MAX_TUNERSTUDIO_PAGE_SIZE];
     size_t bytesRead = file.read(buf, pageSize);
     file.close();
 
     if (bytesRead != pageSize) { return false; }
 
-    writePageValuesFromBuffer(pageNum, 0U, buf, pageSize);
+    writeTunerStudioPageValuesFromBuffer(pageNum, 0U, buf, pageSize);
 
     return true;
 }

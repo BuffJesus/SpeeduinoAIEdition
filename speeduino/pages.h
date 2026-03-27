@@ -12,6 +12,13 @@ uint8_t getPageCount(void);
  */
 uint16_t getPageSize(byte pageNum /**< [in] The page number */ );
 
+constexpr uint16_t MAX_TUNERSTUDIO_PAGE_SIZE = 544U;
+
+enum ts_page_serialization_mode : uint8_t {
+    TS_PAGE_SERIALIZATION_CURRENT_BYTES = 0U,
+    TS_PAGE_SERIALIZATION_NATIVE_U16 = 1U,
+};
+
 // These are the page numbers that the Tuner Studio serial protocol uses to transverse the different map and config pages.
 #define veMapPage     2
 #define veSetPage     1 //Note that this and the veMapPage were swapped in Feb 2019 as the 'algorithm' field must be declared in the ini before it's used in the fuel table
@@ -55,6 +62,15 @@ void setPageValue(  byte pageNum,       /**< [in] The page number to retrieve da
  * Writes a contiguous TS-visible byte range into a page from a caller buffer.
  */
 void writePageValuesFromBuffer(byte pageNum, uint16_t offset, const byte *buffer, uint16_t length);
+
+bool isExperimentalNativeU16Page2Enabled(void);
+ts_page_serialization_mode getTunerStudioPageSerializationMode(byte pageNum);
+uint16_t getTunerStudioPageSize(byte pageNum);
+uint16_t getTunerStudioPageSizeForMode(byte pageNum, ts_page_serialization_mode mode);
+void copyTunerStudioPageValuesToBuffer(byte pageNum, uint16_t offset, byte *buffer, uint16_t length);
+void copyTunerStudioPageValuesToBufferForMode(byte pageNum, uint16_t offset, byte *buffer, uint16_t length, ts_page_serialization_mode mode);
+void writeTunerStudioPageValuesFromBuffer(byte pageNum, uint16_t offset, const byte *buffer, uint16_t length);
+void writeTunerStudioPageValuesFromBufferForMode(byte pageNum, uint16_t offset, const byte *buffer, uint16_t length, ts_page_serialization_mode mode);
 
 // ============================== Page Iteration ==========================
 

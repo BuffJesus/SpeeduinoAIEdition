@@ -399,7 +399,11 @@ const char *getLegacyVersionResponse(byte cmd)
   switch (cmd)
   {
     case 'Q':
+#if defined(CORE_TEENSY41) && defined(TS_EXPERIMENTAL_NATIVE_U16_PAGE2)
+      return "speeduino 202501-T41-U16P2";
+#else
       return "speeduino 202501-T41";   // Teensy 4.1 with 16-bit table values
+#endif
     case 'S':
       return "Speeduino 2025.01.6";
     default:
@@ -914,6 +918,13 @@ void legacySerialHandler(byte cmd, Stream &targetPort, SerialStatus &targetStatu
           valueOffset = request.offset;
           chunkSize = request.length;
 
+          if ((static_cast<uint32_t>(valueOffset) + chunkSize) > getTunerStudioPageSize(currentPage))
+          {
+            targetStatusFlag = SERIAL_INACTIVE;
+            chunkPending = false;
+            break;
+          }
+
           //Regular page data
           chunkPending = true;
           chunkComplete = 0;
@@ -924,7 +935,8 @@ void legacySerialHandler(byte cmd, Stream &targetPort, SerialStatus &targetStatu
       { 
         while( (targetPort.available() > 0) && (chunkComplete < chunkSize) )
         {
-          setPageValue(currentPage, (valueOffset + chunkComplete), targetPort.read());
+          const byte value = targetPort.read();
+          writeTunerStudioPageValuesFromBuffer(currentPage, valueOffset + chunkComplete, &value, 1U);
           chunkComplete++;
         }
         if(chunkComplete >= chunkSize) { targetStatusFlag = SERIAL_INACTIVE; chunkPending = false; }
@@ -953,9 +965,15 @@ void legacySerialHandler(byte cmd, Stream &targetPort, SerialStatus &targetStatu
         }
 
         valueOffset = request.offset;
-        for(uint16_t i = 0; i < request.length; i++)
+        byte pageBuffer[BLOCKING_FACTOR];
+        uint16_t bytesRemaining = request.length;
+        while (bytesRemaining > 0U)
         {
-          targetPort.write( getPageValue(request.page, valueOffset + i) );
+          const uint16_t chunkLength = (bytesRemaining < static_cast<uint16_t>(sizeof(pageBuffer))) ? bytesRemaining : static_cast<uint16_t>(sizeof(pageBuffer));
+          copyTunerStudioPageValuesToBuffer(request.page, valueOffset, pageBuffer, chunkLength);
+          targetPort.write(pageBuffer, chunkLength);
+          valueOffset += chunkLength;
+          bytesRemaining -= chunkLength;
         }
 
         targetStatusFlag = SERIAL_INACTIVE;
