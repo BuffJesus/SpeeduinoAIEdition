@@ -33,9 +33,8 @@ constexpr const uint16_t PROGMEM ini_page_sizes[] = { 0, 128, 288, 288, 128, 288
 template <class table_t>
 static inline constexpr uint16_t get_table_value_end(void)
 {
-  // Table values occupy sizeof(table3d_value_t) bytes per value
-  // On Teensy 4.1: sizeof(table3d_value_t) = 2, on AVR: sizeof(table3d_value_t) = 1
-  return table_t::xaxis_t::length * table_t::yaxis_t::length * sizeof(table3d_value_t);
+  // TunerStudio page serialization uses one byte per table value on all platforms.
+  return table_t::xaxis_t::length * table_t::yaxis_t::length;
 }
 template <class table_t>
 static inline constexpr uint16_t get_table_axisx_end(void)
