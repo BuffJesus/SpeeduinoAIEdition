@@ -531,6 +531,7 @@ See audit findings below.
     - the experimental runtime fueling slice is now also in place for page `2`: fueling uses a high-resolution runtime VE path while `currentStatus.VE*` remain byte-sized compatibility/display channels
     - what remains deferred is **high-resolution VE telemetry/output-channel exposure**, because logger/live-data/legacy packet layouts are still byte-oriented and shared by existing consumers
     - treat telemetry widening as a separate design slice from TS page transport and fueling; do not conflate "TS can edit `U16` page 2" or "fueling consumes hi-res VE" with "all external status/log contracts expose hi-res VE"
+    - the current recommendation is to avoid widening the existing `148`-byte output-channel packet in place; any real hi-res VE telemetry experiment should use an alternate signature + alternate INI + alternate `ochBlockSize`/logger map rather than mutating the shared production packet contract
 - `Rover MEMS` full replay remains intentionally deferred:
   - the repo still lacks a safe tooth-numbered mapping from a logged cam transition to the decoder's `secondaryToothCount == 6 / 4 / 3` gap events needed for full `Crank Speed + 5-3-2 cam` replay
   - treat this as an evidence-conversion blocker, not as a signal to synthesize more speculative traces

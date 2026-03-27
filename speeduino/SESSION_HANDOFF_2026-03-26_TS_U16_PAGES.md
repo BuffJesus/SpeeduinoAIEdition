@@ -155,6 +155,31 @@ If end-to-end high-resolution fueling is attempted, the narrowest defensible pat
 
 The risky version would be to widen `currentStatus.VE`, `VE1`, `VE2`, `PW(...)`, logger maps, legacy channels, and TS contracts all in one slice. That is not a narrow change.
 
+## Telemetry Contract Decision
+
+Do **not** add high-resolution VE telemetry to the existing output-channel packet in place.
+
+Why:
+- [logger.h](C:/Users/Cornelio/Desktop/speeduino-202501.6/speeduino/logger.h) locks the live-data packet size through `LOG_ENTRY_SIZE`
+- [live_data_map.h](C:/Users/Cornelio/Desktop/speeduino-202501.6/speeduino/live_data_map.h) is the authoritative byte map for that packet
+- [logger.cpp](C:/Users/Cornelio/Desktop/speeduino-202501.6/speeduino/logger.cpp) and [comms.cpp](C:/Users/Cornelio/Desktop/speeduino-202501.6/speeduino/comms.cpp) stream the same packet to TunerStudio
+- [comms_legacy.cpp](C:/Users/Cornelio/Desktop/speeduino-202501.6/speeduino/comms_legacy.cpp) also has separate legacy packet builders and field ordering that still assume byte-sized VE exposure
+- both the production INI and the experimental page-2 INI still bind `VE1`, `VE2`, and `VE` to the existing `148`-byte output-channel contract
+
+So an actual high-resolution VE telemetry slice would need:
+- a separate experimental output-channel packet layout
+- a bumped `LOG_ENTRY_SIZE`
+- a matching alternate `ochBlockSize`
+- matching alternate output-channel field definitions in an experimental INI
+- likely an alternate signature so projects do not attach the wrong logger contract
+
+That is a distinct protocol feature, not a safe extension of the current page-2 TS transport and fueling experiment.
+
+Recommended current state:
+- keep byte-sized VE telemetry as the compatibility view
+- treat the current experimental mode as proving TS page transport plus runtime fueling only
+- only revisit high-resolution VE telemetry if a real TunerStudio/logging workflow requires it
+
 ## Current Test Gap
 
 There are migration/config tests that use `getPageValue()` / `setPageValue()`, but there is no focused TS page contract test layer. Relevant references:
