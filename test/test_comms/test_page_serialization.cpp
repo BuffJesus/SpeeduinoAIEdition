@@ -261,6 +261,69 @@ void test_experimental_native_u16_page2_layout_matches_ini_offsets(void)
 #endif
 }
 
+void test_experimental_native_u16_page2_split_write_round_trips_full_page(void)
+{
+#if defined(CORE_TEENSY41) && defined(TS_EXPERIMENTAL_NATIVE_U16_PAGE2)
+  const byte originalPinMapping = configPage2.pinMapping;
+  table3d_value_t originalValues[256];
+  table3d_axis_t originalRpmAxis[16];
+  table3d_axis_t originalLoadAxis[16];
+  byte expected[544];
+  byte actual[544];
+
+  for (uint16_t valueIndex = 0U; valueIndex < 256U; ++valueIndex)
+  {
+    originalValues[valueIndex] = fuelTable.values.value_at(valueIndex);
+    fuelTable.values.value_at(valueIndex) = 0U;
+  }
+
+  for (uint16_t axisIndex = 0U; axisIndex < 16U; ++axisIndex)
+  {
+    originalRpmAxis[axisIndex] = *fuelTable.axisX.begin().advance(axisIndex);
+    originalLoadAxis[axisIndex] = *fuelTable.axisY.begin().advance(axisIndex);
+    *fuelTable.axisX.begin().advance(axisIndex) = 1000;
+    *fuelTable.axisY.begin().advance(axisIndex) = 40;
+  }
+
+  configPage2.pinMapping = PIN_LAYOUT_DROPBEAR;
+
+  for (uint16_t offset = 0U; offset < 512U; offset += 2U)
+  {
+    const uint16_t cell = offset >> 1U;
+    const uint16_t value = static_cast<uint16_t>(200U + (cell * 7U));
+    expected[offset] = lowByte(value);
+    expected[offset + 1U] = highByte(value);
+  }
+
+  for (uint16_t axisIndex = 0U; axisIndex < 16U; ++axisIndex)
+  {
+    expected[512U + axisIndex] = static_cast<byte>(10U + axisIndex);
+    expected[528U + axisIndex] = static_cast<byte>(20U + axisIndex);
+  }
+
+  writeTunerStudioPageValuesFromBuffer(veMapPage, 0U, expected, 510U);
+  writeTunerStudioPageValuesFromBuffer(veMapPage, 510U, &expected[510U], 34U);
+  copyTunerStudioPageValuesToBuffer(veMapPage, 0U, actual, sizeof(actual));
+
+  TEST_ASSERT_EQUAL_UINT8_ARRAY(expected, actual, sizeof(expected));
+
+  for (uint16_t valueIndex = 0U; valueIndex < 256U; ++valueIndex)
+  {
+    fuelTable.values.value_at(valueIndex) = originalValues[valueIndex];
+  }
+
+  for (uint16_t axisIndex = 0U; axisIndex < 16U; ++axisIndex)
+  {
+    *fuelTable.axisX.begin().advance(axisIndex) = originalRpmAxis[axisIndex];
+    *fuelTable.axisY.begin().advance(axisIndex) = originalLoadAxis[axisIndex];
+  }
+
+  configPage2.pinMapping = originalPinMapping;
+#else
+  TEST_IGNORE_MESSAGE("Experimental native U16 page-2 split write detail is compile-time disabled");
+#endif
+}
+
 void test_experimental_native_u16_page2_requires_dropbear_runtime_gate(void)
 {
 #if defined(CORE_TEENSY41) && defined(TS_EXPERIMENTAL_NATIVE_U16_PAGE2)
@@ -408,6 +471,7 @@ void test_setup(void)
     RUN_TEST_P(test_explicit_ts_byte_mode_round_trips_multi_entity_page);
     RUN_TEST_P(test_experimental_native_u16_page2_seam);
     RUN_TEST_P(test_experimental_native_u16_page2_layout_matches_ini_offsets);
+    RUN_TEST_P(test_experimental_native_u16_page2_split_write_round_trips_full_page);
     RUN_TEST_P(test_experimental_native_u16_page2_requires_dropbear_runtime_gate);
     RUN_TEST_P(test_experimental_native_u16_page2_runtime_fueling_uses_full_resolution);
     RUN_TEST_P(test_experimental_native_u16_page2_normalizes_legacy_byte_scaled_values);
