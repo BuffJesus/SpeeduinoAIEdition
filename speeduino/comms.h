@@ -13,8 +13,8 @@
 #if defined(CORE_TEENSY)
   // Raised from 251/256: all current pages max at 384B; 512 allows single-shot reads/writes.
   // serialPayload buffer on Teensy is 2051B (COMMS_SD path) — no overflow risk.
-  #define BLOCKING_FACTOR       512
-  #define TABLE_BLOCKING_FACTOR 512
+  #define BLOCKING_FACTOR       510
+  #define TABLE_BLOCKING_FACTOR 510
 #elif defined(CORE_STM32)
   #define BLOCKING_FACTOR       121
   #define TABLE_BLOCKING_FACTOR 64

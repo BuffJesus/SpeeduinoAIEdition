@@ -28,6 +28,9 @@ A full copy of the license may be found in the projects root directory
   #include "SD_logger.h"
 #endif
 
+static_assert(SERIAL_BUFFER_SIZE >= (TABLE_BLOCKING_FACTOR + 7U), "TABLE_BLOCKING_FACTOR exceeds safe serialPayload write capacity");
+static_assert(SERIAL_BUFFER_SIZE >= (BLOCKING_FACTOR + 7U), "BLOCKING_FACTOR exceeds safe serialPayload write capacity");
+
 /** @defgroup group-serial-comms-impl Serial comms implementation
  * @{
  */
