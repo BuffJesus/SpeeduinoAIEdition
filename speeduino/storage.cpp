@@ -221,15 +221,22 @@ void writeConfig(uint8_t pageNum)
   switch(pageNum)
   {
     case veMapPage:
-      /*---------------------------------------------------
-      | Fuel table (See storage.h for data layout) - Page 1
-      | 16x16 table itself + the 16 values along each of the axis
-      -----------------------------------------------------*/
-      result = writeTable(&fuelTable, decltype(fuelTable)::type_key, result.changeWriteAddress(EEPROM_CONFIG1_MAP));
-      #if defined(CORE_TEENSY41)
-      if (g_useSPIFlash) { saveTablePageToFlash(veMapPage); }
-      #endif
-      break;
+        /*---------------------------------------------------
+        | Fuel table (See storage.h for data layout) - Page 1
+        | 16x16 table itself + the 16 values along each of the axis
+        -----------------------------------------------------*/
+        #if defined(CORE_TEENSY41) && defined(TS_EXPERIMENTAL_NATIVE_U16_PAGE2)
+        if (isExperimentalNativeU16Page2Enabled() && g_useSPIFlash)
+        {
+          saveTablePageToFlash(veMapPage);
+          break;
+        }
+        #endif
+        result = writeTable(&fuelTable, decltype(fuelTable)::type_key, result.changeWriteAddress(EEPROM_CONFIG1_MAP));
+        #if defined(CORE_TEENSY41)
+        if (g_useSPIFlash) { saveTablePageToFlash(veMapPage); }
+        #endif
+        break;
 
     case veSetPage:
       /*---------------------------------------------------
