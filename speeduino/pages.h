@@ -64,6 +64,7 @@ void setPageValue(  byte pageNum,       /**< [in] The page number to retrieve da
 void writePageValuesFromBuffer(byte pageNum, uint16_t offset, const byte *buffer, uint16_t length);
 
 bool isExperimentalNativeU16Page2Enabled(void);
+void normalizeExperimentalNativeU16Page2IfNeeded(void);
 ts_page_serialization_mode getTunerStudioPageSerializationMode(byte pageNum);
 uint16_t getTunerStudioPageSize(byte pageNum);
 uint16_t getTunerStudioPageSizeForMode(byte pageNum, ts_page_serialization_mode mode);

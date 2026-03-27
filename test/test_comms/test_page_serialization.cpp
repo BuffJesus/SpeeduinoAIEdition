@@ -333,6 +333,65 @@ void test_experimental_native_u16_page2_runtime_fueling_uses_full_resolution(voi
 #endif
 }
 
+void test_experimental_native_u16_page2_normalizes_legacy_byte_scaled_values(void)
+{
+#if defined(CORE_TEENSY41) && defined(TS_EXPERIMENTAL_NATIVE_U16_PAGE2)
+  const byte originalPinMapping = configPage2.pinMapping;
+  table3d_value_t originalValues[256];
+
+  for (uint16_t valueIndex = 0U; valueIndex < 256U; ++valueIndex)
+  {
+    originalValues[valueIndex] = fuelTable.values.value_at(valueIndex);
+    fuelTable.values.value_at(valueIndex) = static_cast<table3d_value_t>(20U + (valueIndex % 100U));
+  }
+
+  configPage2.pinMapping = PIN_LAYOUT_DROPBEAR;
+  normalizeExperimentalNativeU16Page2IfNeeded();
+
+  for (uint16_t valueIndex = 0U; valueIndex < 256U; ++valueIndex)
+  {
+    TEST_ASSERT_EQUAL_UINT16((20U + (valueIndex % 100U)) * 10U, static_cast<uint16_t>(fuelTable.values.value_at(valueIndex)));
+  }
+
+  byte pageBuffer[544];
+  copyTunerStudioPageValuesToBuffer(veMapPage, 0U, pageBuffer, sizeof(pageBuffer));
+  TEST_ASSERT_EQUAL_UINT16(200U, static_cast<uint16_t>(pageBuffer[0]) | (static_cast<uint16_t>(pageBuffer[1]) << 8U));
+  TEST_ASSERT_EQUAL_UINT16(1190U, static_cast<uint16_t>(pageBuffer[398]) | (static_cast<uint16_t>(pageBuffer[399]) << 8U));
+
+  for (uint16_t valueIndex = 0U; valueIndex < 256U; ++valueIndex)
+  {
+    fuelTable.values.value_at(valueIndex) = originalValues[valueIndex];
+  }
+  configPage2.pinMapping = originalPinMapping;
+#else
+  TEST_IGNORE_MESSAGE("Experimental native U16 page-2 normalization is compile-time disabled");
+#endif
+}
+
+void test_experimental_native_u16_page2_preserves_existing_high_resolution_values(void)
+{
+#if defined(CORE_TEENSY41) && defined(TS_EXPERIMENTAL_NATIVE_U16_PAGE2)
+  const byte originalPinMapping = configPage2.pinMapping;
+  const table3d_value_t originalFirstValue = fuelTable.values.value_at(0U);
+  const table3d_value_t originalLastValue = fuelTable.values.value_at(255U);
+
+  configPage2.pinMapping = PIN_LAYOUT_DROPBEAR;
+  fuelTable.values.value_at(0U) = 280U;
+  fuelTable.values.value_at(255U) = 1320U;
+
+  normalizeExperimentalNativeU16Page2IfNeeded();
+
+  TEST_ASSERT_EQUAL_UINT16(280U, static_cast<uint16_t>(fuelTable.values.value_at(0U)));
+  TEST_ASSERT_EQUAL_UINT16(1320U, static_cast<uint16_t>(fuelTable.values.value_at(255U)));
+
+  fuelTable.values.value_at(0U) = originalFirstValue;
+  fuelTable.values.value_at(255U) = originalLastValue;
+  configPage2.pinMapping = originalPinMapping;
+#else
+  TEST_IGNORE_MESSAGE("Experimental native U16 page-2 normalization is compile-time disabled");
+#endif
+}
+
 void test_setup(void)
 {
   SET_UNITY_FILENAME() {
@@ -351,5 +410,7 @@ void test_setup(void)
     RUN_TEST_P(test_experimental_native_u16_page2_layout_matches_ini_offsets);
     RUN_TEST_P(test_experimental_native_u16_page2_requires_dropbear_runtime_gate);
     RUN_TEST_P(test_experimental_native_u16_page2_runtime_fueling_uses_full_resolution);
+    RUN_TEST_P(test_experimental_native_u16_page2_normalizes_legacy_byte_scaled_values);
+    RUN_TEST_P(test_experimental_native_u16_page2_preserves_existing_high_resolution_values);
   }
 }

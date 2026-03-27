@@ -32,6 +32,22 @@ constexpr uint16_t kExperimentalNativeU16Page2ValueBytes = 16U * 16U * sizeof(ui
 constexpr uint16_t kExperimentalNativeU16Page2AxisBytes = 16U;
 constexpr uint16_t kExperimentalNativeU16Page2Size = kExperimentalNativeU16Page2ValueBytes + (2U * kExperimentalNativeU16Page2AxisBytes);
 
+inline bool experimental_native_u16_page2_looks_legacy_byte_scaled(void)
+{
+#if defined(CORE_TEENSY41) && defined(TS_EXPERIMENTAL_NATIVE_U16_PAGE2)
+  for (uint16_t valueIndex = 0U; valueIndex < 256U; ++valueIndex)
+  {
+    if (static_cast<uint16_t>(fuelTable.values.value_at(valueIndex)) > UINT8_MAX)
+    {
+      return false;
+    }
+  }
+  return true;
+#else
+  return false;
+#endif
+}
+
 inline bool supports_native_u16_page2_mode(byte pageNum, ts_page_serialization_mode mode)
 {
 #if defined(CORE_TEENSY41) && defined(TS_EXPERIMENTAL_NATIVE_U16_PAGE2)
@@ -540,6 +556,24 @@ void copyPageValuesToBuffer(byte pageNum, uint16_t offset, byte *buffer, uint16_
 bool isExperimentalNativeU16Page2Enabled(void)
 {
   return supports_native_u16_page2_mode(veMapPage, TS_PAGE_SERIALIZATION_NATIVE_U16);
+}
+
+void normalizeExperimentalNativeU16Page2IfNeeded(void)
+{
+#if defined(CORE_TEENSY41) && defined(TS_EXPERIMENTAL_NATIVE_U16_PAGE2)
+  if (!isExperimentalNativeU16Page2Enabled() || !experimental_native_u16_page2_looks_legacy_byte_scaled())
+  {
+    return;
+  }
+
+  for (uint16_t valueIndex = 0U; valueIndex < 256U; ++valueIndex)
+  {
+    fuelTable.values.value_at(valueIndex) = static_cast<table3d_value_t>(
+      static_cast<uint16_t>(fuelTable.values.value_at(valueIndex)) * 10U);
+  }
+
+  invalidate_cache(&fuelTable.get_value_cache);
+#endif
 }
 
 ts_page_serialization_mode getTunerStudioPageSerializationMode(byte pageNum)

@@ -509,6 +509,7 @@ void loadConfig(void)
   if (!g_useSPIFlash || !loadConfigFromFlash(veSetPage, &configPage2, sizeof(configPage2)))
   #endif
   { load_range(EEPROM_CONFIG2_START, (byte *)&configPage2, (byte *)&configPage2+sizeof(configPage2)); }
+  normalizeExperimentalNativeU16Page2IfNeeded();
 
   //*********************************************************************************************************************************************************************************
   //IGNITION CONFIG PAGE (2)
