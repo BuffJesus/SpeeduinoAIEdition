@@ -169,9 +169,7 @@ bool saveTablePageToFlash(uint8_t pageNum) {
     if (pageSize == 0 || pageSize > 384) { return false; }
 
     uint8_t buf[384];
-    for (uint16_t i = 0; i < pageSize; i++) {
-        buf[i] = getPageValue(pageNum, i);
-    }
+    copyPageValuesToBuffer(pageNum, 0U, buf, pageSize);
 
     char filename[32];
     snprintf(filename, sizeof(filename), "/config/page%d.bin", pageNum);
