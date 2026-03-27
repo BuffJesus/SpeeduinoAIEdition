@@ -12,10 +12,9 @@
 #include "globals.h"
 #include "page_crc.h"
 #include "pages.h"
+#include "speeduino.h"
 #include "table3d_typedefs.h"
 #include "../../speeduino/src/FastCRC/FastCRC.h"
-
-extern byte getVE1(void);
 
 void test_table_value_byte_size_matches_platform(void)
 {
@@ -278,38 +277,59 @@ void test_experimental_native_u16_page2_requires_dropbear_runtime_gate(void)
 #endif
 }
 
-void test_experimental_native_u16_page2_runtime_consumers_still_narrow_to_byte(void)
+void test_experimental_native_u16_page2_runtime_fueling_uses_full_resolution(void)
 {
 #if defined(CORE_TEENSY41) && defined(TS_EXPERIMENTAL_NATIVE_U16_PAGE2)
   const byte originalPinMapping = configPage2.pinMapping;
   const table3d_value_t originalValue = fuelTable.values.value_at(0U);
   const table3d_axis_t originalRpmAxis = *fuelTable.axisX.begin();
   const table3d_axis_t originalLoadAxis = *fuelTable.axisY.begin();
+  const byte originalMultiplyMap = configPage2.multiplyMAP;
+  const bool originalIncludeAfr = configPage2.includeAFR;
+  const bool originalIncorporateAfr = configPage2.incorporateAFR;
   const uint16_t originalRpm = currentStatus.RPM;
   const int16_t originalFuelLoad = currentStatus.fuelLoad;
+  const uint16_t originalAfrTarget = currentStatus.afrTarget;
+  const uint8_t originalRunSecs = currentStatus.runSecs;
   const byte originalAlgorithm = configPage2.fuelAlgorithm;
 
   configPage2.pinMapping = PIN_LAYOUT_DROPBEAR;
   configPage2.fuelAlgorithm = LOAD_SOURCE_MAP;
+  configPage2.multiplyMAP = MULTIPLY_MAP_MODE_OFF;
+  configPage2.includeAFR = false;
+  configPage2.incorporateAFR = false;
   *fuelTable.axisX.begin() = 1000;
   *fuelTable.axisY.begin() = 40;
   fuelTable.values.value_at(0U) = 850U;
   currentStatus.RPM = 1000U;
   currentStatus.MAP = 40U;
   currentStatus.fuelLoad = 40;
+  currentStatus.afrTarget = 147U;
+  currentStatus.runSecs = 0U;
 
   TEST_ASSERT_TRUE(isExperimentalNativeU16Page2Enabled());
-  TEST_ASSERT_EQUAL_UINT8(static_cast<uint8_t>(850U & 0xFFU), getVE1());
+  TEST_ASSERT_EQUAL_UINT16(850U, getVE1Runtime());
+  TEST_ASSERT_EQUAL_UINT8(85U, getVE1());
+
+  const uint16_t highResPw = PW(10000, getVE1Runtime(), 100L, 100U, 0);
+  const uint16_t byteLikePw = PW(10000, static_cast<table3d_value_t>(85U), 100L, 100U, 0);
+  TEST_ASSERT_TRUE(highResPw > 8000U);
+  TEST_ASSERT_TRUE(highResPw > (byteLikePw * 8U));
 
   configPage2.pinMapping = originalPinMapping;
   configPage2.fuelAlgorithm = originalAlgorithm;
+  configPage2.multiplyMAP = originalMultiplyMap;
+  configPage2.includeAFR = originalIncludeAfr;
+  configPage2.incorporateAFR = originalIncorporateAfr;
   fuelTable.values.value_at(0U) = originalValue;
   *fuelTable.axisX.begin() = originalRpmAxis;
   *fuelTable.axisY.begin() = originalLoadAxis;
   currentStatus.RPM = originalRpm;
   currentStatus.fuelLoad = originalFuelLoad;
+  currentStatus.afrTarget = originalAfrTarget;
+  currentStatus.runSecs = originalRunSecs;
 #else
-  TEST_IGNORE_MESSAGE("Experimental native U16 page-2 runtime narrowing detail is compile-time disabled");
+  TEST_IGNORE_MESSAGE("Experimental native U16 page-2 runtime fueling detail is compile-time disabled");
 #endif
 }
 
@@ -330,6 +350,6 @@ void test_setup(void)
     RUN_TEST_P(test_experimental_native_u16_page2_seam);
     RUN_TEST_P(test_experimental_native_u16_page2_layout_matches_ini_offsets);
     RUN_TEST_P(test_experimental_native_u16_page2_requires_dropbear_runtime_gate);
-    RUN_TEST_P(test_experimental_native_u16_page2_runtime_consumers_still_narrow_to_byte);
+    RUN_TEST_P(test_experimental_native_u16_page2_runtime_fueling_uses_full_resolution);
   }
 }

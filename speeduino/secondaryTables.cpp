@@ -1,28 +1,28 @@
 #include "globals.h"
 #include "secondaryTables.h"
 #include "corrections.h"
+#include "pages.h"
+#include "speeduino.h"
 
-void calculateSecondaryFuel(void)
+table3d_value_t calculateSecondaryFuel(table3d_value_t ve1Runtime)
 {
+  table3d_value_t finalRuntimeVE = ve1Runtime;
   //If the secondary fuel table is in use, also get the VE value from there
   BIT_CLEAR(currentStatus.status3, BIT_STATUS3_FUEL2_ACTIVE); //Clear the bit indicating that the 2nd fuel table is in use. 
   if(configPage10.fuel2Mode > 0)
   { 
     if(configPage10.fuel2Mode == FUEL2_MODE_MULTIPLY)
     {
-      currentStatus.VE2 = getVE2();
+      const table3d_value_t ve2Runtime = getVE2Runtime();
+      currentStatus.VE2 = convertRuntimeVEToStatus(ve2Runtime);
       //Fuel 2 table is treated as a % value. Table 1 and 2 are multiplied together and divided by 100
-      uint16_t combinedVE = ((uint16_t)currentStatus.VE1 * (uint16_t)currentStatus.VE2) / 100;
-      if(combinedVE <= UINT8_MAX) { currentStatus.VE = combinedVE; }
-      else { currentStatus.VE = UINT8_MAX; }
+      finalRuntimeVE = static_cast<table3d_value_t>((static_cast<uint32_t>(ve1Runtime) * static_cast<uint32_t>(ve2Runtime)) / 100U);
     }
     else if(configPage10.fuel2Mode == FUEL2_MODE_ADD)
     {
-      currentStatus.VE2 = getVE2();
-      //Fuel tables are added together, but a check is made to make sure this won't overflow the 8-bit VE value
-      uint16_t combinedVE = (uint16_t)currentStatus.VE1 + (uint16_t)currentStatus.VE2;
-      if(combinedVE <= UINT8_MAX) { currentStatus.VE = combinedVE; }
-      else { currentStatus.VE = UINT8_MAX; }
+      const table3d_value_t ve2Runtime = getVE2Runtime();
+      currentStatus.VE2 = convertRuntimeVEToStatus(ve2Runtime);
+      finalRuntimeVE = static_cast<table3d_value_t>(ve1Runtime + ve2Runtime);
     }
     else if(configPage10.fuel2Mode == FUEL2_MODE_CONDITIONAL_SWITCH )
     {
@@ -31,8 +31,8 @@ void calculateSecondaryFuel(void)
         if(currentStatus.RPM > configPage10.fuel2SwitchValue)
         {
           BIT_SET(currentStatus.status3, BIT_STATUS3_FUEL2_ACTIVE); //Set the bit indicating that the 2nd fuel table is in use. 
-          currentStatus.VE2 = getVE2();
-          currentStatus.VE = currentStatus.VE2;
+          finalRuntimeVE = getVE2Runtime();
+          currentStatus.VE2 = convertRuntimeVEToStatus(finalRuntimeVE);
         }
       }
       else if(configPage10.fuel2SwitchVariable == FUEL2_CONDITION_MAP)
@@ -40,8 +40,8 @@ void calculateSecondaryFuel(void)
         if(currentStatus.MAP > configPage10.fuel2SwitchValue)
         {
           BIT_SET(currentStatus.status3, BIT_STATUS3_FUEL2_ACTIVE); //Set the bit indicating that the 2nd fuel table is in use. 
-          currentStatus.VE2 = getVE2();
-          currentStatus.VE = currentStatus.VE2;
+          finalRuntimeVE = getVE2Runtime();
+          currentStatus.VE2 = convertRuntimeVEToStatus(finalRuntimeVE);
         }
       }
       else if(configPage10.fuel2SwitchVariable == FUEL2_CONDITION_TPS)
@@ -49,8 +49,8 @@ void calculateSecondaryFuel(void)
         if(currentStatus.TPS > configPage10.fuel2SwitchValue)
         {
           BIT_SET(currentStatus.status3, BIT_STATUS3_FUEL2_ACTIVE); //Set the bit indicating that the 2nd fuel table is in use. 
-          currentStatus.VE2 = getVE2();
-          currentStatus.VE = currentStatus.VE2;
+          finalRuntimeVE = getVE2Runtime();
+          currentStatus.VE2 = convertRuntimeVEToStatus(finalRuntimeVE);
         }
       }
       else if(configPage10.fuel2SwitchVariable == FUEL2_CONDITION_ETH)
@@ -58,8 +58,8 @@ void calculateSecondaryFuel(void)
         if(currentStatus.ethanolPct > configPage10.fuel2SwitchValue)
         {
           BIT_SET(currentStatus.status3, BIT_STATUS3_FUEL2_ACTIVE); //Set the bit indicating that the 2nd fuel table is in use. 
-          currentStatus.VE2 = getVE2();
-          currentStatus.VE = currentStatus.VE2;
+          finalRuntimeVE = getVE2Runtime();
+          currentStatus.VE2 = convertRuntimeVEToStatus(finalRuntimeVE);
         }
       }
     }
@@ -68,11 +68,14 @@ void calculateSecondaryFuel(void)
       if(digitalRead(pinFuel2Input) == configPage10.fuel2InputPolarity)
       {
         BIT_SET(currentStatus.status3, BIT_STATUS3_FUEL2_ACTIVE); //Set the bit indicating that the 2nd fuel table is in use. 
-        currentStatus.VE2 = getVE2();
-        currentStatus.VE = currentStatus.VE2;
+        finalRuntimeVE = getVE2Runtime();
+        currentStatus.VE2 = convertRuntimeVEToStatus(finalRuntimeVE);
       }
     }
   }
+
+  currentStatus.VE = convertRuntimeVEToStatus(finalRuntimeVE);
+  return finalRuntimeVE;
 }
 
 
@@ -165,9 +168,9 @@ void calculateSecondarySpark(void)
  * This performs largely the same operations as getVE() however the lookup is of the secondary fuel table and uses the secondary load source
  * @return byte 
  */
-byte getVE2(void)
+table3d_value_t getVE2Runtime(void)
 {
-  byte tempVE = 100;
+  table3d_value_t tempVE = 100;
   if( configPage10.fuel2Algorithm == LOAD_SOURCE_MAP)
   {
     //Speed Density
@@ -186,7 +189,17 @@ byte getVE2(void)
   else { currentStatus.fuelLoad2 = currentStatus.MAP; } //Fallback position
   tempVE = get3DTableValue(&fuelTable2, currentStatus.fuelLoad2, currentStatus.RPM); //Perform lookup into fuel map for RPM vs MAP value
 
+  if (isExperimentalNativeU16Page2Enabled())
+  {
+    tempVE = static_cast<table3d_value_t>(tempVE * 10U);
+  }
+
   return tempVE;
+}
+
+byte getVE2(void)
+{
+  return convertRuntimeVEToStatus(getVE2Runtime());
 }
 
 /**

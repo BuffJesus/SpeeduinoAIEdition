@@ -12,14 +12,17 @@
 #ifndef SPEEDUINO_H
 #define SPEEDUINO_H
 //#include "globals.h"
+#include "table3d_typedefs.h"
 
 #define CRANK_RUN_HYSTER    15
 
 void setup(void);
 void loop(void);
-uint16_t PW(int REQ_FUEL, byte VE, long MAP, uint16_t corrections, int injOpen);
+uint16_t PW(int REQ_FUEL, table3d_value_t VE, long MAP, uint16_t corrections, int injOpen);
 byte getVE1(void);
+table3d_value_t getVE1Runtime(void);
 byte getAdvance1(void);
+byte convertRuntimeVEToStatus(table3d_value_t runtimeVE);
 uint16_t calculatePWLimit();
 uint16_t calculateMaxAllowedRPM(void);
 void calculateStaging(uint32_t);

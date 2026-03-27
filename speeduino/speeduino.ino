@@ -41,6 +41,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "engineProtection.h"
 #include "scheduledIO.h"
 #include "secondaryTables.h"
+#include "pages.h"
 #include "comms_CAN.h"
 #include "SD_logger.h"
 #include "schedule_calcs.h"
@@ -64,6 +65,17 @@ inline uint16_t applyFuelTrimToPW(trimTable3d *pTrimTable, int16_t fuelLoad, int
 {
     uint8_t pw1percent = 100U + get3DTableValue(pTrimTable, fuelLoad, RPM) - OFFSET_FUELTRIM;
     return percentage(pw1percent, currentPW);
+}
+
+byte convertRuntimeVEToStatus(table3d_value_t runtimeVE)
+{
+  if (isExperimentalNativeU16Page2Enabled())
+  {
+    const uint16_t scaled = static_cast<uint16_t>((static_cast<uint32_t>(runtimeVE) + 5U) / 10U);
+    return scaled > UINT8_MAX ? UINT8_MAX : static_cast<byte>(scaled);
+  }
+
+  return runtimeVE > UINT8_MAX ? UINT8_MAX : static_cast<byte>(runtimeVE);
 }
 
 /** Speeduino main loop.
@@ -407,13 +419,14 @@ void __attribute__((always_inline)) loop(void)
 
     
     //VE and advance calculation were moved outside the sync/RPM check so that the fuel and ignition load value will be accurately shown when RPM=0
-    currentStatus.VE1 = getVE1();
+    const table3d_value_t runtimeVE1 = getVE1Runtime();
+    currentStatus.VE1 = convertRuntimeVEToStatus(runtimeVE1);
     currentStatus.VE = currentStatus.VE1; //Set the final VE value to be VE 1 as a default. This may be changed in the section below
 
     currentStatus.advance1 = getAdvance1();
     currentStatus.advance = currentStatus.advance1; //Set the final advance value to be advance 1 as a default. This may be changed in the section below
 
-    calculateSecondaryFuel();
+    const table3d_value_t runtimeVE = calculateSecondaryFuel(runtimeVE1);
     calculateSecondarySpark();
 
     //Always check for sync
@@ -453,7 +466,7 @@ void __attribute__((always_inline)) loop(void)
       currentStatus.afrTarget = calculateAfrTarget(afrTable, currentStatus, configPage2, configPage6);
       currentStatus.corrections = correctionsFuel();
 
-      currentStatus.PW1 = PW(req_fuel_uS, currentStatus.VE, currentStatus.MAP, currentStatus.corrections, inj_opentime_uS);
+      currentStatus.PW1 = PW(req_fuel_uS, runtimeVE, currentStatus.MAP, currentStatus.corrections, inj_opentime_uS);
 
       //Manual adder for nitrous. These are not in correctionsFuel() because they are direct adders to the ms value, not % based
       if( (currentStatus.nitrous_status == NITROUS_STAGE1) || (currentStatus.nitrous_status == NITROUS_BOTH) )
@@ -1220,7 +1233,7 @@ uint16_t calculateMaxAllowedRPM(void)
  * @param injOpen Injector opening time. The time the injector take to open minus the time it takes to close (Both in uS)
  * @return uint16_t The injector pulse width in uS
  */
-uint16_t PW(int REQ_FUEL, byte VE, long MAP, uint16_t corrections, int injOpen)
+uint16_t PW(int REQ_FUEL, table3d_value_t VE, long MAP, uint16_t corrections, int injOpen)
 {
   //Standard float version of the calculation
   //return (REQ_FUEL * (float)(VE/100.0) * (float)(MAP/100.0) * (float)(TPS/100.0) * (float)(corrections/100.0) + injOpen);
@@ -1232,7 +1245,14 @@ uint16_t PW(int REQ_FUEL, byte VE, long MAP, uint16_t corrections, int injOpen)
   //100% float free version, does sacrifice a little bit of accuracy, but not much.
  
   //iVE = ((unsigned int)VE << 7) / 100;
-  iVE = div100(((uint16_t)VE << 7U));
+  if (isExperimentalNativeU16Page2Enabled())
+  {
+    iVE = static_cast<uint16_t>((static_cast<uint32_t>(VE) << 7U) / 1000U);
+  }
+  else
+  {
+    iVE = div100(((uint16_t)VE << 7U));
+  }
 
   //Check whether either of the multiply MAP modes is turned on
   //if ( configPage2.multiplyMAP == MULTIPLY_MAP_MODE_100) { iMAP = ((unsigned int)MAP << 7) / 100; }
@@ -1293,9 +1313,9 @@ uint16_t PW(int REQ_FUEL, byte VE, long MAP, uint16_t corrections, int injOpen)
  * 
  * @return byte The current VE value
  */
-byte getVE1(void)
+table3d_value_t getVE1Runtime(void)
 {
-  byte tempVE = 100;
+  table3d_value_t tempVE = 100;
   if (configPage2.fuelAlgorithm == LOAD_SOURCE_MAP) //Check which fuelling algorithm is being used
   {
     //Speed Density
@@ -1315,6 +1335,11 @@ byte getVE1(void)
   tempVE = get3DTableValue(&fuelTable, currentStatus.fuelLoad, currentStatus.RPM); //Perform lookup into fuel map for RPM vs MAP value
 
   return tempVE;
+}
+
+byte getVE1(void)
+{
+  return convertRuntimeVEToStatus(getVE1Runtime());
 }
 
 /** Lookup the ignition advance from 3D ignition table.
