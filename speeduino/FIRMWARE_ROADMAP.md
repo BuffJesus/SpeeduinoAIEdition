@@ -488,6 +488,19 @@ See audit findings below.
   - move Teensy 4.1 DropBear pin-mapping selection behind a board hook instead of calling a Teensy helper from `setPinMapping()` [complete] (Phase 10: `applyBoardPinMapping()` lets the board layer own the Teensy 4.1-specific DropBear mapping)
 - Use the existing ESP32-C3 board hardware as a real secondary transport / coprocessor path for wireless tuning, log offload, and update workflows once the board capability layer exists. ✅ (Capability layer established: `BOARD_CAP_WIFI_TRANSPORT` bit 7 added to board_capability enum; set for PIN_LAYOUT_DROPBEAR on CORE_TEENSY41; `boardCap_wifiTransport` channel exposed in INI at byte 130 [7:7]. Transport implementation deferred until hardware schematic / UART pin assignment confirmed.)
 
+- Improve tune-assist / autotune quality from the firmware side without assuming any changes to TunerStudio internals:
+  - treat TunerStudio's built-in autotune algorithm as external / fixed; do not plan work that depends on modifying its private implementation
+  - improve the quality of the data TunerStudio sees:
+    - cleaner AFR / MAP / TPS / RPM inputs and filtering
+    - clearer steady-state vs transient gating
+    - more explicit warmup / ASE / accel / decel / DFCO / protection / sync-state signals
+  - prefer firmware features that help both TunerStudio autotune and external offline analysis:
+    - richer runtime status bits
+    - clearer logger / live-data semantics
+    - confidence or validity markers for when a cell hit is worth learning from
+  - if higher-resolution VE or tune-assist telemetry is explored later, keep it as an alternate-signature / alternate-INI path rather than mutating the shared production packet contract in place
+  - the narrowest future slice here is not "replace TunerStudio autotune"; it is exposing better tune-quality evidence and log semantics so both TunerStudio and external tools can make better decisions
+
 ## Borrowed From rusEFI
 
 - Keep borrowing from rusEFI where it improves verification discipline or hardware/config separation, not where it would require adopting their full architecture.
