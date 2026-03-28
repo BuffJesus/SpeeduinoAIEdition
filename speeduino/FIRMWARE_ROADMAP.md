@@ -173,11 +173,14 @@ Current phase 1 work started in:
 - Largest case: Case 3 (~333 lines) with 5 nested platform variants (AVR Mega, CORE_TEENSY35, CORE_TEENSY41, STM32F407xx, CORE_STM32)
 - High repetition: Each case manually assigns 20–40 pin variables
 - **Extraction opportunities identified:**
-  1. HIGH priority: Extract Dropbear (case 60) into board_teensy41.cpp data table (~50 lines, low risk, 2-hour effort)
+  1. HIGH priority: Extract DropBear Teensy 4.1 mapping (actual board ID `55`, not `60`) into board_teensy41.cpp data table/helper (~50 lines, low risk, 2-hour effort)
   2. MEDIUM priority: Convert case 3 platform variants into board_* lookups (moderate risk, 4–6 hours)
   3. LOW priority: Consolidate duplicate cases (40/41/42, 50/51) via shared tables (3–4 hours per group)
   4. FUTURE: Full data-driven pin table system (20–30 hours + multi-platform regression testing)
 - Recommendation: Defer extraction to Phase 5+ or future maintenance window
+- Current repo state update:
+  - the highest-value low-risk extraction above has now started: the DropBear Teensy 4.1 mapping is moved behind [setTeensy41DropBearPinMapping()](C:/Users/Cornelio/Desktop/speeduino-202501.6/speeduino/board_teensy41.cpp) and called from [setPinMapping()](C:/Users/Cornelio/Desktop/speeduino-202501.6/speeduino/init.cpp)
+  - this is intentionally behavior-preserving cleanup only; the generic setPinMapping switch still owns the remaining board cases
 
 **Binary Size:**
 - Teensy 4.1: 254,060 bytes code + 30,464 data (FLASH: 292,860 total, +128 from previous 292,732)
@@ -198,7 +201,7 @@ Current phase 1 work started in:
 - **Total passing: 709/709 (excluding test_init timeout)**
 
 **Remaining Phase 4 Work (Future):**
-- setPinMapping data-driven conversion (documented, deferred)
+- setPinMapping data-driven conversion beyond the extracted DropBear Teensy 4.1 case (documented, deferred)
 - Abstract PWM polarity inversion into board-layer functions (MEDIUM risk, deferred)
 - Platform-specific code moves into board_* layer (ongoing, incremental)
 - Full SPI flash page serialization ✅ (Phase 10: saveTablePageToFlash/loadTablePageFromFlash added; all 8 table pages dual-write wired in storage.cpp; kStructPageIDs expanded to all 15 pages for complete tune bank capture)

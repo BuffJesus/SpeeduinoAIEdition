@@ -6,6 +6,7 @@
 #include "scheduler.h"
 #include "timers.h"
 #include "comms_secondary.h"
+#include "acc_mc33810.h"
 #include "adc_teensy41.h"  // Phase 4: ADC initialization
 #include "utilities.h"     // Phase 4: pinTranslateKnock
 
@@ -21,6 +22,79 @@ static void TMR1_isr(void);
 static void TMR2_isr(void);
 static void TMR3_isr(void);
 static void TMR4_isr(void);
+
+void setTeensy41DropBearPinMapping()
+{
+    injectorOutputControl = OUTPUT_CONTROL_MC33810;
+    ignitionOutputControl = OUTPUT_CONTROL_MC33810;
+
+    // Reserve the SPI pins and MC33810 chip selects so common init code does not reuse them.
+    pinInjector1 = 13;
+    pinInjector2 = 11;
+    pinInjector3 = 12;
+    pinInjector4 = 10;
+    pinInjector5 = 9;
+    pinInjector6 = 9;
+
+    // Keep the legacy dummy assignments that stop shared init from trampling Serial1 RX.
+    pinCoil1 = 40;
+    pinCoil2 = 41;
+
+    pinTrigger = 20;
+    pinTrigger2 = 21;
+    pinTrigger3 = 34;
+    pinFlex = 37;
+    pinMAP = A5;
+    pinBaro = A4;
+    pinBat = A15;
+    pinTPS = A3;
+    pinIAT = A0;
+    pinCLT = A1;
+    pinO2 = A2;
+    pinSpareTemp1 = A16;
+    pinSpareTemp2 = A17;
+    pinLaunch = 36;
+    pinTachOut = 0;
+    pinIdle1 = 27;
+    pinIdle2 = 29;
+    pinFuelPump = 5;
+    pinVVT_1 = 28;
+    pinStepperDir = 32;
+    pinStepperStep = 31;
+    pinStepperEnable = 30;
+    pinBoost = 24;
+    pinSpareLOut1 = 29;
+    pinSpareLOut2 = 26;
+    pinSpareLOut3 = 28;
+    pinSpareLOut4 = 29;
+    pinFan = 25;
+    pinResetControl = 49;
+    pinVSS = 34;
+    pinWMIEmpty = 35;
+    pinWMIIndicator = pinSpareLOut2;
+    pinWMIEnabled = pinSpareLOut1;
+
+    pinMC33810_1_CS = 10;
+    pinMC33810_2_CS = 9;
+
+    MC33810_BIT_INJ1 = 3;
+    MC33810_BIT_INJ2 = 1;
+    MC33810_BIT_INJ3 = 0;
+    MC33810_BIT_INJ4 = 2;
+    MC33810_BIT_IGN1 = 4;
+    MC33810_BIT_IGN2 = 5;
+    MC33810_BIT_IGN3 = 6;
+    MC33810_BIT_IGN4 = 7;
+
+    MC33810_BIT_INJ5 = 3;
+    MC33810_BIT_INJ6 = 1;
+    MC33810_BIT_INJ7 = 0;
+    MC33810_BIT_INJ8 = 2;
+    MC33810_BIT_IGN5 = 4;
+    MC33810_BIT_IGN6 = 5;
+    MC33810_BIT_IGN7 = 6;
+    MC33810_BIT_IGN8 = 7;
+}
 
 void initBoard()
 {
