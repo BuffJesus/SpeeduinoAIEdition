@@ -74,6 +74,8 @@ Most of the phase snapshots below are historical closing baselines. The current 
 
 `test_updates` and `test_ign` did briefly hit AVR LTO/internal build-cache failures during incremental rebuilds, and a broader sweep also hit transient missing-object / file-lock failures when multiple PlatformIO test jobs targeted the same environment concurrently. The same suites passed cleanly on rerun after a rebuild/clean, so treat those as toolchain/build-cache instability notes, not as active source-level regressions.
 
+Separately, the GitHub Actions `Calculate memory deltas` Arduino Teensy 4.1 compile path is back to passing after removing a `globals.h` declaration-order dependency from [board_teensy41.h](C:/Users/Cornelio/Desktop/speeduino-202501.6/speeduino/board_teensy41.h). Remaining Teensy 4.1 workflow annotations are warnings only (`SdFat.h` FS-detection warnings and two `updates.cpp` array-bounds warnings), not compile blockers.
+
 ## Phase 3: Runtime Structure
 
 - Split [init.cpp](C:/Users/Cornelio/Desktop/speeduino-202501.6/speeduino/init.cpp) by responsibility:
@@ -232,6 +234,7 @@ Additional completed board-layer cleanup since the original Phase 4 closeout:
 Additional current note on remaining Phase 4 work:
 - Shared PWM timer-count setup now also uses `boardPwmTimerTickMicros()` in `idle.cpp` and `auxiliaries.cpp`, and analog sensor pin setup now uses `boardAnalogInputMode()` in `init.cpp`
 - Shared storage / page serialization / logger export cleanup is substantially complete; remaining Teensy / STM32 branches in those areas are mostly backend linkage or experimental feature guards rather than board-policy leakage
+- Cross-build board-header consistency is improved: the Arduino Teensy 4.1 compile path no longer depends on `PIN_LAYOUT_DROPBEAR` being declared earlier via `globals.h`, because [board_teensy41.h](C:/Users/Cornelio/Desktop/speeduino-202501.6/speeduino/board_teensy41.h) now uses a local DropBear pin-mapping constant inside its board capability helper
 
 ## Phase 5: Configuration And Observability
 
