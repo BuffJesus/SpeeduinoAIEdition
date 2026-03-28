@@ -56,6 +56,18 @@ Current phase 1 work started in:
   - the `Vmax` current-code wide-lobe sync / small-lobe increment / tooth-`6` wrap contract is now documented in [SESSION_HANDOFF_2026-03-23_VMAX_STATE.md](C:/Users/Cornelio/Desktop/speeduino-202501.6/speeduino/SESSION_HANDOFF_2026-03-23_VMAX_STATE.md) and has direct AVR state coverage in [Vmax.cpp](C:/Users/Cornelio/Desktop/speeduino-202501.6/test/test_decoders/Vmax/Vmax.cpp), locking the current wide-lobe tooth-`1` sync, tooth-`2` advance, and tooth-`6` wrap behavior
   - the current Rover-specific notes are [SESSION_HANDOFF_2026-03-21_ROVER_MEMS_NOTE.md](C:/Users/Cornelio/Desktop/speeduino-202501.6/speeduino/SESSION_HANDOFF_2026-03-21_ROVER_MEMS_NOTE.md), [SESSION_HANDOFF_2026-03-22_ROVER_MEMS_BIT_WINDOW.md](C:/Users/Cornelio/Desktop/speeduino-202501.6/speeduino/SESSION_HANDOFF_2026-03-22_ROVER_MEMS_BIT_WINDOW.md), [SESSION_HANDOFF_2026-03-22_ROVER_MEMS_CAM_532.md](C:/Users/Cornelio/Desktop/speeduino-202501.6/speeduino/SESSION_HANDOFF_2026-03-22_ROVER_MEMS_CAM_532.md), and [SESSION_HANDOFF_2026-03-22_ROVER_MEMS_TOOTH_LOG.md](C:/Users/Cornelio/Desktop/speeduino-202501.6/speeduino/SESSION_HANDOFF_2026-03-22_ROVER_MEMS_TOOTH_LOG.md); the maintained primary-only decoder contract is now separated in [SESSION_HANDOFF_2026-03-23_ROVER_MEMS_PRIMARY_STATE.md](C:/Users/Cornelio/Desktop/speeduino-202501.6/speeduino/SESSION_HANDOFF_2026-03-23_ROVER_MEMS_PRIMARY_STATE.md). Rover attachments are staged locally in [Resources/rover_mems_evidence](C:/Users/Cornelio/Desktop/speeduino-202501.6/Resources/rover_mems_evidence), the composite-log CSV channel mapping is solved with [tools/parse_speeduino_composite_csv.py](C:/Users/Cornelio/Desktop/speeduino-202501.6/tools/parse_speeduino_composite_csv.py), the Rover PDF image corpus is extracted with [tools/extract_pdf_images.py](C:/Users/Cornelio/Desktop/speeduino-202501.6/tools/extract_pdf_images.py), the extracted images are OCR-indexed with [tools/index_pdf_images.py](C:/Users/Cornelio/Desktop/speeduino-202501.6/tools/index_pdf_images.py), PDF readiness is checked with [tools/inspect_pdf_evidence.py](C:/Users/Cornelio/Desktop/speeduino-202501.6/tools/inspect_pdf_evidence.py), full Rover pages are rendered with [tools/render_pdf_pages.py](C:/Users/Cornelio/Desktop/speeduino-202501.6/tools/render_pdf_pages.py), the manuals now map OEM Rover layouts onto Speeduino's `11-5-12-4` and `2-14-3-13` patterns, the rolling `roverMEMSTeethSeen` bit window is derived in [derive_rover_mems_windows.py](C:/Users/Cornelio/Desktop/speeduino-202501.6/tools/derive_rover_mems_windows.py), and a real June 25 post-fix tooth logger host-side-proves Rover pattern `#1` via [analyze_rover_mems_tooth_log.py](C:/Users/Cornelio/Desktop/speeduino-202501.6/tools/analyze_rover_mems_tooth_log.py); the remaining blocker is still the exact `5-3-2 cam` phase alignment needed for full-sync Rover replay rather than primary-wheel identification itself
 
+### Current Verified Baseline
+
+Most of the phase snapshots below are historical closing baselines. The current spot-checked simulator baseline in this workspace is:
+
+- test_decoders: 275/275 PASSED
+- test_ign: 193/193 PASSED
+- test_init: 9/9 PASSED
+- test_sensors: 65/65 PASSED
+- test_updates: 38/38 PASSED
+
+`test_updates` did briefly hit an AVR LTO internal compiler error during one incremental rebuild, but the same command passed cleanly on the next rebuild. Treat that as a toolchain/build-cache instability note, not as an active source-level regression.
+
 ## Phase 3: Runtime Structure
 
 - Split [init.cpp](C:/Users/Cornelio/Desktop/speeduino-202501.6/speeduino/init.cpp) by responsibility:
