@@ -42,6 +42,7 @@
   uint16_t freeRam();
   void doSystemReset();
   void jumpToBootloader();
+  static inline bool boardPwmTimerInvertsPhase(void) { return false; }
 
   #if defined(TIMER5_MICROS)
     /*#define micros() (((timer5_overflow_count << 16) + TCNT5) * 4) */ //Fast version of micros() that uses the 4uS tick of timer5. See timers.ino for the overflow ISR of timer5

@@ -22,6 +22,7 @@
   uint16_t freeRam();
   void doSystemReset();
   void jumpToBootloader();
+  static inline bool boardPwmTimerInvertsPhase(void) { return false; }
 
   #define pinIsReserved(pin)  ( ((pin) == 0) ) //Forbidden pins like USB
 

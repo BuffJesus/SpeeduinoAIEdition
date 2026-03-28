@@ -81,6 +81,9 @@ integerPID vvt2PID(&vvt2_pid_current_angle, &currentStatus.vvt2Duty, &vvt2_pid_t
 static inline void checkAirConCoolantLockout(void);
 static inline void checkAirConTPSLockout(void);
 static inline void checkAirConRPMLockout(void);
+static inline void setBoostPwmOutputActive(bool active);
+static inline void setVvt1PwmOutputActive(bool active);
+static inline void setVvt2PwmOutputActive(bool active);
 
 /*
 Air Conditioning Control
@@ -306,6 +309,27 @@ static inline void checkAirConRPMLockout(void)
   {
     acRPMLockoutDelay = 0;
   }
+}
+
+static inline void setBoostPwmOutputActive(bool active)
+{
+  if (boardPwmTimerInvertsPhase()) { active = !active; }
+  if (active) { BOOST_PIN_HIGH(); }
+  else { BOOST_PIN_LOW(); }
+}
+
+static inline void setVvt1PwmOutputActive(bool active)
+{
+  if (boardPwmTimerInvertsPhase()) { active = !active; }
+  if (active) { VVT1_PIN_ON(); }
+  else { VVT1_PIN_OFF(); }
+}
+
+static inline void setVvt2PwmOutputActive(bool active)
+{
+  if (boardPwmTimerInvertsPhase()) { active = !active; }
+  if (active) { VVT2_PIN_ON(); }
+  else { VVT2_PIN_OFF(); }
 }
 
 
@@ -1118,21 +1142,13 @@ void boostDisable(void)
 {
   if (boost_pwm_state == true)
   {
-    #if defined(CORE_TEENSY41) //PIT TIMERS count down and have opposite effect on PWM
-    BOOST_PIN_HIGH();
-    #else
-    BOOST_PIN_LOW();  // Switch pin to low
-    #endif
+    setBoostPwmOutputActive(false);
     SET_COMPARE(BOOST_TIMER_COMPARE, BOOST_TIMER_COUNTER + (boost_pwm_max_count - boost_pwm_cur_value) );
     boost_pwm_state = false;
   }
   else
   {
-    #if defined(CORE_TEENSY41) //PIT TIMERS count down and have opposite effect on PWM
-    BOOST_PIN_LOW();
-    #else
-    BOOST_PIN_HIGH();  // Switch pin high
-    #endif
+    setBoostPwmOutputActive(true);
     SET_COMPARE(BOOST_TIMER_COMPARE, BOOST_TIMER_COUNTER + boost_pwm_target_value);
     boost_pwm_cur_value = boost_pwm_target_value;
     boost_pwm_state = true;
@@ -1150,20 +1166,12 @@ void boostDisable(void)
   {
     if( (vvt1_pwm_value > 0) && (vvt1_max_pwm == false) ) //Don't toggle if at 0%
     {
-      #if defined(CORE_TEENSY41)
-      VVT1_PIN_OFF();
-      #else
-      VVT1_PIN_ON();
-      #endif
+      setVvt1PwmOutputActive(true);
       vvt1_pwm_state = true;
     }
     if( (vvt2_pwm_value > 0) && (vvt2_max_pwm == false) ) //Don't toggle if at 0%
     {
-      #if defined(CORE_TEENSY41)
-      VVT2_PIN_OFF();
-      #else
-      VVT2_PIN_ON();
-      #endif
+      setVvt2PwmOutputActive(true);
       vvt2_pwm_state = true;
     }
 
@@ -1190,11 +1198,7 @@ void boostDisable(void)
     {
       if(vvt1_pwm_value < (long)vvt_pwm_max_count) //Don't toggle if at 100%
       {
-        #if defined(CORE_TEENSY41)
-        VVT1_PIN_ON();
-        #else
-        VVT1_PIN_OFF();
-        #endif
+        setVvt1PwmOutputActive(false);
         vvt1_pwm_state = false;
         vvt1_max_pwm = false;
       }
@@ -1211,11 +1215,7 @@ void boostDisable(void)
     {
       if(vvt2_pwm_value < (long)vvt_pwm_max_count) //Don't toggle if at 100%
       {
-        #if defined(CORE_TEENSY41)
-        VVT2_PIN_ON();
-        #else
-        VVT2_PIN_OFF();
-        #endif
+        setVvt2PwmOutputActive(false);
         vvt2_pwm_state = false;
         vvt2_max_pwm = false;
       }
@@ -1232,11 +1232,7 @@ void boostDisable(void)
     {
       if(vvt1_pwm_value < (long)vvt_pwm_max_count) //Don't toggle if at 100%
       {
-       #if defined(CORE_TEENSY41)
-        VVT1_PIN_ON();
-        #else
-        VVT1_PIN_OFF();
-        #endif
+        setVvt1PwmOutputActive(false);
         vvt1_pwm_state = false;
         vvt1_max_pwm = false;
         SET_COMPARE(VVT_TIMER_COMPARE, VVT_TIMER_COUNTER + (vvt_pwm_max_count - vvt1_pwm_cur_value) );
@@ -1244,11 +1240,7 @@ void boostDisable(void)
       else { vvt1_max_pwm = true; }
       if(vvt2_pwm_value < (long)vvt_pwm_max_count) //Don't toggle if at 100%
       {
-        #if defined(CORE_TEENSY41)
-        VVT2_PIN_ON();
-        #else
-        VVT2_PIN_OFF();
-        #endif
+        setVvt2PwmOutputActive(false);
         vvt2_pwm_state = false;
         vvt2_max_pwm = false;
         SET_COMPARE(VVT_TIMER_COMPARE, VVT_TIMER_COUNTER + (vvt_pwm_max_count - vvt2_pwm_cur_value) );

@@ -12,23 +12,23 @@ Current phase 1 work started in:
 
 ## Phase 2: Regression Harness
 
-- Add unit tests around ignition corrections, engine protection, sensor filtering, and config migrations.
-- Use existing `UNIT_TEST` hooks to expose pure or near-pure helpers without changing runtime behavior.
-- Build migration tests for [updates.cpp](C:/Users/Cornelio/Desktop/speeduino-202501.6/speeduino/updates.cpp).
-- Add decoder state-transition tests for the most common trigger patterns in [decoders.cpp](C:/Users/Cornelio/Desktop/speeduino-202501.6/speeduino/decoders.cpp).
-- Add host-side trigger tests that replay real captured crank/cam traces, not just synthetic edge sequences.
-- Create a small library of noisy and borderline trigger recordings to regression-test sync, dwell scheduling, and false-trigger handling.
-- Add scenario tests for launch, flat shift, hard/soft limiters, and protection reactivation behavior as named state-machine tests instead of only function-local checks.
+- Add unit tests around ignition corrections, engine protection, sensor filtering, and config migrations. ✅
+- Use existing `UNIT_TEST` hooks to expose pure or near-pure helpers without changing runtime behavior. ✅
+- Build migration tests for [updates.cpp](C:/Users/Cornelio/Desktop/speeduino-202501.6/speeduino/updates.cpp). ✅
+- Add decoder state-transition tests for the most common trigger patterns in [decoders.cpp](C:/Users/Cornelio/Desktop/speeduino-202501.6/speeduino/decoders.cpp). ✅
+- Add host-side trigger tests that replay real captured crank/cam traces, not just synthetic edge sequences. ✅
+- Create a small library of noisy and borderline trigger recordings to regression-test sync, dwell scheduling, and false-trigger handling. ✅
+- Add scenario tests for launch, flat shift, hard/soft limiters, and protection reactivation behavior as named state-machine tests instead of only function-local checks. ✅
 - Keep using the forum/manual evidence pipeline as a primary source for blocked decoder work:
   - prefer canonical topic-level extraction from [Resources/speeduino_evidence_collector_stable.py](C:/Users/Cornelio/Desktop/speeduino-202501.6/Resources/speeduino_evidence_collector_stable.py), not raw search-engine dumps
   - prioritize decoder families with surviving high-confidence forum evidence after topic dedupe and explicit family matching
-  - current best evidence-backed next decoder candidate is `36-2-1`, but it should still be approached from real captured logs rather than guessed synthetic traces; the blocked Rover MEMS cam-phase slice remains explicitly deferred to the end-of-roadmap revisit list
+  - the earlier `36-2-1` tooth-number blocker is now resolved from real-capture evidence; the remaining explicitly deferred high-value decoder blocker is the Rover MEMS cam-phase slice at the end of the roadmap
   - use external decoder references as topology and sync-behavior evidence, not as drop-in waveform sources:
     - rusEFI real-trigger tests in [Resources/rusefi-2026-03-17/unit_tests/tests/trigger/test_real_4b11.cpp](C:/Users/Cornelio/Desktop/speeduino-202501.6/Resources/rusefi-2026-03-17/unit_tests/tests/trigger/test_real_4b11.cpp) are the best current external model for `36-2-1` work because they validate against real CSV captures
     - rusEFI decoder implementations in [Resources/rusefi-2026-03-17/firmware/controllers/trigger/decoders/trigger_honda.cpp](C:/Users/Cornelio/Desktop/speeduino-202501.6/Resources/rusefi-2026-03-17/firmware/controllers/trigger/decoders/trigger_honda.cpp) and [Resources/rusefi-2026-03-17/firmware/controllers/trigger/decoders/trigger_rover.cpp](C:/Users/Cornelio/Desktop/speeduino-202501.6/Resources/rusefi-2026-03-17/firmware/controllers/trigger/decoders/trigger_rover.cpp) are useful for `Honda J32` and Rover-family topology review
     - MS3 Rover references in [Resources/ms3-source-master/ms3/core.ini](C:/Users/Cornelio/Desktop/speeduino-202501.6/Resources/ms3-source-master/ms3/core.ini), [Resources/ms3-source-master/ms3/ms3_ign_in.c](C:/Users/Cornelio/Desktop/speeduino-202501.6/Resources/ms3-source-master/ms3/ms3_ign_in.c), and [Resources/ms3-source-master/ms3/ms3_ign_wheel.c](C:/Users/Cornelio/Desktop/speeduino-202501.6/Resources/ms3-source-master/ms3/ms3_ign_wheel.c) are the best current external clues for Rover phase and `poll_level_tooth` semantics
   - before adding new replay traces for `Rover MEMS` or `36-2-1`, first convert the surviving external/forum evidence into an explicit tooth/gap or poll-phase note instead of inferring directly from comments
-  - the `36-2-1` physical gap model remains documented in [SESSION_HANDOFF_2026-03-22_36-2-1.md](C:/Users/Cornelio/Desktop/speeduino-202501.6/speeduino/SESSION_HANDOFF_2026-03-22_36-2-1.md), backed by [analyze_36_2_1.py](C:/Users/Cornelio/Desktop/speeduino-202501.6/tools/analyze_36_2_1.py), while the maintained current-code ISR contract is now formalized in [SESSION_HANDOFF_2026-03-23_36-2-1_STATE.md](C:/Users/Cornelio/Desktop/speeduino-202501.6/speeduino/SESSION_HANDOFF_2026-03-23_36-2-1_STATE.md) and covered directly in [ThirtySixMinus21.cpp](C:/Users/Cornelio/Desktop/speeduino-202501.6/test/test_decoders/ThirtySixMinus21/ThirtySixMinus21.cpp); the remaining blocker is still the decoder's unresolved single-gap tooth-number assignment, not the physical wheel topology
+  - the `36-2-1` physical gap model remains documented in [SESSION_HANDOFF_2026-03-22_36-2-1.md](C:/Users/Cornelio/Desktop/speeduino-202501.6/speeduino/SESSION_HANDOFF_2026-03-22_36-2-1.md), backed by [analyze_36_2_1.py](C:/Users/Cornelio/Desktop/speeduino-202501.6/tools/analyze_36_2_1.py), while the maintained current-code ISR contract is now formalized in [SESSION_HANDOFF_2026-03-23_36-2-1_STATE.md](C:/Users/Cornelio/Desktop/speeduino-202501.6/speeduino/SESSION_HANDOFF_2026-03-23_36-2-1_STATE.md) and covered directly in [ThirtySixMinus21.cpp](C:/Users/Cornelio/Desktop/speeduino-202501.6/test/test_decoders/ThirtySixMinus21/ThirtySixMinus21.cpp); the formerly unresolved single-gap tooth-number assignment is now locked in-tree by the Phase 9 state and replay updates
   - the `36-2-2-2` Subaru-focused evidence/staging note remains in [SESSION_HANDOFF_2026-03-22_36-2-2-2.md](C:/Users/Cornelio/Desktop/speeduino-202501.6/speeduino/SESSION_HANDOFF_2026-03-22_36-2-2-2.md), while the maintained current-code `4`-cylinder sync contract is now formalized in [SESSION_HANDOFF_2026-03-23_36-2-2-2_STATE.md](C:/Users/Cornelio/Desktop/speeduino-202501.6/speeduino/SESSION_HANDOFF_2026-03-23_36-2-2-2_STATE.md) and covered directly in [ThirtySixMinus222.cpp](C:/Users/Cornelio/Desktop/speeduino-202501.6/test/test_decoders/ThirtySixMinus222/ThirtySixMinus222.cpp); the remaining blocker is still staged real-capture normalization for replay rather than stronger family-wide pattern coverage
   - the `420a` current-code secondary-falling sync / realignment / wrap contract is now documented in [SESSION_HANDOFF_2026-03-23_420A_STATE.md](C:/Users/Cornelio/Desktop/speeduino-202501.6/speeduino/SESSION_HANDOFF_2026-03-23_420A_STATE.md) and has direct AVR state coverage in [FourTwentyA.cpp](C:/Users/Cornelio/Desktop/speeduino-202501.6/test/test_decoders/FourTwentyA/FourTwentyA.cpp), locking the current primary-high tooth-`13`, primary-low tooth-`5`, sync-loss realignment, and `16`-tooth wrap behavior
   - the `Audi 135` current-code sync / decimation contract is now documented in [SESSION_HANDOFF_2026-03-22_AUDI135.md](C:/Users/Cornelio/Desktop/speeduino-202501.6/speeduino/SESSION_HANDOFF_2026-03-22_AUDI135.md) and has direct AVR state coverage in [Audi135.cpp](C:/Users/Cornelio/Desktop/speeduino-202501.6/test/test_decoders/Audi135/Audi135.cpp), complementing the older replay-backed slice with explicit every-third-tooth and resync assertions
@@ -202,7 +202,7 @@ Current phase 1 work started in:
 
 **Remaining Phase 4 Work (Future):**
 - setPinMapping data-driven conversion beyond the extracted DropBear Teensy 4.1 case (documented, deferred)
-- Abstract PWM polarity inversion into board-layer functions (MEDIUM risk, deferred)
+- Abstract PWM polarity inversion into board-layer functions ✅ (`boardPwmTimerInvertsPhase()` now hides the countdown-timer PWM phase inversion from `idle.cpp` and `auxiliaries.cpp`)
 - Platform-specific code moves into board_* layer (ongoing, incremental)
 - Full SPI flash page serialization ✅ (Phase 10: saveTablePageToFlash/loadTablePageFromFlash added; all 8 table pages dual-write wired in storage.cpp; kStructPageIDs expanded to all 15 pages for complete tune bank capture)
 
@@ -523,7 +523,7 @@ See audit findings below.
   - [SESSION_HANDOFF_2026-03-22_ROVER_MEMS_BIT_WINDOW.md](C:/Users/Cornelio/Desktop/speeduino-202501.6/speeduino/SESSION_HANDOFF_2026-03-22_ROVER_MEMS_BIT_WINDOW.md)
   - [SESSION_HANDOFF_2026-03-22_ROVER_MEMS_CAM_532.md](C:/Users/Cornelio/Desktop/speeduino-202501.6/speeduino/SESSION_HANDOFF_2026-03-22_ROVER_MEMS_CAM_532.md)
   - [SESSION_HANDOFF_2026-03-22_ROVER_MEMS_TOOTH_LOG.md](C:/Users/Cornelio/Desktop/speeduino-202501.6/speeduino/SESSION_HANDOFF_2026-03-22_ROVER_MEMS_TOOTH_LOG.md)
-- The `megaatmega2560_sim_unittest` decoder baseline is green again at `263/263`; keep it that way as new evidence-backed slices land.
+- The maintained `megaatmega2560_sim_unittest` decoder baseline now includes the later Phase 9 additions as well; keep it green as new evidence-backed slices land.
 
 ## Trouble Areas
 

@@ -112,6 +112,7 @@ bool applyBoardPinMapping(byte boardID);
 uint16_t freeRam();
 void doSystemReset();
 void jumpToBootloader();
+static inline bool boardPwmTimerInvertsPhase(void) { return false; }
 
 #if defined(ARDUINO_BLUEPILL_F103C8) || defined(ARDUINO_BLUEPILL_F103CB) \
  || defined(ARDUINO_BLACKPILL_F401CC) || defined(ARDUINO_BLACKPILL_F411CE)
