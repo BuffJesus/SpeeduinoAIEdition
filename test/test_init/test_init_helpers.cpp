@@ -135,10 +135,10 @@ void test_calculateStagedInjectorMultipliers_boundary_values(void)
   TEST_ASSERT_EQUAL_UINT16(655, priMult);
   TEST_ASSERT_EQUAL_UINT16(118, secMult);
 
-  // Test at uint16_t boundary: Pri: 100cc, Sec: 6553500cc, Total: 6553600cc
+  // Test with the largest representable secondary injector size.
   // Pri mult: (100 * 6553600) / 100 = 6553600% → clamped to 65535
-  // This is an unrealistic configuration but tests overflow protection
-  calculateStagedInjectorMultipliers(100, 6553500, priMult, secMult);
+  // This is still unrealistic, but it exercises the same clamp path without truncating the test input.
+  calculateStagedInjectorMultipliers(100, 65535, priMult, secMult);
   TEST_ASSERT_EQUAL_UINT16(65535, priMult);  // Clamped
   TEST_ASSERT_EQUAL_UINT16(100, secMult);
 }
