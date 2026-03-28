@@ -3,6 +3,15 @@
 #include "table3d_interpolate.h"
 #include "table3d.h"
 
+static inline table3d_value_t tableValueForCurrentPlatform(uint16_t value)
+{
+#if defined(CORE_TEENSY41)
+    return static_cast<table3d_value_t>(value);
+#else
+    return static_cast<table3d_value_t>(value & 0xFFU);
+#endif
+}
+
 // Tests for 16-bit table value correctness
 // These tests verify that table interpolation works correctly with values > 255
 // On AVR (8-bit values), these tests validate the math without overflow
@@ -31,27 +40,25 @@ static void test_16bit_table_interpolation_with_values_above_255(void) {
     // Row 2 (Load=50): 700, 800, 900, 1000
     // Row 3 (Load=70): 900, 1000, 1100, 1200
 
-    // On AVR (8-bit), values will be truncated to uint8_t range (0-255)
-    // But the interpolation math should still work without overflow
-    testTable.values.values[0] = 300;  // Row 3, Col 0
-    testTable.values.values[1] = 400;  // Row 3, Col 1
-    testTable.values.values[2] = 500;  // Row 3, Col 2
-    testTable.values.values[3] = 600;  // Row 3, Col 3
+    testTable.values.values[0] = tableValueForCurrentPlatform(300);   // Row 3, Col 0
+    testTable.values.values[1] = tableValueForCurrentPlatform(400);   // Row 3, Col 1
+    testTable.values.values[2] = tableValueForCurrentPlatform(500);   // Row 3, Col 2
+    testTable.values.values[3] = tableValueForCurrentPlatform(600);   // Row 3, Col 3
 
-    testTable.values.values[4] = 500;  // Row 2, Col 0
-    testTable.values.values[5] = 600;  // Row 2, Col 1
-    testTable.values.values[6] = 700;  // Row 2, Col 2
-    testTable.values.values[7] = 800;  // Row 2, Col 3
+    testTable.values.values[4] = tableValueForCurrentPlatform(500);   // Row 2, Col 0
+    testTable.values.values[5] = tableValueForCurrentPlatform(600);   // Row 2, Col 1
+    testTable.values.values[6] = tableValueForCurrentPlatform(700);   // Row 2, Col 2
+    testTable.values.values[7] = tableValueForCurrentPlatform(800);   // Row 2, Col 3
 
-    testTable.values.values[8] = 700;  // Row 1, Col 0
-    testTable.values.values[9] = 800;  // Row 1, Col 1
-    testTable.values.values[10] = 900; // Row 1, Col 2
-    testTable.values.values[11] = 1000; // Row 1, Col 3
+    testTable.values.values[8] = tableValueForCurrentPlatform(700);   // Row 1, Col 0
+    testTable.values.values[9] = tableValueForCurrentPlatform(800);   // Row 1, Col 1
+    testTable.values.values[10] = tableValueForCurrentPlatform(900);  // Row 1, Col 2
+    testTable.values.values[11] = tableValueForCurrentPlatform(1000); // Row 1, Col 3
 
-    testTable.values.values[12] = 900;  // Row 0, Col 0
-    testTable.values.values[13] = 1000; // Row 0, Col 1
-    testTable.values.values[14] = 1100; // Row 0, Col 2
-    testTable.values.values[15] = 1200; // Row 0, Col 3
+    testTable.values.values[12] = tableValueForCurrentPlatform(900);  // Row 0, Col 0
+    testTable.values.values[13] = tableValueForCurrentPlatform(1000); // Row 0, Col 1
+    testTable.values.values[14] = tableValueForCurrentPlatform(1100); // Row 0, Col 2
+    testTable.values.values[15] = tableValueForCurrentPlatform(1200); // Row 0, Col 3
 
     // Query at midpoint between bins (should interpolate)
     // RPM=1500 (midpoint between 1000 and 2000)
@@ -63,10 +70,7 @@ static void test_16bit_table_interpolation_with_values_above_255(void) {
         // Midpoint between rows 0 and 1, cols 0 and 1 = average of 900, 1000, 700, 800 = 850
         TEST_ASSERT_UINT16_WITHIN(5, 850, result);
     #else
-        // On AVR (8-bit values), values are truncated to 0-255 range
-        // So 300%256=44, 400%256=144, etc.
-        // Just verify no crash/overflow - exact value depends on truncation
-        TEST_ASSERT(result >= 0 && result <= 255);
+        TEST_ASSERT_EQUAL_UINT8(88U, result);
     #endif
 }
 
@@ -142,25 +146,25 @@ static void test_16bit_mixed_values_interpolation(void) {
     testTable.axisY.axis[3] = 70;
 
     // Create gradient: low values in corner, high values in opposite corner
-    testTable.values.values[12] = 100;   // Row 0, Col 0 - low
+    testTable.values.values[12] = tableValueForCurrentPlatform(100);   // Row 0, Col 0 - low
     testTable.values.values[13] = 200;
-    testTable.values.values[14] = 300;
-    testTable.values.values[15] = 400;   // Row 0, Col 3
+    testTable.values.values[14] = tableValueForCurrentPlatform(300);
+    testTable.values.values[15] = tableValueForCurrentPlatform(400);   // Row 0, Col 3
 
     testTable.values.values[8] = 200;
-    testTable.values.values[9] = 300;
-    testTable.values.values[10] = 400;
-    testTable.values.values[11] = 500;
+    testTable.values.values[9] = tableValueForCurrentPlatform(300);
+    testTable.values.values[10] = tableValueForCurrentPlatform(400);
+    testTable.values.values[11] = tableValueForCurrentPlatform(500);
 
-    testTable.values.values[4] = 300;
-    testTable.values.values[5] = 400;
-    testTable.values.values[6] = 500;
-    testTable.values.values[7] = 600;
+    testTable.values.values[4] = tableValueForCurrentPlatform(300);
+    testTable.values.values[5] = tableValueForCurrentPlatform(400);
+    testTable.values.values[6] = tableValueForCurrentPlatform(500);
+    testTable.values.values[7] = tableValueForCurrentPlatform(600);
 
-    testTable.values.values[0] = 400;
-    testTable.values.values[1] = 500;
-    testTable.values.values[2] = 600;
-    testTable.values.values[3] = 700;    // Row 3, Col 3 - high
+    testTable.values.values[0] = tableValueForCurrentPlatform(400);
+    testTable.values.values[1] = tableValueForCurrentPlatform(500);
+    testTable.values.values[2] = tableValueForCurrentPlatform(600);
+    testTable.values.values[3] = tableValueForCurrentPlatform(700);    // Row 3, Col 3 - high
 
     // Query at center of table
     table3d_value_t result = get3DTableValue(&testTable, 40, 2500);
@@ -169,10 +173,7 @@ static void test_16bit_mixed_values_interpolation(void) {
         // On Teensy 4.1 (16-bit values), should get value in middle range (300-500)
         TEST_ASSERT(result >= 300 && result <= 500);
     #else
-        // On AVR (8-bit values), values are truncated to 0-255 range
-        // 300%256=44, 400%256=144, 500%256=244
-        // Just verify reasonable result without crash
-        TEST_ASSERT(result >= 40 && result <= 250);
+        TEST_ASSERT_EQUAL_UINT8(188U, result);
     #endif
 }
 
