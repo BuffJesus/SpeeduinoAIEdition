@@ -259,29 +259,59 @@ static void test_logger_byte_147_exports_runtime_status_a(void)
     currentStatus.launchingHard = false;
     currentStatus.flatShiftingHard = false;
     currentStatus.idleUpActive = false;
+    currentStatus.hasSync = false;
+    currentStatus.engine = 0U;
+    currentStatus.status1 = 0U;
+    currentStatus.engineProtectStatus = 0U;
     TEST_ASSERT_EQUAL_UINT8(0x00U, getTSLogEntry(147));
 
-    // fuelPumpOn only → bit 0
+    // fuelPumpOn only -> bit 0
     currentStatus.fuelPumpOn = true;
     TEST_ASSERT_EQUAL_UINT8(0x01U, getTSLogEntry(147));
 
-    // launchingHard only → bit 1
+    // launchingHard only -> bit 1
     currentStatus.fuelPumpOn = false;
     currentStatus.launchingHard = true;
     TEST_ASSERT_EQUAL_UINT8(0x02U, getTSLogEntry(147));
 
-    // All four flags set → 0x0F
+    // Full sync with no blockers sets learn-valid
+    currentStatus.launchingHard = false;
+    currentStatus.hasSync = true;
+    TEST_ASSERT_EQUAL_UINT8((1U << BIT_RUNTIME_STATUS_A_FULL_SYNC) | (1U << BIT_RUNTIME_STATUS_A_TUNE_LEARN_VALID), getTSLogEntry(147));
+
+    // Transient and warmup/ASE flags surface directly and suppress learn-valid
+    currentStatus.engine = (1U << BIT_ENGINE_ACC) | (1U << BIT_ENGINE_WARMUP) | (1U << BIT_ENGINE_ASE);
+    TEST_ASSERT_EQUAL_UINT8((1U << BIT_RUNTIME_STATUS_A_FULL_SYNC)
+                          | (1U << BIT_RUNTIME_STATUS_A_TRANSIENT_ACTIVE)
+                          | (1U << BIT_RUNTIME_STATUS_A_WARMUP_OR_ASE),
+                            getTSLogEntry(147));
+
+    // DFCO and protection also suppress learn-valid
+    currentStatus.engine = 0U;
+    currentStatus.status1 = (1U << BIT_STATUS1_DFCO);
+    TEST_ASSERT_EQUAL_UINT8((1U << BIT_RUNTIME_STATUS_A_FULL_SYNC), getTSLogEntry(147));
+
+    currentStatus.status1 = 0U;
+    currentStatus.engineProtectStatus = (1U << ENGINE_PROTECT_BIT_RPM);
+    TEST_ASSERT_EQUAL_UINT8((1U << BIT_RUNTIME_STATUS_A_FULL_SYNC), getTSLogEntry(147));
+
+    // All base runtime flags set plus full sync and learn-valid
+    currentStatus.engineProtectStatus = 0U;
     currentStatus.fuelPumpOn = true;
     currentStatus.launchingHard = true;
     currentStatus.flatShiftingHard = true;
     currentStatus.idleUpActive = true;
-    TEST_ASSERT_EQUAL_UINT8(0x0FU, getTSLogEntry(147));
+    TEST_ASSERT_EQUAL_UINT8(0x9FU, getTSLogEntry(147));
 
     // restore
     currentStatus.fuelPumpOn = false;
     currentStatus.launchingHard = false;
     currentStatus.flatShiftingHard = false;
     currentStatus.idleUpActive = false;
+    currentStatus.hasSync = false;
+    currentStatus.engine = 0U;
+    currentStatus.status1 = 0U;
+    currentStatus.engineProtectStatus = 0U;
 }
 
 static void test_readable_indices_102_103_export_start_rev_halves(void)
@@ -309,13 +339,25 @@ static void test_readable_index_104_exports_runtime_status_a(void)
     currentStatus.launchingHard = false;
     currentStatus.flatShiftingHard = false;
     currentStatus.idleUpActive = false;
+    currentStatus.hasSync = false;
+    currentStatus.engine = 0U;
+    currentStatus.status1 = 0U;
+    currentStatus.engineProtectStatus = 0U;
     TEST_ASSERT_EQUAL_INT16(0, getReadableLogEntry(104));
 
     currentStatus.flatShiftingHard = true;
     currentStatus.idleUpActive = true;
     TEST_ASSERT_EQUAL_INT16(0x0C, getReadableLogEntry(104)); // bits 2+3
 
+    currentStatus.flatShiftingHard = false;
+    currentStatus.idleUpActive = false;
+    currentStatus.hasSync = true;
+    currentStatus.engine = (1U << BIT_ENGINE_MAPDCC);
+    TEST_ASSERT_EQUAL_INT16((1U << BIT_RUNTIME_STATUS_A_FULL_SYNC) | (1U << BIT_RUNTIME_STATUS_A_TRANSIENT_ACTIVE), getReadableLogEntry(104));
+
     // restore
+    currentStatus.hasSync = false;
+    currentStatus.engine = 0U;
     currentStatus.flatShiftingHard = false;
     currentStatus.idleUpActive = false;
 }
