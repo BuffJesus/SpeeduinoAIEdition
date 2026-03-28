@@ -34,7 +34,7 @@ constexpr uint16_t kExperimentalNativeU16Page2Size = kExperimentalNativeU16Page2
 
 inline bool experimental_native_u16_page2_looks_legacy_byte_scaled(void)
 {
-#if defined(CORE_TEENSY41) && defined(TS_EXPERIMENTAL_NATIVE_U16_PAGE2)
+#if defined(TS_EXPERIMENTAL_NATIVE_U16_PAGE2)
   for (uint16_t valueIndex = 0U; valueIndex < 256U; ++valueIndex)
   {
     if (static_cast<uint16_t>(fuelTable.values.value_at(valueIndex)) > UINT8_MAX)
@@ -50,7 +50,7 @@ inline bool experimental_native_u16_page2_looks_legacy_byte_scaled(void)
 
 inline bool supports_native_u16_page2_mode(byte pageNum, ts_page_serialization_mode mode)
 {
-#if defined(CORE_TEENSY41) && defined(TS_EXPERIMENTAL_NATIVE_U16_PAGE2)
+#if defined(TS_EXPERIMENTAL_NATIVE_U16_PAGE2)
   return (mode == TS_PAGE_SERIALIZATION_NATIVE_U16)
       && (pageNum == veMapPage)
       && (configPage2.pinMapping == PIN_LAYOUT_DROPBEAR)
@@ -67,7 +67,7 @@ inline ts_page_serialization_mode normalize_tunerstudio_page_mode(byte pageNum, 
   return supports_native_u16_page2_mode(pageNum, mode) ? mode : TS_PAGE_SERIALIZATION_CURRENT_BYTES;
 }
 
-#if defined(CORE_TEENSY41)
+#if defined(TS_EXPERIMENTAL_NATIVE_U16_PAGE2)
 inline byte get_experimental_native_u16_page2_byte(uint16_t offset)
 {
   if (offset < kExperimentalNativeU16Page2ValueBytes)
@@ -160,6 +160,19 @@ inline void write_experimental_native_u16_page2_bytes(uint16_t offset, const byt
   }
 
   invalidate_cache(&fuelTable.get_value_cache);
+}
+#else
+inline byte get_experimental_native_u16_page2_byte(uint16_t offset)
+{
+  (void)offset;
+  return 0U;
+}
+
+inline void write_experimental_native_u16_page2_bytes(uint16_t offset, const byte *buffer, uint16_t length)
+{
+  (void)offset;
+  (void)buffer;
+  (void)length;
 }
 #endif
 
@@ -603,7 +616,7 @@ bool isExperimentalNativeU16Page2Enabled(void)
 
 void normalizeExperimentalNativeU16Page2IfNeeded(void)
 {
-#if defined(CORE_TEENSY41) && defined(TS_EXPERIMENTAL_NATIVE_U16_PAGE2)
+#if defined(TS_EXPERIMENTAL_NATIVE_U16_PAGE2)
   if (!isExperimentalNativeU16Page2Enabled() || !experimental_native_u16_page2_looks_legacy_byte_scaled())
   {
     return;
@@ -653,7 +666,6 @@ void copyTunerStudioPageValuesToBufferForMode(byte pageNum, uint16_t offset, byt
 {
   const ts_page_serialization_mode normalizedMode = normalize_tunerstudio_page_mode(pageNum, mode);
 
-#if defined(CORE_TEENSY41)
   if (normalizedMode == TS_PAGE_SERIALIZATION_NATIVE_U16)
   {
     for (uint16_t i = 0; i < length; i++)
@@ -662,9 +674,6 @@ void copyTunerStudioPageValuesToBufferForMode(byte pageNum, uint16_t offset, byt
     }
     return;
   }
-#else
-  (void)normalizedMode;
-#endif
 
   copyPageValuesToBuffer(pageNum, offset, buffer, length);
 }
@@ -678,15 +687,11 @@ void writeTunerStudioPageValuesFromBufferForMode(byte pageNum, uint16_t offset, 
 {
   const ts_page_serialization_mode normalizedMode = normalize_tunerstudio_page_mode(pageNum, mode);
 
-#if defined(CORE_TEENSY41)
   if (normalizedMode == TS_PAGE_SERIALIZATION_NATIVE_U16)
   {
     write_experimental_native_u16_page2_bytes(offset, buffer, length);
     return;
   }
-#else
-  (void)normalizedMode;
-#endif
 
   writePageValuesFromBuffer(pageNum, offset, buffer, length);
 }
