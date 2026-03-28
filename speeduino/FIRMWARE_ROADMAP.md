@@ -61,12 +61,18 @@ Current phase 1 work started in:
 Most of the phase snapshots below are historical closing baselines. The current spot-checked simulator baseline in this workspace is:
 
 - test_decoders: 275/275 PASSED
+- test_fuel: 88/88 PASSED
 - test_ign: 193/193 PASSED
 - test_init: 9/9 PASSED
+- test_launch: 6/6 PASSED
+- test_math: 44/44 PASSED
+- test_protection: 19/19 PASSED
+- test_schedules: 26/26 PASSED
 - test_sensors: 65/65 PASSED
+- test_tables: 24/24 PASSED
 - test_updates: 38/38 PASSED
 
-`test_updates` did briefly hit an AVR LTO internal compiler error during one incremental rebuild, but the same command passed cleanly on the next rebuild. Treat that as a toolchain/build-cache instability note, not as an active source-level regression.
+`test_updates` and `test_ign` did briefly hit AVR LTO/internal build-cache failures during incremental rebuilds, and a broader sweep also hit transient missing-object / file-lock failures when multiple PlatformIO test jobs targeted the same environment concurrently. The same suites passed cleanly on rerun after a rebuild/clean, so treat those as toolchain/build-cache instability notes, not as active source-level regressions.
 
 ## Phase 3: Runtime Structure
 
