@@ -527,11 +527,16 @@ See audit findings below.
     - prove end-to-end coherence for page read, page write, burn, CRC, and flash mirror before touching the remaining pages
   - until that full slice is implemented and validated end-to-end on Teensy, keep the working byte-serialized TS contract
   - current repo state update:
-    - the experimental milestone above is now substantially complete for page `2` only: there is a Teensy-only, DropBear-gated, alternate-signature native-`U16` TS transport seam with matching read/write/CRC/SPI-flash behavior
-    - the experimental runtime fueling slice is now also in place for page `2`: fueling uses a high-resolution runtime VE path while `currentStatus.VE*` remain byte-sized compatibility/display channels
+    - the experimental milestone above is now complete for page `2` only: there is a Teensy-only, DropBear-gated, alternate-signature native-`U16` TS transport seam with matching read/write/CRC/SPI-flash behavior
+    - the experimental runtime fueling slice is also in place for page `2`: fueling uses a high-resolution runtime VE path while `currentStatus.VE*` remain byte-sized compatibility/display channels
+    - the final protocol blocker was not TunerStudio itself; it was an internal type-width mismatch where `table3d_value_t` could still compile as byte-sized on Teensy in early include paths. That is now fixed in [table3d_typedefs.h](C:/Users/Cornelio/Desktop/speeduino-202501.6/speeduino/table3d_typedefs.h), with matching serializer fixes in [pages.cpp](C:/Users/Cornelio/Desktop/speeduino-202501.6/speeduino/pages.cpp) and [comms_legacy.cpp](C:/Users/Cornelio/Desktop/speeduino-202501.6/speeduino/comms_legacy.cpp)
+    - the experimental path has now been smoke-tested in real TunerStudio: page 2 displays correctly and burns cleanly with the alternate experimental hex/INI/tune flow
     - what remains deferred is **high-resolution VE telemetry/output-channel exposure**, because logger/live-data/legacy packet layouts are still byte-oriented and shared by existing consumers
     - treat telemetry widening as a separate design slice from TS page transport and fueling; do not conflate "TS can edit `U16` page 2" or "fueling consumes hi-res VE" with "all external status/log contracts expose hi-res VE"
     - the current recommendation is to avoid widening the existing `148`-byte output-channel packet in place; any real hi-res VE telemetry experiment should use an alternate signature + alternate INI + alternate `ochBlockSize`/logger map rather than mutating the shared production packet contract
+    - the best next milestone is no longer transport debugging; it is either:
+      - controlled bench / hardware validation of the experimental artifacts, or
+      - a separate design for optional hi-res VE telemetry if a real logging workflow requires it
 - `Rover MEMS` full replay remains intentionally deferred:
   - the repo still lacks a safe tooth-numbered mapping from a logged cam transition to the decoder's `secondaryToothCount == 6 / 4 / 3` gap events needed for full `Crank Speed + 5-3-2 cam` replay
   - treat this as an evidence-conversion blocker, not as a signal to synthesize more speculative traces

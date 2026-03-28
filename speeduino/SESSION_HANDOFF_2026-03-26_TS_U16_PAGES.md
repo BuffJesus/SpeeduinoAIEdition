@@ -2,14 +2,25 @@
 
 ## Outcome
 
-Native `U16` TunerStudio tune pages were **not** implemented in this session.
+The repo now contains a working **Teensy-only, DropBear-gated, page-2-only experimental native-`U16` TunerStudio path**.
 
-The current Teensy 4.1 / DropBear TunerStudio path is working because it preserves the existing **byte-serialized virtual page contract**. A safe native-`U16` experiment would require a **parallel Teensy-only TS page path**, not an in-place conversion of the existing page API.
+It is isolated behind an alternate signature / alternate INI and does not replace the production byte contract.
 
-Update from the follow-on experimental seam work:
-- there is now a **Teensy-only, DropBear-gated, page-2-only experimental native-`U16` TS transport seam**
-- it is isolated behind an alternate signature / alternate INI and does not replace the production byte contract
-- it is validated as a **transport/editing/CRC/SPI-flash seam**, not as end-to-end high-resolution fueling
+Current verified state:
+- the production TunerStudio path still uses the existing **byte-serialized virtual page contract**
+- the experimental page-2 path now works end-to-end for **read/write/burn/CRC/SPI-flash**
+- the experimental runtime fueling slice also works for page `2`
+- high-resolution VE telemetry/output channels remain intentionally deferred
+
+Root cause of the final burn/CRC corruption:
+- the core table layer was still compiling as byte-sized on Teensy in some include paths because `table3d_value_t` selection depended on `CORE_TEENSY41`, which was defined too late for early `table3d.h` consumers
+- fixing [table3d_typedefs.h](C:/Users/Cornelio/Desktop/speeduino-202501.6/speeduino/table3d_typedefs.h) to key 16-bit tables from the Teensy MCU macro (`__IMXRT1062__`) resolved the deterministic "high byte lost" failure
+- [pages.cpp](C:/Users/Cornelio/Desktop/speeduino-202501.6/speeduino/pages.cpp) and [comms_legacy.cpp](C:/Users/Cornelio/Desktop/speeduino-202501.6/speeduino/comms_legacy.cpp) were then updated to stop assuming raw byte-sized table storage
+
+Observed final validation:
+- focused AVR comms serialization tests passed
+- clean experimental Teensy build passed
+- TunerStudio displayed page-2 VE correctly and completed `Burned All Data` with the experimental signature/INI pair
 
 ## What Was Verified
 
@@ -116,7 +127,7 @@ Before claiming success for a one-page experimental `U16` path, prove:
    - is explicitly upgraded to the same experimental stream
 5. The default production byte path remains unchanged and working.
 
-Those transport proofs now exist for the experimental page-2 seam.
+Those transport proofs now exist for the experimental page-2 seam, including a real TunerStudio burn/readback smoke test against the alternate experimental signature/INI.
 
 ## What Is Still Blocking End-To-End U16 Fueling
 
@@ -139,6 +150,7 @@ That means the experimental page-2 native-`U16` path currently proves:
 - CRC matches the same serialized page-2 byte stream
 - SPI-flash mirroring can follow the same serialized page-2 byte stream
 - runtime fueling can consume the full high-resolution VE path for experimental page 2 while keeping byte-sized compatibility status fields
+- the packaged experimental hex / INI / tune path is viable for bench preparation before hardware arrives
 
 It does **not** yet prove:
 - output channels / logs / legacy channels can represent widened VE values coherently without a separate packet contract
@@ -191,42 +203,39 @@ These are useful as evidence that the byte page API is widely depended on, not a
 ## Recommended Next Prompt
 
 ```text
-Use FIRMWARE_ROADMAP.md and SESSION_HANDOFF_2026-03-26_TS_U16_PAGES.md as source of truth. The current Teensy/DropBear TunerStudio path is working because it preserves the byte-serialized TS page contract. Native 16-bit TS pages remain deferred, but the narrowest safe experimental seam is now defined.
+Use FIRMWARE_ROADMAP.md and SESSION_HANDOFF_2026-03-26_TS_U16_PAGES.md as source of truth. The repo now has a working experimental Teensy/DropBear page-2 native-U16 TunerStudio path plus hi-res runtime fueling, while the production byte-contract path remains unchanged.
 
-Session goal: prototype a Teensy-only experimental native-16-bit TunerStudio path for page 2 only, without disturbing the current working byte-serialized production path.
+Session goal: prepare the experimental page-2 native-U16 path for sustained use by tightening packaging/docs/manual validation, or stop with a precise reason if a remaining telemetry or release-contract gap blocks that.
 
 Read first:
-- speeduino/pages.h
+- release/speeduino-dropbear-v2.0.1-teensy41-u16p2-experimental.hex
+- release/speeduino-dropbear-v2.0.1-u16p2-experimental.ini
+- release/Ford300_TwinGT28_BaseStartup_u16p2_experimental.msq
 - speeduino/pages.cpp
-- speeduino/comms.cpp
 - speeduino/comms_legacy.cpp
-- speeduino/page_crc.cpp
-- speeduino/storage.cpp
-- speeduino/storage_spi.cpp
-- release/speeduino-dropbear-v2.0.1.ini
+- speeduino/speeduino.ino
+- speeduino/secondaryTables.cpp
 - SESSION_HANDOFF_2026-03-26_TS_U16_PAGES.md
 
 Working rules:
-1. Do not change the existing byte page contract in place.
-2. Keep the default production path unchanged and working.
-3. Gate any native-16-bit experiment behind an explicit Teensy-only alternate signature or capability.
-4. Start with page 2 only.
-5. Add a focused check/test around TS-visible page bytes vs CRC bytes if possible.
+1. Do not disturb the existing production byte-contract path.
+2. Keep the experimental path gated to Teensy 4.1 + DropBear + alternate signature/INI.
+3. Do not widen the existing output-channel packet in place.
+4. Treat hi-res VE telemetry as a separate protocol feature unless explicitly taking that slice.
 
 Deliverables:
-- Add the smallest possible parallel TS page read/write/CRC seam for an experimental mode.
-- Prototype it for page 2 only, or stop and document the precise blocker if even that is unsafe.
-- Keep SPI-flash behavior explicit: either unchanged on byte mode or deliberately matched to the experimental stream.
-- Leave the packaged production INI and current project flow working by default.
+- verify the packaged experimental artifacts remain coherent
+- document the exact activation and validation flow
+- identify whether the next worthwhile step is telemetry, broader page coverage, or simply bench/hardware validation
 
 Verification:
+- pio test -e megaatmega2560_sim_unittest --filter test_comms
 - pio run -e teensy41
-- any focused tests added
+- PLATFORMIO_BUILD_FLAGS=-DTS_EXPERIMENTAL_NATIVE_U16_PAGE2 pio run -e teensy41
 
 When done, report:
-- whether the one-page experimental path worked
-- the exact seam used or blocker found
+- whether the packaged experimental path is still ready
+- the next best engineering slice
 - files changed
-- compatibility risks
-- recommended next prompt
+- any remaining compatibility risks
 ```
