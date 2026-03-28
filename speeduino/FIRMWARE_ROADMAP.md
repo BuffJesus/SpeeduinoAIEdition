@@ -74,7 +74,7 @@ Most of the phase snapshots below are historical closing baselines. The current 
 
 `test_updates` and `test_ign` did briefly hit AVR LTO/internal build-cache failures during incremental rebuilds, and a broader sweep also hit transient missing-object / file-lock failures when multiple PlatformIO test jobs targeted the same environment concurrently. The same suites passed cleanly on rerun after a rebuild/clean, so treat those as toolchain/build-cache instability notes, not as active source-level regressions.
 
-Separately, the GitHub Actions `Calculate memory deltas` Arduino Teensy 4.1 compile path is back to passing after removing a `globals.h` declaration-order dependency from [board_teensy41.h](C:/Users/Cornelio/Desktop/speeduino-202501.6/speeduino/board_teensy41.h). Remaining Teensy 4.1 workflow annotations are warnings only (`SdFat.h` FS-detection warnings and two `updates.cpp` array-bounds warnings), not compile blockers.
+Separately, the GitHub Actions `Calculate memory deltas` Arduino Teensy 4.1 compile path is back to passing after removing a `globals.h` declaration-order dependency from [board_teensy41.h](C:/Users/Cornelio/Desktop/speeduino-202501.6/speeduino/board_teensy41.h). The current local Arduino Teensy 4.1 repro only emits the external `SdFat.h` FS-detection `#warning`; there are no active `updates.cpp` warning annotations reproducing in this workspace, and there is no compile blocker.
 
 ## Phase 3: Runtime Structure
 
@@ -208,8 +208,8 @@ Additional completed board-layer cleanup since the original Phase 4 closeout:
   - this is intentionally behavior-preserving cleanup only; the generic setPinMapping switch still owns the remaining board cases
 
 **Binary Size:**
-- Teensy 4.1: 254,060 bytes code + 30,464 data (FLASH: 292,860 total, +128 from previous 292,732)
-- RAM1: variables 38,880, code 248,952, padding 13,192 (free for local variables: 223,264)
+- Teensy 4.1: 261,708 bytes code + 30,464 data (FLASH: 301,052 total in current Arduino Teensy 4.1 repro)
+- RAM1: variables 40,928, code 256,600, padding 5,544 (free for local variables: 221,216)
 - RAM2: variables 12,416 (free for malloc/new: 511,872)
 
 **Test Results (Phase 4 Closing Baseline):**
@@ -276,7 +276,8 @@ Additional current note on remaining Phase 4 work:
 - **Total passing: 732/732**
 
 **Binary Size (Phase 5):**
-- Teensy 4.1: 254,060 bytes code + 30,464 data (unchanged from Phase 4)
+- Historical closeout note: Phase 5 recorded Teensy 4.1 at 254,060 bytes code + 30,464 data at that point in time
+- Current Arduino Teensy 4.1 repro in this workspace is 261,708 bytes code + 30,464 data
 
 **Slice D: Logger Byte Regression Tests** ✅ **COMPLETE**
 - Created `test/test_ign/test_logger_byte_regression.cpp` with 10 tests
