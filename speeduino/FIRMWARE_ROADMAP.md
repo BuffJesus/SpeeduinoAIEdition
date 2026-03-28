@@ -149,6 +149,11 @@ Most of the phase snapshots below are historical closing baselines. The current 
 - ✅ Output channel alignment (LOG_ENTRY_SIZE 131→132, speeduino.ini ochBlockSize 130→132 synced)
 - ✅ setPinMapping audit (19 board cases, case 3 largest at ~333 lines, extraction opportunities documented)
 
+Additional completed board-layer cleanup since the original Phase 4 closeout:
+- Shared PWM timing / phase decisions moved behind board hooks (`boardPwmTimerInvertsPhase()`, `boardPwmTimerTickMicros()`)
+- Shared flash-backed storage / logger health export routed through board-flash helpers instead of repeated Teensy-only branches
+- Shared analog input mode setup moved behind `boardAnalogInputMode()`
+
 **Board Capability Output Channels:**
 - **Byte 130**: Board capability bitfield (BOARD_CAP_UNRESTRICTED_INTERRUPTS, BOARD_CAP_SPI_FLASH)
 - **Byte 131**: SPI flash health (Teensy 4.1 only, 1=healthy, 0=unavailable/not present)
@@ -217,6 +222,10 @@ Most of the phase snapshots below are historical closing baselines. The current 
 - Abstract PWM polarity inversion into board-layer functions ✅ (`boardPwmTimerInvertsPhase()` now hides the countdown-timer PWM phase inversion from `idle.cpp` and `auxiliaries.cpp`)
 - Platform-specific code moves into board_* layer (ongoing, incremental)
 - Full SPI flash page serialization ✅ (Phase 10: saveTablePageToFlash/loadTablePageFromFlash added; all 8 table pages dual-write wired in storage.cpp; kStructPageIDs expanded to all 15 pages for complete tune bank capture)
+
+Additional current note on remaining Phase 4 work:
+- Shared PWM timer-count setup now also uses `boardPwmTimerTickMicros()` in `idle.cpp` and `auxiliaries.cpp`, and analog sensor pin setup now uses `boardAnalogInputMode()` in `init.cpp`
+- Shared storage / page serialization / logger export cleanup is substantially complete; remaining Teensy / STM32 branches in those areas are mostly backend linkage or experimental feature guards rather than board-policy leakage
 
 ## Phase 5: Configuration And Observability
 
