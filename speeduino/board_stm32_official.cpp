@@ -300,6 +300,12 @@ STM32RTC& rtc = STM32RTC::getInstance();
   {
   }
 
+  bool applyBoardPinMapping(byte boardID)
+  {
+    (void)boardID;
+    return false;
+  }
+
   uint16_t freeRam()
   {
     uint32_t freeRam;

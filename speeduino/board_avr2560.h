@@ -32,6 +32,7 @@
   void initBoard(void);
   void beginBoardSerial(void);
   void finaliseBoardTriggerSetup(void);
+  bool applyBoardPinMapping(byte boardID);
   uint16_t freeRam(void);
   void doSystemReset(void);
   void jumpToBootloader(void);

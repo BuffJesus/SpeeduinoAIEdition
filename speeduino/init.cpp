@@ -2249,9 +2249,12 @@ void setPinMapping(byte boardID)
     case 55:
       #if defined(CORE_TEENSY)
       //Pin mappings for the DropBear
-      #if defined(CORE_TEENSY41)
-        setTeensy41DropBearPinMapping();
-      #else
+      if(applyBoardPinMapping(boardID))
+      {
+        break;
+      }
+      else
+      {
         injectorOutputControl = OUTPUT_CONTROL_MC33810;
         ignitionOutputControl = OUTPUT_CONTROL_MC33810;
 
@@ -2296,7 +2299,7 @@ void setPinMapping(byte boardID)
         pinWMIEmpty = 23; //Spare digital input
         pinWMIIndicator = pinSpareLOut2; //Spare output
         pinWMIEnabled = pinSpareLOut1; //Spare output
-      #endif
+      }
 
       #if defined(CORE_TEENSY35)
         pinTPS = A22; //TPS input pin

@@ -39,6 +39,12 @@ void finaliseBoardTriggerSetup()
 {
 }
 
+bool applyBoardPinMapping(byte boardID)
+{
+    (void)boardID;
+    return false;
+}
+
 uint16_t freeRam()
 {
 

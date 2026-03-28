@@ -313,6 +313,12 @@ void finaliseBoardTriggerSetup()
 {
 }
 
+bool applyBoardPinMapping(byte boardID)
+{
+    (void)boardID;
+    return false;
+}
+
 void ftm0_isr(void)
 {
   //Use separate variables for each test to ensure conversion to bool

@@ -23,8 +23,9 @@ static void TMR2_isr(void);
 static void TMR3_isr(void);
 static void TMR4_isr(void);
 static void setTeensy41PinsHysteresis(void);
+static void setTeensy41DropBearPinMapping(void);
 
-void setTeensy41DropBearPinMapping()
+static void setTeensy41DropBearPinMapping(void)
 {
     injectorOutputControl = OUTPUT_CONTROL_MC33810;
     ignitionOutputControl = OUTPUT_CONTROL_MC33810;
@@ -307,6 +308,17 @@ void finaliseBoardTriggerSetup()
 {
   // Teensy 4 requires a HYSTERESIS flag on interrupt pins to suppress false triggers.
   setTeensy41PinsHysteresis();
+}
+
+bool applyBoardPinMapping(byte boardID)
+{
+  if(boardID != PIN_LAYOUT_DROPBEAR)
+  {
+    return false;
+  }
+
+  setTeensy41DropBearPinMapping();
+  return true;
 }
 
 void PIT_isr()

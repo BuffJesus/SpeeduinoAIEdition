@@ -485,6 +485,7 @@ See audit findings below.
   - add higher-resolution oversampling/averaging to Teensy 4.1 ADC path ✅ (Phase 7 Slice C)
   - move primary serial startup behind a board hook instead of a `CORE_TEENSY41` branch in `initialiseAll()` [complete] (Phase 10: `beginBoardSerial()` keeps Teensy 4.1's shortened USB wait inside the board layer)
   - move post-trigger hysteresis setup behind a board hook instead of a `CORE_TEENSY41` branch in `initialiseTriggers()` [complete] (Phase 10: `finaliseBoardTriggerSetup()` keeps Teensy 4.1 interrupt-pin hysteresis in the board layer)
+  - move Teensy 4.1 DropBear pin-mapping selection behind a board hook instead of calling a Teensy helper from `setPinMapping()` [complete] (Phase 10: `applyBoardPinMapping()` lets the board layer own the Teensy 4.1-specific DropBear mapping)
 - Use the existing ESP32-C3 board hardware as a real secondary transport / coprocessor path for wireless tuning, log offload, and update workflows once the board capability layer exists. ✅ (Capability layer established: `BOARD_CAP_WIFI_TRANSPORT` bit 7 added to board_capability enum; set for PIN_LAYOUT_DROPBEAR on CORE_TEENSY41; `boardCap_wifiTransport` channel exposed in INI at byte 130 [7:7]. Transport implementation deferred until hardware schematic / UART pin assignment confirmed.)
 
 ## Borrowed From rusEFI
