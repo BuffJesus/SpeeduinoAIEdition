@@ -106,6 +106,7 @@ HardwareSerial Serial1(PA10, PA9);
 extern STM32RTC& rtc;
 
 void initBoard();
+void beginBoardSerial();
 uint16_t freeRam();
 void doSystemReset();
 void jumpToBootloader();

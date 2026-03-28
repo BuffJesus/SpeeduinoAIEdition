@@ -30,6 +30,11 @@ void initBoard()
     */
 }
 
+void beginBoardSerial()
+{
+    Serial.begin(115200);
+}
+
 uint16_t freeRam()
 {
   return 0;

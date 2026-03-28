@@ -30,6 +30,7 @@
     #define RTC_LIB_H <Time.h>
   #endif
   void initBoard(void);
+  void beginBoardSerial(void);
   uint16_t freeRam(void);
   void doSystemReset(void);
   void jumpToBootloader(void);

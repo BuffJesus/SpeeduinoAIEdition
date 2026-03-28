@@ -304,6 +304,11 @@ void initBoard()
     NVIC_ENABLE_IRQ(IRQ_FTM3);
 }
 
+void beginBoardSerial()
+{
+    Serial.begin(115200);
+}
+
 void ftm0_isr(void)
 {
   //Use separate variables for each test to ensure conversion to bool

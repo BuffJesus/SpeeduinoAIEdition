@@ -156,12 +156,7 @@ void initialiseAll(void)
 
     initialiseTimers();
     
-//Teensy 4.1 does not require .begin() to be called. This introduces a 700ms delay on startup time whilst USB is enumerated if it is called
-#ifndef CORE_TEENSY41
-    Serial.begin(115200);
-    #else
-    teensy41_customSerialBegin();
-#endif
+    beginBoardSerial();
     pPrimarySerial = &Serial; //Default to standard Serial interface
     BIT_SET(currentStatus.status4, BIT_STATUS4_ALLOW_LEGACY_COMMS); //Flag legacy comms as being allowed on startup
     BIT_SET(currentStatus.status5, BIT_STATUS5_ALLOW_TS_ON_SECONDARY_COMMS); //Allow TunerStudio protocol on startup

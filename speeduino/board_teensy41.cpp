@@ -291,6 +291,17 @@ void initBoard()
     NVIC_ENABLE_IRQ(IRQ_QTIMER4);
 }
 
+void beginBoardSerial()
+{
+  uint32_t millis_begin = systick_millis_count;
+  while (!Serial)
+  {
+    uint32_t elapsed = systick_millis_count - millis_begin;
+    if (elapsed > 250) { break; }
+    yield();
+  }
+}
+
 void PIT_isr()
 {
   bool interrupt1 = (PIT_TFLG0 & PIT_TFLG_TIF);
@@ -465,22 +476,6 @@ void setTeensy41PinsHysteresis()
   if(configPage2.vssMode > 1) { setPinHysteresis(pinVSS); }// VSS modes 2 and 3 are interrupt drive (Mode 1 is CAN)
   if(configPage10.knock_mode == KNOCK_MODE_DIGITAL) { setPinHysteresis(pinTranslateKnock(configPage10.knock_pin)); }
 
-}
-
-/*
-* The default Teensy41 serial.begin() has a timeout of 750ms, which is both too long to wait on startup and longer than it needs to be
-* This function is a copy of the default serial.begin() but with the timeout lowered to 100ms
-*/
-void teensy41_customSerialBegin()
-{
-  uint32_t millis_begin = systick_millis_count;
-  while (!Serial) 
-  {
-    uint32_t elapsed = systick_millis_count - millis_begin;
-    //Wait up to 100ms for this. 
-    if (elapsed > 250) break;
-    yield();
-  }
 }
 
 #endif

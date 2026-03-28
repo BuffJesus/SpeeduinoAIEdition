@@ -7,6 +7,7 @@
 * General
 */
   void initBoard();
+  void beginBoardSerial();
   uint16_t freeRam();
   void doSystemReset();
   void jumpToBootloader();

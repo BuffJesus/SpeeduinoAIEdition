@@ -291,6 +291,11 @@ STM32RTC& rtc = STM32RTC::getInstance();
 
   }
 
+  void beginBoardSerial()
+  {
+    Serial.begin(115200);
+  }
+
   uint16_t freeRam()
   {
     uint32_t freeRam;
