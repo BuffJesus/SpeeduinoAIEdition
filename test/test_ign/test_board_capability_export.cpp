@@ -69,10 +69,9 @@ static void test_board_capability_varies_by_pin_mapping(void)
   configPage2.pinMapping = PIN_LAYOUT_BEAR_CUB;
   byte bearCubCaps = getTSLogEntry(130);
 
-  // At minimum, verify the function returns a value
-  // (actual difference depends on board configuration)
-  TEST_ASSERT_TRUE(dropbearCaps >= 0);
-  TEST_ASSERT_TRUE(bearCubCaps >= 0);
+  // At minimum, verify the export path is stable for both mappings.
+  TEST_ASSERT_EQUAL_UINT8(getBoardCapabilityFlags(PIN_LAYOUT_DROPBEAR), dropbearCaps);
+  TEST_ASSERT_EQUAL_UINT8(getBoardCapabilityFlags(PIN_LAYOUT_BEAR_CUB), bearCubCaps);
 
   #if defined(CORE_TEENSY41)
     // On Teensy 4.1, Dropbear should have SPI flash but Bear Cub shouldn't

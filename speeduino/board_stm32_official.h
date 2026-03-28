@@ -113,6 +113,7 @@ uint16_t freeRam();
 void doSystemReset();
 void jumpToBootloader();
 static inline bool boardPwmTimerInvertsPhase(void) { return false; }
+static inline uint8_t getBoardSpecificCapabilityFlags(uint8_t pinMapping) { (void)pinMapping; return (1U << 6); }
 
 #if defined(ARDUINO_BLUEPILL_F103C8) || defined(ARDUINO_BLUEPILL_F103CB) \
  || defined(ARDUINO_BLACKPILL_F401CC) || defined(ARDUINO_BLACKPILL_F411CE)

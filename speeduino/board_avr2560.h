@@ -37,6 +37,7 @@
   void doSystemReset(void);
   void jumpToBootloader(void);
   static inline bool boardPwmTimerInvertsPhase(void) { return false; }
+  static inline uint8_t getBoardSpecificCapabilityFlags(uint8_t pinMapping) { (void)pinMapping; return 0U; }
 
   #if defined(TIMER5_MICROS)
     /*#define micros() (((timer5_overflow_count << 16) + TCNT5) * 4) */ //Fast version of micros() that uses the 4uS tick of timer5. See timers.ino for the overflow ISR of timer5
