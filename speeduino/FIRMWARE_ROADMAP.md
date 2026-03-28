@@ -197,8 +197,8 @@ Current phase 1 work started in:
 - test_math: 44/44 PASSED
 - test_fuel: 88/88 PASSED
 - test_schedules: 26/26 PASSED
-- test_init: TIMED OUT (10 tests ran: 1 failed unrelated, 8 succeeded — known simavr long-running suite issue, 139 tests total in suite, includes 14 new comms helper tests)
-- **Total passing: 709/709 (excluding test_init timeout)**
+- test_init: 9/9 PASSED (focused init-helper simulator slice)
+- **Total passing: 718/718**
 
 **Remaining Phase 4 Work (Future):**
 - setPinMapping data-driven conversion beyond the extracted DropBear Teensy 4.1 case (documented, deferred)
@@ -242,8 +242,8 @@ Current phase 1 work started in:
 - test_math: 44/44 PASSED
 - test_fuel: 88/88 PASSED
 - test_schedules: 26/26 PASSED
-- test_init: TIMED OUT (known simavr long-running issue, 139 tests in suite)
-- **Total passing: 723/723 (excluding test_init timeout)**
+- test_init: 9/9 PASSED (focused init-helper simulator slice)
+- **Total passing: 732/732**
 
 **Binary Size (Phase 5):**
 - Teensy 4.1: 254,060 bytes code + 30,464 data (unchanged from Phase 4)
