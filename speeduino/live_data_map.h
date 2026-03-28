@@ -135,6 +135,10 @@
  *                  bit1 = launchingHard
  *                  bit2 = flatShiftingHard
  *                  bit3 = idleUpActive
+ *                  bit4 = fullSync
+ *                  bit5 = transientActive (TPS/MAP accel or decel)
+ *                  bit6 = warmupOrASEActive
+ *                  bit7 = tuneLearnValid (full sync, no transient, no warmup/ASE, no DFCO, no protection)
  */
 
 #ifndef LIVE_DATA_MAP_H

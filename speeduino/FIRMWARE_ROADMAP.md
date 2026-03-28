@@ -498,6 +498,7 @@ See audit findings below.
     - richer runtime status bits
     - clearer logger / live-data semantics
     - confidence or validity markers for when a cell hit is worth learning from
+  - completed narrow slice: reused the existing `runtimeStatusA` byte high bits instead of widening `ochBlockSize`, adding `fullSync`, `transientActive`, `warmupOrASEActive`, and `tuneLearnValid` so TS/offline tools can gate learning on explicit firmware state without a packet-size or signature change
   - if higher-resolution VE or tune-assist telemetry is explored later, keep it as an alternate-signature / alternate-INI path rather than mutating the shared production packet contract in place
   - the narrowest future slice here is not "replace TunerStudio autotune"; it is exposing better tune-quality evidence and log semantics so both TunerStudio and external tools can make better decisions
 

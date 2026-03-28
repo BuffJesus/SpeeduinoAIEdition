@@ -212,6 +212,15 @@ bool boardHasCapability(uint8_t capabilityFlag);
 #define BIT_STATUS4_COMMS_COMPAT  6
 #define BIT_STATUS4_ALLOW_LEGACY_COMMS       7
 
+#define BIT_RUNTIME_STATUS_A_FUEL_PUMP        0
+#define BIT_RUNTIME_STATUS_A_LAUNCHING_HARD   1
+#define BIT_RUNTIME_STATUS_A_FLAT_SHIFT_HARD  2
+#define BIT_RUNTIME_STATUS_A_IDLE_UP_ACTIVE   3
+#define BIT_RUNTIME_STATUS_A_FULL_SYNC        4
+#define BIT_RUNTIME_STATUS_A_TRANSIENT_ACTIVE 5
+#define BIT_RUNTIME_STATUS_A_WARMUP_OR_ASE    6
+#define BIT_RUNTIME_STATUS_A_TUNE_LEARN_VALID 7
+
 #define BIT_AIRCON_REQUEST        0 //Indicates whether the A/C button is pressed
 #define BIT_AIRCON_COMPRESSOR     1 //Indicates whether the A/C compressor is running
 #define BIT_AIRCON_RPM_LOCKOUT    2 //Indicates the A/C is locked out due to the RPM being too high/low, or the post-high/post-low-RPM "stand-down" lockout period

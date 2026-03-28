@@ -10,6 +10,31 @@
   #include "storage_spi.h"
 #endif
 
+static uint8_t buildRuntimeStatusA(void)
+{
+  const bool transientActive = BIT_CHECK(currentStatus.engine, BIT_ENGINE_ACC)
+                            || BIT_CHECK(currentStatus.engine, BIT_ENGINE_DCC)
+                            || BIT_CHECK(currentStatus.engine, BIT_ENGINE_MAPACC)
+                            || BIT_CHECK(currentStatus.engine, BIT_ENGINE_MAPDCC);
+  const bool warmupOrASEActive = BIT_CHECK(currentStatus.engine, BIT_ENGINE_WARMUP)
+                              || BIT_CHECK(currentStatus.engine, BIT_ENGINE_ASE);
+  const bool fullSync = currentStatus.hasSync;
+  const bool tuneLearnValid = fullSync
+                           && !transientActive
+                           && !warmupOrASEActive
+                           && !BIT_CHECK(currentStatus.status1, BIT_STATUS1_DFCO)
+                           && (currentStatus.engineProtectStatus == 0U);
+
+  return (currentStatus.fuelPumpOn       ? (1U << BIT_RUNTIME_STATUS_A_FUEL_PUMP) : 0U)
+       | (currentStatus.launchingHard    ? (1U << BIT_RUNTIME_STATUS_A_LAUNCHING_HARD) : 0U)
+       | (currentStatus.flatShiftingHard ? (1U << BIT_RUNTIME_STATUS_A_FLAT_SHIFT_HARD) : 0U)
+       | (currentStatus.idleUpActive     ? (1U << BIT_RUNTIME_STATUS_A_IDLE_UP_ACTIVE) : 0U)
+       | (fullSync                       ? (1U << BIT_RUNTIME_STATUS_A_FULL_SYNC) : 0U)
+       | (transientActive                ? (1U << BIT_RUNTIME_STATUS_A_TRANSIENT_ACTIVE) : 0U)
+       | (warmupOrASEActive              ? (1U << BIT_RUNTIME_STATUS_A_WARMUP_OR_ASE) : 0U)
+       | (tuneLearnValid                 ? (1U << BIT_RUNTIME_STATUS_A_TUNE_LEARN_VALID) : 0U);
+}
+
 /** 
  * Returns a numbered byte-field (partial field in case of multi-byte fields) from "current status" structure in the format expected by TunerStudio
  * Notes on fields:
@@ -203,15 +228,7 @@ byte getTSLogEntry(uint16_t byteNum)
     case 144: statusValue = (uint8_t)((currentStatus.startRevolutions >> 8U) & 0xFFU); break;
     case 145: statusValue = (uint8_t)((currentStatus.startRevolutions >> 16U) & 0xFFU); break;
     case 146: statusValue = (uint8_t)((currentStatus.startRevolutions >> 24U) & 0xFFU); break;
-    case 147:
-    {
-      uint8_t runtimeStatusA = (currentStatus.fuelPumpOn      ? (1U << 0U) : 0U)
-                             | (currentStatus.launchingHard    ? (1U << 1U) : 0U)
-                             | (currentStatus.flatShiftingHard ? (1U << 2U) : 0U)
-                             | (currentStatus.idleUpActive     ? (1U << 3U) : 0U);
-      statusValue = runtimeStatusA;
-      break;
-    }
+    case 147: statusValue = buildRuntimeStatusA(); break;
 
     default: statusValue = 0; // MISRA check
   }
@@ -358,15 +375,7 @@ int16_t getReadableLogEntry(uint16_t logIndex)
     // Phase 10: startRevolutions (split into lo/hi 16-bit halves) and runtimeStatusA
     case 102: statusValue = (int16_t)(currentStatus.startRevolutions & 0xFFFFU); break;
     case 103: statusValue = (int16_t)(currentStatus.startRevolutions >> 16U); break;
-    case 104:
-    {
-      uint8_t runtimeStatusA = (currentStatus.fuelPumpOn      ? (1U << 0U) : 0U)
-                             | (currentStatus.launchingHard    ? (1U << 1U) : 0U)
-                             | (currentStatus.flatShiftingHard ? (1U << 2U) : 0U)
-                             | (currentStatus.idleUpActive     ? (1U << 3U) : 0U);
-      statusValue = (int16_t)runtimeStatusA;
-      break;
-    }
+    case 104: statusValue = (int16_t)buildRuntimeStatusA(); break;
 
     default: statusValue = 0; // MISRA check
   }
