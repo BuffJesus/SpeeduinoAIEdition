@@ -2849,38 +2849,16 @@ void setPinMapping(byte boardID)
   pump_pin_port = portOutputRegister(digitalPinToPort(pinFuelPump));
   pump_pin_mask = digitalPinToBitMask(pinFuelPump);
 
-  //And for inputs
-  #if defined(CORE_STM32)
-    #ifdef INPUT_ANALOG
-      pinMode(pinMAP, INPUT_ANALOG);
-      pinMode(pinO2, INPUT_ANALOG);
-      pinMode(pinO2_2, INPUT_ANALOG);
-      pinMode(pinTPS, INPUT_ANALOG);
-      pinMode(pinIAT, INPUT_ANALOG);
-      pinMode(pinCLT, INPUT_ANALOG);
-      pinMode(pinBat, INPUT_ANALOG);
-      pinMode(pinBaro, INPUT_ANALOG);
-    #else
-      pinMode(pinMAP, INPUT);
-      pinMode(pinO2, INPUT);
-      pinMode(pinO2_2, INPUT);
-      pinMode(pinTPS, INPUT);
-      pinMode(pinIAT, INPUT);
-      pinMode(pinCLT, INPUT);
-      pinMode(pinBat, INPUT);
-      pinMode(pinBaro, INPUT);
-    #endif
-  #elif defined(CORE_TEENSY41)
-    //Teensy 4.1 has a weak pull down resistor that needs to be disabled for all analog pins. 
-    pinMode(pinMAP, INPUT_DISABLE);
-    pinMode(pinO2, INPUT_DISABLE);
-    pinMode(pinO2_2, INPUT_DISABLE);
-    pinMode(pinTPS, INPUT_DISABLE);
-    pinMode(pinIAT, INPUT_DISABLE);
-    pinMode(pinCLT, INPUT_DISABLE);
-    pinMode(pinBat, INPUT_DISABLE);
-    pinMode(pinBaro, INPUT_DISABLE);
-  #endif
+  // Analog input mode is board-specific: STM32 may want INPUT_ANALOG, Teensy 4.1 needs INPUT_DISABLE.
+  const uint8_t analogInputMode = boardAnalogInputMode();
+  pinMode(pinMAP, analogInputMode);
+  pinMode(pinO2, analogInputMode);
+  pinMode(pinO2_2, analogInputMode);
+  pinMode(pinTPS, analogInputMode);
+  pinMode(pinIAT, analogInputMode);
+  pinMode(pinCLT, analogInputMode);
+  pinMode(pinBat, analogInputMode);
+  pinMode(pinBaro, analogInputMode);
 
   //Each of the below are only set when their relevant function is enabled. This can help prevent pin conflicts that users aren't aware of with unused functions
   if( (configPage2.flexEnabled > 0) && (!pinIsOutput(pinFlex)) )

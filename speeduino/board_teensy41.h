@@ -20,6 +20,7 @@
   time_t getTeensy3Time();
   static inline bool boardPwmTimerInvertsPhase(void) { return true; }
   static inline uint8_t boardPwmTimerTickMicros(void) { return 2U; }
+  static inline uint8_t boardAnalogInputMode(void) { return INPUT_DISABLE; }
   static inline uint8_t getBoardSpecificCapabilityFlags(uint8_t pinMapping)
   {
     uint8_t flags = (1U << 4)

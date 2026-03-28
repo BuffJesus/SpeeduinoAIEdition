@@ -114,6 +114,11 @@ void doSystemReset();
 void jumpToBootloader();
 static inline bool boardPwmTimerInvertsPhase(void) { return false; }
 static inline uint8_t boardPwmTimerTickMicros(void) { return 4U; }
+#ifdef INPUT_ANALOG
+static inline uint8_t boardAnalogInputMode(void) { return INPUT_ANALOG; }
+#else
+static inline uint8_t boardAnalogInputMode(void) { return INPUT; }
+#endif
 static inline uint8_t getBoardSpecificCapabilityFlags(uint8_t pinMapping) { (void)pinMapping; return (1U << 6); }
 
 #if defined(ARDUINO_BLUEPILL_F103C8) || defined(ARDUINO_BLUEPILL_F103CB) \
