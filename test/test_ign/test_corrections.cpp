@@ -1466,7 +1466,7 @@ static void test_getLegacyVersionResponseCommand_preserves_current_workarounds(v
 }
 
 static void test_getLegacyVersionResponse_returns_expected_strings(void) {
-    TEST_ASSERT_EQUAL(0, strcmp("speeduino 202501", getLegacyVersionResponse('Q')));
+    TEST_ASSERT_EQUAL(0, strcmp("speeduino 202501-T41", getLegacyVersionResponse('Q')));
     TEST_ASSERT_EQUAL(0, strcmp("Speeduino 2025.01.6", getLegacyVersionResponse('S')));
     TEST_ASSERT_NULL(getLegacyVersionResponse('X'));
 }
