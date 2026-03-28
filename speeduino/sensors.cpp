@@ -112,19 +112,24 @@ TESTABLE_INLINE_STATIC int16_t fastMap10Bit(uint16_t value, int16_t rangeMin, in
 }
 
 //
+static inline int readBoardAnalogPinNormalized(uint8_t pin)
+{
+#if defined(CORE_TEENSY41)
+  if (boardHasCapability(BOARD_CAP_12BIT_ADC))
+  {
+    return analogRead10bit(pin);
+  }
+#endif
+  return analogRead(pin);
+}
+
 static inline uint16_t readAnalogPin(uint8_t pin)
 {
   // Why do we read twice? Who knows.....
   analogRead(pin);
-  // According to the docs, analogRead result should be in range 0-1023.
-  // On Teensy 4.1, hardware ADC is 12-bit (0-4095); analogRead10bit() scales to 10-bit
-  // so downstream sensor math (fastMap10Bit etc.) receives the expected 0-1023 range.
-  // Clip the result to zero minimum to prevent rollover just in case.
-  #if defined(CORE_TEENSY41)
-  int tmp = analogRead10bit(pin);
-  #else
-  int tmp = analogRead(pin);
-  #endif
+  // Downstream sensor math expects 10-bit ADC values.
+  // Boards with higher-resolution ADCs normalize here before any sensor conversion.
+  int tmp = readBoardAnalogPinNormalized(pin);
   // max is a macro on some platforms - DO NOT place the call to analogRead as an inline parameter:
   // (you might end up calling it twice)
   return max(0, tmp);
