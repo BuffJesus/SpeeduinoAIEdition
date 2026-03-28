@@ -5,6 +5,9 @@
 
 #include "adc_teensy41.h" // 12-bit ADC backend with analogRead10bit() for sensor normalization
 
+// Keep board capability helpers independent of globals.h declaration order.
+static constexpr uint8_t BOARD_TEENSY41_DROPBEAR_PIN_MAPPING = 55U;
+
 /*
 ***********************************************************************************************************
 * General
@@ -27,7 +30,7 @@
                   | (1U << 5)
                   | (1U << 6);
 
-    if (pinMapping == PIN_LAYOUT_DROPBEAR)
+    if (pinMapping == BOARD_TEENSY41_DROPBEAR_PIN_MAPPING)
     {
       flags |= (1U << 3);
       flags |= (1U << 7);
