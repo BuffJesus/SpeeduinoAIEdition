@@ -4,38 +4,11 @@
 #include "decoders.h"
 #include "init.h"
 #include "maths.h"
-#include "pages.h"
 #include "utilities.h"
 #include BOARD_H
 #if defined(CORE_TEENSY41)
   #include "storage_spi.h"
 #endif
-
-static uint16_t getExperimentalNativeU16Page2DebugWord(uint8_t wordIndex)
-{
-  uint16_t lastOffset = 0U;
-  uint16_t lastLength = 0U;
-  uint16_t firstMismatchOffset = 0U;
-  uint16_t mismatchCount = 0U;
-  uint8_t expectedByte = 0U;
-  uint8_t actualByte = 0U;
-
-  if (!getExperimentalNativeU16Page2WriteDebug(&lastOffset, &lastLength, &firstMismatchOffset, &mismatchCount, &expectedByte, &actualByte))
-  {
-    return 0U;
-  }
-
-  switch (wordIndex)
-  {
-    case 0: return lastOffset;
-    case 1: return lastLength;
-    case 2: return firstMismatchOffset;
-    case 3: return mismatchCount;
-    case 4: return expectedByte;
-    case 5: return actualByte;
-    default: return 0U;
-  }
-}
 
 /** 
  * Returns a numbered byte-field (partial field in case of multi-byte fields) from "current status" structure in the format expected by TunerStudio
@@ -134,42 +107,18 @@ byte getTSLogEntry(uint16_t byteNum)
     case 59: statusValue = highByte(currentStatus.canin[8]); break;
     case 60: statusValue = lowByte(currentStatus.canin[9]); break;
     case 61: statusValue = highByte(currentStatus.canin[9]); break;
-    case 62:
-      statusValue = isExperimentalNativeU16Page2Enabled() ? lowByte(getExperimentalNativeU16Page2DebugWord(0)) : lowByte(currentStatus.canin[10]);
-      break;
-    case 63:
-      statusValue = isExperimentalNativeU16Page2Enabled() ? highByte(getExperimentalNativeU16Page2DebugWord(0)) : highByte(currentStatus.canin[10]);
-      break;
-    case 64:
-      statusValue = isExperimentalNativeU16Page2Enabled() ? lowByte(getExperimentalNativeU16Page2DebugWord(1)) : lowByte(currentStatus.canin[11]);
-      break;
-    case 65:
-      statusValue = isExperimentalNativeU16Page2Enabled() ? highByte(getExperimentalNativeU16Page2DebugWord(1)) : highByte(currentStatus.canin[11]);
-      break;
-    case 66:
-      statusValue = isExperimentalNativeU16Page2Enabled() ? lowByte(getExperimentalNativeU16Page2DebugWord(2)) : lowByte(currentStatus.canin[12]);
-      break;
-    case 67:
-      statusValue = isExperimentalNativeU16Page2Enabled() ? highByte(getExperimentalNativeU16Page2DebugWord(2)) : highByte(currentStatus.canin[12]);
-      break;
-    case 68:
-      statusValue = isExperimentalNativeU16Page2Enabled() ? lowByte(getExperimentalNativeU16Page2DebugWord(3)) : lowByte(currentStatus.canin[13]);
-      break;
-    case 69:
-      statusValue = isExperimentalNativeU16Page2Enabled() ? highByte(getExperimentalNativeU16Page2DebugWord(3)) : highByte(currentStatus.canin[13]);
-      break;
-    case 70:
-      statusValue = isExperimentalNativeU16Page2Enabled() ? lowByte(getExperimentalNativeU16Page2DebugWord(4)) : lowByte(currentStatus.canin[14]);
-      break;
-    case 71:
-      statusValue = isExperimentalNativeU16Page2Enabled() ? highByte(getExperimentalNativeU16Page2DebugWord(4)) : highByte(currentStatus.canin[14]);
-      break;
-    case 72:
-      statusValue = isExperimentalNativeU16Page2Enabled() ? lowByte(getExperimentalNativeU16Page2DebugWord(5)) : lowByte(currentStatus.canin[15]);
-      break;
-    case 73:
-      statusValue = isExperimentalNativeU16Page2Enabled() ? highByte(getExperimentalNativeU16Page2DebugWord(5)) : highByte(currentStatus.canin[15]);
-      break;
+    case 62: statusValue = lowByte(currentStatus.canin[10]); break;
+    case 63: statusValue = highByte(currentStatus.canin[10]); break;
+    case 64: statusValue = lowByte(currentStatus.canin[11]); break;
+    case 65: statusValue = highByte(currentStatus.canin[11]); break;
+    case 66: statusValue = lowByte(currentStatus.canin[12]); break;
+    case 67: statusValue = highByte(currentStatus.canin[12]); break;
+    case 68: statusValue = lowByte(currentStatus.canin[13]); break;
+    case 69: statusValue = highByte(currentStatus.canin[13]); break;
+    case 70: statusValue = lowByte(currentStatus.canin[14]); break;
+    case 71: statusValue = highByte(currentStatus.canin[14]); break;
+    case 72: statusValue = lowByte(currentStatus.canin[15]); break;
+    case 73: statusValue = highByte(currentStatus.canin[15]); break;
 
     case 74: statusValue = currentStatus.tpsADC; break;
     case 75: statusValue = 0U /*getNextError()*/; break; // DEPRECATED: getNextError() infrastructure removed; always returns 0. No active error queue.
@@ -337,12 +286,12 @@ int16_t getReadableLogEntry(uint16_t logIndex)
     case 42: statusValue = currentStatus.canin[7]; break;
     case 43: statusValue = currentStatus.canin[8]; break;
     case 44: statusValue = currentStatus.canin[9]; break;
-    case 45: statusValue = isExperimentalNativeU16Page2Enabled() ? (int16_t)getExperimentalNativeU16Page2DebugWord(0) : (int16_t)currentStatus.canin[10]; break;
-    case 46: statusValue = isExperimentalNativeU16Page2Enabled() ? (int16_t)getExperimentalNativeU16Page2DebugWord(1) : (int16_t)currentStatus.canin[11]; break;
-    case 47: statusValue = isExperimentalNativeU16Page2Enabled() ? (int16_t)getExperimentalNativeU16Page2DebugWord(2) : (int16_t)currentStatus.canin[12]; break;
-    case 48: statusValue = isExperimentalNativeU16Page2Enabled() ? (int16_t)getExperimentalNativeU16Page2DebugWord(3) : (int16_t)currentStatus.canin[13]; break;
-    case 49: statusValue = isExperimentalNativeU16Page2Enabled() ? (int16_t)getExperimentalNativeU16Page2DebugWord(4) : (int16_t)currentStatus.canin[14]; break;
-    case 50: statusValue = isExperimentalNativeU16Page2Enabled() ? (int16_t)getExperimentalNativeU16Page2DebugWord(5) : (int16_t)currentStatus.canin[15]; break;
+    case 45: statusValue = currentStatus.canin[10]; break;
+    case 46: statusValue = currentStatus.canin[11]; break;
+    case 47: statusValue = currentStatus.canin[12]; break;
+    case 48: statusValue = currentStatus.canin[13]; break;
+    case 49: statusValue = currentStatus.canin[14]; break;
+    case 50: statusValue = currentStatus.canin[15]; break;
     
     case 51: statusValue = currentStatus.tpsADC; break;
     case 52: statusValue = 0U /*getNextError()*/; break; // DEPRECATED: getNextError() infrastructure removed; always returns 0. No active error queue.

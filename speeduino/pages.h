@@ -65,7 +65,6 @@ void writePageValuesFromBuffer(byte pageNum, uint16_t offset, const byte *buffer
 
 bool isExperimentalNativeU16Page2Enabled(void);
 void normalizeExperimentalNativeU16Page2IfNeeded(void);
-bool getExperimentalNativeU16Page2WriteDebug(uint16_t *lastOffset, uint16_t *lastLength, uint16_t *firstMismatchOffset, uint16_t *mismatchCount, uint8_t *expectedByte, uint8_t *actualByte);
 table3d_value_t getExperimentalNativeU16Page2Value(table3d_axis_t load, table3d_axis_t rpm);
 ts_page_serialization_mode getTunerStudioPageSerializationMode(byte pageNum);
 uint16_t getTunerStudioPageSize(byte pageNum);
