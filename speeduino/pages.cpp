@@ -35,13 +35,18 @@ constexpr uint16_t kExperimentalNativeU16Page2AxisBytes = 16U;
 constexpr uint16_t kExperimentalNativeU16Page2Size = kExperimentalNativeU16Page2ValueBytes + (2U * kExperimentalNativeU16Page2AxisBytes);
 
 #if defined(CORE_TEENSY41) && defined(TS_EXPERIMENTAL_NATIVE_U16_PAGE2)
+table3d16RpmLoad experimentalNativeU16Page2Table;
+
 struct experimental_native_u16_page2_write_debug_t {
   bool valid;
   bool bufferInitialized;
+  bool tableInitialized;
   uint16_t lastOffset;
   uint16_t lastLength;
-  uint32_t incomingPageCrc;
-  uint32_t controllerPageCrc;
+  uint16_t firstMismatchOffset;
+  uint16_t mismatchCount;
+  uint8_t expectedByte;
+  uint8_t actualByte;
   byte pageBuffer[kExperimentalNativeU16Page2Size];
 };
 
@@ -63,6 +68,31 @@ inline bool experimental_native_u16_page2_looks_legacy_byte_scaled(void)
   return false;
 #endif
 }
+
+#if defined(CORE_TEENSY41) && defined(TS_EXPERIMENTAL_NATIVE_U16_PAGE2)
+inline table3d16RpmLoad &get_experimental_native_u16_page2_table(void)
+{
+  if (!experimentalNativeU16Page2WriteDebug.tableInitialized)
+  {
+    for (uint16_t valueIndex = 0U; valueIndex < 256U; ++valueIndex)
+    {
+      experimentalNativeU16Page2Table.values.value_at(valueIndex) =
+        static_cast<table3d_value_t>(fuelTable.values.value_at(valueIndex));
+    }
+
+    for (uint16_t axisIndex = 0U; axisIndex < 16U; ++axisIndex)
+    {
+      *experimentalNativeU16Page2Table.axisX.begin().advance(axisIndex) = *fuelTable.axisX.begin().advance(axisIndex);
+      *experimentalNativeU16Page2Table.axisY.begin().advance(axisIndex) = *fuelTable.axisY.begin().advance(axisIndex);
+    }
+
+    invalidate_cache(&experimentalNativeU16Page2Table.get_value_cache);
+    experimentalNativeU16Page2WriteDebug.tableInitialized = true;
+  }
+
+  return experimentalNativeU16Page2Table;
+}
+#endif
 
 inline bool supports_native_u16_page2_mode(byte pageNum, ts_page_serialization_mode mode)
 {
@@ -86,28 +116,32 @@ inline ts_page_serialization_mode normalize_tunerstudio_page_mode(byte pageNum, 
 #if defined(CORE_TEENSY41)
 inline byte get_experimental_native_u16_page2_byte(uint16_t offset)
 {
+  table3d16RpmLoad &page2Table = get_experimental_native_u16_page2_table();
+
   if (offset < kExperimentalNativeU16Page2ValueBytes)
   {
     const uint16_t valueIndex = offset >> 1U;
-    const uint16_t value = static_cast<uint16_t>(fuelTable.values.value_at(valueIndex));
+    const uint16_t value = static_cast<uint16_t>(page2Table.values.value_at(valueIndex));
     return ((offset & 1U) == 0U) ? lowByte(value) : highByte(value);
   }
 
   const uint16_t axisOffset = offset - kExperimentalNativeU16Page2ValueBytes;
   if (axisOffset < kExperimentalNativeU16Page2AxisBytes)
   {
-    return get_table3d_axis_converter(fuelTable.axisX.begin().get_domain()).to_byte(*fuelTable.axisX.begin().advance(axisOffset));
+    return get_table3d_axis_converter(page2Table.axisX.begin().get_domain()).to_byte(*page2Table.axisX.begin().advance(axisOffset));
   }
 
-  return get_table3d_axis_converter(fuelTable.axisY.begin().get_domain()).to_byte(*fuelTable.axisY.begin().advance(axisOffset - kExperimentalNativeU16Page2AxisBytes));
+  return get_table3d_axis_converter(page2Table.axisY.begin().get_domain()).to_byte(*page2Table.axisY.begin().advance(axisOffset - kExperimentalNativeU16Page2AxisBytes));
 }
 
 inline void set_experimental_native_u16_page2_byte(uint16_t offset, byte newValue)
 {
+  table3d16RpmLoad &page2Table = get_experimental_native_u16_page2_table();
+
   if (offset < kExperimentalNativeU16Page2ValueBytes)
   {
     const uint16_t valueIndex = offset >> 1U;
-    uint16_t value = static_cast<uint16_t>(fuelTable.values.value_at(valueIndex));
+    uint16_t value = static_cast<uint16_t>(page2Table.values.value_at(valueIndex));
     if ((offset & 1U) == 0U)
     {
       value = static_cast<uint16_t>((value & 0xFF00U) | newValue);
@@ -116,27 +150,28 @@ inline void set_experimental_native_u16_page2_byte(uint16_t offset, byte newValu
     {
       value = static_cast<uint16_t>((value & 0x00FFU) | (static_cast<uint16_t>(newValue) << 8U));
     }
-    fuelTable.values.value_at(valueIndex) = static_cast<table3d_value_t>(value);
-    invalidate_cache(&fuelTable.get_value_cache);
+    page2Table.values.value_at(valueIndex) = static_cast<table3d_value_t>(value);
+    invalidate_cache(&page2Table.get_value_cache);
     return;
   }
 
   const uint16_t axisOffset = offset - kExperimentalNativeU16Page2ValueBytes;
   if (axisOffset < kExperimentalNativeU16Page2AxisBytes)
   {
-    const table3d_axis_io_converter converter = get_table3d_axis_converter(fuelTable.axisX.begin().get_domain());
-    *fuelTable.axisX.begin().advance(axisOffset) = converter.from_byte(newValue);
-    invalidate_cache(&fuelTable.get_value_cache);
+    const table3d_axis_io_converter converter = get_table3d_axis_converter(page2Table.axisX.begin().get_domain());
+    *page2Table.axisX.begin().advance(axisOffset) = converter.from_byte(newValue);
+    invalidate_cache(&page2Table.get_value_cache);
     return;
   }
 
-  const table3d_axis_io_converter converter = get_table3d_axis_converter(fuelTable.axisY.begin().get_domain());
-  *fuelTable.axisY.begin().advance(axisOffset - kExperimentalNativeU16Page2AxisBytes) = converter.from_byte(newValue);
-  invalidate_cache(&fuelTable.get_value_cache);
+  const table3d_axis_io_converter converter = get_table3d_axis_converter(page2Table.axisY.begin().get_domain());
+  *page2Table.axisY.begin().advance(axisOffset - kExperimentalNativeU16Page2AxisBytes) = converter.from_byte(newValue);
+  invalidate_cache(&page2Table.get_value_cache);
 }
 
 inline void write_experimental_native_u16_page2_bytes(uint16_t offset, const byte *buffer, uint16_t length)
 {
+  table3d16RpmLoad &page2Table = get_experimental_native_u16_page2_table();
   uint16_t currentOffset = offset;
   const byte *current = buffer;
   uint16_t remaining = length;
@@ -153,7 +188,7 @@ inline void write_experimental_native_u16_page2_bytes(uint16_t offset, const byt
   {
     const uint16_t valueIndex = currentOffset >> 1U;
     const uint16_t newValue = static_cast<uint16_t>(current[0]) | (static_cast<uint16_t>(current[1]) << 8U);
-    fuelTable.values.value_at(valueIndex) = static_cast<table3d_value_t>(newValue);
+    page2Table.values.value_at(valueIndex) = static_cast<table3d_value_t>(newValue);
     currentOffset += 2U;
     current += 2;
     remaining -= 2U;
@@ -175,7 +210,7 @@ inline void write_experimental_native_u16_page2_bytes(uint16_t offset, const byt
     --remaining;
   }
 
-  invalidate_cache(&fuelTable.get_value_cache);
+  invalidate_cache(&page2Table.get_value_cache);
 }
 
 inline void seed_experimental_native_u16_page2_debug_buffer(void)
@@ -196,20 +231,39 @@ inline void capture_experimental_native_u16_page2_incoming_write(uint16_t offset
 
   memcpy(&experimentalNativeU16Page2WriteDebug.pageBuffer[offset], buffer, length);
 
-  FastCRC32 crcCalc;
   experimentalNativeU16Page2WriteDebug.lastOffset = offset;
   experimentalNativeU16Page2WriteDebug.lastLength = length;
-  experimentalNativeU16Page2WriteDebug.incomingPageCrc = ~crcCalc.crc32(
-    experimentalNativeU16Page2WriteDebug.pageBuffer,
-    kExperimentalNativeU16Page2Size,
-    false);
   experimentalNativeU16Page2WriteDebug.valid = true;
 }
 
 inline void capture_experimental_native_u16_page2_controller_crc(void)
 {
-  experimentalNativeU16Page2WriteDebug.controllerPageCrc =
-    calculatePageCRC32ForMode(veMapPage, TS_PAGE_SERIALIZATION_NATIVE_U16);
+  experimentalNativeU16Page2WriteDebug.firstMismatchOffset = UINT16_MAX;
+  experimentalNativeU16Page2WriteDebug.mismatchCount = 0U;
+  experimentalNativeU16Page2WriteDebug.expectedByte = 0U;
+  experimentalNativeU16Page2WriteDebug.actualByte = 0U;
+
+  for (uint16_t offset = 0U; offset < kExperimentalNativeU16Page2Size; ++offset)
+  {
+    const byte actualByte = get_experimental_native_u16_page2_byte(offset);
+    const byte expectedByte = experimentalNativeU16Page2WriteDebug.pageBuffer[offset];
+
+    if (actualByte != expectedByte)
+    {
+      if (experimentalNativeU16Page2WriteDebug.firstMismatchOffset == UINT16_MAX)
+      {
+        experimentalNativeU16Page2WriteDebug.firstMismatchOffset = offset;
+        experimentalNativeU16Page2WriteDebug.expectedByte = expectedByte;
+        experimentalNativeU16Page2WriteDebug.actualByte = actualByte;
+      }
+      ++experimentalNativeU16Page2WriteDebug.mismatchCount;
+    }
+  }
+
+  if (experimentalNativeU16Page2WriteDebug.firstMismatchOffset == UINT16_MAX)
+  {
+    experimentalNativeU16Page2WriteDebug.firstMismatchOffset = 0U;
+  }
   experimentalNativeU16Page2WriteDebug.valid = true;
 }
 #endif
@@ -269,7 +323,7 @@ public:
     switch (get_table_location())
     {
       case table_location_values:
-        return get_value_value();
+        return static_cast<byte>(get_value_value());
       case table_location_xaxis:
         return get_table3d_axis_converter(table_t::xaxis_t::domain).to_byte(get_xaxis_value());
       case table_location_yaxis:
@@ -301,7 +355,7 @@ public:
 
 private: 
 
-  inline byte& get_value_value(void) const
+  inline table3d_value_t& get_value_value(void) const
   {
     return _pTable->values.value_at((uint8_t)_table_offset);
   }
@@ -652,7 +706,7 @@ bool isExperimentalNativeU16Page2Enabled(void)
   return supports_native_u16_page2_mode(veMapPage, TS_PAGE_SERIALIZATION_NATIVE_U16);
 }
 
-bool getExperimentalNativeU16Page2WriteDebug(uint16_t *lastOffset, uint16_t *lastLength, uint32_t *incomingPageCrc, uint32_t *controllerPageCrc)
+bool getExperimentalNativeU16Page2WriteDebug(uint16_t *lastOffset, uint16_t *lastLength, uint16_t *firstMismatchOffset, uint16_t *mismatchCount, uint8_t *expectedByte, uint8_t *actualByte)
 {
 #if defined(CORE_TEENSY41) && defined(TS_EXPERIMENTAL_NATIVE_U16_PAGE2)
   if (!experimentalNativeU16Page2WriteDebug.valid)
@@ -668,21 +722,31 @@ bool getExperimentalNativeU16Page2WriteDebug(uint16_t *lastOffset, uint16_t *las
   {
     *lastLength = experimentalNativeU16Page2WriteDebug.lastLength;
   }
-  if (incomingPageCrc != nullptr)
+  if (firstMismatchOffset != nullptr)
   {
-    *incomingPageCrc = experimentalNativeU16Page2WriteDebug.incomingPageCrc;
+    *firstMismatchOffset = experimentalNativeU16Page2WriteDebug.firstMismatchOffset;
   }
-  if (controllerPageCrc != nullptr)
+  if (mismatchCount != nullptr)
   {
-    *controllerPageCrc = experimentalNativeU16Page2WriteDebug.controllerPageCrc;
+    *mismatchCount = experimentalNativeU16Page2WriteDebug.mismatchCount;
+  }
+  if (expectedByte != nullptr)
+  {
+    *expectedByte = experimentalNativeU16Page2WriteDebug.expectedByte;
+  }
+  if (actualByte != nullptr)
+  {
+    *actualByte = experimentalNativeU16Page2WriteDebug.actualByte;
   }
 
   return true;
 #else
   (void)lastOffset;
   (void)lastLength;
-  (void)incomingPageCrc;
-  (void)controllerPageCrc;
+  (void)firstMismatchOffset;
+  (void)mismatchCount;
+  (void)expectedByte;
+  (void)actualByte;
   return false;
 #endif
 }
@@ -697,12 +761,29 @@ void normalizeExperimentalNativeU16Page2IfNeeded(void)
 
   for (uint16_t valueIndex = 0U; valueIndex < 256U; ++valueIndex)
   {
-    fuelTable.values.value_at(valueIndex) = static_cast<table3d_value_t>(
+    get_experimental_native_u16_page2_table().values.value_at(valueIndex) = static_cast<table3d_value_t>(
       static_cast<uint16_t>(fuelTable.values.value_at(valueIndex)) * 10U);
   }
 
-  invalidate_cache(&fuelTable.get_value_cache);
+  for (uint16_t axisIndex = 0U; axisIndex < 16U; ++axisIndex)
+  {
+    *get_experimental_native_u16_page2_table().axisX.begin().advance(axisIndex) = *fuelTable.axisX.begin().advance(axisIndex);
+    *get_experimental_native_u16_page2_table().axisY.begin().advance(axisIndex) = *fuelTable.axisY.begin().advance(axisIndex);
+  }
+
+  invalidate_cache(&get_experimental_native_u16_page2_table().get_value_cache);
 #endif
+}
+
+table3d_value_t getExperimentalNativeU16Page2Value(table3d_axis_t load, table3d_axis_t rpm)
+{
+#if defined(CORE_TEENSY41) && defined(TS_EXPERIMENTAL_NATIVE_U16_PAGE2)
+  if (isExperimentalNativeU16Page2Enabled())
+  {
+    return get3DTableValue(&get_experimental_native_u16_page2_table(), load, rpm);
+  }
+#endif
+  return get3DTableValue(&fuelTable, load, rpm);
 }
 
 ts_page_serialization_mode getTunerStudioPageSerializationMode(byte pageNum)

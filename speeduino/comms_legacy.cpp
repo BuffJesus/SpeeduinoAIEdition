@@ -1231,7 +1231,11 @@ namespace {
     while (!it.at_end())
     {
       auto row = *it;
-      primarySerial.write(&*row, row.size());
+      while (!row.at_end())
+      {
+        primarySerial.write(static_cast<byte>(*row));
+        ++row;
+      }
       ++it;
     }
   }

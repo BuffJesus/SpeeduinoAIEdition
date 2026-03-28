@@ -15,10 +15,12 @@ static uint16_t getExperimentalNativeU16Page2DebugWord(uint8_t wordIndex)
 {
   uint16_t lastOffset = 0U;
   uint16_t lastLength = 0U;
-  uint32_t incomingPageCrc = 0U;
-  uint32_t controllerPageCrc = 0U;
+  uint16_t firstMismatchOffset = 0U;
+  uint16_t mismatchCount = 0U;
+  uint8_t expectedByte = 0U;
+  uint8_t actualByte = 0U;
 
-  if (!getExperimentalNativeU16Page2WriteDebug(&lastOffset, &lastLength, &incomingPageCrc, &controllerPageCrc))
+  if (!getExperimentalNativeU16Page2WriteDebug(&lastOffset, &lastLength, &firstMismatchOffset, &mismatchCount, &expectedByte, &actualByte))
   {
     return 0U;
   }
@@ -27,10 +29,10 @@ static uint16_t getExperimentalNativeU16Page2DebugWord(uint8_t wordIndex)
   {
     case 0: return lastOffset;
     case 1: return lastLength;
-    case 2: return static_cast<uint16_t>(incomingPageCrc & 0xFFFFU);
-    case 3: return static_cast<uint16_t>(incomingPageCrc >> 16U);
-    case 4: return static_cast<uint16_t>(controllerPageCrc & 0xFFFFU);
-    case 5: return static_cast<uint16_t>(controllerPageCrc >> 16U);
+    case 2: return firstMismatchOffset;
+    case 3: return mismatchCount;
+    case 4: return expectedByte;
+    case 5: return actualByte;
     default: return 0U;
   }
 }
