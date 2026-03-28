@@ -13,7 +13,7 @@ A full copy of the license may be found in the projects root directory
 #include "pages.h"
 #include "table3d_axis_io.h"
 
-// Phase 6: Teensy 4.1 SPI flash storage integration
+// Phase 6: board-backed flash storage integration
 #if defined(CORE_TEENSY41)
   #include "storage_spi.h"
 
@@ -21,18 +21,27 @@ A full copy of the license may be found in the projects root directory
   static bool g_spiFlashInitialized = false;
   static bool g_useSPIFlash = false;
 
-  /** Initialize Teensy 4.1 SPI flash storage
-   * Called once at startup. If SPI flash init succeeds, it becomes the primary storage.
-   * If it fails, system falls back to EEPROM silently.
-   */
-  static void initTeensyStorage(void) {
-    if (!g_spiFlashInitialized) {
+  static void initBoardFlashStorage(void)
+  {
+    if (!g_spiFlashInitialized)
+    {
       g_useSPIFlash = initSPIFlash();
       g_spiFlashInitialized = true;
-      // Note: If initSPIFlash() returns false, we silently fall back to EEPROM
-      // This ensures the system remains functional even if flash hardware fails
     }
   }
+
+  static inline bool boardUsesFlashStorage(void) { return g_useSPIFlash; }
+  static inline bool loadTablePageFromBoardFlash(uint8_t pageNum) { return g_useSPIFlash && loadTablePageFromFlash(pageNum); }
+  static inline bool loadConfigPageFromBoardFlash(uint8_t pageNum, void *config, size_t size) { return g_useSPIFlash && loadConfigFromFlash(pageNum, config, size); }
+  static inline void saveTablePageToBoardFlash(uint8_t pageNum) { if (g_useSPIFlash) { saveTablePageToFlash(pageNum); } }
+  static inline void saveConfigPageToBoardFlash(uint8_t pageNum, const void *config, size_t size) { if (g_useSPIFlash) { saveConfigToFlash(pageNum, config, size); } }
+#else
+  static inline void initBoardFlashStorage(void) {}
+  static inline bool boardUsesFlashStorage(void) { return false; }
+  static inline bool loadTablePageFromBoardFlash(uint8_t pageNum) { (void)pageNum; return false; }
+  static inline bool loadConfigPageFromBoardFlash(uint8_t pageNum, void *config, size_t size) { (void)pageNum; (void)config; (void)size; return false; }
+  static inline void saveTablePageToBoardFlash(uint8_t pageNum) { (void)pageNum; }
+  static inline void saveConfigPageToBoardFlash(uint8_t pageNum, const void *config, size_t size) { (void)pageNum; (void)config; (void)size; }
 #endif
 
 
@@ -226,16 +235,14 @@ void writeConfig(uint8_t pageNum)
         | 16x16 table itself + the 16 values along each of the axis
         -----------------------------------------------------*/
         #if defined(CORE_TEENSY41) && defined(TS_EXPERIMENTAL_NATIVE_U16_PAGE2)
-        if (isExperimentalNativeU16Page2Enabled() && g_useSPIFlash)
+        if (isExperimentalNativeU16Page2Enabled() && boardUsesFlashStorage())
         {
-          saveTablePageToFlash(veMapPage);
+          saveTablePageToBoardFlash(veMapPage);
           break;
         }
         #endif
         result = writeTable(&fuelTable, decltype(fuelTable)::type_key, result.changeWriteAddress(EEPROM_CONFIG1_MAP));
-        #if defined(CORE_TEENSY41)
-        if (g_useSPIFlash) { saveTablePageToFlash(veMapPage); }
-        #endif
+        saveTablePageToBoardFlash(veMapPage);
         break;
 
     case veSetPage:
@@ -244,9 +251,7 @@ void writeConfig(uint8_t pageNum)
       | 64 byte long config table
       -----------------------------------------------------*/
       result = write_range((byte *)&configPage2, (byte *)&configPage2+sizeof(configPage2), result.changeWriteAddress(EEPROM_CONFIG2_START));
-      #if defined(CORE_TEENSY41)
-      if (g_useSPIFlash) { saveConfigToFlash(veSetPage, &configPage2, sizeof(configPage2)); }
-      #endif
+      saveConfigPageToBoardFlash(veSetPage, &configPage2, sizeof(configPage2));
       break;
 
     case ignMapPage:
@@ -255,9 +260,7 @@ void writeConfig(uint8_t pageNum)
       | 16x16 table itself + the 16 values along each of the axis
       -----------------------------------------------------*/
       result = writeTable(&ignitionTable, decltype(ignitionTable)::type_key, result.changeWriteAddress(EEPROM_CONFIG3_MAP));
-      #if defined(CORE_TEENSY41)
-      if (g_useSPIFlash) { saveTablePageToFlash(ignMapPage); }
-      #endif
+      saveTablePageToBoardFlash(ignMapPage);
       break;
 
     case ignSetPage:
@@ -266,9 +269,7 @@ void writeConfig(uint8_t pageNum)
       | 64 byte long config table
       -----------------------------------------------------*/
       result = write_range((byte *)&configPage4, (byte *)&configPage4+sizeof(configPage4), result.changeWriteAddress(EEPROM_CONFIG4_START));
-      #if defined(CORE_TEENSY41)
-      if (g_useSPIFlash) { saveConfigToFlash(ignSetPage, &configPage4, sizeof(configPage4)); }
-      #endif
+      saveConfigPageToBoardFlash(ignSetPage, &configPage4, sizeof(configPage4));
       break;
 
     case afrMapPage:
@@ -277,9 +278,7 @@ void writeConfig(uint8_t pageNum)
       | 16x16 table itself + the 16 values along each of the axis
       -----------------------------------------------------*/
       result = writeTable(&afrTable, decltype(afrTable)::type_key, result.changeWriteAddress(EEPROM_CONFIG5_MAP));
-      #if defined(CORE_TEENSY41)
-      if (g_useSPIFlash) { saveTablePageToFlash(afrMapPage); }
-      #endif
+      saveTablePageToBoardFlash(afrMapPage);
       break;
 
     case afrSetPage:
@@ -288,9 +287,7 @@ void writeConfig(uint8_t pageNum)
       | 64 byte long config table
       -----------------------------------------------------*/
       result = write_range((byte *)&configPage6, (byte *)&configPage6+sizeof(configPage6), result.changeWriteAddress(EEPROM_CONFIG6_START));
-      #if defined(CORE_TEENSY41)
-      if (g_useSPIFlash) { saveConfigToFlash(afrSetPage, &configPage6, sizeof(configPage6)); }
-      #endif
+      saveConfigPageToBoardFlash(afrSetPage, &configPage6, sizeof(configPage6));
       break;
 
     case boostvvtPage:
@@ -301,9 +298,7 @@ void writeConfig(uint8_t pageNum)
       result = writeTable(&boostTable, decltype(boostTable)::type_key, result.changeWriteAddress(EEPROM_CONFIG7_MAP1));
       result = writeTable(&vvtTable, decltype(vvtTable)::type_key, result.changeWriteAddress(EEPROM_CONFIG7_MAP2));
       result = writeTable(&stagingTable, decltype(stagingTable)::type_key, result.changeWriteAddress(EEPROM_CONFIG7_MAP3));
-      #if defined(CORE_TEENSY41)
-      if (g_useSPIFlash) { saveTablePageToFlash(boostvvtPage); }
-      #endif
+      saveTablePageToBoardFlash(boostvvtPage);
       break;
 
     case seqFuelPage:
@@ -319,9 +314,7 @@ void writeConfig(uint8_t pageNum)
       result = writeTable(&trim6Table, decltype(trim6Table)::type_key, result.changeWriteAddress(EEPROM_CONFIG8_MAP6));
       result = writeTable(&trim7Table, decltype(trim7Table)::type_key, result.changeWriteAddress(EEPROM_CONFIG8_MAP7));
       result = writeTable(&trim8Table, decltype(trim8Table)::type_key, result.changeWriteAddress(EEPROM_CONFIG8_MAP8));
-      #if defined(CORE_TEENSY41)
-      if (g_useSPIFlash) { saveTablePageToFlash(seqFuelPage); }
-      #endif
+      saveTablePageToBoardFlash(seqFuelPage);
       break;
 
     case canbusPage:
@@ -330,9 +323,7 @@ void writeConfig(uint8_t pageNum)
       | 192 byte long config table
       -----------------------------------------------------*/
       result = write_range((byte *)&configPage9, (byte *)&configPage9+sizeof(configPage9), result.changeWriteAddress(EEPROM_CONFIG9_START));
-      #if defined(CORE_TEENSY41)
-      if (g_useSPIFlash) { saveConfigToFlash(canbusPage, &configPage9, sizeof(configPage9)); }
-      #endif
+      saveConfigPageToBoardFlash(canbusPage, &configPage9, sizeof(configPage9));
       break;
 
     case warmupPage:
@@ -341,9 +332,7 @@ void writeConfig(uint8_t pageNum)
       | 192 byte long config table
       -----------------------------------------------------*/
       result = write_range((byte *)&configPage10, (byte *)&configPage10+sizeof(configPage10), result.changeWriteAddress(EEPROM_CONFIG10_START));
-      #if defined(CORE_TEENSY41)
-      if (g_useSPIFlash) { saveConfigToFlash(warmupPage, &configPage10, sizeof(configPage10)); }
-      #endif
+      saveConfigPageToBoardFlash(warmupPage, &configPage10, sizeof(configPage10));
       break;
 
     case fuelMap2Page:
@@ -352,9 +341,7 @@ void writeConfig(uint8_t pageNum)
       | 16x16 table itself + the 16 values along each of the axis
       -----------------------------------------------------*/
       result = writeTable(&fuelTable2, decltype(fuelTable2)::type_key, result.changeWriteAddress(EEPROM_CONFIG11_MAP));
-      #if defined(CORE_TEENSY41)
-      if (g_useSPIFlash) { saveTablePageToFlash(fuelMap2Page); }
-      #endif
+      saveTablePageToBoardFlash(fuelMap2Page);
       break;
 
     case wmiMapPage:
@@ -367,9 +354,7 @@ void writeConfig(uint8_t pageNum)
       result = writeTable(&wmiTable, decltype(wmiTable)::type_key, result.changeWriteAddress(EEPROM_CONFIG12_MAP));
       result = writeTable(&vvt2Table, decltype(vvt2Table)::type_key, result.changeWriteAddress(EEPROM_CONFIG12_MAP2));
       result = writeTable(&dwellTable, decltype(dwellTable)::type_key, result.changeWriteAddress(EEPROM_CONFIG12_MAP3));
-      #if defined(CORE_TEENSY41)
-      if (g_useSPIFlash) { saveTablePageToFlash(wmiMapPage); }
-      #endif
+      saveTablePageToBoardFlash(wmiMapPage);
       break;
       
     case progOutsPage:
@@ -377,9 +362,7 @@ void writeConfig(uint8_t pageNum)
       | Config page 13 (See storage.h for data layout)
       -----------------------------------------------------*/
       result = write_range((byte *)&configPage13, (byte *)&configPage13+sizeof(configPage13), result.changeWriteAddress(EEPROM_CONFIG13_START));
-      #if defined(CORE_TEENSY41)
-      if (g_useSPIFlash) { saveConfigToFlash(progOutsPage, &configPage13, sizeof(configPage13)); }
-      #endif
+      saveConfigPageToBoardFlash(progOutsPage, &configPage13, sizeof(configPage13));
       break;
     
     case ignMap2Page:
@@ -388,9 +371,7 @@ void writeConfig(uint8_t pageNum)
       | 16x16 table itself + the 16 values along each of the axis
       -----------------------------------------------------*/
       result = writeTable(&ignitionTable2, decltype(ignitionTable2)::type_key, result.changeWriteAddress(EEPROM_CONFIG14_MAP));
-      #if defined(CORE_TEENSY41)
-      if (g_useSPIFlash) { saveTablePageToFlash(ignMap2Page); }
-      #endif
+      saveTablePageToBoardFlash(ignMap2Page);
       break;
 
     case boostvvtPage2:
@@ -404,9 +385,7 @@ void writeConfig(uint8_t pageNum)
       | Config page 15 (See storage.h for data layout)
       -----------------------------------------------------*/
       result = write_range((byte *)&configPage15, (byte *)&configPage15+sizeof(configPage15), result.changeWriteAddress(EEPROM_CONFIG15_START));
-      #if defined(CORE_TEENSY41)
-      if (g_useSPIFlash) { saveTablePageToFlash(boostvvtPage2); } // saves entire page (table + struct)
-      #endif
+      saveTablePageToBoardFlash(boostvvtPage2); // saves entire page (table + struct)
       break;
 
     default:
@@ -504,49 +483,33 @@ static inline eeprom_address_t loadTable(void *pTable, table_type_t key, eeprom_
  */
 void loadConfig(void)
 {
-#if defined(CORE_TEENSY41)
-  initTeensyStorage();  // Initialize SPI flash on first call
-#endif
+  initBoardFlashStorage();
 
-  #if defined(CORE_TEENSY41)
-  if (!g_useSPIFlash || !loadTablePageFromFlash(veMapPage))
-  #endif
+  if (!loadTablePageFromBoardFlash(veMapPage))
   { loadTable(&fuelTable, decltype(fuelTable)::type_key, EEPROM_CONFIG1_MAP); }
-  #if defined(CORE_TEENSY41)
-  if (!g_useSPIFlash || !loadConfigFromFlash(veSetPage, &configPage2, sizeof(configPage2)))
-  #endif
+  if (!loadConfigPageFromBoardFlash(veSetPage, &configPage2, sizeof(configPage2)))
   { load_range(EEPROM_CONFIG2_START, (byte *)&configPage2, (byte *)&configPage2+sizeof(configPage2)); }
   normalizeExperimentalNativeU16Page2IfNeeded();
 
   //*********************************************************************************************************************************************************************************
   //IGNITION CONFIG PAGE (2)
 
-  #if defined(CORE_TEENSY41)
-  if (!g_useSPIFlash || !loadTablePageFromFlash(ignMapPage))
-  #endif
+  if (!loadTablePageFromBoardFlash(ignMapPage))
   { loadTable(&ignitionTable, decltype(ignitionTable)::type_key, EEPROM_CONFIG3_MAP); }
-  #if defined(CORE_TEENSY41)
-  if (!g_useSPIFlash || !loadConfigFromFlash(ignSetPage, &configPage4, sizeof(configPage4)))
-  #endif
+  if (!loadConfigPageFromBoardFlash(ignSetPage, &configPage4, sizeof(configPage4)))
   { load_range(EEPROM_CONFIG4_START, (byte *)&configPage4, (byte *)&configPage4+sizeof(configPage4)); }
 
   //*********************************************************************************************************************************************************************************
   //AFR TARGET CONFIG PAGE (3)
 
-  #if defined(CORE_TEENSY41)
-  if (!g_useSPIFlash || !loadTablePageFromFlash(afrMapPage))
-  #endif
+  if (!loadTablePageFromBoardFlash(afrMapPage))
   { loadTable(&afrTable, decltype(afrTable)::type_key, EEPROM_CONFIG5_MAP); }
-  #if defined(CORE_TEENSY41)
-  if (!g_useSPIFlash || !loadConfigFromFlash(afrSetPage, &configPage6, sizeof(configPage6)))
-  #endif
+  if (!loadConfigPageFromBoardFlash(afrSetPage, &configPage6, sizeof(configPage6)))
   { load_range(EEPROM_CONFIG6_START, (byte *)&configPage6, (byte *)&configPage6+sizeof(configPage6)); }
 
   //*********************************************************************************************************************************************************************************
   // Boost and vvt tables load
-  #if defined(CORE_TEENSY41)
-  if (!g_useSPIFlash || !loadTablePageFromFlash(boostvvtPage))
-  #endif
+  if (!loadTablePageFromBoardFlash(boostvvtPage))
   {
     loadTable(&boostTable, decltype(boostTable)::type_key, EEPROM_CONFIG7_MAP1);
     loadTable(&vvtTable, decltype(vvtTable)::type_key,  EEPROM_CONFIG7_MAP2);
@@ -555,9 +518,7 @@ void loadConfig(void)
 
   //*********************************************************************************************************************************************************************************
   // Fuel trim tables load
-  #if defined(CORE_TEENSY41)
-  if (!g_useSPIFlash || !loadTablePageFromFlash(seqFuelPage))
-  #endif
+  if (!loadTablePageFromBoardFlash(seqFuelPage))
   {
     loadTable(&trim1Table, decltype(trim1Table)::type_key, EEPROM_CONFIG8_MAP1);
     loadTable(&trim2Table, decltype(trim2Table)::type_key, EEPROM_CONFIG8_MAP2);
@@ -571,31 +532,23 @@ void loadConfig(void)
 
   //*********************************************************************************************************************************************************************************
   //canbus control page load
-  #if defined(CORE_TEENSY41)
-  if (!g_useSPIFlash || !loadConfigFromFlash(canbusPage, &configPage9, sizeof(configPage9)))
-  #endif
+  if (!loadConfigPageFromBoardFlash(canbusPage, &configPage9, sizeof(configPage9)))
   { load_range(EEPROM_CONFIG9_START, (byte *)&configPage9, (byte *)&configPage9+sizeof(configPage9)); }
 
   //*********************************************************************************************************************************************************************************
 
   //CONFIG PAGE (10)
-  #if defined(CORE_TEENSY41)
-  if (!g_useSPIFlash || !loadConfigFromFlash(warmupPage, &configPage10, sizeof(configPage10)))
-  #endif
+  if (!loadConfigPageFromBoardFlash(warmupPage, &configPage10, sizeof(configPage10)))
   { load_range(EEPROM_CONFIG10_START, (byte *)&configPage10, (byte *)&configPage10+sizeof(configPage10)); }
 
   //*********************************************************************************************************************************************************************************
   //Fuel table 2 (See storage.h for data layout)
-  #if defined(CORE_TEENSY41)
-  if (!g_useSPIFlash || !loadTablePageFromFlash(fuelMap2Page))
-  #endif
+  if (!loadTablePageFromBoardFlash(fuelMap2Page))
   { loadTable(&fuelTable2, decltype(fuelTable2)::type_key, EEPROM_CONFIG11_MAP); }
 
   //*********************************************************************************************************************************************************************************
   // WMI, VVT2 and Dwell table load
-  #if defined(CORE_TEENSY41)
-  if (!g_useSPIFlash || !loadTablePageFromFlash(wmiMapPage))
-  #endif
+  if (!loadTablePageFromBoardFlash(wmiMapPage))
   {
     loadTable(&wmiTable, decltype(wmiTable)::type_key, EEPROM_CONFIG12_MAP);
     loadTable(&vvt2Table, decltype(vvt2Table)::type_key, EEPROM_CONFIG12_MAP2);
@@ -604,31 +557,23 @@ void loadConfig(void)
 
   //*********************************************************************************************************************************************************************************
   //CONFIG PAGE (13)
-  #if defined(CORE_TEENSY41)
-  if (!g_useSPIFlash || !loadConfigFromFlash(progOutsPage, &configPage13, sizeof(configPage13)))
-  #endif
+  if (!loadConfigPageFromBoardFlash(progOutsPage, &configPage13, sizeof(configPage13)))
   { load_range(EEPROM_CONFIG13_START, (byte *)&configPage13, (byte *)&configPage13+sizeof(configPage13)); }
 
   //*********************************************************************************************************************************************************************************
   //SECOND IGNITION CONFIG PAGE (14)
 
-  #if defined(CORE_TEENSY41)
-  if (!g_useSPIFlash || !loadTablePageFromFlash(ignMap2Page))
-  #endif
+  if (!loadTablePageFromBoardFlash(ignMap2Page))
   { loadTable(&ignitionTable2, decltype(ignitionTable2)::type_key, EEPROM_CONFIG14_MAP); }
 
   //*********************************************************************************************************************************************************************************
   //CONFIG PAGE (15) + boost duty lookup table (LUT)
-  #if defined(CORE_TEENSY41)
-  if (g_useSPIFlash && loadTablePageFromFlash(boostvvtPage2)) {
+  if (loadTablePageFromBoardFlash(boostvvtPage2)) {
     // table + struct loaded from flash by setPageValue() iterator
   } else {
-  #endif
     loadTable(&boostTableLookupDuty, decltype(boostTableLookupDuty)::type_key, EEPROM_CONFIG15_MAP);
     load_range(EEPROM_CONFIG15_START, (byte *)&configPage15, (byte *)&configPage15+sizeof(configPage15));
-  #if defined(CORE_TEENSY41)
   }
-  #endif
 
   //*********************************************************************************************************************************************************************************
 }
@@ -641,11 +586,8 @@ void loadCalibration(void)
   // If you modify this function be sure to also modify writeCalibration();
   // it should be a mirror image of this function.
 
-#if defined(CORE_TEENSY41)
-  initTeensyStorage();  // Ensure SPI flash is initialized
-  // Note: Calibration data remains in EEPROM for all platforms
-  // (small data size, not worth separate SPI flash file management)
-#endif
+  initBoardFlashStorage();
+  // Calibration data remains in EEPROM for all platforms.
 
   EEPROM.get(EEPROM_CALIBRATION_O2_BINS, o2Calibration_bins);
   EEPROM.get(EEPROM_CALIBRATION_O2_VALUES, o2Calibration_values);

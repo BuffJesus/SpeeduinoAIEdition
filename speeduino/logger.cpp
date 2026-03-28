@@ -10,6 +10,15 @@
   #include "storage_spi.h"
 #endif
 
+static inline uint8_t getBoardFlashHealthStatus(void)
+{
+#if defined(CORE_TEENSY41)
+  return isSPIFlashHealthy() ? 1U : 0U;
+#else
+  return 0U;
+#endif
+}
+
 static uint8_t buildRuntimeStatusA(void)
 {
   const bool transientActive = BIT_CHECK(currentStatus.engine, BIT_ENGINE_ACC)
@@ -204,11 +213,7 @@ byte getTSLogEntry(uint16_t byteNum)
     case 128: statusValue = currentStatus.knockCount; break;
     case 129: statusValue = currentStatus.knockRetard; break;
     case 130: statusValue = getBoardCapabilityFlags(configPage2.pinMapping); break; // Phase 4: Board capability flags for TunerStudio board-aware UI
-    case 131: // Phase 4: SPI flash health status (Teensy 4.1 only; 1=healthy, 0=unavailable)
-      #if defined(CORE_TEENSY41)
-        statusValue = isSPIFlashHealthy() ? 1U : 0U;
-      #endif
-      break;
+    case 131: statusValue = getBoardFlashHealthStatus(); break; // Phase 4: SPI flash health status
 
     // Phase 8E: PW5-PW8 for 5-8 cylinder engines, launchCorrection, injAngle
     case 132: statusValue = lowByte(currentStatus.PW5); break;
@@ -358,11 +363,7 @@ int16_t getReadableLogEntry(uint16_t logIndex)
     case 92: statusValue = currentStatus.knockCount; break;
     case 93: statusValue = currentStatus.knockRetard; break;
     case 94: statusValue = getBoardCapabilityFlags(configPage2.pinMapping); break; // Phase 4: Board capability flags
-    case 95: // Phase 4: SPI flash health status (Teensy 4.1 only; 1=healthy, 0=unavailable)
-      #if defined(CORE_TEENSY41)
-        statusValue = isSPIFlashHealthy() ? 1 : 0;
-      #endif
-      break;
+    case 95: statusValue = getBoardFlashHealthStatus(); break; // Phase 4: SPI flash health status
 
     // Phase 8E: PW5-PW8, launchCorrection, injAngle
     case 96: statusValue = currentStatus.PW5; break;
