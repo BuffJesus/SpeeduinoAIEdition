@@ -35,6 +35,10 @@ void beginBoardSerial()
     Serial.begin(115200);
 }
 
+void finaliseBoardTriggerSetup()
+{
+}
+
 uint16_t freeRam()
 {
 

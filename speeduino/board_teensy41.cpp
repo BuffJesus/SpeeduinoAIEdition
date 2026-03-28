@@ -22,6 +22,7 @@ static void TMR1_isr(void);
 static void TMR2_isr(void);
 static void TMR3_isr(void);
 static void TMR4_isr(void);
+static void setTeensy41PinsHysteresis(void);
 
 void setTeensy41DropBearPinMapping()
 {
@@ -302,6 +303,12 @@ void beginBoardSerial()
   }
 }
 
+void finaliseBoardTriggerSetup()
+{
+  // Teensy 4 requires a HYSTERESIS flag on interrupt pins to suppress false triggers.
+  setTeensy41PinsHysteresis();
+}
+
 void PIT_isr()
 {
   bool interrupt1 = (PIT_TFLG0 & PIT_TFLG_TIF);
@@ -463,7 +470,7 @@ void setPinHysteresis(uint8_t pin)
   *(p->mux) = 5 | 0x10;
 }
 
-void setTeensy41PinsHysteresis()
+static void setTeensy41PinsHysteresis(void)
 {
   //Primary trigger
   setPinHysteresis(pinTrigger);

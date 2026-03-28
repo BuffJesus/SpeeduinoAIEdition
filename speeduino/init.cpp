@@ -3547,10 +3547,7 @@ void initialiseTriggers(void)
       break;
   }
 
-  #if defined(CORE_TEENSY41)
-    //Teensy 4 requires a HYSTERESIS flag to be set on any external interrupt pins to prevent false interrupts
-    setTeensy41PinsHysteresis();
-  #endif
+  finaliseBoardTriggerSetup();
 
   // Phase 4: Validate trigger pins support interrupts (prevent silent failures on AVR/STM32)
   validateTriggerPins();

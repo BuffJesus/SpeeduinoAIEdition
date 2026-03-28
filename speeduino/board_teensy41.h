@@ -11,10 +11,10 @@
 */
   void initBoard();
   void beginBoardSerial();
+  void finaliseBoardTriggerSetup();
   uint16_t freeRam();
   void doSystemReset();
   void jumpToBootloader();
-  void setTeensy41PinsHysteresis();
   bool pinIsSerial(uint8_t);
   time_t getTeensy3Time();
   void setTeensy41DropBearPinMapping();

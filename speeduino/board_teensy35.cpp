@@ -309,6 +309,10 @@ void beginBoardSerial()
     Serial.begin(115200);
 }
 
+void finaliseBoardTriggerSetup()
+{
+}
+
 void ftm0_isr(void)
 {
   //Use separate variables for each test to ensure conversion to bool

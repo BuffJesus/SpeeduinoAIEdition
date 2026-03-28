@@ -98,6 +98,10 @@ void beginBoardSerial(void)
     Serial.begin(115200);
 }
 
+void finaliseBoardTriggerSetup(void)
+{
+}
+
 /*
   Returns how much free dynamic memory exists (between heap and stack)
   This function is one big MISRA violation. MISRA advisories forbid directly poking at memory addresses, however there is no other way of determining heap size on embedded systems.

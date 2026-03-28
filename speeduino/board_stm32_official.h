@@ -107,6 +107,7 @@ extern STM32RTC& rtc;
 
 void initBoard();
 void beginBoardSerial();
+void finaliseBoardTriggerSetup();
 uint16_t freeRam();
 void doSystemReset();
 void jumpToBootloader();

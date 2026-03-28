@@ -31,6 +31,7 @@
   #endif
   void initBoard(void);
   void beginBoardSerial(void);
+  void finaliseBoardTriggerSetup(void);
   uint16_t freeRam(void);
   void doSystemReset(void);
   void jumpToBootloader(void);

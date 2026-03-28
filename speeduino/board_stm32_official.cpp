@@ -296,6 +296,10 @@ STM32RTC& rtc = STM32RTC::getInstance();
     Serial.begin(115200);
   }
 
+  void finaliseBoardTriggerSetup()
+  {
+  }
+
   uint16_t freeRam()
   {
     uint32_t freeRam;
