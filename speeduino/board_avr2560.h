@@ -37,6 +37,7 @@
   void doSystemReset(void);
   void jumpToBootloader(void);
   static inline bool boardPwmTimerInvertsPhase(void) { return false; }
+  static inline uint8_t boardPwmTimerTickMicros(void) { return 16U; }
   static inline uint8_t getBoardSpecificCapabilityFlags(uint8_t pinMapping) { (void)pinMapping; return 0U; }
 
   #if defined(TIMER5_MICROS)
