@@ -76,6 +76,17 @@ Most of the phase snapshots below are historical closing baselines. The current 
 
 Separately, the GitHub Actions `Calculate memory deltas` Arduino Teensy 4.1 compile path is back to passing after removing a `globals.h` declaration-order dependency from [board_teensy41.h](C:/Users/Cornelio/Desktop/speeduino-202501.6/speeduino/board_teensy41.h). The current local Arduino Teensy 4.1 repro only emits the external `SdFat.h` FS-detection `#warning`; there are no active `updates.cpp` warning annotations reproducing in this workspace, and there is no compile blocker.
 
+### Current Active Remaining Work
+
+After the documentation cleanup pass, the remaining roadmap surface is intentionally narrow:
+
+- hardware/bench validation for the experimental Teensy/DropBear native-`U16` page-2 path, not more transport debugging
+- hardware/bench validation for the `runtimeStatusA` tune-learning validity bits and TunerStudio indicator behavior
+- evidence conversion for Rover MEMS `Crank Speed + 5-3-2 cam` full replay
+- harness isolation work only if someone wants to re-attempt direct AVR state coverage for `4G63`
+- optional future design work for high-resolution VE telemetry, if a real logging workflow proves it is worth a separate alternate-signature path
+- larger structural refactors such as `IdleState`, deeper `init.cpp` splitting, and broader `setPinMapping()` table conversion remain explicitly deferred rather than active blockers
+
 ## Phase 3: Runtime Structure
 
 - Split [init.cpp](C:/Users/Cornelio/Desktop/speeduino-202501.6/speeduino/init.cpp) by responsibility:
@@ -350,8 +361,9 @@ See audit findings below.
 **Slice E: ADC Backend Audit** ✅ **COMPLETE** (no code changes — identified bug, fixed in Phase 7 Slice A)
 
 **Phase 6 Remaining Work:**
-- Stabilize native CAN ✅ (Phase 10: TX stall fixed; `Can0.begin()` confirmed non-blocking; all write paths gated on `enable_intcan==1`)
-- ESP32-C3 coprocessor path ✅ (capability bit established: `BOARD_CAP_WIFI_TRANSPORT`; transport implementation deferred to hardware availability)
+- No active software-only blockers remain from the original Phase 6 slice.
+- Native CAN stabilization is complete in-tree.
+- ESP32-C3 coprocessor transport remains hardware-availability work, not a current firmware blocker.
 
 ---
 
@@ -530,6 +542,7 @@ See audit findings below.
     - clearer logger / live-data semantics
     - confidence or validity markers for when a cell hit is worth learning from
   - completed narrow slice: reused the existing `runtimeStatusA` byte high bits instead of widening `ochBlockSize`, adding `fullSync`, `transientActive`, `warmupOrASEActive`, and `tuneLearnValid` so TS/offline tools can gate learning on explicit firmware state without a packet-size or signature change
+  - focused implementation and future bench-validation details for that tune-assist slice are kept in [SESSION_HANDOFF_2026-03-28_TUNE_LEARN_VALIDATION.md](C:/Users/Cornelio/Desktop/speeduino-202501.6/speeduino/SESSION_HANDOFF_2026-03-28_TUNE_LEARN_VALIDATION.md)
   - if higher-resolution VE or tune-assist telemetry is explored later, keep it as an alternate-signature / alternate-INI path rather than mutating the shared production packet contract in place
   - the narrowest future slice here is not "replace TunerStudio autotune"; it is exposing better tune-quality evidence and log semantics so both TunerStudio and external tools can make better decisions
 
@@ -579,6 +592,7 @@ See audit findings below.
   - until that full slice is implemented and validated end-to-end on Teensy, keep the working byte-serialized TS contract
   - current repo state update:
     - the experimental milestone above is now complete for page `2` only: there is a Teensy-only, DropBear-gated, alternate-signature native-`U16` TS transport seam with matching read/write/CRC/SPI-flash behavior
+    - implementation details and the end-to-end validation record for that experimental page-2 path are kept in [SESSION_HANDOFF_2026-03-26_TS_U16_PAGES.md](C:/Users/Cornelio/Desktop/speeduino-202501.6/speeduino/SESSION_HANDOFF_2026-03-26_TS_U16_PAGES.md)
     - the experimental runtime fueling slice is also in place for page `2`: fueling uses a high-resolution runtime VE path while `currentStatus.VE*` remain byte-sized compatibility/display channels
     - the final protocol blocker was not TunerStudio itself; it was an internal type-width mismatch where `table3d_value_t` could still compile as byte-sized on Teensy in early include paths. That is now fixed in [table3d_typedefs.h](C:/Users/Cornelio/Desktop/speeduino-202501.6/speeduino/table3d_typedefs.h), with matching serializer fixes in [pages.cpp](C:/Users/Cornelio/Desktop/speeduino-202501.6/speeduino/pages.cpp) and [comms_legacy.cpp](C:/Users/Cornelio/Desktop/speeduino-202501.6/speeduino/comms_legacy.cpp)
     - the experimental path has now been smoke-tested in real TunerStudio: page 2 displays correctly and burns cleanly with the alternate experimental hex/INI/tune flow

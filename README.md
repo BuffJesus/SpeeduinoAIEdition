@@ -23,7 +23,7 @@ The repository has moved well past the older "Phase 2 only" state.
 - Phase 3: substantially complete
 - Phase 4: complete
 - Phase 5: complete
-- Phase 6 through Phase 10: active roadmap work with multiple completed slices already documented in [speeduino/FIRMWARE_ROADMAP.md](speeduino/FIRMWARE_ROADMAP.md)
+- Phase 6 through Phase 10: mixed complete/deferred slices, with the current verified status tracked in [speeduino/FIRMWARE_ROADMAP.md](speeduino/FIRMWARE_ROADMAP.md)
 
 Recent completed work includes:
 
@@ -127,7 +127,16 @@ Start here:
 - [speeduino/FIRMWARE_ROADMAP.md](speeduino/FIRMWARE_ROADMAP.md)
 - [contributing.md](contributing.md)
 
-The `speeduino/SESSION_HANDOFF_*.md` files are working notes. They are useful when continuing a specific slice, but they are not a replacement for the roadmap.
+Documentation policy in this repo is intentionally narrow:
+
+- `speeduino/FIRMWARE_ROADMAP.md` is the source of truth for project status and remaining work
+- `speeduino/SESSION_HANDOFF_*.md` files are kept only when they still support an active decoder evidence/state slice or an active experimental/bench-validation slice
+- obsolete handoffs are removed rather than accumulated as a second roadmap
+
+The handoffs that still matter are the ones linked from the roadmap, plus the current experimental validation notes:
+
+- [speeduino/SESSION_HANDOFF_2026-03-26_TS_U16_PAGES.md](speeduino/SESSION_HANDOFF_2026-03-26_TS_U16_PAGES.md)
+- [speeduino/SESSION_HANDOFF_2026-03-28_TUNE_LEARN_VALIDATION.md](speeduino/SESSION_HANDOFF_2026-03-28_TUNE_LEARN_VALIDATION.md)
 
 ## Warnings
 
