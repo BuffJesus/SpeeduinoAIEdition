@@ -33,8 +33,16 @@ A full copy of the license may be found in the projects root directory
   static inline bool boardUsesFlashStorage(void) { return g_useSPIFlash; }
   static inline bool loadTablePageFromBoardFlash(uint8_t pageNum) { return g_useSPIFlash && loadTablePageFromFlash(pageNum); }
   static inline bool loadConfigPageFromBoardFlash(uint8_t pageNum, void *config, size_t size) { return g_useSPIFlash && loadConfigFromFlash(pageNum, config, size); }
-  static inline void saveTablePageToBoardFlash(uint8_t pageNum) { if (g_useSPIFlash) { saveTablePageToFlash(pageNum); } }
-  static inline void saveConfigPageToBoardFlash(uint8_t pageNum, const void *config, size_t size) { if (g_useSPIFlash) { saveConfigToFlash(pageNum, config, size); } }
+  static inline void saveTablePageToBoardFlash(uint8_t pageNum)
+  {
+    initBoardFlashStorage();
+    if (g_useSPIFlash) { saveTablePageToFlash(pageNum); }
+  }
+  static inline void saveConfigPageToBoardFlash(uint8_t pageNum, const void *config, size_t size)
+  {
+    initBoardFlashStorage();
+    if (g_useSPIFlash) { saveConfigToFlash(pageNum, config, size); }
+  }
 #else
   static inline void initBoardFlashStorage(void) {}
   static inline bool boardUsesFlashStorage(void) { return false; }
@@ -483,8 +491,6 @@ static inline eeprom_address_t loadTable(void *pTable, table_type_t key, eeprom_
  */
 void loadConfig(void)
 {
-  initBoardFlashStorage();
-
   if (!loadTablePageFromBoardFlash(veMapPage))
   { loadTable(&fuelTable, decltype(fuelTable)::type_key, EEPROM_CONFIG1_MAP); }
   if (!loadConfigPageFromBoardFlash(veSetPage, &configPage2, sizeof(configPage2)))
@@ -586,7 +592,6 @@ void loadCalibration(void)
   // If you modify this function be sure to also modify writeCalibration();
   // it should be a mirror image of this function.
 
-  initBoardFlashStorage();
   // Calibration data remains in EEPROM for all platforms.
 
   EEPROM.get(EEPROM_CALIBRATION_O2_BINS, o2Calibration_bins);

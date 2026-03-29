@@ -42,24 +42,20 @@ static void setTeensy41DropBearPinMapping(void)
     pinCoil1 = 40;
     pinCoil2 = 41;
 
-    pinTrigger = 20;
-    pinTrigger2 = 21;
-    pinTrigger3 = 34;
-    pinFlex = 37;
-    pinMAP = A5;
-    pinBaro = A4;
-    pinBat = A15;
-    pinTPS = A3;
-    pinIAT = A0;
-    pinCLT = A1;
-    pinO2 = A2;
+    // Keep the established DropBear mapping that predated board-layer extraction.
+    pinTrigger = 19;
+    pinTrigger2 = 18;
+    pinTrigger3 = 22;
+    pinFlex = A16;
+    pinMAP = A1;
+    pinBaro = A0;
+    pinBat = A14;
     pinSpareTemp1 = A16;
-    pinSpareTemp2 = A17;
-    pinLaunch = 36;
-    pinTachOut = 0;
+    pinLaunch = A15;
+    pinTachOut = 5;
     pinIdle1 = 27;
     pinIdle2 = 29;
-    pinFuelPump = 5;
+    pinFuelPump = 8;
     pinVVT_1 = 28;
     pinStepperDir = 32;
     pinStepperStep = 31;
@@ -70,9 +66,13 @@ static void setTeensy41DropBearPinMapping(void)
     pinSpareLOut3 = 28;
     pinSpareLOut4 = 29;
     pinFan = 25;
-    pinResetControl = 49;
-    pinVSS = 34;
-    pinWMIEmpty = 35;
+    pinResetControl = 46;
+    pinVSS = 22;
+
+    // Keep the shared/default analog assignments for TPS/IAT/CLT/O2 rather than
+    // introducing Teensy-specific remaps that were not present in the older path.
+
+    pinWMIEmpty = 23;
     pinWMIIndicator = pinSpareLOut2;
     pinWMIEnabled = pinSpareLOut1;
 
@@ -122,7 +122,9 @@ void initBoard()
     CCM_CSCMR1 |= CCM_CSCMR1_PERCLK_PODF(0b101111); //Prescale to 48
 
     attachInterruptVector(IRQ_PIT, PIT_isr);
+#if !defined(DIAG_DISABLE_TEENSY41_TIMER_IRQS) && !defined(DIAG_DISABLE_TEENSY41_PIT_IRQ)
     NVIC_ENABLE_IRQ(IRQ_PIT);
+#endif
     NVIC_SET_PRIORITY(IRQ_PIT,255);
 
     /*
@@ -133,8 +135,7 @@ void initBoard()
     {
       PIT_TCTRL0 = 0;
       PIT_TCTRL0 |= PIT_TCTRL_TIE; // enable Timer 1 interrupts
-      PIT_TCTRL0 |= PIT_TCTRL_TEN; // start Timer 1
-      PIT_LDVAL0 = 1; //1 * 2uS = 2uS
+      PIT_LDVAL0 = 1; // Runtime setup writes the real compare before enabling the timer
     }
 
     /*
@@ -156,15 +157,13 @@ void initBoard()
     {
       PIT_TCTRL1 = 0;
       PIT_TCTRL1 |= PIT_TCTRL_TIE; // enable Timer 2 interrupts
-      PIT_TCTRL1 |= PIT_TCTRL_TEN; // start Timer 2
-      PIT_LDVAL1 = 1; //1 * 2uS = 2uS
+      PIT_LDVAL1 = 1; // Runtime setup writes the real compare before enabling the timer
     }
     if (configPage6.vvtEnabled == 1)
     {
       PIT_TCTRL2 = 0;
       PIT_TCTRL2 |= PIT_TCTRL_TIE; // enable Timer 3 interrupts
-      PIT_TCTRL2 |= PIT_TCTRL_TEN; // start Timer 3
-      PIT_LDVAL2 = 1; //1 * 2uS = 2uS
+      PIT_LDVAL2 = 1; // Runtime setup writes the real compare before enabling the timer
     }
 
     //2uS resolution Min 8Hz, Max 5KHz
@@ -284,17 +283,20 @@ void initBoard()
     TMR4_CTRL3 |= TMR_CTRL_CM(1); //Start the timer
 
     attachInterruptVector(IRQ_QTIMER1, TMR1_isr);
-    NVIC_ENABLE_IRQ(IRQ_QTIMER1);
     attachInterruptVector(IRQ_QTIMER2, TMR2_isr);
-    NVIC_ENABLE_IRQ(IRQ_QTIMER2);
     attachInterruptVector(IRQ_QTIMER3, TMR3_isr);
-    NVIC_ENABLE_IRQ(IRQ_QTIMER3);
     attachInterruptVector(IRQ_QTIMER4, TMR4_isr);
+#if !defined(DIAG_DISABLE_TEENSY41_TIMER_IRQS) && !defined(DIAG_DISABLE_TEENSY41_QTIMER_IRQS)
+    NVIC_ENABLE_IRQ(IRQ_QTIMER1);
+    NVIC_ENABLE_IRQ(IRQ_QTIMER2);
+    NVIC_ENABLE_IRQ(IRQ_QTIMER3);
     NVIC_ENABLE_IRQ(IRQ_QTIMER4);
+#endif
 }
 
 void beginBoardSerial()
 {
+  Serial.begin(115200);
   uint32_t millis_begin = systick_millis_count;
   while (!Serial)
   {

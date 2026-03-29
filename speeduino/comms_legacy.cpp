@@ -26,6 +26,10 @@ A full copy of the license may be found in the projects root directory
   #include "rtc_common.h"
 #endif
 
+#if defined(DIAG_STARTUP_TRACE)
+extern void diagPrint(const char *message);
+#endif
+
 static byte currentPage = 1;//Not the same as the speeduino config page numbers
 bool firstCommsRequest = true; /**< The number of times the A command has been issued. This is used to track whether a reset has recently been performed on the controller */
 static byte currentCommand; /**< The serial command that is currently being processed. This is only useful when cmdPending=True */
@@ -424,6 +428,11 @@ void legacySerialCommand(void)
 {
   serialReceiveStartTime = millis();
   if ( serialStatusFlag == SERIAL_INACTIVE )  { currentCommand = primarySerial.read(); }
+#if defined(DIAG_STARTUP_TRACE)
+  if (currentCommand == 'Q') { diagPrint("SER:LEGACY_Q"); }
+  else if (currentCommand == 'S') { diagPrint("SER:LEGACY_S"); }
+  else if (currentCommand == 'F') { diagPrint("SER:LEGACY_CMD_F"); }
+#endif
 
   const LegacyHandlerDispatch handlerDispatch = getPrimaryLegacyHandlerDispatch(currentCommand, configPage9.secondarySerialProtocol);
   if (handlerDispatch.handled)

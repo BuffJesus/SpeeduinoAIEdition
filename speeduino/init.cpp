@@ -32,6 +32,24 @@
   #include "rtc_common.h"
 #endif
 
+#if defined(DIAG_STARTUP_TRACE)
+extern void diagPrint(const char *message);
+#define DIAG_TRACE(message) diagPrint(message)
+#else
+#define DIAG_TRACE(message) do { (void)sizeof(message); } while (0)
+#endif
+
+#if defined(DIAG_STARTUP_TRACE)
+static inline void diagStopLoop(const char *message)
+{
+  while (true)
+  {
+    DIAG_TRACE(message);
+    delay(1000);
+  }
+}
+#endif
+
 #if defined(CORE_AVR)
 #pragma GCC push_options
 // This minimizes RAM usage at no performance cost
@@ -142,8 +160,11 @@ void initialiseAll(void)
   
     // Unit tests should be independent of any stored configuration on the board!
 #if !defined(UNIT_TEST)
+    DIAG_TRACE("BOOT:LOAD_CONFIG");
     loadConfig();
+    DIAG_TRACE("BOOT:LOAD_CONFIG_DONE");
     doUpdates(); //Check if any data items need updating (Occurs with firmware updates)
+    DIAG_TRACE("BOOT:DO_UPDATES_DONE");
 #endif
 
 
@@ -153,19 +174,31 @@ void initialiseAll(void)
 
     initBoard(); //This calls the current individual boards init function. See the board_xxx.ino files for these.
                  //Phase 4: Board-specific initialization (ADC, timers, peripherals) now handled inside initBoard()
+    DIAG_TRACE("BOOT:INIT_BOARD_DONE");
 
     initialiseTimers();
+    DIAG_TRACE("BOOT:TIMERS_DONE");
     
     beginBoardSerial();
+    DIAG_TRACE("BOOT:SERIAL_READY");
+#if defined(DIAG_STARTUP_TRACE) && defined(DIAG_STOP_AFTER_SERIAL_READY)
+    while (true)
+    {
+      DIAG_TRACE("BOOT:STOP_AFTER_SERIAL_READY");
+      delay(1000);
+    }
+#endif
     pPrimarySerial = &Serial; //Default to standard Serial interface
     BIT_SET(currentStatus.status4, BIT_STATUS4_ALLOW_LEGACY_COMMS); //Flag legacy comms as being allowed on startup
     BIT_SET(currentStatus.status5, BIT_STATUS5_ALLOW_TS_ON_SECONDARY_COMMS); //Allow TunerStudio protocol on startup
 
     //Repoint the 2D table structs to the config pages that were just loaded
     construct2dTables();
+    DIAG_TRACE("BOOT:TABLES_DONE");
     
     //Setup the calibration tables
-    loadCalibration();   
+    loadCalibration();
+    DIAG_TRACE("BOOT:CAL_DONE");
 
     //Set the pin mappings
     if((configPage2.pinMapping == 255) || (configPage2.pinMapping == 0)) //255 = EEPROM value in a blank AVR; 0 = EEPROM value in new FRAM
@@ -175,6 +208,10 @@ void initialiseAll(void)
       setPinMapping(3); //Force board to v0.4
     }
     else { setPinMapping(configPage2.pinMapping); }
+    DIAG_TRACE("BOOT:PINMAP_DONE");
+#if defined(DIAG_STARTUP_TRACE) && defined(DIAG_STOP_AFTER_PINMAP_DONE)
+    diagStopLoop("BOOT:STOP_AFTER_PINMAP_DONE");
+#endif
 
     configPage9.intcan_available = boardHasCapability(BOARD_CAP_NATIVE_CAN) ? 1U : 0U;
 
@@ -182,6 +219,7 @@ void initialiseAll(void)
     if(boardHasCapability(BOARD_CAP_RTC)) { initRTC(); }
     if(boardHasCapability(BOARD_CAP_SD) && configPage13.onboard_log_file_style) { initSD(); }
   #endif
+    DIAG_TRACE("BOOT:SD_DONE");
 
     // Repeatedly initialising the CAN bus hangs the system when
     // running initialisation tests on Teensy 3.5
@@ -191,11 +229,16 @@ void initialiseAll(void)
       initCAN();
       }
     #endif
+    DIAG_TRACE("BOOT:CAN_DONE");
+#if defined(DIAG_STARTUP_TRACE) && defined(DIAG_STOP_AFTER_CAN_DONE)
+    diagStopLoop("BOOT:STOP_AFTER_CAN_DONE");
+#endif
 
     //Must come after setPinMapping() as secondary serial can be changed on a per board basis
     #if defined(secondarySerial_AVAILABLE)
       if (configPage9.enable_secondarySerial == 1) { secondarySerial.begin(115200); }
     #endif
+    DIAG_TRACE("BOOT:SECONDARY_DONE");
 
     //End all coil charges to ensure no stray sparks on startup
     endCoil1Charge();
@@ -233,16 +276,22 @@ void initialiseAll(void)
     digitalWrite(pinTachOut, HIGH);
     //Perform all initialisations
     initialiseSchedulers();
+    DIAG_TRACE("BOOT:SCHED_DONE");
     //initialiseDisplay();
     initialiseIdle(true);
     initialiseFan();
     initialiseAirCon();
     initialiseAuxPWM();
+    DIAG_TRACE("BOOT:AUX_DONE");
     initialiseCorrections();
     BIT_CLEAR(currentStatus.engineProtectStatus, PROTECT_IO_ERROR); //Clear the I/O error bit. The bit will be set in initialiseADC() if there is problem in there.
     initialiseADC();
     initialiseMAPBaro();
     initialiseProgrammableIO();
+    DIAG_TRACE("BOOT:IO_DONE");
+#if defined(DIAG_STARTUP_TRACE) && defined(DIAG_STOP_AFTER_IO_DONE)
+    diagStopLoop("BOOT:STOP_AFTER_IO_DONE");
+#endif
 
     //Check whether the flex sensor is enabled and if so, attach an interrupt for it
     if(configPage2.flexEnabled > 0)
@@ -310,12 +359,19 @@ void initialiseAll(void)
     toothHistoryIndex = 0;
     resetDecoder();
     
-    noInterrupts();
     initialiseTriggers();
+    DIAG_TRACE("BOOT:TRIGGERS_DONE");
+#if defined(DIAG_STARTUP_TRACE) && defined(DIAG_STOP_AFTER_TRIGGERS_DONE)
+    diagStopLoop("BOOT:STOP_AFTER_TRIGGERS_DONE");
+#endif
 
     //The secondary input can be used for VSS if nothing else requires it. Allows for the standard VR conditioner to be used for VSS. This MUST be run after the initialiseTriggers() function
     if( VSS_USES_RPM2() ) { attachInterrupt(digitalPinToInterrupt(pinVSS), vssPulse, RISING); } //Secondary trigger input can safely be used for VSS
     if( FLEX_USES_RPM2() ) { attachInterrupt(digitalPinToInterrupt(pinFlex), flexPulse, CHANGE); } //Secondary trigger input can safely be used for Flex sensor
+    DIAG_TRACE("BOOT:POST_TRIGGER_ATTACH_DONE");
+#if defined(DIAG_STARTUP_TRACE) && defined(DIAG_STOP_AFTER_POST_TRIGGER_ATTACH_DONE)
+    diagStopLoop("BOOT:STOP_AFTER_POST_TRIGGER_ATTACH_DONE");
+#endif
 
     //End crank trigger interrupt attachment
     if(configPage2.strokes == FOUR_STROKE)
@@ -2837,6 +2893,10 @@ void setPinMapping(byte boardID)
     initMC33810();
     if( (LED_BUILTIN != SCK) && (LED_BUILTIN != MOSI) && (LED_BUILTIN != MISO) ) pinMode(LED_BUILTIN, OUTPUT); //This is required on as the LED pin can otherwise be reset to an input
   }
+  DIAG_TRACE("BOOT:MC33810_DONE");
+#if defined(DIAG_STARTUP_TRACE) && defined(DIAG_STOP_AFTER_MC33810_DONE)
+  diagStopLoop("BOOT:STOP_AFTER_MC33810_DONE");
+#endif
 
 //CS pin number is now set in a compile flag. 
 // #ifdef USE_SPI_EEPROM

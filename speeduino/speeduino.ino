@@ -54,11 +54,30 @@ uint8_t ignitionChannelsOn; /**< The current state of the ignition system (on or
 uint8_t ignitionChannelsPending = 0; /**< Any ignition channels that are pending injections before they are resumed */
 uint8_t fuelChannelsOn; /**< The current state of the fuel system (on or off) */
 uint32_t rollingCutLastRev = 0; /**< Tracks whether we're on the same or a different rev for the rolling cut */
+
+#if defined(DIAG_STARTUP_TRACE)
+static uint32_t g_diagLastHeartbeatMillis = 0U;
+
+void diagPrint(const char *message)
+{
+  Serial.print(message);
+  Serial.print('\n');
+}
+#endif
+
 #ifndef UNIT_TEST // Scope guard for unit testing
 void setup(void)
 {
+  beginBoardSerial();
+#if defined(DIAG_STARTUP_TRACE)
+  delay(20);
+  diagPrint("BOOT:SETUP_ENTER");
+#endif
   currentStatus.initialisationComplete = false; //Tracks whether the initialiseAll() function has run completely
   initialiseAll();
+#if defined(DIAG_STARTUP_TRACE)
+  diagPrint("BOOT:SETUP_EXIT");
+#endif
 }
 
 inline uint16_t applyFuelTrimToPW(trimTable3d *pTrimTable, int16_t fuelLoad, int16_t RPM, uint16_t currentPW)
@@ -105,8 +124,28 @@ byte convertRuntimeVEToStatus(table3d_value_t runtimeVE)
 // it to inline, so we need to suppress the resulting warning.
 void __attribute__((always_inline)) loop(void)
 {
+#if defined(DIAG_STARTUP_TRACE)
+      if ((millis() - g_diagLastHeartbeatMillis) >= 1000U)
+      {
+        g_diagLastHeartbeatMillis = millis();
+        diagPrint("BOOT:LOOP_ALIVE");
+      }
+#endif
+#if defined(DIAG_MINIMAL_SERIAL_LOOP)
+      if (Serial.available() > 0)
+      {
+        diagPrint("SER:LOOP_RX");
+        while (Serial.available() > 0)
+        {
+          Serial.write(static_cast<uint8_t>(Serial.read()));
+        }
+      }
+      delay(10);
+      return;
+#endif
       if(mainLoopCount < UINT16_MAX) { mainLoopCount++; }
       LOOP_TIMER = TIMER_mask;
+      yield();
 
       //SERIAL Comms
       //Initially check that the last serial send values request is not still outstanding

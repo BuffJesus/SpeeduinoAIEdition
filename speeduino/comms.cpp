@@ -28,6 +28,10 @@ A full copy of the license may be found in the projects root directory
   #include "SD_logger.h"
 #endif
 
+#if defined(DIAG_STARTUP_TRACE)
+extern void diagPrint(const char *message);
+#endif
+
 static_assert(SERIAL_BUFFER_SIZE >= (TABLE_BLOCKING_FACTOR + 7U), "TABLE_BLOCKING_FACTOR exceeds safe serialPayload write capacity");
 static_assert(SERIAL_BUFFER_SIZE >= (BLOCKING_FACTOR + 7U), "BLOCKING_FACTOR exceeds safe serialPayload write capacity");
 
@@ -478,6 +482,9 @@ void serialReceive(void)
 
   if (primarySerial.available()!=0 && serialStatusFlag == SERIAL_INACTIVE)
   { 
+#if defined(DIAG_STARTUP_TRACE)
+    diagPrint("SER:RX_AVAILABLE");
+#endif
     //New command received
     //Need at least 2 bytes to read the length of the command
     byte highByte = (byte)primarySerial.peek();
@@ -488,12 +495,18 @@ void serialReceive(void)
     //Check if the command is legacy using the call/response mechanism
     if(highByte == 'F')
     {
+#if defined(DIAG_STARTUP_TRACE)
+      diagPrint("SER:LEGACY_F");
+#endif
       //F command is always allowed as it provides the initial serial protocol version. 
       legacySerialCommand();
       return;
     }
     else if( (((highByte >= 'A') && (highByte <= 'z')) || (highByte == '?')) && (BIT_CHECK(currentStatus.status4, BIT_STATUS4_ALLOW_LEGACY_COMMS)) )
     {
+#if defined(DIAG_STARTUP_TRACE)
+      diagPrint("SER:LEGACY_ROUTE");
+#endif
       //Handle legacy cases here
       legacySerialCommand();
       return;
