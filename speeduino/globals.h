@@ -24,6 +24,7 @@
  */
 #ifndef GLOBALS_H
 #define GLOBALS_H
+
 #include <Arduino.h>
 #include <SimplyAtomic.h>
 #include "table2d.h"

@@ -131,7 +131,6 @@ void initialiseIdle(bool forcehoming)
       iacCrankDutyTable.axisX = configPage6.iacCrankBins;
 
       idle_pwm_max_count = calculatePwmMaxCount(configPage6.idleFreq);
-      enableIdle();
       break;
 
     case IAC_ALGORITHM_PWM_OLCL:

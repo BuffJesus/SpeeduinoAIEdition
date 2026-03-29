@@ -36,7 +36,14 @@
 extern void diagPrint(const char *message);
 #define DIAG_TRACE(message) diagPrint(message)
 #else
-#define DIAG_TRACE(message) do { (void)sizeof(message); } while (0)
+static inline void serviceInitComms(void)
+{
+  #if defined(CORE_TEENSY)
+    yield();
+  #endif
+}
+
+#define DIAG_TRACE(message) do { (void)sizeof(message); serviceInitComms(); } while (0)
 #endif
 
 #if defined(DIAG_STARTUP_TRACE)

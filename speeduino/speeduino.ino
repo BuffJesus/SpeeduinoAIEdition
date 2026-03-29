@@ -69,8 +69,8 @@ void diagPrint(const char *message)
 void setup(void)
 {
   beginBoardSerial();
-#if defined(DIAG_STARTUP_TRACE)
   delay(20);
+#if defined(DIAG_STARTUP_TRACE)
   diagPrint("BOOT:SETUP_ENTER");
 #endif
   currentStatus.initialisationComplete = false; //Tracks whether the initialiseAll() function has run completely

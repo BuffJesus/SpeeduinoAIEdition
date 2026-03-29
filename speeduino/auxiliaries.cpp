@@ -526,7 +526,7 @@ void initialiseAuxPWM(void)
 
     vvt1_pwm_value = 0;
     vvt2_pwm_value = 0;
-    ENABLE_VVT_TIMER(); //Turn on the B compare unit (ie turn on the interrupt)
+    DISABLE_VVT_TIMER(); //Keep PIT PWM stopped until runtime code writes a real compare value
     BIT_CLEAR(currentStatus.status4, BIT_STATUS4_VVT1_ERROR);
     BIT_CLEAR(currentStatus.status4, BIT_STATUS4_VVT2_ERROR);
     vvtTimeHold = false;
@@ -541,7 +541,7 @@ void initialiseAuxPWM(void)
     currentStatus.wmiPW = 0;
     vvt1_pwm_value = 0;
     vvt2_pwm_value = 0;
-    ENABLE_VVT_TIMER(); //Turn on the B compare unit (ie turn on the interrupt)
+    DISABLE_VVT_TIMER(); //Keep PIT PWM stopped until runtime code writes a real compare value
   }
 
   currentStatus.boostDuty = 0;
