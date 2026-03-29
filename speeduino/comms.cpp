@@ -482,6 +482,10 @@ void serialReceive(void)
 
   if (primarySerial.available()!=0 && serialStatusFlag == SERIAL_INACTIVE)
   { 
+    #if defined(CORE_TEENSY)
+      Serial.send_now();
+      yield();
+    #endif
 #if defined(DIAG_STARTUP_TRACE)
     diagPrint("SER:RX_AVAILABLE");
 #endif
@@ -495,6 +499,10 @@ void serialReceive(void)
     //Check if the command is legacy using the call/response mechanism
     if(highByte == 'F')
     {
+      #if defined(CORE_TEENSY)
+        Serial.send_now();
+        yield();
+      #endif
 #if defined(DIAG_STARTUP_TRACE)
       diagPrint("SER:LEGACY_F");
 #endif
@@ -504,6 +512,10 @@ void serialReceive(void)
     }
     else if( (((highByte >= 'A') && (highByte <= 'z')) || (highByte == '?')) && (BIT_CHECK(currentStatus.status4, BIT_STATUS4_ALLOW_LEGACY_COMMS)) )
     {
+      #if defined(CORE_TEENSY)
+        Serial.send_now();
+        yield();
+      #endif
 #if defined(DIAG_STARTUP_TRACE)
       diagPrint("SER:LEGACY_ROUTE");
 #endif

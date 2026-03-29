@@ -62,6 +62,10 @@ void diagPrint(const char *message)
 {
   Serial.print(message);
   Serial.print('\n');
+  Serial.flush();
+#if defined(CORE_TEENSY)
+  Serial.send_now();
+#endif
 }
 #endif
 
@@ -159,6 +163,10 @@ void __attribute__((always_inline)) loop(void)
       {
         serialReceive();
       }
+#if defined(DIAG_RETURN_AFTER_SERIAL_STAGE)
+      delay(1);
+      return;
+#endif
       
       //Check for any CAN comms requiring action 
       #if defined(secondarySerial_AVAILABLE)
@@ -168,8 +176,8 @@ void __attribute__((always_inline)) loop(void)
           if ( ((mainLoopCount & 31) == 1) || (secondarySerial.available() > SERIAL_BUFFER_THRESHOLD) )
           {
             if (secondarySerial.available() > 0)  { secondserial_Command(); }
-          } 
-        }
+          }
+        } 
       #endif
       #if defined (NATIVE_CAN_AVAILABLE)
         if (configPage9.enable_intcan == 1) // use internal can module
@@ -182,8 +190,12 @@ void __attribute__((always_inline)) loop(void)
             readAuxCanBus();
             if (configPage2.canWBO > 0) { receiveCANwbo(); }
           }
-        }   
+        }
       #endif
+#if defined(DIAG_RETURN_AFTER_CAN_STAGE)
+      delay(1);
+      return;
+#endif
           
     if(currentLoopTime > micros_safe())
     {
@@ -241,6 +253,10 @@ void __attribute__((always_inline)) loop(void)
       boostDisable();
       if(configPage4.ignBypassEnabled > 0) { digitalWrite(pinIgnBypass, LOW); } //Reset the ignition bypass ready for next crank attempt
     }
+#if defined(DIAG_RETURN_BEFORE_TIMED_TASKS_STAGE)
+    delay(1);
+    return;
+#endif
     //***Perform sensor reads***
     //-----------------------------------------------------------------------------------------------------
     if (BIT_CHECK(LOOP_TIMER, BIT_TIMER_1KHZ)) //Every 1ms. NOTE: This is NOT guaranteed to run at 1kHz on AVR systems. It will run at 1kHz if possible or as fast as loops/s allows if not. 
@@ -294,6 +310,10 @@ void __attribute__((always_inline)) loop(void)
       //Check for any outstanding EEPROM writes.
       if( (isEepromWritePending() == true) && (serialStatusFlag == SERIAL_INACTIVE) && (micros() > deferEEPROMWritesUntil)) { writeAllConfig(); } 
     }
+#if defined(DIAG_RETURN_AFTER_30HZ_STAGE)
+    delay(1);
+    return;
+#endif
     if (BIT_CHECK(LOOP_TIMER, BIT_TIMER_15HZ)) //Every 32 loops
     {
       BIT_CLEAR(TIMER_mask, BIT_TIMER_15HZ);
@@ -308,36 +328,62 @@ void __attribute__((always_inline)) loop(void)
           }
       #endif     
 
-      checkLaunchAndFlatShift(); //Check for launch control and flat shift being active
+      #if !defined(DIAG_SKIP_15HZ_LAUNCH_CHECK)
+        checkLaunchAndFlatShift(); //Check for launch control and flat shift being active
+      #endif
 
       #if defined(NATIVE_CAN_AVAILABLE)
-      if (configPage9.enable_intcan == 1) { sendCANBroadcast(15); }
+      #if !defined(DIAG_SKIP_15HZ_CAN_BROADCAST)
+        if (configPage9.enable_intcan == 1) { sendCANBroadcast(15); }
+      #endif
       #endif
 
       //And check whether the tooth log buffer is ready
-      if(toothHistoryIndex > TOOTH_LOG_SIZE) { BIT_SET(currentStatus.status1, BIT_STATUS1_TOOTHLOG1READY); }
+      #if !defined(DIAG_SKIP_15HZ_TOOTHLOG_FLAG)
+        if(toothHistoryIndex > TOOTH_LOG_SIZE) { BIT_SET(currentStatus.status1, BIT_STATUS1_TOOTHLOG1READY); }
+      #endif
     }
+#if defined(DIAG_RETURN_AFTER_15HZ_STAGE)
+    delay(1);
+    return;
+#endif
     if(BIT_CHECK(LOOP_TIMER, BIT_TIMER_10HZ)) //10 hertz
     {
       BIT_CLEAR(TIMER_mask, BIT_TIMER_10HZ);
       //updateFullStatus();
-      checkProgrammableIO();
-      idleControl(); //Perform any idle related actions. This needs to be run at 10Hz to align with the idle taper resolution of 0.1s
+      #if !defined(DIAG_SKIP_10HZ_PROGRAMMABLE_IO)
+        checkProgrammableIO();
+      #endif
+      #if !defined(DIAG_SKIP_10HZ_IDLE_CONTROL)
+        idleControl(); //Perform any idle related actions. This needs to be run at 10Hz to align with the idle taper resolution of 0.1s
+      #endif
       
       // Air conditioning control
-      airConControl();
+      #if !defined(DIAG_SKIP_10HZ_AIRCON_CONTROL)
+        airConControl();
+      #endif
 
-      currentStatus.vss = getSpeed();
-      currentStatus.gear = getGear();
+      #if !defined(DIAG_SKIP_10HZ_VSS_GEAR)
+        currentStatus.vss = getSpeed();
+        currentStatus.gear = getGear();
+      #endif
 
       #if defined(NATIVE_CAN_AVAILABLE)
-      if (configPage9.enable_intcan == 1) { sendCANBroadcast(10); }
+      #if !defined(DIAG_SKIP_10HZ_CAN_BROADCAST)
+        if (configPage9.enable_intcan == 1) { sendCANBroadcast(10); }
+      #endif
       #endif
 
       #ifdef SD_LOGGING
-        if(configPage13.onboard_log_file_rate == LOGGER_RATE_10HZ) { writeSDLogEntry(); }
+        #if !defined(DIAG_SKIP_10HZ_SD_LOG)
+          if(configPage13.onboard_log_file_rate == LOGGER_RATE_10HZ) { writeSDLogEntry(); }
+        #endif
       #endif
     }
+#if defined(DIAG_RETURN_AFTER_10HZ_STAGE)
+    delay(1);
+    return;
+#endif
     if (BIT_CHECK(LOOP_TIMER, BIT_TIMER_4HZ))
     {
       BIT_CLEAR(TIMER_mask, BIT_TIMER_4HZ);
@@ -418,6 +464,10 @@ void __attribute__((always_inline)) loop(void)
         } //For loop going through each channel
       } //aux channels are enabled
     } //4Hz timer
+#if defined(DIAG_RETURN_AFTER_4HZ_STAGE)
+    delay(1);
+    return;
+#endif
     if (BIT_CHECK(LOOP_TIMER, BIT_TIMER_1HZ)) //Once per second)
     {
       BIT_CLEAR(TIMER_mask, BIT_TIMER_1HZ);
@@ -448,6 +498,11 @@ void __attribute__((always_inline)) loop(void)
       #endif
 
     } //1Hz timer
+
+#if defined(DIAG_RETURN_AFTER_TIMED_TASKS_STAGE)
+    delay(1);
+    return;
+#endif
 
     if( (configPage6.iacAlgorithm == IAC_ALGORITHM_STEP_OL)
     || (configPage6.iacAlgorithm == IAC_ALGORITHM_STEP_CL)

@@ -1302,6 +1302,9 @@ void initialiseAll(void)
     
     currentStatus.initialisationComplete = true;
     digitalWrite(LED_BUILTIN, HIGH);
+#if defined(DIAG_STARTUP_TRACE) && defined(DIAG_STOP_AFTER_INIT_COMPLETE)
+    diagStopLoop("BOOT:STOP_AFTER_INIT_COMPLETE");
+#endif
 
 }
 /** Set board / microcontroller specific pin mappings / assignments.

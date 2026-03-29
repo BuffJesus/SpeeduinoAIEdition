@@ -403,7 +403,6 @@ static inline byte isStepperHomed(void)
 void idleControl(void)
 {
   if( idleInitComplete != configPage6.iacAlgorithm) { initialiseIdle(false); }
-  if( (currentStatus.RPM > 0) || (configPage6.iacPWMrun == true) ) { enableIdle(); }
 
   //Check whether the idleUp is active
   if (configPage2.idleUpEnabled == true)
