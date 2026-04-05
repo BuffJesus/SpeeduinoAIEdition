@@ -456,10 +456,12 @@ void test_experimental_native_u16_page2_preserves_existing_high_resolution_value
 }
 
 extern void test_capability_response_setup(void);
+extern void test_page_verification_setup(void);
 
 void test_setup(void)
 {
   test_capability_response_setup();
+  test_page_verification_setup();
 
   SET_UNITY_FILENAME() {
     RUN_TEST_P(test_table_value_byte_size_matches_platform);

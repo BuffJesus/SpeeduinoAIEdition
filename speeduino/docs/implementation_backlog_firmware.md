@@ -75,7 +75,7 @@
   Dependencies:
   - `FW-003 preferred`
 
-- [ ] FW-005 External page verification path
+- [x] FW-005 External page verification path
   Summary: Expose page verification for external tools.
   Deliverables:
   - CRC query or equivalent page verification command
