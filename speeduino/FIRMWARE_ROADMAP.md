@@ -82,6 +82,7 @@ After the documentation cleanup pass, the remaining roadmap surface is intention
 
 - hardware/bench validation for the experimental Teensy/DropBear native-`U16` page-2 path, not more transport debugging
 - hardware/bench validation for the `runtimeStatusA` tune-learning validity bits and TunerStudio indicator behavior
+- **ESP32-C3 Serial2 coprocessor transport** ✅ software complete (Phase 11): `Serial2.begin(115200)` in `beginBoardSerial()`, `serviceBoardSerial()` board hook wired into main loop; remaining work is hardware bench validation per Phase 11 Slice E
 - evidence conversion for Rover MEMS `Crank Speed + 5-3-2 cam` full replay
 - harness isolation work only if someone wants to re-attempt direct AVR state coverage for `4G63`
 - optional future design work for high-resolution VE telemetry, if a real logging workflow proves it is worth a separate alternate-signature path
@@ -529,7 +530,7 @@ See audit findings below.
   - move primary serial startup behind a board hook instead of a `CORE_TEENSY41` branch in `initialiseAll()` [complete] (Phase 10: `beginBoardSerial()` keeps Teensy 4.1's shortened USB wait inside the board layer)
   - move post-trigger hysteresis setup behind a board hook instead of a `CORE_TEENSY41` branch in `initialiseTriggers()` [complete] (Phase 10: `finaliseBoardTriggerSetup()` keeps Teensy 4.1 interrupt-pin hysteresis in the board layer)
   - move Teensy 4.1 DropBear pin-mapping selection behind a board hook instead of calling a Teensy helper from `setPinMapping()` [complete] (Phase 10: `applyBoardPinMapping()` lets the board layer own the Teensy 4.1-specific DropBear mapping)
-- Use the existing ESP32-C3 board hardware as a real secondary transport / coprocessor path for wireless tuning, log offload, and update workflows once the board capability layer exists. ✅ (Capability layer established: `BOARD_CAP_WIFI_TRANSPORT` bit 7 added to board_capability enum; set for PIN_LAYOUT_DROPBEAR on CORE_TEENSY41; `boardCap_wifiTransport` channel exposed in INI at byte 130 [7:7]. Transport implementation deferred until hardware schematic / UART pin assignment confirmed.)
+- Use the existing ESP32-C3 board hardware as a real secondary transport / coprocessor path for wireless tuning, log offload, and update workflows once the board capability layer exists. ✅ (Capability layer established: `BOARD_CAP_WIFI_TRANSPORT` bit 7 added to board_capability enum; set for PIN_LAYOUT_DROPBEAR on CORE_TEENSY41; `boardCap_wifiTransport` channel exposed in INI at byte 130 [7:7]. Transport implementation moved to Phase 11: schematic confirms Serial2 pins 7/8 at 115200 baud to Airbear ESP32-C3.)
 
 - Improve tune-assist / autotune quality from the firmware side without assuming any changes to TunerStudio internals:
   - treat TunerStudio's built-in autotune algorithm as external / fixed; do not plan work that depends on modifying its private implementation
@@ -566,6 +567,79 @@ See audit findings below.
   - [SESSION_HANDOFF_2026-03-28_ROVER_MEMS_FULLSYNC_BLOCKER.md](C:/Users/Cornelio/Desktop/speeduino-202501.6/speeduino/SESSION_HANDOFF_2026-03-28_ROVER_MEMS_FULLSYNC_BLOCKER.md)
   - [SESSION_HANDOFF_2026-03-23_ROVER_MEMS_PRIMARY_STATE.md](C:/Users/Cornelio/Desktop/speeduino-202501.6/speeduino/SESSION_HANDOFF_2026-03-23_ROVER_MEMS_PRIMARY_STATE.md)
 - The maintained `megaatmega2560_sim_unittest` decoder baseline now includes the later Phase 9 additions as well; keep it green as new evidence-backed slices land.
+
+## Phase 11: ESP32-C3 Coprocessor Serial2 Transport ✅ **SOFTWARE COMPLETE**
+
+### Prerequisites (all confirmed)
+
+- Schematic (`V2.0.1/comms.kicad_sch`): Teensy 4.1 **Serial2 TX/RX = pins 7/8** → ESP32-C3 Supermini RX/TX at **115200 baud**
+- `BOARD_CAP_WIFI_TRANSPORT` (bit 7) set in `board_capability` enum for `PIN_LAYOUT_DROPBEAR` on `CORE_TEENSY41` ✅
+- `boardCap_wifiTransport` output channel exposed in INI at byte 130 bit 7 ✅
+- Airbear firmware v0.1.2 confirmed: operates in TunerStudio TCP bridge mode on port 2000, speaks full Speeduino comms framing; identified by `BOARD_CAP_WIFI_TRANSPORT` bit when the Python tuner connects
+
+### Slice A: Serial2 Initialisation ✅ **COMPLETE**
+
+- `Serial2.begin(115200)` added to `beginBoardSerial()` in [board_teensy41.cpp](C:/Users/Cornelio/Desktop/speeduino-202501.6/speeduino/board_teensy41.cpp) (unconditional for Teensy 4.1; `pSecondarySerial = &Serial2` was already unconditional)
+- No change to Serial0 (USB CDC) or Serial1; Serial2 is additive
+- Verify via the existing minimal-serial diagnostic firmware (`diagnostics/minimal_teensy41_serial/minimal_teensy41_serial.ino`) before wiring the full comms path — it echoes every non-Q/S byte with `MINIMAL:BYTE:` prefix, making it safe to confirm the physical link without running live ECU code
+
+### Slice B: Comms Dispatcher Routing ✅ **COMPLETE**
+
+- Added `serviceBoardSerial()` board hook declared in [board_teensy41.h](C:/Users/Cornelio/Desktop/speeduino-202501.6/speeduino/board_teensy41.h), implemented in [board_teensy41.cpp](C:/Users/Cornelio/Desktop/speeduino-202501.6/speeduino/board_teensy41.cpp)
+- Routing design: temporarily diverts `pPrimarySerial` to `&Serial2` while a command is active; all comms helpers (`serialReceive`, `serialTransmit`, `sendValues`, …) use `primarySerial = *pPrimarySerial`, so the full request/response cycle flows through Serial2 without duplicating protocol logic
+- `serviceBoardSerial()` gates on `boardHasCapability(BOARD_CAP_WIFI_TRANSPORT)` — no-op on non-DropBear boards at runtime
+- Called from [speeduino.ino](C:/Users/Cornelio/Desktop/speeduino-202501.6/speeduino/speeduino.ino) after the primary serial check under `#if defined(CORE_TEENSY) && defined(__IMXRT1062__)`
+- USB CDC and Serial2 sessions share `serialStatusFlag` so they cannot overlap; whichever port is not active waits in its hardware buffer
+
+### Slice C: `ochGetCommand` Alignment Note ✅ **COMPLETE** (documented in board_teensy41.cpp)
+
+The custom INI defines:
+```
+ochGetCommand = "r\$tsCanId\x30%2o%2c"
+```
+This is the modern `'r'` command (subcommand `0x30`, 2-byte offset, 2-byte count). The firmware handles both `'A'` (legacy) and `'r'` (modern). Airbear firmware v0.1.2 sends `'A'`. Both paths return the same 148-byte payload, so there is no firmware change required here; documented in [board_teensy41.cpp](C:/Users/Cornelio/Desktop/speeduino-202501.6/speeduino/board_teensy41.cpp) that Airbear is expected to migrate to the `'r'` form to stay aligned with the INI contract.
+
+### Slice D: `BLOCKING_FACTOR` Exposure ✅ **COMPLETE** (documented in board_teensy41.cpp)
+
+After Phase 8 Slices C+D, `BLOCKING_FACTOR = 512` and `TABLE_BLOCKING_FACTOR = 512` for Teensy. The Python tuner's `TcpTransport` reads the blocking factors from the `'f'` command response and uses them for write chunking. The Airbear TCP proxy must relay the `'f'` command response verbatim without reinterpreting or capping the reported values. No firmware change needed; constraint documented in [board_teensy41.cpp](C:/Users/Cornelio/Desktop/speeduino-202501.6/speeduino/board_teensy41.cpp) in the `beginBoardSerial()` comment block.
+
+### Slice E: Integration Test Path
+
+Hardware-only validation — cannot be covered by the AVR simulator harness:
+
+1. Flash `diagnostics/minimal_teensy41_serial/minimal_teensy41_serial.ino.hex` to Teensy 4.1
+2. Connect via Airbear in TunerStudio TCP bridge mode on port 2000
+3. Send `Q` from a TCP client — expect `speeduino 202501-T41` echo via Serial2 → TCP
+4. Confirm `MINIMAL:ALIVE` appears at 1Hz — proves the physical link and baud rate
+5. Flash production `speeduino-dropbear-v2.0.1-teensy41.hex`
+6. Connect Python tuner via `TcpTransport("speeduino.local", 2000)` — expect full page read/write/burn round-trip
+7. Verify `boardCap_wifiTransport` reads `1` in the Python tuner's capability display
+
+### Slice F: Firmware Variant Handling
+
+Two production signatures in the release bundle:
+- `speeduino 202501-T41` — standard byte-mode INI/tune
+- `speeduino 202501-T41-U16P2` — experimental native-U16 Page 2
+
+Airbear detects the active variant via the `'Q'` command response at startup. The Serial2 transport is identical for both variants; the U16P2 page-2 difference is in the byte stream of `'p'` / `'M'` / `'d'` commands for page 2 only. Airbear proxies all page bytes verbatim — no reinterpretation — so both variants are handled correctly by the same Airbear firmware without changes.
+
+### Phase 11 Test Baseline Target ✅ **UNCHANGED** (no new simulator tests — hardware-only paths)
+
+No new simulator tests were added (Serial2 init and routing are hardware-only paths). The integration test record in Slice E above is the hardware validation artifact. Baseline is unchanged:
+
+- test_decoders: 275/275
+- test_fuel: 88/88
+- test_ign: 193/193
+- test_init: 9/9
+- test_launch: 6/6
+- test_math: 44/44
+- test_protection: 19/19
+- test_schedules: 26/26
+- test_sensors: 65/65
+- test_tables: 24/24
+- test_updates: 38/38
+
+---
 
 ## Trouble Areas
 

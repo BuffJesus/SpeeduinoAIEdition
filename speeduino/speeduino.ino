@@ -163,12 +163,17 @@ void __attribute__((always_inline)) loop(void)
       {
         serialReceive();
       }
+#if defined(CORE_TEENSY) && defined(__IMXRT1062__)
+      // Phase 11: Service Airbear ESP32-C3 coprocessor transport on Serial2 (DropBear only).
+      // No-op on non-DropBear Teensy 4.1 hardware (boardHasCapability gate inside).
+      serviceBoardSerial();
+#endif
 #if defined(DIAG_RETURN_AFTER_SERIAL_STAGE)
       delay(1);
       return;
 #endif
-      
-      //Check for any CAN comms requiring action 
+
+      //Check for any CAN comms requiring action
       #if defined(secondarySerial_AVAILABLE)
         //if can or secondary serial interface is enabled then check for requests.
         if (configPage9.enable_secondarySerial == 1)  //secondary serial interface enabled

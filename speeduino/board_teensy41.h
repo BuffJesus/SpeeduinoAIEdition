@@ -14,6 +14,7 @@ static constexpr uint8_t BOARD_TEENSY41_DROPBEAR_PIN_MAPPING = 55U;
 */
   void initBoard();
   void beginBoardSerial();
+  void serviceBoardSerial();
   void finaliseBoardTriggerSetup();
   bool applyBoardPinMapping(byte boardID);
   uint16_t freeRam();

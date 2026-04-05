@@ -5,6 +5,8 @@
 #include "idle.h"
 #include "scheduler.h"
 #include "timers.h"
+#include "comms.h"          // Phase 11: pPrimarySerial, serialReceive()
+#include "comms_legacy.h"   // Phase 11: serialStatusFlag, SERIAL_INACTIVE
 #include "comms_secondary.h"
 #include "acc_mc33810.h"
 #include "adc_teensy41.h"  // Phase 4: ADC initialization
@@ -303,6 +305,56 @@ void beginBoardSerial()
     uint32_t elapsed = systick_millis_count - millis_begin;
     if (elapsed > 250) { break; }
     yield();
+  }
+
+  // Phase 11: Open Serial2 (pins 7/8) for Airbear ESP32-C3 coprocessor transport.
+  // The schematic connects Teensy 4.1 Serial2 TX/RX (pins 7/8) to the Airbear ESP32-C3
+  // Supermini RX/TX at 115200 baud. pSecondarySerial already points at Serial2; this call
+  // opens the physical UART so bytes can flow.
+  // Slice C note: Airbear v0.1.2 sends 'A' (legacy realtime). Both 'A' and 'r' return the
+  // same 148-byte payload; no firmware change needed, but Airbear should migrate to 'r' to
+  // stay aligned with the ochGetCommand = "r..." INI contract.
+  // Slice D note: BLOCKING_FACTOR = 512 / TABLE_BLOCKING_FACTOR = 512 are reported verbatim
+  // via the 'f' command. The Airbear TCP proxy must relay the 'f' response without capping
+  // these values, or the Python tuner will use the wrong chunk size for page writes.
+  Serial2.begin(115200);
+}
+
+// Phase 11: Service the Airbear ESP32-C3 coprocessor transport on Serial2 (DropBear only).
+//
+// Design: pPrimarySerial is temporarily diverted to &Serial2 while a command arrives from the
+// Airbear TCP bridge. All comms helpers (serialReceive, serialTransmit, sendValues, …) use
+// primarySerial = *pPrimarySerial, so diverting the pointer is enough to route a full
+// request/response cycle through Serial2 without duplicating protocol logic.
+//
+// Lifecycle:
+//   1. serviceBoardSerial() detects Serial2 data while idle → diverts pPrimarySerial, calls
+//      serialReceive() to start the receive.
+//   2. Subsequent main-loop iterations: the primary serialTransmit / serialReceive checks
+//      continue servicing the in-progress session through the diverted pointer.
+//   3. serviceBoardSerial() detects the session became INACTIVE → resets pPrimarySerial to
+//      &Serial (USB CDC) so the primary channel is available again.
+//
+// The USB CDC session and the Serial2 session share serialStatusFlag, so they cannot overlap.
+// If USB CDC data arrives during a Serial2 session it waits in the hardware buffer and is
+// processed after the Serial2 session completes (and vice versa).
+void serviceBoardSerial()
+{
+  if (!boardHasCapability(BOARD_CAP_WIFI_TRANSPORT)) { return; }
+
+  // If a Serial2-routed session completed while being serviced by the primary loop, reset routing.
+  if (pPrimarySerial == (Stream*)&Serial2 && serialStatusFlag == SERIAL_INACTIVE)
+  {
+    pPrimarySerial = &Serial;
+    return;
+  }
+
+  // Start routing if idle and Serial2 has new data.
+  if (serialStatusFlag == SERIAL_INACTIVE && Serial2.available() > 0)
+  {
+    pPrimarySerial = &Serial2;
+    serialReceive();
+    if (serialStatusFlag == SERIAL_INACTIVE) { pPrimarySerial = &Serial; }
   }
 }
 
