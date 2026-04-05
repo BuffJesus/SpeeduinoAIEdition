@@ -164,4 +164,48 @@
   #endif
 #endif
 
+/**
+ * @defgroup och_offsets FW-006: Named OCH byte offsets for machine-discoverable special channels
+ *
+ * These constants expose the byte positions of optional/board-specific channels
+ * in the live-data packet so that external tools do not need to parse the INI file
+ * to locate them.  The FW-003 capability response's @c feature_flags byte signals
+ * which of these channels are valid for the connected board.
+ *
+ * Any change to these offsets requires updating logger.cpp (getTSLogEntry),
+ * the live_data_map.h table above, speeduino.ini, and bumping LOG_ENTRY_SIZE.
+ * @{
+ */
+
+/** Byte offset of board capability flags in the OCH packet.
+ *  Value: getBoardCapabilityFlags().  Also returned in the FW-003 capability
+ *  response at byte [2], so tools can obtain it without polling live data.
+ */
+static constexpr uint16_t OCH_OFFSET_BOARD_CAPABILITY_FLAGS = 130U;
+
+/** Byte offset of SPI flash health status in the OCH packet (Teensy 4.1 only).
+ *  Value: 1 = healthy, 0 = absent/unhealthy.  Present when the FW-003 capability
+ *  response feature_flags bit @c CAP_FEATURE_FLASH_HEALTH is set.
+ */
+static constexpr uint16_t OCH_OFFSET_FLASH_HEALTH_STATUS    = 131U;
+
+/** Byte offset of runtimeStatusA in the OCH packet.
+ *  Value: packed bit field — see live_data_map.h byte table for bit assignments.
+ *  Present when the FW-003 capability response feature_flags bit
+ *  @c CAP_FEATURE_RUNTIME_STATUS_A is set.
+ */
+static constexpr uint16_t OCH_OFFSET_RUNTIME_STATUS_A       = 147U;
+
+/** @} */
+
+/* Compile-time bounds guard: all special offsets must lie within the packet. */
+#if !defined(UNIT_TEST)
+  static_assert(OCH_OFFSET_BOARD_CAPABILITY_FLAGS < LIVE_DATA_MAP_SIZE,
+                "OCH_OFFSET_BOARD_CAPABILITY_FLAGS is out of range");
+  static_assert(OCH_OFFSET_FLASH_HEALTH_STATUS    < LIVE_DATA_MAP_SIZE,
+                "OCH_OFFSET_FLASH_HEALTH_STATUS is out of range");
+  static_assert(OCH_OFFSET_RUNTIME_STATUS_A       < LIVE_DATA_MAP_SIZE,
+                "OCH_OFFSET_RUNTIME_STATUS_A is out of range");
+#endif
+
 #endif /* LIVE_DATA_MAP_H */

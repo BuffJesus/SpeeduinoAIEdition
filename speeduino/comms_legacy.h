@@ -215,15 +215,16 @@ void sendCompositeLog_legacy(byte startOffset);
 static constexpr size_t  CAPABILITY_RESPONSE_SIZE     = 39U;  ///< Total bytes in the capability response packet
 static constexpr uint8_t CAPABILITY_SCHEMA_VERSION    = 1U;   ///< Packet schema version (bump when layout changes)
 static constexpr size_t  CAPABILITY_SIGNATURE_BYTES   = 32U;  ///< Bytes reserved for the null-padded firmware signature
-static constexpr uint8_t CAP_FEATURE_U16P2            = (1U << 0); ///< Bit: experimental native-U16 page-2 is active
-static constexpr uint8_t CAP_FEATURE_RUNTIME_STATUS_A = (1U << 1); ///< Bit: runtimeStatusA field present at output-channel byte 147
+static constexpr uint8_t CAP_FEATURE_U16P2            = (1U << 0); ///< Bit: experimental native-U16 page-2 is active (FW-007)
+static constexpr uint8_t CAP_FEATURE_RUNTIME_STATUS_A = (1U << 1); ///< Bit: runtimeStatusA present at OCH_OFFSET_RUNTIME_STATUS_A (FW-006)
+static constexpr uint8_t CAP_FEATURE_FLASH_HEALTH     = (1U << 2); ///< Bit: SPI flash present and healthy; health byte at OCH_OFFSET_FLASH_HEALTH_STATUS (FW-006)
 
 /**
  * @brief Build the 39-byte FW-003 capability response packet into @p buffer.
  *
  * Layout:
  *   [0]   schema_version       = CAPABILITY_SCHEMA_VERSION (1)
- *   [1]   board_id             = configPage2.pinMapping
+ *   [1]   board_id             = getStableBoardId(configPage2.pinMapping) — see BoardId enum
  *   [2]   board_capability_flags = getBoardCapabilityFlags(pinMapping)
  *   [3]   feature_flags        = CAP_FEATURE_U16P2 | CAP_FEATURE_RUNTIME_STATUS_A
  *   [4-5] output_channel_size  = LOG_ENTRY_SIZE, little-endian

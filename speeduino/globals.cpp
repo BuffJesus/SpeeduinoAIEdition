@@ -12,6 +12,16 @@ uint16_t inj_opentime_uS = 0;
 uint16_t staged_req_fuel_mult_pri = 0;
 uint16_t staged_req_fuel_mult_sec = 0;
 
+BoardId getStableBoardId(uint8_t pinMapping)
+{
+  switch (pinMapping)
+  {
+    case static_cast<uint8_t>(BOARD_ID_DROPBEAR_T41): return BOARD_ID_DROPBEAR_T41;
+    case static_cast<uint8_t>(BOARD_ID_BEAR_CUB):     return BOARD_ID_BEAR_CUB;
+    default:                                           return BOARD_ID_UNKNOWN;
+  }
+}
+
 uint8_t getBoardCapabilityFlags(uint8_t pinMapping)
 {
   uint8_t flags = BOARD_CAP_NONE;

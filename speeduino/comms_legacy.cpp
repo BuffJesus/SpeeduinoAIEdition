@@ -10,6 +10,9 @@ A full copy of the license may be found in the projects root directory
 #include "globals.h"
 #include "comms.h"
 #include "comms_legacy.h"
+#if defined(CORE_TEENSY41)
+  #include "storage_spi.h"
+#endif
 #include "comms_secondary.h"
 #include "storage.h"
 #include "maths.h"
@@ -421,9 +424,12 @@ size_t buildCapabilityResponse(uint8_t *buffer, size_t bufferSize)
 #if (LOG_ENTRY_SIZE) >= 148
   feature_flags |= CAP_FEATURE_RUNTIME_STATUS_A;
 #endif
+#if defined(CORE_TEENSY41)
+  if (isSPIFlashHealthy()) { feature_flags |= CAP_FEATURE_FLASH_HEALTH; }
+#endif
 
   buffer[0] = CAPABILITY_SCHEMA_VERSION;
-  buffer[1] = static_cast<uint8_t>(configPage2.pinMapping);
+  buffer[1] = static_cast<uint8_t>(getStableBoardId(configPage2.pinMapping));
   buffer[2] = getBoardCapabilityFlags(configPage2.pinMapping);
   buffer[3] = feature_flags;
   buffer[4] = lowByte(static_cast<uint16_t>(LOG_ENTRY_SIZE));

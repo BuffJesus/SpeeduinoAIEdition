@@ -124,8 +124,28 @@
 #define SERIAL_PORT_PRIMARY   0
 #define SERIAL_PORT_SECONDARY 3
 
-constexpr uint8_t PIN_LAYOUT_DROPBEAR = 55U;
-constexpr uint8_t PIN_LAYOUT_BEAR_CUB = 56U;
+/** @brief Stable board identifier exposed through the FW-003 capability query (byte 1).
+ *
+ *  Values are **permanent** — do not renumber existing entries.  Add new boards
+ *  at the end.  The numeric value equals the matching configPage2.pinMapping so
+ *  that getStableBoardId() is a simple lookup and existing pin-mapping comparisons
+ *  remain valid.
+ */
+enum BoardId : uint8_t {
+  BOARD_ID_UNKNOWN         = 0U,   ///< Unrecognised or unconfigured pin mapping
+  BOARD_ID_DROPBEAR_T41    = 55U,  ///< DropBear / Teensy 4.1 (Wi-Fi transport, SPI flash, 12-bit ADC, high-res tables)
+  BOARD_ID_BEAR_CUB        = 56U,  ///< Bear Cub (planned; reserved — do not use yet)
+};
+
+/** @brief Map a raw pinMapping byte to the stable @ref BoardId enum value.
+ *  @return The matching BoardId, or BOARD_ID_UNKNOWN for unrecognised values.
+ */
+BoardId getStableBoardId(uint8_t pinMapping);
+
+// Backward-compatible aliases — existing code that compares against these
+// constexpr values continues to compile unchanged.
+constexpr uint8_t PIN_LAYOUT_DROPBEAR = static_cast<uint8_t>(BOARD_ID_DROPBEAR_T41);
+constexpr uint8_t PIN_LAYOUT_BEAR_CUB = static_cast<uint8_t>(BOARD_ID_BEAR_CUB);
 
 enum board_capability : uint8_t {
   BOARD_CAP_NONE          = 0U,

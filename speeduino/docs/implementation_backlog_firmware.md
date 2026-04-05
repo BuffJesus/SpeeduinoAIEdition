@@ -60,7 +60,7 @@
   Dependencies:
   - none
 
-- [ ] FW-004 Stable board identifier
+- [x] FW-004 Stable board identifier
   Summary: Expose a board id enum instead of relying on string parsing.
   Deliverables:
   - board id constants
@@ -93,7 +93,7 @@
   Dependencies:
   - `FW-003`
 
-- [ ] FW-006 Live-data contract metadata
+- [x] FW-006 Live-data contract metadata
   Summary: Make output-channel contract machine-readable.
   Deliverables:
   - packet size/version metadata
@@ -108,7 +108,7 @@
   Dependencies:
   - `FW-003`
 
-- [ ] FW-007 Experimental mode metadata
+- [x] FW-007 Experimental mode metadata
   Summary: Expose `U16P2` experimental mode as a feature flag.
   Deliverables:
   - feature flag in capability response and/or manifest

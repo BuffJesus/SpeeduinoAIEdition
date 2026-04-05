@@ -6,6 +6,8 @@
 #include "adc_teensy41.h" // 12-bit ADC backend with analogRead10bit() for sensor normalization
 
 // Keep board capability helpers independent of globals.h declaration order.
+// Canonical name is BoardId::BOARD_ID_DROPBEAR_T41 (globals.h), but that header
+// cannot be included here without a circular dependency, so the value is repeated.
 static constexpr uint8_t BOARD_TEENSY41_DROPBEAR_PIN_MAPPING = 55U;
 
 /*
