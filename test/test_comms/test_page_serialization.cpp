@@ -455,8 +455,12 @@ void test_experimental_native_u16_page2_preserves_existing_high_resolution_value
 #endif
 }
 
+extern void test_capability_response_setup(void);
+
 void test_setup(void)
 {
+  test_capability_response_setup();
+
   SET_UNITY_FILENAME() {
     RUN_TEST_P(test_table_value_byte_size_matches_platform);
     RUN_TEST_P(test_virtual_page_sizes_remain_byte_serialized);

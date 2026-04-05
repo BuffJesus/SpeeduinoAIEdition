@@ -36,7 +36,7 @@
   Dependencies:
   - `FW-001`
 
-- [ ] FW-003 Capability query protocol
+- [x] FW-003 Capability query protocol
   Summary: Add a compact serial capability response for external tools.
   Deliverables:
   - wire format

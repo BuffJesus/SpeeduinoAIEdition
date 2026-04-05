@@ -211,4 +211,27 @@ void testComm(void);
 void sendToothLog_legacy(byte startOffset);
 void sendCompositeLog_legacy(byte startOffset);
 
+/** FW-003: Capability query protocol ('K' command) constants and builder. */
+static constexpr size_t  CAPABILITY_RESPONSE_SIZE     = 39U;  ///< Total bytes in the capability response packet
+static constexpr uint8_t CAPABILITY_SCHEMA_VERSION    = 1U;   ///< Packet schema version (bump when layout changes)
+static constexpr size_t  CAPABILITY_SIGNATURE_BYTES   = 32U;  ///< Bytes reserved for the null-padded firmware signature
+static constexpr uint8_t CAP_FEATURE_U16P2            = (1U << 0); ///< Bit: experimental native-U16 page-2 is active
+static constexpr uint8_t CAP_FEATURE_RUNTIME_STATUS_A = (1U << 1); ///< Bit: runtimeStatusA field present at output-channel byte 147
+
+/**
+ * @brief Build the 39-byte FW-003 capability response packet into @p buffer.
+ *
+ * Layout:
+ *   [0]   schema_version       = CAPABILITY_SCHEMA_VERSION (1)
+ *   [1]   board_id             = configPage2.pinMapping
+ *   [2]   board_capability_flags = getBoardCapabilityFlags(pinMapping)
+ *   [3]   feature_flags        = CAP_FEATURE_U16P2 | CAP_FEATURE_RUNTIME_STATUS_A
+ *   [4-5] output_channel_size  = LOG_ENTRY_SIZE, little-endian
+ *   [6]   output_channel_version = 1
+ *   [7-38] firmware_signature  = Q-command string, null-padded to 32 bytes
+ *
+ * @return CAPABILITY_RESPONSE_SIZE on success, 0 if @p bufferSize is too small.
+ */
+size_t buildCapabilityResponse(uint8_t *buffer, size_t bufferSize);
+
 #endif // COMMS_LEGACY_H

@@ -6,6 +6,7 @@ A full copy of the license may be found in the projects root directory
 /** @file
  * Process Incoming and outgoing serial communications.
  */
+#include <string.h>
 #include "globals.h"
 #include "comms.h"
 #include "comms_legacy.h"
@@ -409,6 +410,36 @@ const char *getLegacyVersionResponse(byte cmd)
     default:
       return nullptr;
   }
+}
+
+size_t buildCapabilityResponse(uint8_t *buffer, size_t bufferSize)
+{
+  if (bufferSize < CAPABILITY_RESPONSE_SIZE) { return 0U; }
+
+  uint8_t feature_flags = 0U;
+  if (isExperimentalNativeU16Page2Enabled()) { feature_flags |= CAP_FEATURE_U16P2; }
+#if (LOG_ENTRY_SIZE) >= 148
+  feature_flags |= CAP_FEATURE_RUNTIME_STATUS_A;
+#endif
+
+  buffer[0] = CAPABILITY_SCHEMA_VERSION;
+  buffer[1] = static_cast<uint8_t>(configPage2.pinMapping);
+  buffer[2] = getBoardCapabilityFlags(configPage2.pinMapping);
+  buffer[3] = feature_flags;
+  buffer[4] = lowByte(static_cast<uint16_t>(LOG_ENTRY_SIZE));
+  buffer[5] = highByte(static_cast<uint16_t>(LOG_ENTRY_SIZE));
+  buffer[6] = 1U; // output_channel_version
+
+  const char *sig = getLegacyVersionResponse('Q');
+  memset(buffer + 7U, 0, CAPABILITY_SIGNATURE_BYTES);
+  if (sig != nullptr)
+  {
+    size_t sigLen = strlen(sig);
+    if (sigLen >= CAPABILITY_SIGNATURE_BYTES) { sigLen = CAPABILITY_SIGNATURE_BYTES - 1U; }
+    memcpy(buffer + 7U, sig, sigLen);
+  }
+
+  return CAPABILITY_RESPONSE_SIZE;
 }
 
 #if defined(CORE_AVR)
@@ -992,6 +1023,21 @@ void legacySerialHandler(byte cmd, Stream &targetPort, SerialStatus &targetStatu
         targetStatusFlag = SERIAL_INACTIVE;
       }
       break;
+
+    case 'K': // FW-003: capability query — fixed 39-byte binary response
+    {
+      uint8_t capBuf[CAPABILITY_RESPONSE_SIZE];
+      const size_t capLen = buildCapabilityResponse(capBuf, sizeof(capBuf));
+      if (capLen > 0U)
+      {
+        targetPort.write(capBuf, capLen);
+        targetPort.flush();
+        #if defined(CORE_TEENSY)
+          if (&targetPort == &Serial) { Serial.send_now(); }
+        #endif
+      }
+      break;
+    }
 
     case 'Q': // send code version
     case 'S': // send code version
