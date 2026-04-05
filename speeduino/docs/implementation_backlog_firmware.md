@@ -1,6 +1,6 @@
 # Firmware Backlog
 
-- [ ] FW-001 Release manifest generator
+- [x] FW-001 Release manifest generator
   Summary: Generate `release/release_manifest.json` from the `release` folder.
   Deliverables:
   - manifest schema
@@ -18,7 +18,7 @@
   Dependencies:
   - none
 
-- [ ] FW-002 Release artifact classification cleanup
+- [x] FW-002 Release artifact classification cleanup
   Summary: Explicitly mark production, experimental, and diagnostic artifacts.
   Deliverables:
   - manifest metadata

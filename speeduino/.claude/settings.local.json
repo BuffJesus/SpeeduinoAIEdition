@@ -25,7 +25,10 @@
       "Bash(head -10 grep -n \"define MAX_RPM\\\\|MAX_RPM \" \"C:/Users/Cornelio/Desktop/speeduino-202501.6/speeduino/decoders.cpp\")",
       "Bash(python \"C:/Users/Cornelio/Desktop/speeduino-202501.6/tools/analyze_36_2_2_2_evidence.py\" --json \"C:/Users/Cornelio/Desktop/speeduino-202501.6/Resources/36_2_2_2_evidence/2023-09-04_18.08.38.csv\" \"C:/Users/Cornelio/Desktop/speeduino-202501.6/Resources/36_2_2_2_evidence/cranking_6880.csv\")",
       "Bash(python:*)",
-      "Bash(python3:*)"
+      "Bash(python3:*)",
+      "Bash(git -C \"C:/Users/Cornelio/Desktop/speeduino-202501.6/speeduino\" status --short)",
+      "Bash(git -C \"C:/Users/Cornelio/Desktop/speeduino-202501.6/speeduino\" diff HEAD --name-only git -C \"C:/Users/Cornelio/Desktop/speeduino-202501.6/speeduino\" ls-files --others --exclude-standard)",
+      "Bash(git:*)"
     ]
   }
 }

@@ -1,0 +1,79 @@
+{
+  "schema_version": "1.0",
+  "generated_at": "2026-04-05T00:28:50Z",
+  "release_dir": "release",
+  "artifacts": [
+    {
+      "hex": "speeduino-dropbear-v2.0.1-teensy41.hex",
+      "board_family": "teensy41-dropbear",
+      "firmware_signature": "speeduino 202501-T41",
+      "artifact_kind": "production",
+      "paired_ini": "speeduino-dropbear-v2.0.1.ini",
+      "paired_msq": "speeduino-dropbear-v2.0.1-base-tune.msq",
+      "preferred": true
+    },
+    {
+      "hex": "speeduino-dropbear-v2.0.1-teensy41-u16p2-experimental.hex",
+      "board_family": "teensy41-dropbear",
+      "firmware_signature": "speeduino 202501-T41-U16P2",
+      "artifact_kind": "experimental",
+      "paired_ini": "speeduino-dropbear-v2.0.1-u16p2-experimental.ini",
+      "paired_msq": "speeduino-dropbear-v2.0.1-u16p2-experimental-base-tune.msq",
+      "preferred": true
+    },
+    {
+      "hex": "speeduino-dropbear-v2.0.1-teensy41-u16p2-experimental-diagnostic-posttriggerattach.hex",
+      "board_family": "teensy41-dropbear",
+      "firmware_signature": null,
+      "artifact_kind": "diagnostic",
+      "paired_ini": null,
+      "paired_msq": null,
+      "preferred": false
+    },
+    {
+      "hex": "speeduino-dropbear-v2.0.1-teensy41-u16p2-experimental-diagnostic-posttriggers.hex",
+      "board_family": "teensy41-dropbear",
+      "firmware_signature": null,
+      "artifact_kind": "diagnostic",
+      "paired_ini": null,
+      "paired_msq": null,
+      "preferred": false
+    },
+    {
+      "hex": "speeduino-dropbear-v2.0.1-teensy41-u16p2-experimental-diagnostic-serialtrace.hex",
+      "board_family": "teensy41-dropbear",
+      "firmware_signature": null,
+      "artifact_kind": "diagnostic",
+      "paired_ini": null,
+      "paired_msq": null,
+      "preferred": false
+    },
+    {
+      "hex": "speeduino-dropbear-v2.0.1-teensy41-u16p2-experimental-diagnostic-trace.hex",
+      "board_family": "teensy41-dropbear",
+      "firmware_signature": null,
+      "artifact_kind": "diagnostic",
+      "paired_ini": null,
+      "paired_msq": null,
+      "preferred": false
+    },
+    {
+      "hex": "speeduino-dropbear-v2.0.1-teensy41-u16p2-experimental-diagnostic-triggerfix.hex",
+      "board_family": "teensy41-dropbear",
+      "firmware_signature": null,
+      "artifact_kind": "diagnostic",
+      "paired_ini": null,
+      "paired_msq": null,
+      "preferred": false
+    },
+    {
+      "hex": "speeduino-dropbear-v2.0.1-teensy41-u16p2-experimental-diagnostic.hex",
+      "board_family": "teensy41-dropbear",
+      "firmware_signature": null,
+      "artifact_kind": "diagnostic",
+      "paired_ini": null,
+      "paired_msq": null,
+      "preferred": false
+    }
+  ]
+}
