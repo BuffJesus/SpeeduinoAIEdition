@@ -73,12 +73,8 @@ void initialiseCorrections(void)
   PID_output = 0L;
   PID_O2 = 0L;
   PID_AFRTarget = 0L;
-  // Toggling between modes resets the PID internal state
-  // This is required by the unit tests
-  // TODO: modify PID code to provide a method to reset it. 
-  egoPID.SetMode(AUTOMATIC);
-  egoPID.SetMode(MANUAL);
-  egoPID.SetMode(AUTOMATIC);
+  egoPID.Initialize();     // Reset PID internal state (ITerm, lastInput) to current zeroed output/input values
+  egoPID.SetMode(AUTOMATIC); // Ensure PID runs in automatic mode
 
   currentStatus.flexIgnCorrection = 0;
   currentStatus.egoCorrection = 100; //Default value of no adjustment must be set to avoid randomness on first correction cycle after startup

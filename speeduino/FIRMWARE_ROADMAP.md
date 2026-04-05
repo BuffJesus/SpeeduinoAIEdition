@@ -102,6 +102,7 @@ After the firmware capability API sprint, the remaining roadmap surface is inten
 - hardware/bench validation for the experimental Teensy/DropBear native-`U16` page-2 path, not more transport debugging
 - hardware/bench validation for the `runtimeStatusA` tune-learning validity bits and TunerStudio indicator behavior
 - **ESP32-C3 Serial2 coprocessor transport** ✅ software complete (Phase 11): `Serial2.begin(115200)` in `beginBoardSerial()`, `serviceBoardSerial()` board hook wired into main loop; remaining work is hardware bench validation per Phase 11 Slice E
+- **PID reset cleanup** ✅: `PID::Initialize()` promoted from private to public in `PID_v1.h`; `initialiseCorrections()` now calls `egoPID.Initialize()` + `egoPID.SetMode(AUTOMATIC)` directly instead of the triple mode-toggle workaround — same state reset, no behavior change, TODO removed; 193/193 test_ign PASSED
 - evidence conversion for Rover MEMS `Crank Speed + 5-3-2 cam` full replay
 - harness isolation work only if someone wants to re-attempt direct AVR state coverage for `4G63`
 - optional future design work for high-resolution VE telemetry, if a real logging workflow proves it is worth a separate alternate-signature path

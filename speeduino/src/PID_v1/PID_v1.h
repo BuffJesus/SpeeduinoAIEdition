@@ -51,8 +51,9 @@ class PID
 	int GetMode();						  //  inside the PID.
 	int GetDirection();					  //
 
+  void Initialize();           // * resets PID internal state (ITerm, lastInput) using current output/input values
+
   private:
-	void Initialize();
 
 	long dispKp;				// * we'll hold on to the tuning parameters in user-entered
 	long dispKi;				//   format for display purposes
