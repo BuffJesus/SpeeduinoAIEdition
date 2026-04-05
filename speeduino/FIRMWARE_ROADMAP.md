@@ -71,14 +71,33 @@ Most of the phase snapshots below are historical closing baselines. The current 
 - test_sensors: 65/65 PASSED
 - test_tables: 24/24 PASSED
 - test_updates: 38/38 PASSED
+- test_comms: 46/46 PASSED (10 skipped — Teensy41/U16P2 guards correct on AVR harness)
 
 `test_updates` and `test_ign` did briefly hit AVR LTO/internal build-cache failures during incremental rebuilds, and a broader sweep also hit transient missing-object / file-lock failures when multiple PlatformIO test jobs targeted the same environment concurrently. The same suites passed cleanly on rerun after a rebuild/clean, so treat those as toolchain/build-cache instability notes, not as active source-level regressions.
 
 Separately, the GitHub Actions `Calculate memory deltas` Arduino Teensy 4.1 compile path is back to passing after removing a `globals.h` declaration-order dependency from [board_teensy41.h](C:/Users/Cornelio/Desktop/speeduino-202501.6/speeduino/board_teensy41.h). The current local Arduino Teensy 4.1 repro only emits the external `SdFat.h` FS-detection `#warning`; there are no active `updates.cpp` warning annotations reproducing in this workspace, and there is no compile blocker.
 
+### Firmware Capability API Sprint — Complete ✅
+
+All seven items from [docs/implementation_backlog_firmware.md](C:/Users/Cornelio/Desktop/speeduino-202501.6/speeduino/docs/implementation_backlog_firmware.md) are done:
+
+| Item | Summary | Files |
+|------|---------|-------|
+| FW-001 ✅ | Release manifest generator | `tools/generate_release_manifest.py`, `release/release_manifest.json` |
+| FW-002 ✅ | Release artifact classification | `release/README.md`, manifest |
+| FW-003 ✅ | Capability query `'K'` command | `comms_legacy.cpp/.h` — 39-byte binary response |
+| FW-004 ✅ | Stable `BoardId` enum | `globals.h/.cpp` — `getStableBoardId()`, `BOARD_ID_DROPBEAR_T41=55` |
+| FW-005 ✅ | External page verification | `page_crc.cpp`, protocol docs in `docs/page_verification_protocol.md` |
+| FW-006 ✅ | Live-data contract metadata | `live_data_map.h` `OCH_OFFSET_*` constants, `CAP_FEATURE_FLASH_HEALTH` |
+| FW-007 ✅ | Experimental U16P2 feature flag | `CAP_FEATURE_U16P2` in capability response feature_flags byte |
+
+The `test_comms` suite now covers all five new protocol items:
+- `test_comms/test_capability_response.cpp` — FW-003/FW-004/FW-006/FW-007 (packet layout, BoardId mapping, OCH offsets, feature flags)
+- `test_comms/test_page_verification.cpp` — FW-005 (parseLegacyCrcRequest, encodeLegacyCrc32Response, production and U16P2 CRC mode-awareness)
+
 ### Current Active Remaining Work
 
-After the documentation cleanup pass, the remaining roadmap surface is intentionally narrow:
+After the firmware capability API sprint, the remaining roadmap surface is intentionally narrow:
 
 - hardware/bench validation for the experimental Teensy/DropBear native-`U16` page-2 path, not more transport debugging
 - hardware/bench validation for the `runtimeStatusA` tune-learning validity bits and TunerStudio indicator behavior
