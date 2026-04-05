@@ -589,7 +589,7 @@
         <ns0:constant name="CTPSPin">Board Default</ns0:constant>
         <ns0:constant name="CTPSPolarity">Inverted</ns0:constant>
         <ns0:constant name="CTPSEnabled">On</ns0:constant>
-        <ns0:constant name="idleAdvEnabled">Off</ns0:constant>
+        <ns0:constant name="idleAdvEnabled">1</ns0:constant>
         <ns0:constant name="idleAdvAlgorithm">TPS</ns0:constant>
         <ns0:constant name="idleAdvDelay">2</ns0:constant>
         <ns0:constant digits="0" name="idleAdvRPM" units="rpm">2000</ns0:constant>
@@ -759,7 +759,7 @@
         <ns0:constant name="resetControl">Serial Command</ns0:constant>
         <ns0:constant name="resetControlPin">Board Default</ns0:constant>
         <ns0:constant digits="0" name="SkipCycles" units="cycles">4</ns0:constant>
-        <ns0:constant name="boostType">Open Loop</ns0:constant>
+        <ns0:constant name="boostType">0</ns0:constant>
         <ns0:constant name="useDwellLim">On</ns0:constant>
         <ns0:constant name="sparkMode">3</ns0:constant>
         <ns0:constant name="TrigFilter">Weak</ns0:constant>
@@ -1147,7 +1147,7 @@
          37 
          79 
       </ns0:constant>
-        <ns0:constant name="iacAlgorithm">None</ns0:constant>
+        <ns0:constant name="iacAlgorithm">7</ns0:constant>
         <ns0:constant name="iacStepTime">3</ns0:constant>
         <ns0:constant name="iacChannels">1</ns0:constant>
         <ns0:constant name="iacPWMdir">Normal</ns0:constant>
@@ -1884,7 +1884,7 @@
         <ns0:constant digits="0" name="vvtCLMinAng" units="deg">112</ns0:constant>
         <ns0:constant digits="0" name="vvtCLMaxAng" units="deg">49</ns0:constant>
         <ns0:constant digits="1" name="crankingEnrichTaper" units="s">1</ns0:constant>
-        <ns0:constant name="fuelPressureEnable">Off</ns0:constant>
+        <ns0:constant name="fuelPressureEnable">1</ns0:constant>
         <ns0:constant name="oilPressureEnable">1</ns0:constant>
         <ns0:constant name="oilPressureProtEnbl">Off</ns0:constant>
         <ns0:constant name="oilPressurePin">A15</ns0:constant>
