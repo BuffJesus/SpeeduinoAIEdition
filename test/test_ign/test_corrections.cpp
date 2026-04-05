@@ -1,6 +1,7 @@
 #include <unity.h>
 #include "globals.h"
 #include "corrections.h"
+#include "knock.h"
 // #include "init.h"
 #include "engineProtection.h"
 #include "idle.h"
@@ -800,8 +801,6 @@ static void test_checkLaunchAndFlatShift(void) {
 }
 
 extern int8_t correctionKnockTiming(int8_t advance);
-extern unsigned long knockStartTime;
-extern uint8_t knockLastRecoveryStep;
 
 static void setup_correctionKnock(void) {
     construct2dTables();
@@ -851,7 +850,7 @@ static void test_correctionKnock_additionalStepAfterDelay(void) {
     BIT_SET(currentStatus.status5, BIT_STATUS5_KNOCK_ACTIVE);
     currentStatus.knockRetard = configPage10.knock_firstStep;
     BIT_SET(currentStatus.status5, BIT_STATUS5_KNOCK_PULSE);
-    knockStartTime = micros() - ((configPage10.knock_stepTime * 1000UL) + 100UL);
+    knockState.startTime = micros() - ((configPage10.knock_stepTime * 1000UL) + 100UL);
 
     TEST_ASSERT_EQUAL(10 - 5, correctionKnockTiming(10));
     TEST_ASSERT_EQUAL_UINT8(configPage10.knock_count + 1U, currentStatus.knockCount);
@@ -865,7 +864,7 @@ static void test_correctionKnock_noAdditionalStepBeforeDelay(void) {
     BIT_SET(currentStatus.status5, BIT_STATUS5_KNOCK_ACTIVE);
     currentStatus.knockRetard = configPage10.knock_firstStep;
     BIT_SET(currentStatus.status5, BIT_STATUS5_KNOCK_PULSE);
-    knockStartTime = micros();
+    knockState.startTime = micros();
 
     TEST_ASSERT_EQUAL(10 - configPage10.knock_firstStep, correctionKnockTiming(10));
     TEST_ASSERT_EQUAL_UINT8(configPage10.knock_count, currentStatus.knockCount);
@@ -877,8 +876,8 @@ static void test_correctionKnock_recoveryStep(void) {
     BIT_SET(currentStatus.status5, BIT_STATUS5_KNOCK_ACTIVE);
     currentStatus.knockCount = configPage10.knock_count + 1U;
     currentStatus.knockRetard = 5U;
-    knockLastRecoveryStep = 0U;
-    knockStartTime = micros() - ((configPage10.knock_duration * 100000UL) + (configPage10.knock_recoveryStepTime * 100000UL) + 100UL);
+    knockState.lastRecoveryStep = 0U;
+    knockState.startTime = micros() - ((configPage10.knock_duration * 100000UL) + (configPage10.knock_recoveryStepTime * 100000UL) + 100UL);
 
     TEST_ASSERT_EQUAL(10 - 4, correctionKnockTiming(10));
     TEST_ASSERT_EQUAL_UINT8(4U, currentStatus.knockRetard);
@@ -890,8 +889,8 @@ static void test_correctionKnock_recoveryCompletes(void) {
     BIT_SET(currentStatus.status5, BIT_STATUS5_KNOCK_ACTIVE);
     currentStatus.knockCount = configPage10.knock_count + 1U;
     currentStatus.knockRetard = 2U;
-    knockLastRecoveryStep = 0U;
-    knockStartTime = micros() - ((configPage10.knock_duration * 100000UL) + (3UL * configPage10.knock_recoveryStepTime * 100000UL) + 100UL);
+    knockState.lastRecoveryStep = 0U;
+    knockState.startTime = micros() - ((configPage10.knock_duration * 100000UL) + (3UL * configPage10.knock_recoveryStepTime * 100000UL) + 100UL);
 
     TEST_ASSERT_EQUAL(10, correctionKnockTiming(10));
     TEST_ASSERT_EQUAL_UINT8(0U, currentStatus.knockRetard);

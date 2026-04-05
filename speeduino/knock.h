@@ -41,11 +41,6 @@ struct KnockState
 // Global knock state instance (defined in knock.cpp)
 extern KnockState knockState;
 
-// Legacy global variables for backward compatibility during migration
-// TODO Phase 3: Remove these after full migration to knockState
-extern unsigned long knockStartTime;
-extern uint8_t knockLastRecoveryStep;
-
 // Knock subsystem status flags for runtime observability
 // Returned by knockGetStatusFlags() as a bitmask
 #define KNOCK_STATUS_MODE_ENABLED        0x01U  ///< Knock mode is not KNOCK_MODE_OFF
@@ -106,10 +101,10 @@ uint8_t knockCalculateRetard(uint8_t knockCount, const config10 &page10);
  * defined by knock_recoveryStep and knock_recoveryStepTime.
  *
  * Updates global state:
- * - knockLastRecoveryStep: Tracks recovery progress
+ * - knockState.lastRecoveryStep: Tracks recovery progress
  * - currentStatus.status5: Clears KNOCK_ACTIVE when recovery completes
- * - knockStartTime: Reset to 0 when recovery completes
- * - currentStatus.knockCount: Reset to 0 when recovery completes
+ * - knockState.startTime: Reset to 0 when recovery completes
+ * - knockState.count: Reset to 0 when recovery completes
  *
  * @param curKnockRetard Current knock retard value
  * @return uint8_t Updated knock retard after recovery adjustment
@@ -137,11 +132,11 @@ uint8_t knockCalculateRecovery(uint8_t curKnockRetard);
  * - Same activation/stepping/recovery logic as digital mode
  *
  * Updates global state:
- * - currentStatus.knockRetard: Final retard amount applied
- * - currentStatus.knockCount: Knock event counter
+ * - currentStatus.knockRetard: Final retard amount applied (synced from knockState.retard)
+ * - currentStatus.knockCount: Knock event counter (synced from knockState.count)
  * - currentStatus.status5: KNOCK_ACTIVE and KNOCK_PULSE flags
- * - knockStartTime: Timestamp of last knock event
- * - knockLastRecoveryStep: Recovery progress tracker
+ * - knockState.startTime: Timestamp of last knock event (persists in KnockState)
+ * - knockState.lastRecoveryStep: Recovery progress tracker (persists in KnockState)
  *
  * @param advance Current ignition advance in degrees
  * @return int8_t Corrected ignition advance (advance - knockRetard)

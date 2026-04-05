@@ -13,11 +13,6 @@
 // Global knock state instance
 KnockState knockState;
 
-// Legacy global variables for backward compatibility during migration
-// TODO Phase 3: Remove these after full migration to knockState
-unsigned long knockStartTime = 0;
-uint8_t knockLastRecoveryStep = 0;
-
 uint8_t knockGetActivationCount(const config10 &page10)
 {
   return (page10.knock_count > 0U) ? page10.knock_count : 1U;
@@ -85,9 +80,9 @@ int8_t knockApplyCorrection(int8_t advance)
 {
   byte tmpKnockRetard = 0;
 
-  // Sync legacy globals to knockState for backward compatibility
-  knockState.startTime = knockStartTime;
-  knockState.lastRecoveryStep = knockLastRecoveryStep;
+  // Sync currentStatus fields into knockState (count may have been
+  // incremented by the knock-pulse ISR; retard may have been reset by
+  // initialiseCorrections() between calls).
   knockState.count = currentStatus.knockCount;
   knockState.retard = currentStatus.knockRetard;
 
@@ -183,9 +178,6 @@ int8_t knockApplyCorrection(int8_t advance)
   tmpKnockRetard = min(tmpKnockRetard, configPage10.knock_maxRetard); //Ensure the commanded retard is not higher than the maximum allowed.
   knockState.retard = tmpKnockRetard;
 
-  // Sync knockState back to legacy globals for backward compatibility
-  knockStartTime = knockState.startTime;
-  knockLastRecoveryStep = knockState.lastRecoveryStep;
   currentStatus.knockRetard = knockState.retard;
   currentStatus.knockCount = knockState.count;
 

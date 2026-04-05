@@ -45,7 +45,7 @@ byte activateTPSDOT; //The tpsDOT value seen when the MAE was activated.
 
 bool idleAdvActive = false;
 uint16_t AFRnextCycle;
-// Phase 3: knockStartTime and knockLastRecoveryStep moved to KnockState struct in knock.cpp
+// knockStartTime and knockLastRecoveryStep removed (Phase 3 migration complete); use knockState.startTime / knockState.lastRecoveryStep
 //int16_t knockWindowMin; //The current minimum crank angle for a knock pulse to be valid
 //int16_t knockWindowMax;//The current maximum crank angle for a knock pulse to be valid
 uint8_t aseTaper;
