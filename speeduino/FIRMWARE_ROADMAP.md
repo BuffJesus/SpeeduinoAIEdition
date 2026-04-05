@@ -68,7 +68,7 @@ Most of the phase snapshots below are historical closing baselines. The current 
 - test_math: 44/44 PASSED
 - test_protection: 19/19 PASSED
 - test_schedules: 26/26 PASSED
-- test_sensors: 65/65 PASSED
+- test_sensors: 75/75 PASSED
 - test_tables: 24/24 PASSED
 - test_updates: 38/38 PASSED
 - test_comms: 46/46 PASSED (10 skipped — Teensy41/U16P2 guards correct on AVR harness)
@@ -103,6 +103,7 @@ After the firmware capability API sprint, the remaining roadmap surface is inten
 - hardware/bench validation for the `runtimeStatusA` tune-learning validity bits and TunerStudio indicator behavior
 - **ESP32-C3 Serial2 coprocessor transport** ✅ software complete (Phase 11): `Serial2.begin(115200)` in `beginBoardSerial()`, `serviceBoardSerial()` board hook wired into main loop; remaining work is hardware bench validation per Phase 11 Slice E
 - **PID reset cleanup** ✅: `PID::Initialize()` promoted from private to public in `PID_v1.h`; `initialiseCorrections()` now calls `egoPID.Initialize()` + `egoPID.SetMode(AUTOMATIC)` directly instead of the triple mode-toggle workaround — same state reset, no behavior change, TODO removed; 193/193 test_ign PASSED
+- **VSS noise filter** ✅: `vssPulse()` ISR now rejects pulses arriving within `VSS_FILTER_MIN_GAP_US` (500µs) of the previous accepted pulse — suppresses contact-bounce and electrical noise; `vssPulseIsFiltered()` extracted as `TESTABLE_INLINE_STATIC` pure helper; 10 regression tests added in `test_sensors/test_vss_filter.cpp`; test_sensors: 65→75/75 PASSED
 - evidence conversion for Rover MEMS `Crank Speed + 5-3-2 cam` full replay
 - harness isolation work only if someone wants to re-attempt direct AVR state coverage for `4G63`
 - optional future design work for high-resolution VE telemetry, if a real logging workflow proves it is worth a separate alternate-signature path

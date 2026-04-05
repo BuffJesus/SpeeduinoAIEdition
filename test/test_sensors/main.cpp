@@ -9,6 +9,7 @@ extern void test_map_sampling(void);
 extern void test_knock_window(void);
 extern void test_filtering(void);
 extern void test_adc_normalization(void);
+extern void test_vss_filter(void);
 
 void setup()
 {
@@ -27,6 +28,7 @@ void setup()
     test_knock_window();
     test_filtering();
     test_adc_normalization();
+    test_vss_filter();
     
     UNITY_END(); // stop unit testing
 

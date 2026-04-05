@@ -17,8 +17,13 @@
 
 #define FILTER_FLEX_DEFAULT     75U
 
-#define VSS_GEAR_HYSTERESIS 10U
-#define VSS_SAMPLES         4U //Must be a power of 2 and smaller than 255
+#define VSS_GEAR_HYSTERESIS     10U
+#define VSS_SAMPLES              4U //Must be a power of 2 and smaller than 255
+/** Minimum microseconds between accepted VSS pulses.
+ *  Rejects contact-bounce and electrical noise bursts.
+ *  500µs allows up to 2000 pulses/sec, covering 8000 pulses/km at ~900 km/h.
+ */
+#define VSS_FILTER_MIN_GAP_US  500UL
 
 #define TPS_READ_FREQUENCY  30 //ONLY VALID VALUES ARE 15 or 30!!!
 

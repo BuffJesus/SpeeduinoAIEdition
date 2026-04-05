@@ -1005,16 +1005,32 @@ void knockPulse(void)
 }
 
 /**
+ * @brief Determine whether a VSS pulse should be filtered out (noise rejection)
+ *
+ * Returns true if the pulse should be rejected because it arrived too soon after
+ * the last accepted pulse. Extracted for unit-testability.
+ *
+ * @param now         Current timestamp in microseconds
+ * @param lastPulse   Timestamp of the most recently accepted VSS pulse
+ * @return bool       true = reject (noise), false = accept
+ */
+TESTABLE_INLINE_STATIC bool vssPulseIsFiltered(uint32_t now, uint32_t lastPulse)
+{
+  return (now - lastPulse) < VSS_FILTER_MIN_GAP_US;
+}
+
+/**
  * @brief The ISR function for VSS pulses
- * 
  */
 void vssPulse(void)
 {
-  //TODO: Add basic filtering here
+  uint32_t now = micros();
+  // vssTimes[vssIndex] always holds the timestamp of the last accepted pulse at ISR entry.
+  if (vssPulseIsFiltered(now, vssTimes[vssIndex])) { return; }
+
   vssIndex++;
   if(vssIndex == VSS_SAMPLES) { vssIndex = 0U; }
-
-  vssTimes[vssIndex] = micros();
+  vssTimes[vssIndex] = now;
 }
 
 // Read the Aux analog value for pin set by analogPin 
