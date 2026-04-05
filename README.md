@@ -18,20 +18,46 @@ This repository tracks real firmware work, test infrastructure, board support wo
 
 ## Current State
 
-The repository has moved well past the older "Phase 2 only" state.
+Phases 3 through 11 are complete or substantially complete.
 
-- Phase 3: substantially complete
-- Phase 4: complete
-- Phase 5: complete
-- Phase 6 through Phase 10: mixed complete/deferred slices, with the current verified status tracked in [speeduino/FIRMWARE_ROADMAP.md](speeduino/FIRMWARE_ROADMAP.md)
+- Phase 3: substantially complete — knock module fully migrated to `KnockState` struct; legacy globals removed
+- Phase 4: complete — board capability channels, interrupt-pin validation, comms helper extraction, DropBear pin-mapping extraction
+- Phase 5: complete — updates.cpp coverage, knock observability flags, live-data map, logger byte regression tests
+- Phase 6–8: complete — PWM fan, SPI flash persistence, ADC normalization, hardware averaging, transport limit raises
+- Phase 9–10: complete — decoder tooth-number resolution, idle/launch/protection test suites, ESP32-C3 coprocessor transport wiring
+- Phase 11: software complete — `Serial2` / Airbear TCP bridge wired and documented; remaining work is hardware bench validation
+- Firmware Capability API sprint: complete — `FW-001` through `FW-007` all done, `test_comms` suite at 46/46
+
+**Current simulator baseline:**
+
+| Suite | Passing |
+|-------|---------|
+| test_comms | 46/46 (10 skipped — Teensy/U16P2 guards correct on AVR) |
+| test_decoders | 275/275 |
+| test_fuel | 88/88 |
+| test_ign | 193/193 |
+| test_idle | 10/10 |
+| test_init | 9/9 |
+| test_launch | 6/6 |
+| test_math | 44/44 |
+| test_protection | 19/19 |
+| test_schedules | 26/26 |
+| test_sensors | 75/75 |
+| test_tables | 24/24 |
+| test_updates | 38/38 |
 
 Recent completed work includes:
 
-- board capability output channels and interrupt-pin validation
-- SPI flash-backed persistence work for Teensy 4.1
-- Teensy 4.1 ADC normalization and averaging fixes
-- larger Teensy transport limits and expanded logger payloads
-- broader state-machine tests for idle, launch/flat shift, and engine protection
+- firmware capability `'K'` query command — 39-byte fixed binary response (board id, capability flags, feature flags, OCH size, signature)
+- stable `BoardId` enum — `getStableBoardId()` maps pin mapping to `BOARD_ID_DROPBEAR_T41`, `BOARD_ID_BEAR_CUB`, or `BOARD_ID_UNKNOWN`
+- external page CRC verification — `parseLegacyCrcRequest` / `encodeLegacyCrc32Response` / `calculatePageCRC32ForMode`, production and U16P2 mode-aware
+- `OCH_OFFSET_*` named constants in `live_data_map.h` and `CAP_FEATURE_FLASH_HEALTH` / `CAP_FEATURE_U16P2` feature flag bits
+- Phase 3 knock cleanup — `knockStartTime` and `knockLastRecoveryStep` legacy globals fully removed; `KnockState` struct is the sole owner
+- `PID::Initialize()` promoted to public; `initialiseCorrections()` now calls it directly instead of the triple mode-toggle workaround
+- VSS ISR noise filter — `vssPulseIsFiltered()` rejects contact-bounce and electrical noise (500 µs minimum gap); 10 regression tests
+- `getSpeed()` race condition fix — `vssTimes[vssIndex]` stale-pulse check now reads under `noInterrupts()`; added divide-by-zero guard
+- `setPinHysteresis` GDIR write wrapped in critical section — iMXRT1062 has no atomic alias for GPIO direction register
+- Haltech CAN `DATA3` staging duty cycle — bytes 2–3 now report `PW2`-based duty cycle when staging is active
 - experimental native `U16` TunerStudio transport for page `2` on the Teensy 4.1 / DropBear path
 
 For the authoritative status, read [speeduino/FIRMWARE_ROADMAP.md](speeduino/FIRMWARE_ROADMAP.md).

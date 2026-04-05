@@ -531,7 +531,11 @@ void setPinHysteresis(uint8_t pin)
   const uint32_t padConfig = IOMUXC_PAD_DSE(1) | IOMUXC_PAD_PKE | IOMUXC_PAD_PUE | IOMUXC_PAD_SPEED(0) | IOMUXC_PAD_HYS;
 
   p = digital_pin_to_info_PGM + pin;
-  *(p->reg + 1) &= ~(p->mask); // TODO: atomic
+  // GDIR (direction) is a plain R/W register with no atomic SET/CLR alias on iMXRT1062.
+  // Use a brief critical section so a concurrent ISR on the same GPIO port cannot race.
+  noInterrupts();
+  *(p->reg + 1) &= ~(p->mask); // Clear direction bit → input
+  interrupts();
   *(p->pad) = padConfig;
   *(p->mux) = 5 | 0x10;
 }

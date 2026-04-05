@@ -197,6 +197,7 @@ void DashMessage(uint16_t DashMessageID)
   uint16_t temp_oilPressure;
   int16_t temp_Advance;
   uint16_t temp_DutyCycle;
+  uint16_t temp_StagingDutyCycle;
   uint16_t temp_Lambda;
   uint16_t temp_BoostTarget;
 
@@ -304,14 +305,21 @@ void DashMessage(uint16_t DashMessageID)
     case CAN_HALTECH_DATA3:
       temp_Advance = currentStatus.advance * 10U; //Note: Signed value
       //Convert PW into duty cycle
-      temp_DutyCycle = (currentStatus.PW1 * 100UL * currentStatus.nSquirts) / revolutionTime; 
+      temp_DutyCycle = (currentStatus.PW1 * 100UL * currentStatus.nSquirts) / revolutionTime;
       if (configPage2.strokes == FOUR_STROKE) { temp_DutyCycle = temp_DutyCycle / 2U; }
+      //Staging duty cycle: same formula applied to PW2; 0 when staging is inactive
+      temp_StagingDutyCycle = 0U;
+      if (BIT_CHECK(currentStatus.status4, BIT_STATUS4_STAGING_ACTIVE))
+      {
+        temp_StagingDutyCycle = (currentStatus.PW2 * 100UL * currentStatus.nSquirts) / revolutionTime;
+        if (configPage2.strokes == FOUR_STROKE) { temp_StagingDutyCycle = temp_StagingDutyCycle / 2U; }
+      }
 
       outMsg.len = 8;
       outMsg.buf[0] = highByte(temp_DutyCycle);
       outMsg.buf[1] = lowByte(temp_DutyCycle);
-      outMsg.buf[2] = 0x00; //TODO: Staging Duty Cycle. 
-      outMsg.buf[3] = 0x00;
+      outMsg.buf[2] = highByte(temp_StagingDutyCycle);
+      outMsg.buf[3] = lowByte(temp_StagingDutyCycle);
       outMsg.buf[4] = highByte(temp_Advance);
       outMsg.buf[5] = lowByte(temp_Advance);
       outMsg.buf[6] = 0x00; //Unused

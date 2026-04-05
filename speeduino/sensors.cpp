@@ -874,18 +874,32 @@ uint16_t getSpeed(void)
   // Interrupt driven mode
   else if(configPage2.vssMode > 1U)
   {
-    uint32_t pulseTime = 0U;
-    uint32_t vssTotalTime = 0U;
+    // Snapshot the entire circular buffer once under a single critical section so that
+    // all gap calculations use a consistent view.  The old approach called vssGetPulseGap()
+    // (each with its own noInterrupts() pair) in a loop — a pulse arriving between calls
+    // could advance vssIndex mid-loop, mixing pre- and post-update timestamps across gaps.
+    uint32_t vssSnapshot[VSS_SAMPLES];
+    uint8_t  snapIndex;
+    noInterrupts();
+    snapIndex = vssIndex;
+    for(uint8_t i = 0U; i < VSS_SAMPLES; i++) { vssSnapshot[i] = vssTimes[i]; }
+    interrupts();
 
-    //Add up the time between the teeth. Note that the total number of gaps is equal to the number of samples minus 1
-    for(uint8_t x = 0U; x<(VSS_SAMPLES-1U); x++)
+    // Sum the (VSS_SAMPLES-1) inter-pulse gaps from the snapshot
+    uint32_t vssTotalTime = 0U;
+    for(uint8_t x = 0U; x < (VSS_SAMPLES - 1U); x++)
     {
-      vssTotalTime += vssGetPulseGap(x);
+      int8_t tempIndex = (int8_t)snapIndex - (int8_t)x;
+      if(tempIndex < 0) { tempIndex += (int8_t)VSS_SAMPLES; }
+      if(tempIndex > 0) { vssTotalTime += vssSnapshot[tempIndex] - vssSnapshot[tempIndex - 1]; }
+      else              { vssTotalTime += vssSnapshot[0] - vssSnapshot[VSS_SAMPLES - 1U]; }
     }
 
-    pulseTime = vssTotalTime / ((uint32_t)VSS_SAMPLES - 1UL);
-    if ( (micros() - vssTimes[vssIndex]) > MICROS_PER_SEC ) { tempSpeed = 0; } // Check that the car hasn't come to a stop. Is true if last pulse was more than 1 second ago
-    else 
+    uint32_t pulseTime = vssTotalTime / ((uint32_t)VSS_SAMPLES - 1UL);
+    uint32_t lastPulseTime = vssSnapshot[snapIndex]; // already captured atomically above
+
+    if ( (micros() - lastPulseTime) > MICROS_PER_SEC ) { tempSpeed = 0; } // Check that the car hasn't come to a stop. Is true if last pulse was more than 1 second ago
+    else if ( (pulseTime > 0U) && (configPage2.vssPulsesPerKm > 0U) ) // Guard against divide-by-zero from misconfiguration or startup state
     {
       tempSpeed = MICROS_PER_HOUR / (pulseTime * configPage2.vssPulsesPerKm); //Convert the pulse gap into km/h
       tempSpeed = LOW_PASS_FILTER(tempSpeed, configPage2.vssSmoothing, currentStatus.vss); //Apply speed smoothing factor
