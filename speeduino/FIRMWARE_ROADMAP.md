@@ -649,19 +649,125 @@ Airbear detects the active variant via the `'Q'` command response at startup. Th
 
 ### Phase 11 Test Baseline Target ✅ **UNCHANGED** (no new simulator tests — hardware-only paths)
 
-No new simulator tests were added (Serial2 init and routing are hardware-only paths). The integration test record in Slice E above is the hardware validation artifact. Baseline is unchanged:
+No new simulator tests were added (Serial2 init and routing are hardware-only paths). The integration test record in Slice E above is the hardware validation artifact. Current workspace baseline (includes VSS filter and comms tests added post-Phase 11):
 
 - test_decoders: 275/275
 - test_fuel: 88/88
 - test_ign: 193/193
+- test_idle: 10/10
 - test_init: 9/9
 - test_launch: 6/6
 - test_math: 44/44
 - test_protection: 19/19
 - test_schedules: 26/26
-- test_sensors: 65/65
+- test_sensors: 75/75 (was 65/65 at Phase 11 close; +10 from VSS noise filter regression suite)
 - test_tables: 24/24
 - test_updates: 38/38
+- test_comms: 46/46 (10 skipped — Teensy41/U16P2 guards correct on AVR harness)
+
+---
+
+## Phase 12: U16 Maps Where Precision Matters (DropBear / Teensy)
+
+**Status: planned.** This is a forward-looking phase committed to in concert with the desktop tuner project's Phase 14 native rewrite (see `D:/Documents/JetBrains/Python/Tuner/docs/tuning-roadmap.md`). The trigger is the desktop pivot to a native C++ Qt application: while we're rewriting the host-side parsers and generators anyway, it's the right time to widen the high-leverage 3D maps on the only board family that has the SRAM and flash headroom for it.
+
+### Goal
+
+Ship a single production firmware variant — `speeduino 202501-T41` — that exposes the **high-precision 3D fueling/ignition/boost maps as native U16 pages** on DropBear / Teensy 4.1, while leaving coarse-natural-step tables (warmup enrichment, ASE tapers, IAT retard, etc.) on the existing byte-serialized contract. The experimental `-U16P2` signature collapses into the default once the targeted tables are validated.
+
+### Where U16 is load-bearing vs where U08 is fine
+
+The original framing of this phase ("all 3D maps → U16") was too broad. The 15 production pages aren't uniform: most 3D maps benefit visibly from U16, but a non-trivial number of tables have natural step sizes coarser than what U08 already gives.
+
+**Tables that get widened to U16** (precision actually matters):
+
+| Table | Why U16 matters |
+|---|---|
+| `veTable`, `veTable2` | 1% VE granularity in U08 is 0.39% per step at full scale — visible AFR jumps under partial throttle, especially on small forced-induction engines |
+| `afrTable` / `lambdaTable` | Stoich gasoline at ~14.7 AFR has 0.058 AFR per U08 step — visible at idle and cruise targets |
+| `ignitionTable` (advance) | 90° span in U08 is 0.35° per step — noticeable at light load and on knock-sensitive setups |
+| `boostTable` (boost target) | 256 kPa span in U08 is 1 kPa per step — visible boost surging on closed-loop control |
+| `vvtTable`, `vvt2Table` (cam target) | Fine cam-angle control needs sub-degree resolution |
+
+**Tables that stay U08** (coarse natural steps or small ranges where U08 is already finer than what an operator tunes to):
+
+- `wueTable` (warmup enrichment) — 16-entry coolant axis, whole-percent corrections, U08 already gives 0.4% precision
+- `aseTaperTable`, `aseLoadTable`, `crankingEnrichTable` — after-start enrichment tapers, tuned in 1%/1°C steps
+- `injOpenTable` — injector deadtime, microseconds, not finely interpolated
+- `iatRetardTable`, `cltAdvanceTable` — small total ranges
+- `flexFuelTable`, `flexAdvTable`, `flexBoostTable` — flex fuel trims, small ranges
+- `egoTable` (closed-loop bounds), `dwellCompensation` — coarse natural steps
+- Idle/boost/etc. PID gain tables — tuning constants, not 3D maps
+- Sensor calibration pages 0/1/2 (CLT/IAT/O2) — unchanged; different transport (`'t'` calibration command)
+
+**Why selective is better than blanket:**
+
+1. Smaller firmware delta — roughly 5–7 pages widen instead of all 15
+2. Smaller backwards-compat surface — tunes that only edited the byte-mode tables need no migration
+3. Faster ship date — fewer pages to validate before promoting from `-U16P2` experimental to default
+4. Honest characterization — "we widened the tables that needed it" rather than "we widened everything"
+5. Forward-compatible with AVR — if mega2560 has the headroom for just the VE table to be U16 someday, that's a per-table opt-in instead of a board-family-wide flip
+
+### Why this is the right time
+
+1. **Page 2 already proves the seam works.** The experimental `speeduino 202501-T41-U16P2` path has been validated end-to-end on real hardware (TS reads, edits, burns, page CRC, SPI flash mirror — see `SESSION_HANDOFF_2026-03-26_TS_U16_PAGES.md`). The "Trouble Areas" section below documents the work that remains, but the architectural risk is gone — it's now a roll-out problem, not a design problem.
+2. **The desktop is being rewritten in C++.** Both the parsers and the table generators (Engine Setup wizard, Hardware Setup wizard, VE/AFR/spark generator services) are being ported anyway. Generating U16 row data from day one is cheaper than generating U08 first and adding U16 support later.
+3. **Phase 5's `live_data_map.h` discipline is in place.** The 148-byte log entry is now versioned and asserted at compile time, so widening telemetry channels later is a tractable problem rather than a layout-shuffling exercise.
+4. **DropBear has the headroom.** Teensy 4.1 has 1 MB of SRAM and 8 MB of flash; the existing tune fits in a tiny fraction of either. Doubling map storage from byte to U16 is invisible at the platform level.
+
+### Hard rules (locked)
+
+- **DropBear/Teensy only.** AVR (mega2560, etc.) keeps the byte-serialized contract for every table — flash and RAM are too tight there to widen page storage. Phase 12 is gated on `BOARD_CAP_TEENSY41` (or equivalent capability bit) and never affects AVR builds.
+- **Selective widening, not blanket.** Only the tables in the "widened to U16" list above get the new contract. Coarse-step tables (warmup, ASE, retard maps, PID gains) stay on the existing byte contract on DropBear too — they don't need the precision and widening them would only inflate the firmware delta.
+- **Single signature.** When Phase 12 ships, `speeduino 202501-T41` is the new contract (selective U16) and `-U16P2` is retired. There is no "all-U08 mode" toggle for DropBear — the relevant byte paths are removed from the DropBear build, not just hidden.
+- **One firmware build per board family.** No runtime mode switch. The board capability bit is the trigger; the per-table widening list is locked at compile time.
+- **No widening of the live-data packet.** The 148-byte `LOG_ENTRY_SIZE` contract stays. High-resolution VE/AFR/spark telemetry is a separate slice in Phase 13B (Native Logging Contract on the desktop side); it does not block Phase 12.
+- **CRC and SPI flash mirror cover the new byte stream exactly.** Same discipline as the U16P2 experimental work — page CRC is computed over the actual transmitted bytes (mixed U08/U16 across pages), SPI flash save/load iterates the new per-page sizes correctly.
+
+### Slice plan
+
+1. **Inventory the affected pages and lock the widening list.** Walk the 15 production pages and identify which ones contain tables in the "widened to U16" list. Each affected `[16x16]` U08 map is a 256-byte region in the current contract → 512-byte region in the Phase 12 contract. Pages may be **mixed** (e.g. a page that currently holds the VE table plus a small WUE-style trim table will have one widened entry and several byte-mode entries). Document the new per-page total sizes.
+2. **Promote the experimental U16P2 page-2 path to the affected entries.** Apply the same `getPageSize()` / `getPageValue()` / `setPageValue()` / page CRC / SPI flash mirror updates that were validated for page 2 to every page that contains a widened entry. Pages with no widened entries are unchanged.
+3. **Update the bundled INI.** `speeduino-dropbear-v2.0.1.ini` adopts the new layout; rename the experimental `speeduino-dropbear-v2.0.1-u16p2-experimental.ini` to retire it. Page sizes, table declarations (`U16` vs `U08` per table), and `ochBlockSize` updated together. Keep `speeduino 202501-T41` as the signature so existing project files continue to load (with a one-time migration on first save — see slice 5).
+4. **Update the production base tune.** `speeduino-dropbear-v2.0.1-base-tune.msq` regenerated with the new layout. Widened tables get the existing values upcast (zero-pad high byte). Ford300 reference tune migrated the same way.
+5. **Migration path for existing U08 tunes.** First-save handling on the desktop side: when a legacy all-U08 tune is loaded against the new INI, the tuner detects which tables now require U16 and upcasts them in-place (zero-pad high byte → U16, no value change). Tables that stay U08 are untouched, so most of the on-disk MSQ is bit-identical. One-way; no rollback path on the firmware side, since DropBear no longer accepts the legacy widths for those specific tables.
+6. **Update test_comms guards.** The currently-skipped Teensy41/U16P2 tests on the AVR harness become unconditional on the Teensy build target *for the affected pages only*; the AVR build target keeps the byte path and its existing tests.
+7. **Hardware validation.** Same path as Phase 11 Slice E: flash, connect via Airbear TCP bridge, full read/write/burn round-trip on every affected page (mixed U08/U16 entries on the same page), CRC verified, SPI flash save/load round-trip verified, cold-boot from flash verified. Particular attention to pages that have *both* widened and byte-mode entries — that's the new edge case the experimental U16P2 work didn't exercise (it touched all of page 2).
+8. **Retire the `-U16P2` experimental signature.** Remove from the release bundle. Update Airbear's `'Q'`-response variant detection to expect only the single signature (the Airbear bridge itself doesn't change since it proxies bytes verbatim — only its variant logging is affected).
+
+### Desktop / tuner application coordination
+
+The desktop tuner application's Phase 14 (native C++ Qt app) is the natural consumer of this firmware change. Decisions committed in concert:
+
+- **Per-table capability-driven generation.** When the desktop's Hardware Setup Wizard or Engine Setup Wizard generates a table, it looks up the **table's `data_type` from the active definition** rather than guessing from board capability alone. Definitions for DropBear-class boards declare `veTable`, `afrTable`, `ignitionTable`, `boostTable`, etc. as `U16`; everything else (`wueTable`, `aseTaperTable`, retard tables, etc.) stays `U08`. AVR-class definitions declare every table as `U08`. The generator just respects whatever the definition says.
+- **Native definition format encodes the data type per table.** The desktop's owned `NativeDefinition` schema (already shipped in v1) carries `data_type` per `NativeTable`. This lets the native format describe a mixed-width contract directly — no special-cases for DropBear vs AVR in the generators, just "read what the definition says".
+- **No legacy U08 generation path for tables that should be U16.** Once Phase 12 ships, the desktop's VE/AFR/spark/boost generators never produce U08 output when the active definition declares that table as U16. The byte path stays alive in the codebase as an INI/MSQ import compatibility layer (so existing TunerStudio U08 tunes can still be loaded and migrated) and for tables that genuinely stay U08 even on DropBear.
+- **Selective migration on first save.** Loading a legacy all-U08 tune against the new mixed-width definition triggers a one-time in-memory upcast of *only the tables that widened* (zero-pad high byte → U16, no value change). Tables that stayed U08 are untouched. The next save writes the new format. No prompt; no opt-out; the operator sees a status-bar message noting which tables migrated.
+- **Live telemetry stays byte-resolution.** Dashboard gauges that read live VE / AFR / advance / etc. continue to use the 148-byte live-data block. Only the *interpretation of stored map values* changes; the live channels that report active VE/AFR/etc. are still U08 in the packet (Phase 13B widens those separately if needed).
+
+### What stays out of scope
+
+- **High-resolution VE/AFR/spark logging.** The 148-byte live-data packet is unchanged. Hi-res telemetry is a separate Phase 13B slice and depends on a versioned `ChannelContract` that the desktop already has the infrastructure for.
+- **AVR widening.** mega2560 etc. continue to use the byte contract. No conditional U08-or-U16 builds — the board family decides the contract at build time.
+- **TunerStudio support.** TunerStudio reads INI files; if it loads the new INI it gets U16 tables for free. We don't gate Phase 12 on TS-side validation — the desktop tuner becomes the primary host once Phase 14 is shipped, and TS becomes a compatibility consumer.
+
+### Test baseline target
+
+- All existing Teensy41-skipped tests under `test_comms` become unconditional on the Teensy build target (10 tests promoted).
+- New Teensy-only tests covering U16 page round-trip for every affected page (`test_pages_u16_dropbear`).
+- Hardware validation record in this file (same shape as Phase 11 Slice E).
+- Desktop-side parity tests (`tests/unit/test_cpp_*_parity.py`) updated to use the U16 INI as the production fixture once Phase 12 ships; the existing U08 fixtures stay around as legacy import-compatibility test cases.
+
+### Sequencing
+
+Phase 12 lands **after** the desktop tuner's Phase 14 first wave is far enough along that the C++ table generators exist to consume the new contract. Otherwise we'd ship a firmware variant nothing on the host side knows how to populate. The dependency order is:
+
+1. Desktop Phase 14: port `[Constants]`, `[OutputChannels]`, `[TableEditor]`, generator services to C++ (in progress)
+2. Desktop Phase 14: native Hardware Setup wizard producing tables ← *the consumer*
+3. Firmware Phase 12: U16 by default on Teensy build target ← *the producer*
+4. Joint hardware validation: bench with DropBear + native tuner end-to-end
+
+Until step 1 is complete, the existing experimental `-U16P2` path remains the canonical way to test U16 page handling on Teensy. Phase 12 promotes that path; it doesn't replace it ahead of schedule.
 
 ---
 
@@ -734,3 +840,251 @@ No new simulator tests were added (Serial2 init and routing are hardware-only pa
   - `Rover MEMS` full `Crank Speed + 5-3-2 cam` replay
   - `4G63` direct AVR state isolation under the current harness
   - ~~the backed-out extra `Nissan360` `useResync == false` assertion once the Harley interaction is understood~~ ✅ resolved (Phase 9 Slice D)
+
+## Phase 12: U16 maps where precision matters (DropBear / Teensy)
+
+This phase is the firmware side of a **joint commitment** with the desktop tuner application at [D:/Documents/JetBrains/Python/Tuner](D:/Documents/JetBrains/Python/Tuner) (its Phase 14). The desktop already references this firmware phase by name in [docs/tuning-roadmap.md](D:/Documents/JetBrains/Python/Tuner/docs/tuning-roadmap.md) ("Phase 14 / Firmware Phase 12 joint commitment") and the Tuner [CLAUDE.md](D:/Documents/JetBrains/Python/Tuner/CLAUDE.md) ("Joint U16-where-precision-matters commitment with the Speeduino firmware (Firmware Phase 12)"). The earlier all-3D-tables-to-U16 framing was too broad; the refined plan widens only the tables where U08 quantization is actually visible to the operator and leaves coarse-natural-step tables on byte mode.
+
+### Tables that widen to U16 on DropBear / Teensy 4.1
+
+- `veTable`, `veTable2` — 1% VE per U08 step is ~0.39% per step at full scale; visible AFR jumps under partial throttle on small forced-induction engines
+- `afrTable` — lambda/AFR target resolution becomes meaningful for closed-loop EGO and lambda overlays
+- `ignitionTable`, `ignitionTable2` — 0.5° advance per step is too coarse on knock-limited turbo engines near MBT
+- `boostTable` — duty-cycle target resolution dominates closed-loop boost overshoot/undershoot
+- `vvtTable`, `vvtTable2` — cam target degrees benefit from sub-degree resolution for closed-loop cam PID
+
+### Tables that stay U08 even on DropBear (intentionally)
+
+- `wueTable`, ASE tapers, cranking enrichment — coarse natural step
+- Retard maps, flex trims, knock retard tables — coarse natural step
+- PID gains, sensor calibrations, dwell tables — coarse natural step
+- All AVR-class boards: every table stays U08
+
+### Firmware-side scope
+
+- Single production signature `speeduino 202501-T41` exposes the targeted tables as native U16 on DropBear; the experimental `-U16P2` signature collapses into the default once these tables are validated
+- Pages with **mixed widened + byte-mode entries** are valid — page CRC and SPI flash mirror already handle mixed widths the same way the experimental U16P2 path handled the all-widened case (see Phase 8 closing notes and the existing CRC/page-verification protocol in [page_crc.cpp](C:/Users/Cornelio/Desktop/speeduino-202501.6/speeduino/page_crc.cpp))
+- Hot fueling lookups (`getVE1`, `getAdvance1`, etc.) need to consume native U16 cells without an intermediate byte downcast — this is the surface that the experimental U16P2 INI noted was not yet end-to-end ([CLAUDE.md](D:/Documents/JetBrains/Python/Tuner/CLAUDE.md) "Known Fragile Areas" item 4)
+- BLOCKING_FACTOR / TABLE_BLOCKING_FACTOR are already 512 from Phase 8 — no transport change needed
+- Capability response (`'K'` command, FW-003) already advertises `CAP_FEATURE_U16P2`; once Phase 12 lands the flag's meaning shifts from "experimental U16 page-2 path" to "native U16 high-leverage tables"; the desktop reads `data_type` from the active definition so the firmware change is invisible to the generator code
+
+### Sequencing (joint with desktop Phase 14)
+
+1. Desktop Phase 14 lands the per-table U16 generators first (already in progress in [Tuner](D:/Documents/JetBrains/Python/Tuner))
+2. Firmware Phase 12 ships native U16 fueling/ignition/boost/VVT lookups on Teensy 4.1
+3. Joint hardware/bench validation including a page that holds both widened and byte-mode entries
+4. `-U16P2` experimental signature retired; production becomes the only DropBear variant
+
+### Known fragile area
+
+The Tuner [CLAUDE.md](D:/Documents/JetBrains/Python/Tuner/CLAUDE.md) "Known Fragile Areas" item 4 calls out that the experimental INI itself notes "the TS page-2 transport is native U16, but the main fueling path still consumes VE through byte-returning lookups, so this is not yet a proven end-to-end high-resolution fueling mode." Closing this gap is the core firmware deliverable for Phase 12 — the transport already works; the **lookup** path is what is missing.
+
+## Phase 13: Teensy 4.1 / DropBear Enhancement Backlog
+
+Current Teensy 4.1 board layer ([board_teensy41.h](C:/Users/Cornelio/Desktop/speeduino-202501.6/speeduino/board_teensy41.h), [board_teensy41.cpp](C:/Users/Cornelio/Desktop/speeduino-202501.6/speeduino/board_teensy41.cpp)) leaves significant iMXRT1062 capability unused vs what rusEFI ([Resources/rusefi-2026-03-17](C:/Users/Cornelio/Desktop/speeduino-202501.6/Resources/rusefi-2026-03-17)) and MS3 ([Resources/ms3-source-master](C:/Users/Cornelio/Desktop/speeduino-202501.6/Resources/ms3-source-master)) exploit on comparable Cortex-M class hardware. The DropBear (`BOARD_ID=55`, MC33810-driven) is the only consumer of this layer and the user's daily driver, so the items below are scoped to that target. Each is research-only until called out as ✅ implemented. None of the following block the current narrow Phase 1 surface — they are net-new capability work.
+
+### Slice A — Trigger ISR jitter (HIGH value, MEDIUM risk)
+
+- **Problem**: `pinTrigger`/`pinTrigger2`/`pinTrigger3` use `attachInterrupt()` + a software `micros()` timestamp inside the decoder ISR. On iMXRT1062 the GPIO IRQ entry latency plus `micros()` read introduces ≥1µs of jitter, which dominates ignition timing error above ~6000 RPM on high-tooth-count wheels (60-2, NGC4).
+- **rusEFI reference**: `firmware/hw_layer/drivers/gpio/...` and the trigger input layer use **hardware input capture** on the QuadTimer (TMR) capture inputs, latching the bus-clock counter in hardware at the edge — sub-100ns timestamp resolution, ISR only reads the latched value.
+- **Speeduino fit**: TMR1–TMR4 are already claimed for fuel/ign compares, but each Quad-Timer channel has an independent **secondary input function** that can capture into `CAPT` while the channel still runs as a compare timer. Alternatively use FlexPWM input capture, which is unused.
+- **Impact**: removes the largest single source of timing scatter on DropBear, directly improves dwell consistency at high RPM.
+- **How to apply**: prototype on `pinTrigger` only first, behind a `TEENSY41_HW_TRIGGER_CAPTURE` opt-in; keep the `attachInterrupt` path as fallback. Validate against existing decoder tests by feeding the captured timestamp into the same `triggerHandler` callback.
+
+### Slice B — Software knock detection (HIGH value, HIGH effort)
+
+- **Problem**: `KNOCK_MODE_DIGITAL` only consumes a comparator-output pin from an external knock IC (TPIC8101 / HIP9011). DropBear users without that IC fall back to no knock protection.
+- **rusEFI reference**: `firmware/controllers/sensors/software_knock.cpp` runs a windowed ADC capture (typically 64–128 samples around TDC), then a CMSIS-DSP biquad bandpass at the cylinder-bore-resonant frequency, then RMS — entirely on the Cortex-M7 FPU.
+- **Speeduino fit**: Teensy 4.1 has the same FPU + access to `arm_math.h` (CMSIS-DSP) via Teensyduino. ADC1 can sample at >1 MSPS in single-shot mode, easily covering one cylinder window per ignition event.
+- **How to apply**: add `adc_teensy41_knock.{h,cpp}` with a ring buffer + biquad; expose RMS via existing `currentStatus.knockCount`/`knockRetard` consumers so no logic in `corrections.cpp` changes. Gate behind `KNOCK_MODE_ANALOG_DSP` (new) so AVR never sees it.
+
+### Slice C — Native Ethernet TS transport (HIGH value, LOW risk)
+
+- **Problem**: WiFi is currently delivered via the ESP32-C3 Airbear coprocessor on `Serial2` at 115200 baud (Phase 11). 115200 caps tune-load throughput and adds two hops of latency for live data.
+- **Teensy 4.1 native**: built-in 10/100 Ethernet PHY pads, supported by `NativeEthernet` (Teensyduino library). A single magjack + RJ45 on the DropBear v2 carrier exposes wired TS-over-TCP at full link speed.
+- **How to apply**: extend `boardHasCapability(BOARD_CAP_WIFI_TRANSPORT)` to also cover an ETH transport flag; in `serviceBoardSerial()` add a `pPrimarySerial = (Stream*)&ethClient` divert that mirrors the existing `Serial2` divert pattern. Zero protocol changes needed because the diverted-pointer comms architecture already supports it.
+- **Why it lands cleanly**: this is the same shape as the Phase 11 ESP32-C3 path. The plumbing is already proven; only the transport object changes.
+
+### Slice D — ADC pipeline upgrades (MEDIUM value, LOW risk)
+
+- **Current state**: `initADC_Teensy41()` sets 12-bit + `analogReadAveraging(4)`, then `readAnalogPin()` shifts to 10-bit so the rest of the firmware's `fastMap10Bit()` math is unchanged.
+- **Headroom**:
+  - **Bump averaging to 16**: sqrt(4) → sqrt(16) = +6 dB SNR for ~12µs/read on a 600 MHz core — still negligible.
+  - **Native 12-bit MAP/TPS path**: introduce `fastMap12Bit()` and an opt-in 12-bit branch in `readAnalogPin()` for `pinMAP`/`pinTPS` only. Improves boost-control resolution from 1 kPa/count to 0.25 kPa/count and TPS from 0.1% to 0.025%. Needs INI/feature-flag work to expose to TS without breaking AVR.
+  - **DMA-driven background sampling**: rusEFI runs ADC1 in continuous DMA mode into a sample buffer the main loop reads — no per-call ADC stall. Worth doing only if profiling shows `analogRead()` cost is meaningful in the main loop on Teensy 4.1 (it usually isn't, so this is the lowest-priority ADC item).
+
+### Slice E — Cortex-M7 cache & TCM placement (MEDIUM value, LOW risk)
+
+- **Headroom**: iMXRT1062 has 512 KB FlexRAM split between **ITCM** (zero-wait-state instruction TCM) and **DTCM** (zero-wait-state data TCM). Hot-path functions and structs not placed in TCM run from cached OCRAM and incur cache-miss stalls during ISR storms.
+- **Targets**: schedule ISRs (`fuelScheduleNInterrupt`, `ignitionScheduleNInterrupt`), the active decoder's `triggerHandler*`, the `currentStatus` struct, and the active page CRC scratch. Add `FASTRUN` / `DMAMEM` placement attributes inside `#if defined(CORE_TEENSY41)` only.
+- **Why it matters more under MC33810**: every fuel/ign event on DropBear includes an SPI write to the MC33810; cache misses on the schedule callback compound with SPI latency.
+
+### Slice F — MC33810 SPI via DMA (MEDIUM value, MEDIUM risk)
+
+- **Current state**: [acc_mc33810.cpp](C:/Users/Cornelio/Desktop/speeduino-202501.6/speeduino/acc_mc33810.cpp) issues blocking `SPI.transfer()` calls inside the schedule ISR for every injector/coil state change.
+- **Improvement**: iMXRT1062 LPSPI supports DMA-backed transfers via Teensyduino's `SPI.transfer(buf, n, evt)` async API. A 1-byte injector/ign update through DMA frees ~3–6µs per event — meaningful at 8000 RPM 8-cyl sequential.
+- **Risk**: ordering across overlapping schedules; needs a per-CS queue or a "coalesce all bits dirty in this tick → 1 SPI burst" pattern. Prototype on a single channel before generalizing.
+
+### Slice G — Multi-bus + CAN-FD (MEDIUM value, LOW risk)
+
+- **Current state**: only `Can0` (CAN1) is used via `FlexCAN_T4` ([comms_CAN.cpp](C:/Users/Cornelio/Desktop/speeduino-202501.6/speeduino/comms_CAN.cpp), Haltech broadcast, etc.).
+- **Teensy 4.1 native**: three CAN controllers; `CAN3` is **CAN-FD** capable (8 Mbit data phase). Useful for modern OEM dashes (Haltech IC-7, AiM, OBD2 gateways) and for offloading high-rate logging to a CAN-FD recorder without choking CAN1.
+- **How to apply**: extend `comms_CAN` with a second `Can1` instance behind a build flag; expose a TS-side selector via the capability response (`CAP_FEATURE_CANFD`).
+
+### Slice H — PSRAM-backed extended logging (LOW value, LOW risk)
+
+- **Hardware**: Teensy 4.1 has solder pads for 8 MB QSPI PSRAM (`EXTMEM`).
+- **Use**: a circular high-rate composite-log ring buffer (10 kHz tooth + ADC capture) flushed to SD on trigger event — useful for diagnosing intermittent decoder sync loss without keeping the SD card streaming continuously. The composite-log infrastructure already exists; only the buffer placement and flush trigger change.
+
+### Slice I — Watchdog + MPU hardening (LOW value, LOW risk)
+
+- **WDOG**: iMXRT1062 has both `WDOG1` (128s max) and `RTWDOG` (windowed). Neither is currently armed. Arm `WDOG1` with a ~2s timeout, kicked from `oneMSInterval()`; provides automatic recovery from any ISR deadlock.
+- **MPU**: configure Cortex-M7 MPU to mark the stack-overflow guard region as no-execute / no-write. Cheap insurance against memory corruption from unbounded recursion under unusual decoder states.
+
+### Slice J — USB CDC at high speed for tune transfer (LOW value, LOW risk)
+
+- **Current state**: USB CDC default config. Tune writes still chunked at `BLOCKING_FACTOR=512` (Phase 8).
+- **Headroom**: Teensyduino exposes `USB_DUAL_SERIAL` and `USB_TRIPLE_SERIAL` build modes. A second CDC interface could carry the secondary serial channel without the `Serial2` UART entirely, eliminating the 115200 cap for the Airbear use case if the user runs Airbear off the Teensy USB host instead of via UART.
+
+### Slice K — Closed-loop tightening (LOW value, MEDIUM effort)
+
+- **VVT/idle PID**: rusEFI's `pid.cpp` includes integrator clamping and derivative-on-measurement; Speeduino's `PID_v1` uses derivative-on-error which spikes on setpoint changes. The recent `PID::Initialize()` cleanup makes a drop-in replacement easier than before. Teensy-only at first (FPU-friendly) so AVR is unaffected.
+
+### Slice L — UDP broadcast dashboard channel (LOW value, LOW risk)
+
+- **Evidence**: the decompiled TSDash sources at [C:/Users/Cornelio/Desktop/TSDash_decompiled/TSDash](C:/Users/Cornelio/Desktop/TSDash_decompiled/TSDash) show TSDash itself uses **UDP broadcast** (`DatagramSocket.setBroadcast(true)` in `aD/h.java`, `aM/k.java`, and the `UdpCylPressureSimulator` family) as the primary protocol for live telemetry to remote dashboards, *not* the same TCP framing that TunerStudio uses for tuning. EFI Analytics dashboards on the local network expect a periodic UDP broadcast they can subscribe to without holding a tuning session open.
+- **Speeduino fit**: when Slice C (Native Ethernet) is in place, expose a low-rate UDP broadcast (e.g. 25 Hz) of the same 148-byte live-data packet that the `'r'`/`'A'` command already produces. Reuses existing `live_data_map.h` byte layout — no protocol design needed. Lets a TSDash-style remote dash run alongside the Tuner without arbitrating for the comms session.
+- **Why it lands cleanly**: the live-data packet is already byte-stable (FW-006 / `OCH_OFFSET_*` constants); the UDP path is purely a transport addition, no payload change.
+
+### Slice M — Live-data packet stability guarantees for the desktop ChannelContract (DOC-only, NO risk)
+
+- **Evidence**: the desktop tuner has shipped a `ChannelContract` parser (`tuner.domain.channel_contract.ChannelContract` + `LiveDataMapParser`) that consumes [live_data_map.h](C:/Users/Cornelio/Desktop/speeduino-202501.6/speeduino/live_data_map.h) line-by-line and **derives byte offsets directly from the firmware header**. A canary test sums all parsed entry widths against `LIVE_DATA_MAP_SIZE = 148` so any future schema change that breaks the parser fails loudly (Tuner [CLAUDE.md](D:/Documents/JetBrains/Python/Tuner/CLAUDE.md) Important Services / VE Analyze section).
+- **Implication for firmware work**: any reordering, insertion, or width change in `live_data_map.h` is now a **cross-repo break**, not a free firmware-side edit. The desktop will still parse the file because it reads it directly, but channel offsets used by historical logs and replay sessions will silently drift.
+- **How to apply**: add a comment block at the top of `live_data_map.h` documenting the contract: appends-only at the end of the byte table, never reorder/widen existing rows, bump `LIVE_DATA_MAP_SIZE` only when adding to the end. No code change. Optional follow-up: bake a compile-time `static_assert` on the running total for the existing rows so a non-additive edit won't compile.
+
+### Slice N — Output channel count limits (LOW value, LOW risk)
+
+- **Evidence**: the decompiled TSDash sources at `bA/aD.java` and `bA/N.java` warn the user that "A maximum of N Output Channels can be logged. Your current selection of fields requires X Output Channels — only the fields based on the first N OutputChannels will be added." TunerStudio-family dashboards have a hard upper bound on the number of channels they will pull per packet, and any firmware that grows the live-data packet past that ceiling silently truncates from the user's perspective.
+- **How to apply**: when Phase 12 lands and any new U16-resolution logging entries are considered, **stay within the existing 148-byte `LIVE_DATA_MAP_SIZE`** rather than appending more channels. If hi-res telemetry is genuinely needed, do it as a separate "extended logging" command (the Tuner's planned Phase 13B "Native Logging Contract" — see Tuner roadmap) instead of inflating the standard 'r'/'A' packet. Do not break TSDash compatibility for the sake of telemetry that the dash can't display anyway.
+
+### Cross-cutting notes
+
+- All slices are gated `#if defined(CORE_TEENSY41)` so the AVR Mega2560 path stays bit-for-bit identical and the existing simavr suites (275/275 decoders, 88/88 fuel, 193/193 ign, 75/75 sensors, 46/46 comms) remain the safety net.
+- DropBear is the only `applyBoardPinMapping()` consumer in [board_teensy41.cpp](C:/Users/Cornelio/Desktop/speeduino-202501.6/speeduino/board_teensy41.cpp), so per-board capability flag work can stay scoped to `BOARD_TEENSY41_DROPBEAR_PIN_MAPPING` without a wider table refactor.
+- Ordering: Slices A (HW input capture) and C (Ethernet) are the highest-value low-risk wins and should land first; Slice B (software knock) is the highest-effort item and should wait until A is stable so trigger jitter cannot contaminate knock-window sampling.
+
+## Phase 14: Firmware as native-contract producer (joint with Tuner Phase 13A)
+
+This phase is the firmware side of the desktop tuner's **Future Phase 13A: Firmware Contract Modernization** at [Tuner/docs/tuning-roadmap.md](D:/Documents/JetBrains/Python/Tuner/docs/tuning-roadmap.md). The desktop has already shipped v1 of `NativeDefinition`, `NativeTune`, and `ChannelContract` ([Tuner/CLAUDE.md](D:/Documents/JetBrains/Python/Tuner/CLAUDE.md), `tuner.domain.native_format` and `tuner.domain.channel_contract`). The model the desktop currently uses is **"reverse-engineer the contract from the legacy INI"**. The opportunity in this phase is to flip the dependency: **the firmware becomes the authoritative producer of its own native contract**, generated at build time from declarative C++ headers, and the desktop consumes those headers/exports directly. The legacy INI/MSQ paths stay as a one-way compatibility/export layer, not the source of truth.
+
+### Why this matters for both sides
+
+- The desktop `LiveDataMapParser` already reads `live_data_map.h` directly (Tuner roadmap Phase 12 deliverable 4) — this is the **proof** that header-derived contracts work. Same pattern, applied to tune storage and definition metadata, eliminates the entire class of "INI says one thing, firmware does another" bugs.
+- Tune-flash mismatch is currently caught only by `'Q'` signature string compare. A schema fingerprint embedded in the firmware lets the desktop refuse to burn an incompatible tune **before** the operator clicks burn — instead of after the engine bricks.
+- The Tuner's `NativeTune` v1 is intentionally flat keyed by semantic id (Tuner roadmap deliverable 2). Once the firmware produces that semantic id table itself, the legacy `lastOffset` indirection chain (Tuner CLAUDE.md "Known Fragile Areas" item 2: `afrTable` → `afrTable1Tbl` → `afrTable1Map` → `zBins = afrTable`) collapses.
+
+### Slice 14A — `tune_storage_map.h` declarative table (HIGH value, LOW risk)
+
+- **What**: a sibling header to [live_data_map.h](C:/Users/Cornelio/Desktop/speeduino-202501.6/speeduino/live_data_map.h), structured the same way: one declarative comment row per tune parameter with `{semantic_id, page, offset, type, scale, units, axis_ref}`. Tables get `{semantic_id, page, offset, rows, cols, x_axis_id, y_axis_id, data_type, units}`. Axes get `{semantic_id, page, offset, length, type, units}`.
+- **Source of truth**: this header. The legacy INI's `[Constants]` block becomes a generated artifact (build script reads `tune_storage_map.h` and emits the INI).
+- **Desktop fit**: identical pattern to the existing `LiveDataMapParser` — the Tuner adds `TuneStorageMapParser` and the Phase 14 native C++ desktop reads it directly. No INI required for new boards.
+- **Migration**: legacy INIs continue to work via the existing parser; the new header-derived path is the canonical one for `speeduino 202501-T41` going forward.
+
+### Slice 14B — Schema fingerprint in capability response (HIGH value, LOW risk)
+
+- **What**: extend the `'K'` capability response (FW-003) with a 32-bit `schema_fingerprint` — a SHA-256-based truncated hash of the concatenation of `live_data_map.h` + `tune_storage_map.h` + `BOARD_ID`, computed at build time and baked into a `const` symbol.
+- **How the desktop uses it**: on connect, the desktop's `NativeTune` carries a `definition_signature` (already in v1). The desktop refuses to burn a tune unless `tune.definition_signature == ecu.schema_fingerprint`. Eliminates the "wrong INI loaded against right firmware" failure mode that signature-string matching can't catch when only offsets shift.
+- **How the firmware uses it**: optional second-layer guard — incoming page writes can be cross-checked against an in-flash fingerprint stamp before commit. Out of scope for v1; the desktop guard alone is enough for the first slice.
+- **Build-side**: `tools/generate_schema_fingerprint.py` already has the right shape (the existing release manifest generator hashes files); extend it to emit `schema_fingerprint.h` with the constant.
+
+### Slice 14C — Semantic-id stamps on packed status bytes (MEDIUM value, LOW risk)
+
+- **What**: extend the existing `runtimeStatusA` pattern to additional packed-status surfaces (engine protection, knock, transient, sync state). Each new packed byte is declared in `live_data_map.h` with explicit per-bit semantic ids, not opaque names like `status3`/`status5`.
+- **Why**: the Tuner roadmap Phase 12 finding explicitly calls this out: "the `runtimeStatusA` packed byte (`tuneLearnValid`, `fullSync`, `transientActive`, `warmupOrASEActive`) is a preview of what explicit firmware-owned logging semantics look like — extend this pattern rather than adding more opaque bytes". The firmware roadmap's existing FW-006 work already proves the pattern lands cleanly.
+- **No packet growth**: extends meaning of existing bytes that the desktop currently has to special-case in `live_data_map_parser.py`, doesn't add bytes (Phase 13 Slice N: stay within `LIVE_DATA_MAP_SIZE = 148`).
+
+### Slice 14D — Native tune ingest from SD card (MEDIUM value, MEDIUM risk, Teensy 4.1 only)
+
+- **What**: at boot (or via a TS command), the firmware looks for `tune.json` on the SD card, parses it as a `NativeTune`, validates `definition_signature == schema_fingerprint`, and applies it to RAM pages without going through the `'w'` page-write protocol.
+- **Why**: race-team workflow — swap tunes between rounds without a laptop. Currently impossible; the only path is TS-over-USB.
+- **Risk**: needs a minimal JSON parser in firmware (no Arduino-friendly streaming JSON parser is small enough by default). Could vendor `nanopb`-style JSON or, simpler, define a `tune.bin` binary native format that's just `{header, schema_fingerprint, packed_pages}` — the desktop can produce both formats from the same `NativeTune` model.
+- **Defer**: probably ship as `tune.bin` first; `.ntune.json` is a Phase 13B logging-contract follow-up.
+
+### Slice 14E — Boot manifest emission (LOW value, LOW risk)
+
+- **What**: at first USB CDC connect, before any TS handshake, the firmware emits a single newline-terminated JSON line: `{"board": "DropBear-T41", "schema_fingerprint": "0xABCD1234", "fw": "202501.6", "caps": [...], "page_widths": {...}}`. The desktop reads this opportunistically; absent the line, falls back to the current `'Q'`/`'F'`/`'S'` probe sequence.
+- **Why**: replaces ~6 round-trip probes with one read on the connect path; speeds up reconnect noticeably on slow links (Airbear ESP32-C3 over 115200 UART).
+- **Compatibility**: legacy TS clients ignore unknown lines, so the line is invisible to existing tools.
+
+### Slice 14F — Build-time INI generation from native definition (LOW value, MEDIUM effort)
+
+- **What**: invert the dependency. Once `tune_storage_map.h` is the source of truth (Slice 14A), `tools/generate_ini.py` reads it and emits `speeduino-dropbear.ini` as a generated artifact. Removes hand-maintained INI drift entirely.
+- **Why**: every release currently risks INI/firmware divergence because the INI is hand-edited. A generated INI is byte-stable per build and the diff against the previous release's INI becomes a meaningful changelog instead of churn.
+- **Sequencing**: requires Slice 14A first. Lowest priority of the Phase 14 slices because the existing hand-maintained INI works; this is a maintenance/CI win, not a capability win.
+
+### Slice 14G — Boot-time multi-tune slot selection (MEDIUM value, LOW-MEDIUM risk, Teensy 4.1 only)
+
+- **What**: store N (target: 4) complete tune images in SPI flash and/or on the SD card. At boot, read a **dash-mounted rotary selector switch** (the same form factor diesel-truck tuners use — EFILive, HP Tuners, MM3 on Cummins/Duramax/Powerstroke) to pick which slot to load into the in-RAM tune pages. Each slot carries its own `schema_fingerprint` (Slice 14B) and is validated independently before being applied. If the selected slot fails fingerprint check, fall back to slot 0 and log the mismatch.
+- **Why**: standard ECU-class feature, directly modeled on the diesel-truck rotary-selector workflow (Position 0 = Stock/Tow, Position 1 = Daily, Position 2 = Performance, Position 3 = Race). Also covers the gasoline-tuner use cases: pump gas vs race gas, valet mode, E85 vs pump, wet vs dry. The Tuner roadmap explicitly notes it as a TunerStudio gap (G10) and a firmware-side responsibility. Slice 14D (SD ingest) does most of the plumbing already; this slice generalises it from "one tune" to "N tunes with a selector".
+- **Switch form factor — rotary is the primary target**: the operator-facing input is a dash-mounted rotary selector switch, *not* a DIP switch or single SPDT toggle. Two electrical wiring conventions are supported, both pure digital input with internal pull-ups (no ADC, no extra hardware on DropBear v2):
+  - **Binary-encoded rotary** (preferred): the switch presents 2 or 3 output pins that form a binary number. 2 pins → 4 positions (matches the target slot count); 3 pins → 8 positions for future expansion. This is how most automotive rotary selectors are wired internally.
+  - **One-hot rotary** (simpler switches): N output pins, exactly one grounded per position. Teensy reads N input pins, picks the one that is low. Uses more GPIO but supports cheap mechanical rotaries with no internal encoding.
+  - The firmware reads either convention via a configurable `tuneSlotSelectorMode: BINARY | ONEHOT` flag and a small `pinTuneSlot[]` pin array in the pin map. A single-pin SPDT toggle is just the degenerate `BINARY` case with 1 pin / 2 slots, so the same code path covers it for free.
+  - **Debounce / glitch handling**: read at boot only (per the boot-time-only contract below), so a single 5 ms settle delay before sampling is enough — no need for a full debounce state machine. The selector is mechanical and the operator turns it with the engine off.
+  - **Position-0 default**: if the selector pins are all floating (no switch wired), pull-ups put the read at the all-high state, which maps to slot 0. Boards without a rotary installed get slot-0-only behaviour automatically.
+- **Storage**: prefer SPI flash slots over SD for the primary path because the SPI flash is already used for the page mirror, has known wear-levelling behaviour, and doesn't depend on SD card presence at boot. SD becomes the "import a new slot" surface — drop `slot1.bin` on the card, firmware copies it into SPI flash slot 1 on next boot, then runs from flash.
+- **Schema fingerprint per slot**: critical. Different slots can be from different firmware builds (e.g. you flashed a new firmware after tuning slot 2 but slot 0 is stale) — each slot gets validated against the running firmware's fingerprint independently and a stale slot is just refused, not run.
+- **Out of scope (explicitly)**: live switching while the engine is running. The double-buffered page swap that would let the operator flip a dash switch at idle is structurally harder (fuel/ign ISRs can't see a torn tune mid-stroke), needs an atomic swap point, and gives only marginal additional value over "key-off, flip switch, key-on". Deferred to a hypothetical Phase 15 if real demand surfaces. **Boot-time-only is the contract for Slice 14G.**
+- **UI surface for the operator**: a small slot indicator on the live-data packet (1 byte: `activeTuneSlot`) so the desktop and dashboards can show which slot is currently running. Fits within existing `LIVE_DATA_MAP_SIZE = 148` by repurposing one of the reserved bytes — no packet growth (Phase 13 Slice N constraint preserved).
+- **Dependencies**: 14B (per-slot fingerprint validation needs the fingerprint to exist) and 14D (binary tune format and SD ingest are reused per slot). Should not start until both have landed.
+- **Hardware**: DropBear v2 has spare digital inputs; two get repurposed as `pinTuneSlot[0..1]` in the pin map for the target 4-position binary rotary. The rotary switch itself is an off-the-shelf dash-mounted automotive part (e.g. a 4-position SP4T rotary, ~$10–20). No DropBear board changes — it's just two more wires from the harness to the dash. For users who only want 2 slots, the second pin can be left unwired and slot selection collapses to a single-pin toggle.
+
+### Joint sequencing with Tuner Phase 13A
+
+| Step | Repo | Slice |
+|---|---|---|
+| 1 | Firmware | 14A — `tune_storage_map.h` lands, sibling to `live_data_map.h`; legacy INI unchanged |
+| 2 | Tuner | `TuneStorageMapParser` consumes the new header (mirrors existing `LiveDataMapParser`); `NativeDefinition` v2 builds directly from it instead of from INI |
+| 3 | Firmware | 14B — schema fingerprint baked into capability response |
+| 4 | Tuner | Burn-time guard: refuse to burn if `tune.definition_signature != ecu.schema_fingerprint`; surface mismatch in the connect dialog |
+| 5 | Firmware | 14C — semantic-id extensions to packed status bytes (no packet growth) |
+| 6 | Tuner | Phase 13B Native Logging Contract consumes the new packed-status semantics directly |
+| 7 | Firmware | 14E — boot manifest line over USB CDC |
+| 8 | Tuner | Connect path reads the manifest line; legacy probe path becomes a fallback |
+| 9 | Firmware | 14D — `tune.bin` ingest from SD (Teensy 4.1 only) |
+| 10 | Firmware | 14F — generated INI from `tune_storage_map.h`, retire hand-maintained INI on the DropBear/Teensy variant |
+| 11 | Firmware | 14G — boot-time multi-tune slot selection (depends on 14B + 14D) |
+| 12 | Tuner | Multi-tune UI: per-slot edit/burn target, slot status indicator from `activeTuneSlot` byte, "Copy slot X → slot Y" action, fingerprint mismatch surfacing per slot |
+| ongoing | Both | 14H — updated DropBear/Teensy 4.1 operator manual, with each new slice landing with its manual section; cross-linked to the desktop Tuner manual via a shared topic index |
+
+### Slice 14H — Updated end-user documentation (MEDIUM value, LOW risk, ongoing)
+
+- **What**: an updated, DropBear/Teensy-4.1-aware operator manual that supersedes the stock Speeduino documentation at [Resources/Speeduino_manual.pdf](C:/Users/Cornelio/Desktop/speeduino-202501.6/Resources/Speeduino_manual.pdf) for the features added across Phases 6–14. The stock manual predates Phase 6 enablement; the existing [Resources/Speeduino_manual_update_2026-04.md](C:/Users/Cornelio/Desktop/speeduino-202501.6/Resources/Speeduino_manual_update_2026-04.md) is a partial start that should be folded in and extended.
+- **Why now**: Phases 12 (U16 high-leverage tables), 13 (Teensy enablement backlog), and 14 (native-contract producer + multi-tune) introduce a meaningful number of operator-visible behaviours that have **no documentation anywhere**. Operators currently learn these by reading the roadmap, which is the wrong medium — the roadmap is a planning document, not an instruction manual.
+- **Scope of the new manual** (additive to the stock Speeduino docs, not a replacement for them):
+  - DropBear/Teensy 4.1 board-specific wiring, pinout, and reserved-pin notes (drawn from `setTeensy41DropBearPinMapping()` and the Phase 6 enablement work)
+  - U16 high-leverage tables: which tables are widened, what the operator-visible precision change is, how to recognise a U16 vs U08 tune in the desktop, migration notes for legacy U08 tunes
+  - SPI flash health monitoring (Phase 6 byte 131 of the live-data packet) — what "healthy" / "unavailable" means and what to do about it
+  - PWM fan control (Phase 6) — wiring, frequency selection, configuration
+  - Hardware ADC averaging (Phase 7) — what the operator gains from it, no configuration required
+  - Native Ethernet TS transport (Phase 13 Slice C, when shipped) — wiring, IP/DHCP behaviour, operator setup
+  - Software knock detection (Phase 13 Slice B, when shipped) — sensor wiring, frequency-window configuration, comparison vs the existing TPIC8101/HIP9011 path
+  - **Multi-tune slot management (Slice 14G)** — rotary selector wiring (binary vs one-hot), how to build per-slot tunes, fingerprint mismatch behaviour, the boot-time-only contract, the diesel-truck-style 4-position layout
+  - SD-card tune ingest (Slice 14D) — file format, naming convention, fingerprint validation, race-team workflow
+  - Schema fingerprint (Slice 14B) — what it is, what "fingerprint mismatch" means in operator language, how to recover
+  - The capability response (`'K'` command, FW-003) and what each capability bit means in operator-facing terms
+- **Format**: Markdown source under `docs/manual/` in the firmware repo (one file per topic), generated to a single PDF at release time via `tools/generate_manual.py` (new). The Markdown source is the canonical edit surface; the PDF is the artefact users actually download. Same model as the existing `Speeduino_manual_update_2026-04.{md,pdf}` pair, just structured per-topic instead of one monolithic update file.
+- **Source-of-truth rule**: every documented behaviour must reference either a `live_data_map.h` row, a `tune_storage_map.h` row (once Slice 14A ships), a `FIRMWARE_ROADMAP.md` slice, or a specific source file + line. No prose-only claims about what the firmware does — if a fact isn't pinned to source, it goes stale. The doc is regenerated against the source on every release.
+- **What it does NOT replace**:
+  - The stock Speeduino wiki / forum / `Speeduino_manual.pdf` for the AVR Mega2560 path — those stay authoritative for AVR. The new manual is explicitly the *DropBear/Teensy 4.1* manual, not a fork of the AVR manual.
+  - The roadmap. The roadmap stays a planning document; the manual is the operator-facing companion.
+  - The desktop tuner's own docs (those live in the [Tuner](D:/Documents/JetBrains/Python/Tuner) repo and are updated on the desktop side — see Tuner roadmap for the corresponding desktop docs slice).
+- **Joint with the desktop**: each topic in the firmware manual that has an operator-facing desktop counterpart (multi-tune slot picker, schema fingerprint mismatch dialog, U16 table editing, etc.) cross-links to the equivalent section in the Tuner manual rather than duplicating UI screenshots in the firmware repo. The two manuals share a topic index so the cross-links are stable.
+- **Effort**: ongoing rather than a single sprint. Each new firmware slice from Phase 12+ that ships should land **with** its manual section, not before/after. Backfill for already-shipped Phase 6/7/8 work is a one-time pass.
+- **Stock-doc references for fact-checking and structure**: [Resources/Speeduino_manual.pdf](C:/Users/Cornelio/Desktop/speeduino-202501.6/Resources/Speeduino_manual.pdf) for the canonical Speeduino topic structure (so the new manual reads like a continuation, not a fork), and the existing partial [Resources/Speeduino_manual_update_2026-04.md](C:/Users/Cornelio/Desktop/speeduino-202501.6/Resources/Speeduino_manual_update_2026-04.md) as the seed content to fold in.
+
+### Out of scope for Phase 14
+
+- AVR Mega2560 stays on the legacy INI/MSQ path forever — there is no flash budget for native-contract producers on AVR, and the desktop already has a working compatibility layer.
+- JSON5 hand-authoring of native definitions stays on the desktop side; firmware only ever consumes machine-generated binary or JSON, never hand-authored JSON5.
+- Schema migration tooling (`v1` → `v2` rename pass) stays on the desktop side; firmware only ever knows its own compiled-in fingerprint.
